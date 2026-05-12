@@ -115,15 +115,17 @@
         top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; display: block;
     }
 
-    /* 字幕精緻陰影版 (自 core-player.css 移植) */
-    .subtitle-overlay {
-        position: absolute;
-        bottom: 8%; left: 50%; transform: translateX(-50%); width: 90%;
-        color: white; 
-        font-size: var(--subtitle-size) !important; font-weight: 500; line-height: 1.6; text-align: center;
-        z-index: 100; pointer-events: none; box-sizing: border-box; word-break: break-word;
-        text-shadow: 2px 2px 4px rgba(0,0,0,1), -2px 2px 4px rgba(0,0,0,1), 2px -2px 4px rgba(0,0,0,1), -2px -2px 4px rgba(0,0,0,1);
+    /* 字幕 */
+    .subtitle-overlay { position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); width: 90%;
+        z-index: 100; pointer-events: none; text-align: center;
+        display: flex; justify-content: center; box-sizing: border-box; }
+
+    .subtitle-overlay span { display: inline-block; width: fit-content; max-width: 100%;
+        padding: 0.25em 0.7em; background: rgba(0,0,0,0.72); border-radius: 8px;
+        color: rgba(255,255,255,0.96); font-size: var(--subtitle-size); line-height: 1.6;
+        white-space: pre-wrap; word-break: break-word; text-shadow: 0 2px 4px rgba(0,0,0,.5); backdrop-filter: blur(2px); 
     }
+    
     @media (min-width: 1024px) { .subtitle-overlay { font-size: 28px; line-height: 1.7; } }
 
     /* =========================================
@@ -559,7 +561,7 @@ Editor 권혜진 Photographer 이태광 Stylist 김성덕 Hair 홍현승 Makeup 
                     if (player && player.getPlayerState() === 1) { 
                         const time = player.getCurrentTime();
                         const currentSub = subs.find(s => time >= s.start && time <= s.end);
-                        document.getElementById(subtitleId).innerHTML = currentSub ? currentSub.text : '';
+                        document.getElementById(subtitleId).innerHTML = currentSub ? `<span>${currentSub.text}</span>` : '';
                     } else {
                         document.getElementById(subtitleId).innerHTML = ''; 
                     }
