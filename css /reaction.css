@@ -1,0 +1,783 @@
+body {
+    margin: 0;
+    background: #111;
+    color: #fff;
+    font-family: Arial, "Noto Sans TC", sans-serif;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+html, body {
+    background: #000 !important; /* 強制全黑 */
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    /* 新增：針對 iOS 的優化 */
+    -webkit-text-size-adjust: 100%;
+}
+
+/* 首頁按鈕：特別顏色樣式 */
+#home-btn {
+    background: #e67e22 !important; /* 鮮明的橘色，區別於其他按鈕 */
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    padding: 6px 18px;
+    border-radius: 30px !important;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-size: 14px;
+    outline: none;
+    min-width: 80px; /* 根據需求調整寬度 */
+    height: 34px;    /* 與其他按鈕高度統一 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#home-btn:hover {
+    background: #d35400 !important; /* 懸停時變深橘色 */
+    transform: translateY(-2px) scale(1.03);
+}
+
+#home-btn:active {
+    transform: translateY(0px) scale(0.95);
+}
+
+/* 影片容器 */
+#video-wrapper {
+    position: relative;
+    max-width: 960px;
+    margin: 20px auto;
+    background: black;
+    transition: all 0.3s ease;
+}
+
+/* YouTube 播放器 */
+#player {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: block;
+}
+
+/* ===== 字幕 (精緻多重陰影版) ===== */
+#subtitle {
+    position: absolute;
+    bottom: max(calc(var(--subtitle-bottom, 8%) + env(safe-area-inset-bottom)), 60px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 88%;
+    max-width: 1800px;
+
+    z-index: 100;
+    pointer-events: none;
+    text-align: center;
+    overflow: visible;
+    /* 確保在所有手機上都尊重安全區域 */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+}
+
+#subtitle span {
+    display: inline-block;
+    width: fit-content;
+    max-width: 100%;
+
+    padding: 0.2em 0.6em;
+    box-sizing: border-box;
+    background: rgba(15,15,15,.75);
+    border-radius: 6px;
+    color: rgba(255,255,255,.95);
+
+    font-size: calc(clamp(16px, 2vw, 26px) * var(--subtitle-scale, 1)) !important;
+    line-height: 1.45;
+
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
+
+    text-shadow: 0 2px 4px rgba(0,0,0,.5);
+}
+
+/* 針對全螢幕時的優化：讓文字稍微大一點更清楚 */
+:fullscreen #subtitle,
+:-webkit-full-screen #subtitle,
+.pseudo-fullscreen #subtitle {
+    bottom: calc( var(--subtitle-bottom, 8%) + env(safe-area-inset-bottom) + 12px) !important;
+}
+
+/* 全螢幕下的樣式優化，讓背景在暗處更融合 */
+:fullscreen #subtitle span,
+:-webkit-full-screen #subtitle span,
+.pseudo-fullscreen #subtitle span {
+    font-size: calc(clamp(20px, 3.5vw, 28px) * var(--subtitle-scale, 1)) !important;
+    background-color: rgba(0, 0, 0, 0.7) !important;
+    padding: 0.3em 0.8em !important;
+    max-width: 90% !important;
+}
+
+/* 當 wrapper 被加上 pseudo-fullscreen class 時 */
+#video-wrapper.pseudo-fullscreen {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important; /* 強制視窗寬度 */
+    height: 100vh !important; /* 強制視窗高度 */
+    z-index: 9999 !important; /* 最上層 */
+    background: #000;
+
+    /* 針對 iPhone 瀏海/動態島的處理 */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+
+    /* 垂直置中 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== 2. iOS Safari 偽全螢幕 強制樣式 ===== */
+/* 讓 iframe 在偽全螢幕下填滿容器 */
+#video-wrapper.pseudo-fullscreen #player {
+    width: 100%;
+    height: 100%;
+    max-height: 100vh;
+}
+
+/* 隱藏 iOS Safari 橫向時可能的捲軸 */
+body.is-in-fullscreen {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    height: -webkit-fill-available;
+    background: #000 !important;
+    touch-action: none;
+    /* 禁止 iOS 橡皮筋效果 */
+    overscroll-behavior: none;
+}
+
+/* 修正字幕位置 */
+.pseudo-fullscreen #subtitle,
+:fullscreen #subtitle,
+:-webkit-full-screen #subtitle {
+    /* 這裡改用 min() 確保字體在電腦上不會無限變大 */
+    font-size: min(5.5vw, 36px) !important; 
+    /* 降低位置，減少底部空蕩感 */
+    bottom: calc(8% + env(safe-area-inset-bottom)) !important; 
+}
+
+/* 桌機非全螢幕 */
+@media (min-width: 1024px) {
+    #subtitle {
+        font-size: 28px;
+        line-height: 1.7;
+    }
+}
+
+/* 橫向模式下的特別補強 */
+@media screen and (orientation: landscape) {
+    #exit-fs-btn {
+        top: 10px;
+        right: 30px; /* 橫向時離邊緣遠一點，閃開圓角螢幕 */
+    }
+    #subtitle {
+        /* 橫向時寬度可以稍微加寬，但 padding 依然保護著邊緣 */
+        width: 88%; 
+        bottom: calc(var(--subtitle-bottom, 6%) + env(safe-area-inset-bottom)) !important;
+    }
+
+    #subtitle span {
+        /* 橫向時字體太大會遮住影片，建議稍微壓低一點點 */
+        font-size: calc(clamp(16px, 4.5dvh, 22px) * var(--subtitle-scale, 1)) !important;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    :fullscreen #subtitle,
+    :-webkit-full-screen #subtitle {
+        font-size: 28px !important;
+        bottom: 10% !important;
+    }
+}
+
+/* ========= 全螢幕樣式 (系統級) ========= */
+:fullscreen #video-wrapper,
+:-webkit-full-screen #video-wrapper {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    margin: 0;
+}
+
+:fullscreen #player,
+:-webkit-full-screen #player {
+    width: 100vw;
+    height: 100vh;
+}
+
+/* ========= 偽全螢幕樣式 (針對 iPad/iPhone/相容性) ========= */
+/* 修改偽全螢幕樣式，確保覆蓋力 */
+.pseudo-fullscreen {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important; /* 使用動態視窗高度 */
+    z-index: 2147483647 !important; /* 確保在最上層 */
+    background: #000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding-left: env(safe-area-inset-left) !important;
+    padding-right: env(safe-area-inset-right) !important;
+}
+
+/* 當進入全螢幕模式時，隱藏頁面上所有其他內容 */
+body.is-in-fullscreen #controls,
+body.is-in-fullscreen h2,
+body.is-in-fullscreen .reaction-section {
+    display: none !important;
+}
+
+/* 統一 body Class 並確保徹底隱藏背景 */
+body.is-in-fullscreen {
+    overflow: hidden !important;
+    position: fixed; /* 修改點：改為 fixed 徹底鎖死滑動 */
+    width: 100vw;
+    height: 100vh;
+    height: -webkit-fill-available; /* 針對 iOS Safari 的高度修正 */
+    background: #000 !important;
+    touch-action: none; /* 防止在全螢幕時產生縮放或滑動 */
+}
+
+/* 確保影片在偽全螢幕下完全填滿，不留任何細縫 */
+.pseudo-fullscreen #player {
+    width: 100vw !important;
+    height: 100dvh !important;
+    object-fit: contain; /* 確保影片比例正確且背景全黑 */
+}
+
+/* 確保 iPhone 橫向時能填滿安全區域 (瀏海區) */
+@supports (padding: env(safe-area-inset-top)) {
+    .pseudo-fullscreen {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+}
+
+/* 強制讓背景 body 在偽全螢幕時變黑，防止邊緣白邊 */
+body.has-fullscreen {
+    overflow: hidden !important;
+}
+
+/* 進入全螢幕時隱藏頁面其餘元素 */
+.pseudo-fullscreen ~ h2, 
+.pseudo-fullscreen ~ #controls {
+    display: none;
+}
+
+/* ========= 控制列 ========= */
+#controls {
+    display: flex;
+    flex-wrap: wrap;      /* 寬度不夠自動換行 */
+    gap: 10px 15px;      /* 設定：上下間距 10px, 左右間距 15px */
+    justify-content: center;
+    align-items: center;
+    margin: 15px auto;
+    max-width: 98%;      /* 讓手機版有更多伸展空間 */
+}
+
+/* 讓每一行功能分開 */
+.control-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    width: 100%; /* 強制每一組 row 佔據一行 */
+}
+
+/* --- 控制組背景 --- */
+.control-group {
+    display: inline-flex;  /* 確保寬度自適應內容 */
+    align-items: center;   /* 關鍵：垂直置中對齊 */
+    justify-content: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.12); /* 稍微調亮底色 */
+    padding: 6px 15px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px); /* 加強毛玻璃質感 */
+    transition: all 0.3s ease;
+}
+
+.control-group span {
+    line-height: 1;        /* 移除行高造成的偏移 */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* 按鈕基礎樣式 */
+#controls button {
+    padding: 6px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    background: #333;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1); /* 使用極淡的邊框代替硬白邊 */
+    border-radius: 30px !important;              /* 強制統一為圓角 */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-weight: 600;
+    outline: none;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#controls button:hover {
+    background: #444;
+    transform: translateY(-1px);
+}
+
+/* --- 高級感滑動軸 --- */
+#controls input[type="range"] {
+    -webkit-appearance: none;
+    width: 100px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2); /* 軌道更透明一點 */
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* 滑塊 (Thumb) - Chrome/Safari/Edge */
+#controls input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #5A98ED;    /* 圖片中的天藍色 */
+    border: 2px solid #fff; 
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(90, 152, 237, 0.5); /* 柔和藍光 */
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 滑塊點擊時的動畫 */
+#controls input[type="range"]:active::-webkit-slider-thumb {
+    transform: scale(1.3);
+    background: #4A88DD;    /* 點擊時顏色微深 */
+}
+
+/* 滑塊隱藏動畫 */
+.control-hidden {
+    opacity: 0;
+    transform: translateY(5px);
+    pointer-events: none;
+}
+
+/* ========= 手機版 (600px 以下) 專屬微調 ========= */
+@media screen and (max-width: 600px) {
+    #controls {
+        gap: 12px 8px;    /* 增加上下行距，減少左右間距 */
+    }
+
+    #controls span {
+        font-size: 13px;  /* 字體稍微縮小，但維持可讀性 */
+    }
+
+    #controls button {
+        padding: 5px 10px; /* 按鈕稍微變小，省空間 */
+        font-size: 13px;
+    }
+
+    /* 縮小滑桿寬度，讓一排能塞下更多組 */
+    input[type="range"] {
+        width: 60px !important; 
+    }
+}
+
+/* 全螢幕按鈕樣式 */
+#fs-btn {
+    background: #42b983 !important; /* 使用更高級的薄荷綠 */
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important; /* 加入細微白色邊框 */
+    padding: 6px 18px;             /* 稍微縮小一點高度，對齊滑桿膠囊 */
+    border-radius: 30px !important; /* 統一為膠囊造型 */
+    font-weight: 600;              /* 字體加粗 */
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(66, 185, 131, 0.4); /* 薄荷綠發光感 */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-size: 14px;
+    letter-spacing: 0.5px;         /* 稍微撐開字距 */
+    outline: none;
+}
+
+#fs-btn:hover {
+    background: #4ec992 !important; /* 懸停時顏色微亮 */
+    transform: translateY(-2px) scale(1.03); /* 輕微放大與上浮 */
+    box-shadow: none !important;
+}
+
+#fs-btn:active {
+    transform: translateY(0px) scale(0.95); /* 按下時縮小的回饋 */
+    box-shadow: 0 2px 5px rgba(66, 185, 131, 0.4);
+}
+
+/* 退出按鈕：低干擾模式 */
+/* =============================================
+   退出全螢幕按鈕 (修復 iPhone 裁切問題版)
+   ============================================= */
+/* --- 0. 強制隱藏 (權重最高) --- */
+body #emoji-trigger-btn.force-hide {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+/* 針對全螢幕與橫向的補強 */
+:fullscreen #emoji-trigger-btn.force-hide,
+:-webkit-full-screen #emoji-trigger-btn.force-hide,
+.pseudo-fullscreen #emoji-trigger-btn.force-hide {
+    display: none !important;
+}
+
+/* 橫向模式補強 */
+@media screen and (orientation: landscape) {
+    #emoji-trigger-btn.force-hide {
+        display: none !important;
+    }
+}
+
+/* --- 1. 退出按鈕 (右上角 - 這是對稱的基準點) --- */
+#exit-fs-btn {
+    display: none; 
+    position: fixed !important;
+
+    /* 基準 Y 軸：上方 20px */
+    top: calc(20px + env(safe-area-inset-top)) !important;
+
+    /* 基準 X 軸：右方 20px */
+    right: 20px !important; 
+
+    /* 基準大小：50px */
+    width: 50px !important;
+    height: 50px !important;
+
+    background: rgba(0, 0, 0, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.9) !important;
+    z-index: 2147483647 !important;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: none !important; 
+}
+#exit-fs-btn svg { width: 28px; height: 28px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+#exit-fs-btn:hover { background: rgba(50, 50, 50, 0.9) !important; color: #fff !important; transform: scale(1.1); }
+
+/* =============================================
+   針對 iPhone 橫向模式 (Landscape) 的特別補強
+   ============================================= */
+@media screen and (orientation: landscape) {
+    #exit-fs-btn {
+        /* 橫向時，因為有瀏海或動態島，右邊要退更多 */
+        right: calc(45px + env(safe-area-inset-right)) !important;
+
+        /* 橫向時上方通常空間比較小，稍微貼近一點點沒關係 */
+        top: 20px !important;
+    }
+}
+
+/*表情*/
+.reaction-section {
+    margin: 30px auto 100px auto;
+    padding: 20px;
+    background: #222;
+    border-radius: 15px;
+    max-width: 600px;
+}
+.reaction-wall {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+#reaction-title {
+    font-size: 24px;            /* 增大字體 */
+    font-weight: 700;           /* 加粗 */
+    color: #ffffff;             /* 白色文字 */
+    margin-top: 5px;            /* 離上方近一點 (如果還不夠近，可以改成 0 或 -5px) */
+    margin-bottom: 20px;        /* 離下方的表情按鈕遠一點，保持視覺呼吸感 */
+    text-align: center;         /* 文字居中 */
+
+    /* 高級感特效：細微的文字陰影讓字體更立體 */
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+
+    /* 讓文字有一點點發光感，更吸引注意 */
+    letter-spacing: 1px;        /* 字距微調 */
+}
+
+/* 針對手機版的微調：避免字體太大導致換行太亂 */
+@media (max-width: 600px) {
+    #reaction-title {
+        font-size: 18px;
+        margin-top: 0px;
+    }
+}
+
+/* --- 3. 表情按鈕 --- */
+.emoji-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #444;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.2s;
+}
+.emoji-btn:hover { background: #444; transform: translateY(-2px); }
+.emoji-btn span { font-size: 14px; margin-left: 5px; color: #aaa; }
+
+/* 當按鈕擁有 .active 類別時的樣式 */
+.emoji-btn.active {
+    border-color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(90, 152, 237, 0.4);
+    transform: scale(1.05) translateY(-2px);
+}
+
+.emoji-btn.active span {
+    color: #ffffff !important;
+}
+
+/* 彈幕容器：覆蓋在影片上方 */
+#barrage-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--barrage-height, 40%); /* 使用變數 --barrage-height，預設 40% */
+    pointer-events: none; /* 不影響點擊影片 */
+    overflow: visible !important;
+    z-index: 999;   
+    transition: height 0.3s ease; /* 加入一點過渡效果，調整時會比較滑順 */
+    /* 確保容器內容不會換行 */
+    white-space: nowrap;
+}
+
+/* 彈幕本體樣式 */
+.barrage-item {
+    position: absolute;
+    left: 100%;
+    white-space: nowrap;
+    font-size: var(--barrage-size, 24px); 
+    line-height: 1; /* 設為 1 讓高度計算更精準 */
+    padding: 0;
+    will-change: transform;
+    animation: moveLeft var(--barrage-speed, 5s) linear forwards;
+    /* 確保表情不會被滑鼠選到或干擾 */
+    user-select: none;
+    -webkit-user-select: none;
+    transition: opacity 0.3s ease;
+}
+
+.barrage-item.removing {
+    opacity: 0;
+}
+
+/* 當彈幕被關閉時隱藏容器 */
+#barrage-container.hide-barrage {
+    display: none;
+}
+
+/* 讓控制列的滑桿好看一點 */
+#barrage-size-slider {
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+/* 加入淡入淡出效果 */
+.barrage-control {
+    opacity: 0;           /* 配合 JS 做淡入 */
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+    display: none;        /* 預設隱藏 */
+}
+
+#barrage-toggle-btn, #fs-btn {
+    min-width: 110px;        /* 讓左右按鈕寬度相近，增加對稱感 */
+    height: 34px;            /* 統一高度 */
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes moveLeft {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-100vw - 100%)); }
+}
+
+/* --- 3. 即時表情按鈕 (預設狀態：非全螢幕 - 左中) --- */
+#emoji-trigger-btn {
+    position: fixed !important;
+
+    /* ★★★ 垂直置中關鍵代碼 ★★★ */
+    top: 50% !important;
+    transform: translateY(-50%); /* 往回拉 50% 自身高度，達成絕對置中 */
+
+    /* 水平位置：靠左 */
+    left: 20px !important;
+
+    /* 清除所有其他干擾 (非常重要！) */
+    bottom: auto !important; 
+    right: auto !important;
+
+    /* 大小：統一設為 50px 以保證跟退出按鈕一致 */
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 24px;
+
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    z-index: 2147483647 !important; 
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    outline: none;
+}
+#emoji-trigger-btn:hover { background: rgba(50, 50, 50, 0.9); transform: translateY(-50%) scale(1.1); }
+#emoji-trigger-btn:active { transform: translateY(-50%) scale(0.9); }
+
+
+/* --- 4. 表情抽屜 (預設狀態：跟隨左中按鈕) --- */
+#emoji-drawer {
+    position: fixed !important; 
+    display: none;
+
+    /* 按鈕在左中，抽屜顯示在按鈕的「右邊」 */
+    top: 50% !important;
+    left: 80px !important; /* 20px(邊距) + 50px(按鈕) + 10px(間隙) */
+    transform: translateY(-50%); 
+
+    /* 清除干擾 */
+    bottom: auto !important;
+    right: auto !important;
+
+    background: rgba(0, 0, 0, 0.85);
+    padding: 15px;
+    border-radius: 20px;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 12px;
+    z-index: 2147483647 !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 抽屜按鈕樣式 */
+#emoji-drawer .emoji-btn {
+    width: 50px; height: 50px; font-size: 28px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px; border: none; cursor: pointer;
+}
+#emoji-drawer .emoji-btn:hover { background: rgba(255, 255, 255, 0.2); }
+#emoji-drawer button:active { transform: scale(0.8); transition: transform 0.1s; }
+#emoji-drawer.show { display: grid !important; animation: drawerFadeIn 0.3s ease; }
+#emoji-trigger-btn.active { background: #5A98ED; border-color: #fff; }
+
+@keyframes drawerFadeIn { 
+    from { opacity: 0; transform: translateY(-50%) scale(0.9); } 
+    to { opacity: 1; transform: translateY(-50%) scale(1); } 
+}
+
+
+/* =================================================================
+   ★★★ 全螢幕模式 (Fullscreen) - 觸發對稱變形 ★★★
+   目標：按鈕飛到左上角，與右上角的退出按鈕 Y 軸對齊
+   ================================================================= */
+
+:fullscreen #emoji-trigger-btn,
+:-webkit-full-screen #emoji-trigger-btn,
+.pseudo-fullscreen #emoji-trigger-btn {
+    /* 1. 位置移到左上角 (跟退出按鈕對稱) */
+    top: calc(20px + env(safe-area-inset-top)) !important;
+    left: 20px !important;
+
+    /* 2. 取消垂直置中 (很重要！) */
+    transform: none !important; 
+
+    /* 清除底部干擾 */
+    bottom: auto !important;
+}
+
+/* 全螢幕時的 hover 效果修正 (不需要 translateY 了) */
+:fullscreen #emoji-trigger-btn:hover,
+:-webkit-full-screen #emoji-trigger-btn:hover,
+.pseudo-fullscreen #emoji-trigger-btn:hover {
+    transform: scale(1.1) !important;
+}
+
+/* 全螢幕時的抽屜位置 (改為在按鈕下方) */
+:fullscreen #emoji-drawer,
+:-webkit-full-screen #emoji-drawer,
+.pseudo-fullscreen #emoji-drawer {
+    /* top: 20px(按鈕top) + 50px(按鈕高) + 10px(間隙) = 80px */
+    top: calc(80px + env(safe-area-inset-top)) !important;
+    left: 20px !important;
+
+    /* 取消垂直置中 */
+    transform: none !important;
+    animation: drawerDrop 0.3s ease !important;
+
+    /* 清除其他干擾 */
+    bottom: auto !important;
+    right: auto !important;
+}
+
+@keyframes drawerDrop { 
+    from { opacity: 0; transform: translateY(-10px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+
+/* =================================================================
+   ★★★ 橫向模式 (Landscape) 對齊微調 ★★★
+   ================================================================= */
+@media screen and (orientation: landscape) {
+
+    /* 1. 右上角：退出按鈕 */
+    #exit-fs-btn {
+        right: calc(50px + env(safe-area-inset-right)) !important;
+    }
+
+    /* 2. 左上角：表情按鈕 (全螢幕模式下) */
+    :fullscreen #emoji-trigger-btn,
+    :-webkit-full-screen #emoji-trigger-btn,
+    .pseudo-fullscreen #emoji-trigger-btn {
+        left: calc(50px + env(safe-area-inset-left)) !important;
+    }
+
+    /* 3. 左上角：抽屜 (全螢幕模式下) */
+    :fullscreen #emoji-drawer,
+    :-webkit-full-screen #emoji-drawer,
+    .pseudo-fullscreen #emoji-drawer {
+        left: calc(50px + env(safe-area-inset-left)) !important;
+    }
+}
