@@ -115,15 +115,20 @@
         top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; display: block;
     }
 
-    /* 字幕 */
-    .subtitle-overlay { position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); width: 90%;
-        z-index: 100; pointer-events: none; text-align: center;
-        display: flex; justify-content: center; box-sizing: border-box; }
+    /* 字幕外層 */
+    .subtitle-overlay { position: absolute; left: 50%; transform: translateX(-50%); bottom: 8%;
+        width: 90vw; max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px); 
+        padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right);
+        box-sizing: border-box; z-index: 100; pointer-events: none;
+        display: flex; justify-content: center; text-align: center;
+    }
 
-    .subtitle-overlay span { display: inline-block; width: fit-content; max-width: 100%;
-        padding: 0.25em 0.7em; background: rgba(0,0,0,0.72); border-radius: 8px;
-        color: rgba(255,255,255,0.96); font-size: var(--subtitle-size); line-height: 1.6;
-        white-space: pre-wrap; word-break: break-word; text-shadow: 0 2px 4px rgba(0,0,0,.5); backdrop-filter: blur(2px); 
+    /* 字幕本體 */
+    .subtitle-overlay span { display: block; width: 100%; max-width: 100%; padding: 0.25em 0.7em;
+        background: rgba(0,0,0,0.72); border-radius: 8px; color: rgba(255,255,255,0.96);
+        font-size: var(--subtitle-size); line-height: 1.6; white-space: pre-wrap;
+        overflow-wrap: anywhere; word-break: break-word; text-shadow: 0 2px 4px rgba(0,0,0,.5);
+        backdrop-filter: blur(2px); box-sizing: border-box;
     }
     
     @media (min-width: 1024px) { .subtitle-overlay { font-size: 28px; line-height: 1.7; } }
@@ -134,7 +139,13 @@
     /* [A] 電腦版 (滑鼠操作) 全螢幕：字幕保持在底部，避免擋臉 */
     @media (pointer: fine) {
         :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay {
-            bottom: 8% !important; 
+            bottom: 8% !important; width: 90vw !important; 
+            max-width: calc(
+              100vw
+              - env(safe-area-inset-left)
+              - env(safe-area-inset-right)
+              - 16px
+            ) !important;
         }
         :fullscreen .video-responsive-wrapper, :-webkit-full-screen .video-responsive-wrapper {
             width: 100vw; height: 100vh; max-width: none; margin: 0; padding-bottom: 0;
@@ -146,6 +157,13 @@
         /* 原生全螢幕 */
         :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay { 
             bottom: calc(15% + env(safe-area-inset-bottom)) !important;
+            width: 90vw !important;
+            max-width: calc(
+              100vw
+              - env(safe-area-inset-left)
+              - env(safe-area-inset-right)
+              - 16px
+            ) !important;
         }
         :fullscreen .video-responsive-wrapper, :-webkit-full-screen .video-responsive-wrapper {
             width: 100vw; height: 100vh; max-width: none; margin: 0; padding-bottom: 0;
@@ -161,7 +179,8 @@
         }
         .pseudo-fullscreen iframe { width: 100vw !important; height: 100dvh !important; object-fit: contain; }
         .pseudo-fullscreen .subtitle-overlay { 
-            font-size: min(5.5vw, 32px) !important; 
+            width: min(88vw, 88%) !important;
+            max-width: 88vw !important;
             bottom: calc(15% + env(safe-area-inset-bottom)) !important; 
         }
 
