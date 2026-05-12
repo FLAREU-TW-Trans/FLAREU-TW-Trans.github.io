@@ -4,11 +4,1747 @@
 <meta charset="UTF-8">
 <title>Flare U 台灣翻譯站 | 立于 x 玗進 中文翻譯網站</title>
 <link rel="canonical" href="https://flareu-tw-trans.github.io/" />
+<link rel="sitemap" type="application/xml" title="Sitemap" href="https://flareu-tw-trans.github.io/sitemap.xml" />
+<meta name="google-site-verification" content="7PIMmC4U7ysESFC3XZsVfbBhYHZghon76UDH7Orv1gI" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<meta name="description" content="提供 Flare U (崔立于、姜玗進) 的節目翻譯、畫報花絮、電台直播等影片存檔。">
-<meta name="keywords" content="Flare U, 崔立于, CHUEI LI YU, 姜玗進, 翻譯, 中字">
+<meta name="description" content="Flare U 台灣非官方翻譯站。提供崔立于、姜玗進的節目、花絮、電台等影音存檔與中文字幕，僅作學習與推廣使用。">
+<meta name="keywords" content="Flare U, FlareU, 崔立于, CHUEI LI YU, 姜玗進, 최립우, 강우진, 翻譯, 中字">
 <meta name="author" content="西卡">
 
-<meta property="og:title" content="Flare U 台灣翻譯站 | 立于 x 玗進">
-<meta property="og:description" content="提供 Flare U 崔立于、姜玗進的節目翻譯與影像存檔。">
+<meta property="og:title" content="Flare U 台灣翻譯站 | 保存立于與玗進的資訊圖書館">
+<meta property="og:description" content="提供 Flare U 完整影音存檔與中文翻譯。僅作學習與推廣使用。">
 <meta property="og:url" content="https://flareu-tw-trans.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://flareu-tw-trans.github.io/images/header.jpg"> 
+
+<style>
+:root {
+    --header-box-width: 320px;
+    --primary-color: #60a5fa; 
+    --premium-yellow: #f59e0b; 
+    --gold-highlight: #fbbf24; 
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    background: #ffffff;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* ===== Header ===== */
+header {
+    position: relative;
+    height: 200px;
+    background-image: url("images/content33.webp");
+    background-size: cover;
+    background-position: 30% 35%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    z-index: 10;
+    transition: background 0.3s ease;
+}
+
+.header-text {
+    position: relative;
+    z-index: 1;
+    padding: 16px 24px;
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 16px;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    max-width: 600px; 
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 400; 
+    letter-spacing: 2px;
+    line-height: 1.3;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+header p {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    line-height: 1.6;
+    color: #f3f4f6;
+    opacity: 0.9;
+}
+    
+/* --- 關於本站按鈕基礎樣式 --- */
+.about-wrapper {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center; /* 居中對齊 */
+}
+
+.about-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.about-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* --- 關於本站彈窗專屬樣式 --- */
+.about-content {
+    position: relative; /* 為了讓內部的 X 按鈕能相對於此定位 */
+    max-width: 600px;
+    width: 90%;
+    max-height: 85vh;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    background: #fff; /* 確保有背景色 */
+}
+
+.modal-header {
+    padding: 20px 50px 15px 25px; /* 右側 padding 加大到 50px */
+    border-bottom: 1px solid #eee;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px;  /* 設定寬高讓點擊範圍更大 */
+    height: 40px;
+    font-size: 28px; /* 放大 X 符號 */
+    line-height: 40px;
+    color: #999;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: color 0.2s;
+    z-index: 10;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.about-body {
+    overflow-y: auto;
+    padding: 25px;
+    text-align: left;
+}
+
+.about-section {
+    margin-bottom: 20px;
+}
+
+.about-section:first-child h4 {
+    margin-top: 5px;
+}
+
+.about-section h4 {
+    color: #8c7851; /* 亞麻棕標題 */
+    border-bottom: 2px solid #efeee9;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.signature {
+    text-align: right;
+    display: block;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.letter-content p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #4a5568;
+    margin-bottom: 15px;
+}
+
+.qa-item {
+    background: rgba(140, 120, 81, 0.05);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.qa-item strong {
+    display: block;
+    color: #2d3748;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.qa-item p {
+    font-size: 15px;
+    color: #4a5568;
+    margin: 0;
+}
+
+.guide-list {
+    padding-left: 20px;
+    font-size: 15px;
+    color: #4a5568;
+    line-height: 1.8;
+}
+
+.guide-list li {
+    margin-bottom: 8px;
+}
+
+.about-section h4 {
+    color: #8c7851;
+    border-bottom: 2px solid #efeee9;
+    padding-bottom: 8px;
+    margin-bottom: 18px;
+    font-size: 1.2rem; /* 稍微放大標題 */
+}
+
+.about-body::-webkit-scrollbar {
+    width: 6px;
+}
+.about-body::-webkit-scrollbar-thumb {
+    background: #dcdad5;
+    border-radius: 10px;
+}
+    
+/* ===== Search ===== */
+.search-box {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    z-index: 3;
+}
+
+.search-input-wrap {
+    position: relative;
+    width: var(--header-box-width);
+    max-width: 100%;
+}
+
+.search-input-wrap input {
+    width: 100%;
+    padding: 8px 36px 8px 16px;
+    font-size: 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.3);
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    transition: all 0.2s;
+}
+
+.search-input-wrap input:focus {
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
+}
+
+.search-input-wrap input::placeholder { color: rgba(255,255,255,0.8); }
+.search-input-wrap input:focus::placeholder { color: #999; }
+
+.search-results {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.search-results button {
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    background: #ffffff;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-weight: 500;
+}
+
+.search-results button:hover {
+    background: #eff6ff;
+    color: var(--primary-color);
+}
+
+#clearSearch {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 1;
+    display: none;
+    color: rgba(255,255,255,0.8);
+}
+.search-input-wrap input:focus ~ #clearSearch { color: #666; }
+#clearSearch.visible { display: block; }
+
+/* 月份搜尋 */
+/* 月份摺疊按鈕樣式 */
+.month-toggle-wrapper {
+    margin-top: 8px;
+    width: fit-content;
+    min-width: 100px;
+}
+.month-expand-btn {
+    width: fit-content; /* 寬度隨字數縮小 */
+    white-space: nowrap; /* 避免換行 */
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* 滑鼠移入效果 */
+.month-expand-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 彈出視窗遮罩層 */
+.month-modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: none; /* 預設隱藏 */
+    justify-content: center;
+    align-items: center;
+    z-index: 100000;
+}
+.month-modal-overlay.active {
+    display: flex !important;
+}
+
+/* 彈出視窗內容 */
+.month-modal-content {
+    background: #fff;
+    padding: 24px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+body.theme-dark .month-modal-content {
+    background: #1e293b;
+    color: #fff;
+}
+.month-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+}
+.month-grid .time-btn {
+    padding: 10px;
+    background: #f1f5f9;
+    color: #333;
+    border: none;
+}
+body.theme-dark .month-grid .time-btn {
+    background: #334155;
+    color: #eee;
+}
+.month-grid .time-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+.month-close-btn {
+    margin-top: 10px;
+    border: none;
+    background: none;
+    color: #999;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* ===== Header Theme Buttons ===== */
+.header-theme {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+    z-index: 2;
+}
+
+.header-theme button {
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    backdrop-filter: blur(4px);
+    transition: all 0.2s ease;
+}
+
+.header-theme button:hover {
+    background: rgba(255,255,255,0.9);
+    color: #333;
+}
+
+/* ===== 靜態公告板 (Static News Board) ===== */
+.news-board {
+    width: 100%;
+    height: auto;
+    min-height: 40px;
+    background: #fdfdfd;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: normal;
+    word-break: break-all;
+    flex-wrap: wrap; 
+    padding: 8px 16px;
+    box-sizing: border-box;
+    font-size: 13px;
+    color: #444;
+    gap: 16px;
+    transition: all 0.3s ease; /* 讓切換模式時顏色平滑過渡 */
+}
+
+/* 每一則公告的樣式 */
+.news-item {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: 6px 14px 6px 8px;
+    background: #ffffff; /* 給每一則公告獨立的白色背景 */
+    border: 1px solid rgba(0, 0, 0, 0.03); /* 極淡的邊框 */
+    border-radius: 8px; /* 圓角增加親和感 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02); /* 極輕微的陰影，營造漂浮感 */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none; /* 移除超連結底線 */
+    color: #333;           /* 強制指定文字顏色，避免變成藍色 */
+    cursor: pointer;       /* 滑鼠移上去變手指 */
+    box-sizing: border-box; /* 防止 padding 撐破寬度 */
+    font-size: clamp(14px, 1.2vw, 16px);
+    line-height: 1.5;
+}
+
+.news-item:hover {
+    transform: translateY(-2px); /* 輕微上浮 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); /* 陰影加深 */
+    background-color: #fafafa; /* 背景稍微變灰一點，增加點擊感 */
+    color: var(--primary-color); /* 如果想要文字變色，可以連動主色調 */
+}
+
+.news-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 6px;
+    /* 預設顏色，可用 style 覆蓋 */
+    background: #e5e7eb; 
+    color: #333;
+    flex-shrink: 0; /* 確保標籤不會因為標題太長而被擠壓 */
+}
+
+/* 不同類型的標籤顏色 */
+.tag-new { background: var(--primary-color); color: #fff; }
+.tag-live { background: #ef4444; color: #fff; }
+.tag-note { background: #f59e0b; color: #fff; }
+
+/* ===== Layout ===== */
+.container {
+    display: flex;
+    min-height: calc(100vh - 260px); 
+}
+
+.sidebar {
+    width: 260px;
+    padding: 24px;
+    background-size: cover;
+    background-position: center;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+    border-right: none; 
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar button {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    text-align: left;
+    color: inherit;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar button:hover { background: rgba(0,0,0,0.05); }
+.sidebar button.active { font-weight: 700; }
+
+.content {
+    flex: 1;
+    padding: 32px;
+    background-size: cover;
+    background-position: center;
+}
+
+.section { display: none; }
+.section.active { display: block; animation: fadeIn 0.3s ease; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+}
+
+/* ===== Filter Bar ===== */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    min-height: 38px;
+}
+.filter-bar:empty { display: none; }
+
+.filter-btn {
+    padding: 8px 16px;
+    border-radius: 99px;
+    border: 1px solid transparent;
+    background: rgba(0,0,0,0.05);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #666;
+    font-weight: 500;
+}
+
+.filter-btn:hover { background: rgba(0,0,0,0.1); }
+
+.filter-btn.active {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 10px rgba(96, 165, 250, 0.3);
+}
+
+/* ===== Card ===== */
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    position: relative;
+    display: block;
+    border: none;
+    position: relative;
+}
+
+.card-img-wrap {
+    width: 100%;
+    height: 160px;
+    overflow: hidden;
+    position: relative;
+    background: #e5e7eb;
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.card:hover img { transform: scale(1.05); }
+
+.card-body { padding: 16px; }
+
+.card-title { 
+    font-size: 16px; 
+    font-weight: 700; 
+    line-height: 1.4;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-desc { font-size: 13px; opacity: 0.7; margin-bottom: 12px; }
+
+.card-credit { 
+    font-size: 12px; 
+    color: #9ca3af; 
+    padding-top: 12px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+/* 收藏按鈕 */
+.fav-btn {
+    position: absolute;
+    bottom: 10px; /* 放在右下角 */
+    right: 10px;
+    background: rgba(255, 255, 255, 0.85);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 5;
+    font-size: 16px;
+    color: #ccc; /* 預設灰色 */
+}
+
+/* 收藏後的狀態 */
+.fav-btn.active {
+    color: #e63946; /* 愛心變紅 */
+}
+
+.fav-btn:hover {
+    transform: scale(1.1);
+    background: #ffffff;
+}
+
+/* 收藏頁面標題樣式 */
+.section-title {
+    color: #4b5563;
+    font-size: 1.1rem;
+    padding: 10px 0;
+}
+
+.new-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: #ef4444; color: #ffffff;
+    font-size: 11px; font-weight: 800; padding: 4px 10px;
+    border-radius: 99px; z-index: 3;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+
+.search-highlight {
+    transition: box-shadow 0.3s ease;
+}
+
+footer { 
+    text-align: center; 
+    font-size: 13px; 
+    color: #999; 
+    padding: 20px 20px 30px 20px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px; /* 圖示與文字之間的間隔 */
+}
+
+.footer-sns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* IG 與 Threads 之間的距離 */
+    margin-bottom: 0px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.sns-btn.text-link {
+    color: #666; /* 提高預設顏色對比度，更易讀 */
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600; /* 加粗字體，更有按鈕感 */
+    padding: 6px 16px; /* 增加內距，讓點擊區域變大且像按鈕 */
+    border: 1px solid #e5e7eb; /* 加入極細邊框 */
+    border-radius: 20px; /* 膠囊型按鈕，非常有高級感 */
+    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.5); /* 輕微底色，增加存在感 */
+    margin: 0;
+}
+
+/* 滑鼠移入效果 */
+.sns-btn.text-link:hover {
+    color: #fff;
+    background: var(--primary-color, #444); /* 移入時變成立于的代表色或深灰色 */
+    border-color: var(--primary-color, #444);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05); /* 增加輕微陰影 */
+}
+
+.sns-divider {
+    display: none;
+}
+
+.footer-info {
+    letter-spacing: 0.5px; /* 讓字距寬一點點，視覺更精緻 */
+    opacity: 0.8;
+    margin-top: 0;
+}
+
+/* 確保 SNS 按鈕垂直置中與間距 */
+.footer-sns {
+    display: flex;
+    align-items: center; /* 確保兩個不同高度的 SVG 對齊中線 */
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+/* ===== 回到頂端按鈕 (Back to Top) ===== */
+#backToTop {
+    position: fixed;
+    bottom: calc(24px + env(safe-area-inset-bottom));
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 99999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-user-select: none; /* 避免 iPhone 長按選取到按鈕文字 */
+    -webkit-tap-highlight-color: transparent;
+}
+
+#backToTop:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+#backToTop.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+body.theme-dark #backToTop {
+    background: rgba(30, 41, 59, 0.9);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.15);
+}
+    
+body.theme-dark #backToTop:hover {
+    background: #334155;
+}
+
+body.modal-open #backToTop {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none;
+}
+
+body.modal-open #backToTop {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none;
+}
+
+/* 防止背景滾動 */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* =========================================
+   🎨 THEME SYSTEMS
+   ========================================= */
+
+/* 1. 🌸 花俏模式 (Fancy) */
+body.theme-fancy .sidebar { background-image: url("images/content5.webp"); border-right: 1px solid rgba(255,255,255,0.4); }
+body.theme-fancy .content { background-image: url("images/content6.webp"); }
+body.theme-fancy .sidebar button { background: rgba(255,255,255,0.6); color: #333; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+body.theme-fancy .sidebar button:hover { background: #fff; transform: translateX(4px); }
+body.theme-fancy .sidebar button.active { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); color: var(--premium-yellow); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+body.theme-fancy .filter-btn { background: rgba(255, 255, 255, 0.55); color: #333; }
+body.theme-fancy .filter-btn.active { background: var(--premium-yellow); color: #fff; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); }
+body.theme-fancy .card { box-shadow: var(--shadow-md); }
+body.theme-fancy .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+body.theme-fancy .search-highlight { box-shadow: 0 0 0 4px var(--gold-highlight); }
+/* 花俏模式公告欄 */
+body.theme-fancy .news-board {
+    /* 將透明度從 0.9 調降至 0.75，讓顏色看起來更淡、更通透 */
+    background: linear-gradient(135deg, rgba(84, 99, 108, 0.75), rgba(45, 55, 60, 0.75));
+    
+    /* 毛玻璃 */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    /* 質感邊框 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* 陰影也稍微調淡 */
+    
+    /* 文字反白 */
+    color: #ffffff; 
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* 花俏模式下的標籤調整為低調半透明，讓深灰底更協調 */
+body.theme-fancy .news-tag {
+    background: rgba(255, 255, 255, 0.2);
+    color: #f3f4f6;
+    border: 1px solid rgba(255,255,255,0.25);
+}
+    
+/* 標籤顏色 */
+body.theme-fancy .tag-new { 
+    background: var(--primary-color) !important; 
+    color: #fff !important; 
+    border: none !important;
+}
+body.theme-fancy .tag-live { 
+    background: #ef4444 !important; 
+    color: #fff !important; 
+    border: none !important;
+}
+body.theme-fancy .tag-note { 
+    background: #f59e0b !important; 
+    color: #fff !important; 
+    border: none !important;
+}
+
+/* 花俏模式下的公告小卡片 */
+body.theme-fancy .news-item {
+    /* 使用極低透明度的白色，營造玻璃質感 */
+    background: rgba(255, 255, 255, 0.1); 
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #ffffff;
+}
+
+body.theme-fancy .news-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+    
+/* 2. 🤍 高級白色模式 (Light) */
+body.theme-light { background: #f8f7f4; color: #374151; }
+body.theme-light header { background-image: none; background-color: #efede8; }
+body.theme-light .header-text { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255,255,255,0.8); }
+body.theme-light header h1 { color: #1f2937; text-shadow: none; }
+body.theme-light header p { color: #4b5563; }
+body.theme-light .about-btn { background: #faf9f6; color: #5a5a5a; border: 1px solid #dcdad5; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03); }
+body.theme-light .about-btn:hover { background: #ffffff; border-color: #c2c0ba; color: #2d3748; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); }
+body.theme-light .about-content { background: #ffffff; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+body.theme-light .qa-item { background: #faf9f6; border-left: 3px solid #dcdad5; }
+
+body.theme-light .search-input-wrap input { background: #ffffff; color: #1f2937; border: 1px solid #cbd5e1; }
+body.theme-light .search-input-wrap input::placeholder { color: #94a3b8; }
+
+body.theme-light .month-expand-btn { background: #faf9f6; color: #4b5563; border: 1px solid #dcdad5; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03); transition: all 0.3s ease; }
+body.theme-light .month-expand-btn:hover { background: #ffffff; color: #1f2937; border-color: #c2c0ba; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+
+body.theme-light .content { background-color: #f8f7f4; background-image: none; }
+body.theme-light .sidebar { background-color: #f1efeb; background-image: none; border-right: 1px solid #e5e3de; }
+body.theme-light .sidebar button { background: transparent; color: #7f7f7f; box-shadow: none; }
+body.theme-light .sidebar button:hover { background: rgba(255, 255, 255, 0.6); color: #1f2937; }
+body.theme-light .sidebar button.active { background: #ffffff; color: #2d3748; font-weight: 600; border: 1px solid #d1cfc9; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+
+body.theme-light .card { background: #faf9f6; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04); border: 1px solid #e2e0d9;}
+body.theme-light .card:hover { background: #ffffff; border-color: var(--primary-color); }
+body.theme-light .card-credit { border-top-color: #f1efeb; color: #94a3b8;}
+body.theme-light .search-highlight { box-shadow: 0 0 0 4px var(--primary-color); }
+/* 白色模式公告欄 */
+body.theme-light .news-board { background: #f1efeb; border-bottom: 1px solid #e5e3de; }
+body.theme-light .news-item { background: #faf9f6; border: 1px solid #e2e0d9; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02); color: #374151; }
+body.theme-light .news-item:hover { background: #fafafa; border-color: var(--primary-color); }
+
+/* 3. 🌙 高級深色模式 (Dark) */
+body.theme-dark { background: #0f172a; color: #f1f5f9; }
+
+body.theme-dark header { background-image: none; background-color: #1e293b; }
+body.theme-dark .header-text { background: rgba(2, 6, 23, 0.6); border: 1px solid rgba(255,255,255,0.1); }
+body.theme-dark .about-content { background: #1e293b; color: #f1f5f9; }
+body.theme-dark .letter-content p, body.theme-dark .qa-item p, body.theme-dark .guide-list { color: #cbd5e1; }
+body.theme-dark .qa-item strong { color: #f8fafc; }
+body.theme-dark .qa-item { background: rgba(255, 255, 255, 0.05); }
+body.theme-dark .about-section h4 { color: #fbbf24; border-bottom-color: rgba(255, 255, 255, 0.1); }
+
+body.theme-dark .sidebar { background-color: #0f172a; background-image: none; border-right: 1px solid #334155; }
+body.theme-dark .content { background-color: #0f172a; background-image: none; }
+
+body.theme-dark .sidebar button { color: #94a3b8; background: transparent; box-shadow: none; }
+body.theme-dark .sidebar button:hover { background: rgba(255,255,255,0.05); color: #e2e8f0; }
+body.theme-dark .sidebar button.active { background: #1e293b; color: #60a5fa; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+
+body.theme-dark .card { background: #1e293b; border: 1px solid #334155; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+body.theme-dark .card:hover { transform: translateY(-4px); background: #273549; border-color: #475569; }
+body.theme-dark .card-desc { color: #94a3b8; }
+body.theme-dark .card-credit { color: #64748b; border-top-color: #334155; }
+
+body.theme-dark .filter-btn { background: #1e293b; color: #cbd5e1; border: 1px solid #334155; }
+body.theme-dark .filter-btn:hover { background: #334155; }
+body.theme-dark .filter-btn.active { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+body.theme-dark .search-highlight { box-shadow: 0 0 0 4px var(--primary-color); }
+/* 深色模式公告欄 */
+body.theme-dark .news-board { background: #1e293b; color: #cbd5e1; border-bottom: 1px solid #334155; }
+/* 深色模式下的公告小卡片 */
+body.theme-dark .news-item {
+    background: #334155; 
+    border: 1px solid #475569;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    color: #cbd5e1;
+}
+
+body.theme-dark .news-item:hover { background: #3e4c5f; }
+
+body.theme-dark .news-tag { background: #475569; color: #f1f5f9; }
+
+body.theme-dark .tag-new { 
+    background: var(--primary-color) !important; 
+    color: #fff !important; 
+    border: none !important;
+}
+body.theme-dark .tag-live { 
+    background: #ef4444 !important; 
+    color: #fff !important; 
+    border: none !important;
+}
+body.theme-dark .tag-note { 
+    background: #f59e0b !important; 
+    color: #fff !important; 
+    border: none !important;
+}
+
+/* 底部SNS */
+body.theme-dark .sns-btn.text-link { background: rgba(255, 255, 255, 0.05); border-color: #334155; color: #cbd5e1; }
+body.theme-dark .sns-btn.text-link:hover { background: #475569; color: #fff; }
+body.theme-dark .sns-btn.text-link::after { background-color: #f1f5f9; }
+body.theme-dark .sns-divider { color: #334155; }
+
+/* RWD 手機版優化 */
+@media (max-width: 768px) {
+    header {
+        height: auto;
+        min-height: 160px;
+        padding: 120px 16px 10px; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        position: relative;
+    }
+    
+    .search-box {
+        position: absolute; top: 14px; left: 14px; flex: 1; width: 140px; max-width: 35%; order: 1; flex-direction: column;
+    }
+    .search-input-wrap, .month-toggle-wrapper { width: 100%; }
+    .search-input-wrap input { font-size: 14px; padding: 6px 30px 6px 10px; }
+
+    .month-expand-btn { font-size: 13px; padding: 6px 12px; width: fit-content; }
+
+    .header-theme {
+        position: absolute; top: 14px; right: 14px; order: 2; width: auto; display: flex; justify-content: flex-end; gap: 5px;
+    }
+    .header-theme button { flex: 0 0 auto; font-size: 12px; padding: 6px 10px; margin: 0; }
+
+    .header-text {
+        order: 3; width: 100%; box-sizing: border-box; margin-top: 15px; margin-bottom: 0; padding: 16px;
+        background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(3px); border: 1px solid rgba(255,255,255,0.15);
+    }
+    
+    body.theme-light .header-text {
+        background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255,255,255,0.4);
+    }
+    
+    header h1 { font-size: 24px; }
+
+    .about-btn {
+        width: 100%; /* 手機版撐滿 header-text 寬度 */
+        font-size: 13px;
+        padding: 10px;
+    }
+    
+    .container { flex-direction: column; }
+    
+    .sidebar { 
+        width: 100%; padding: 10px 8px; flex-direction: row; border-right: none; gap: 6px;
+        border-bottom: 1px solid rgba(0,0,0,0.1); overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; 
+    }
+    body.theme-light .sidebar { border-bottom: 1px solid #e5e7eb; }
+    body.theme-dark .sidebar { border-bottom: 1px solid #334155; }
+    
+    .sidebar button { flex: 0 0 auto; width: auto; margin-bottom: 0; margin-right: 8px; padding: 8px 16px; font-size: 14px; justify-content: center; }
+
+    /* 隱藏捲動條 (Chrome/Safari/Webkit) */
+    .sidebar::-webkit-scrollbar { display: none; }
+    /* 隱藏捲動條 (Firefox) */
+    .sidebar { scrollbar-width: none; }
+
+    .sidebar button { 
+        flex: 0 0 auto; /* 不強制伸縮，依文字長度決定 */
+        width: auto; 
+        margin: 0; /* 移除原本的 margin，改用上面的 gap */       
+        /* 縮小內距與字體，讓「媒體採訪」塞得進去 */
+        padding: 6px 10px; 
+        font-size: 13px; /* 稍微縮小 1px 視覺差異不大但省空間 */   
+        justify-content: center; 
+    }
+    
+    .content { padding: 20px; }
+    .card-grid { grid-template-columns: 1fr; }
+    
+    #backToTop { bottom: 20px; right: 16px; width: 44px; height: 44px; }
+    
+    /* 手機版公告欄：字稍微小一點，上下排開 */
+    .news-board { 
+        padding: 8px 12px; 
+        gap: 8px; /* 縮小間距 */
+        justify-content: flex-start; /* 靠左對齊，比較整齊 */
+        position: relative; 
+        z-index: 5;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    body.theme-fancy .news-board {
+        /* 讓底部邊框稍微亮一點，形成一條明顯但柔和的分割線 */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    }
+    .news-item {
+        width: 100%; /* 手機版一行一個 */
+        font-size: 14px;
+        white-space: normal;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="search-box">
+        <div class="search-input-wrap">
+            <input type="text" id="searchInput" placeholder="搜尋關鍵字" oninput="handleSearch(this.value)" />
+            <button id="clearSearch">✕</button>
+        </div>
+        <div id="searchResults" class="search-results"></div>
+        <div class="month-toggle-wrapper">
+            <button class="month-expand-btn" onclick="toggleMonthModal(true)">📅 按月份搜尋</button>
+        </div>
+    </div>
+
+    <div class="month-modal-overlay" id="monthModal">
+        <div class="month-modal-content">
+            <h3>選擇播出月份</h3>
+            <div class="month-grid">
+                <button class="time-btn active" data-time="all" onclick="selectMonth('all')">全部時間</button>
+                <button class="time-btn" data-time="2026-05" onclick="selectMonth('2026-05')">2026 05月</button>
+                <button class="time-btn" data-time="2026-04" onclick="selectMonth('2026-04')">2026 04月</button>
+            </div>
+            <button class="month-close-btn" onclick="toggleMonthModal(false)">關閉</button>
+        </div>
+    </div>
+    
+    <div class="header-theme">
+        <button onclick="setTheme('theme-fancy')">🌸 花俏</button>
+        <button onclick="setTheme('theme-light')">🤍 白色</button>
+        <button onclick="setTheme('theme-dark')">🌙 深色</button>
+    </div>
+    
+    <div class="header-text">
+        <h1>Flare U 台灣翻譯站</h1>
+        <p>非官方｜粉絲翻譯整理｜僅作學習與推廣使用</p>
+        <div class="about-wrapper">
+            <button class="about-btn" onclick="openAbout()">
+                ✨ 關於本站 / Q&A / 站長的話
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="news-board">
+    <a href="https://chueiliyutwtrans.github.io/chueiliyu-tw-translation/Radio/mbc_chinchinbang/" class="news-item">
+        <span class="news-tag tag-new">更新</span> 
+    </a>
+    
+    <a href="https://chueiliyutwtrans.github.io/chueiliyu-tw-translation/Media/20260426ESQUIRE/" class="news-item">
+        <span class="news-tag tag-new">更新</span> 
+    </a>
+
+    <a href="https://chueiliyutwtrans.github.io/chueiliyu-tw-translation/Guestbook/" class="news-item">
+        <span class="news-tag tag-note">公告</span> Flare U 台灣翻譯站已開站～
+    </a>
+</div>
+
+<div class="container">
+    <nav class="sidebar">
+        <button class="active" onclick="switchTab('live', this)">📺 直播</button>
+        <button onclick="switchTab('program', this)">🎬 節目</button>
+        <button onclick="switchTab('radio', this)">📻 電台</button>
+        <button onclick="switchTab('media', this)">🎤 媒體</button>
+        <button onclick="switchTab('stage', this)">🎶 舞台</button>
+        <button onclick="switchTab('favorites', this)" id="fav-nav-btn">❤️ 收藏</button>
+    </nav>
+
+    <main class="content">
+        <div id="live" class="section active">
+            <div id="live-filters" class="filter-bar"></div>
+            <div class="card-grid" id="live-grid"></div>
+        </div>
+
+        <div id="program" class="section">
+            <div id="program-filters" class="filter-bar"></div>
+            <div class="card-grid" id="program-grid"></div>
+        </div>
+
+        <div id="radio" class="section">
+            <div id="radio-filters" class="filter-bar"></div>
+            <div class="card-grid" id="radio-grid"></div>
+        </div>
+
+        <div id="media" class="section">
+            <div id="media-filters" class="filter-bar"></div>
+            <div class="card-grid" id="media-grid"></div>
+        </div>
+
+        <div id="stage" class="section">
+            <div id="stage-filters" class="filter-bar"></div>
+            <div class="card-grid" id="stage-grid"></div>
+        </div>
+
+        <div id="favorites" class="section">
+            <div class="filter-bar">
+                <h3 class="section-title">我的收藏清單</h3>
+            </div>
+            <div class="card-grid" id="favorites-grid">
+                <!-- 收藏的卡片會渲染在這裡 -->
+            </div>
+        </div>
+    </main>
+</div>
+
+<footer>
+    <div class="footer-sns">
+        <a href="https://www.instagram.com/chueiliyu_tw_trans" target="_blank" class="sns-btn text-link" aria-label="Instagram">
+            Instagram
+        </a>
+        <span class="sns-divider">/</span>
+        <a href="https://www.threads.net/@chueiliyu_tw_trans" target="_blank" class="sns-btn text-link" aria-label="Threads">
+            Threads
+        </a>
+        <span class="sns-divider">/</span>
+        <a href="https://youtube.com/channel/UC0dLVYvnFcF8d7XR8LYN_xQ?si=Vv1ANZNkdHG23kiC" target="_blank" class="sns-btn text-link" aria-label="Youtube">
+            Youtube
+        </a>
+    </div>
+    <div class="footer-info">
+        © Flare U 台灣翻譯站 ｜ 網站架設與設計：西卡
+    </div>
+</footer>
+    
+<button id="backToTop" title="回到頂端">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 15l-6-6-6 6"/>
+    </svg>
+</button>
+
+<!-- 關於本站彈跳視窗 -->
+<div id="aboutModal" class="month-modal-overlay">
+    <div class="modal-content about-content">
+        <div class="modal-header">
+            <h3 style="margin:0;">✨ 關於本站</h3>
+            <button class="close-modal" onclick="closeAbout()">&times;</button>
+        </div>
+        
+        <div class="modal-body about-body">
+            <!-- 區塊一：站長的話 -->
+            <section class="about-section">
+                <h4>✉️ 站長的話</h4>
+                <div class="letter-content">
+                    <p>大家好，這裡是<strong>Flare U 台灣翻譯站</strong>。</p>
+                    <p>本站創立於 2026/05/13。創立的宗旨，是希望能完整保存立于和玗進出演節目的影片存檔與中文翻譯。希望這裡能像一座<strong>「網路圖書館」</strong>，盡可能完整地守護他們的資訊，不讓這些珍貴的足跡隨著時間而消失。</p>
+                    <p>目前除了我（西卡）以外，還有幾位成員一同利用閒暇時間完成翻譯作業。我們始終秉持<strong>不商用、不營利</strong>的原則，為愛發電至今。希望這裡能成為讓粉絲們感到安心且快樂的精神時光屋。</p>
+                    <p>為了帶給各位更舒適的觀賞體驗，我會持續更新最新的翻譯內容並不斷改善網站的版面設計。</p>
+                    <p>未來我也還會持續精進自己，雖然翻譯站無法以最快的速度更新，但我會盡可能完整的存放最完整的資訊，讓各位在了解 Flare U 的道路上能夠減少阻礙，專心享受追星的快樂。</p>
+                    <p class="signature">站長 西卡 敬上</p>
+                </div>
+            </section>
+
+            <!-- 區塊二：常見問題 -->
+            <section class="about-section">
+                <h4>❓ 常見問題 Q&A</h4>
+                <div class="qa-item">
+                    <strong>Q：能將翻譯影片全部放在翻譯站的 YouTube 頻道上嗎？</strong>
+                    <p>為了規避版權風險，目前僅會上傳 IG 直播等非官方節目的內容，敬請見諒。</p>
+                </div>
+                <div class="qa-item">
+                    <strong>Q：能開放留言嗎？</strong>
+                    <p>目前網站由站長一人管理，暫無餘力回覆與管理，故不開放留言。若有網站問題請私訊 IG/Threads 帳號。</p>
+                </div>
+                <div class="qa-item">
+                    <strong>Q：能依照對話人物改變字幕顏色，以及依照特效字卡改變字幕顯示位置嗎？</strong>
+                    <p>如果要達成以上需求，一部影片需要耗費極大心力才能完成，目前翻譯站還沒有餘力執行，敬請見諒。</p>
+                </div>
+            </section>
+
+            <!-- 區塊三：使用說明 -->
+            <section class="about-section">
+                <h4>💻 網站與翻譯頁面說明</h4>
+                <ul class="guide-list">
+                    <li><strong>搜尋與版面：</strong>左上角可搜尋關鍵字/月份，右上角可切換三種版面主題。</li>
+                    <li><strong>收藏功能：</strong>點擊卡片右下角「❤️」可儲存至「收藏」欄位（無痕模式無法保存）。</li>
+                    <li><strong>文字/IG 作品：</strong>為尊重版權不轉載官方照片，請先前往官網再搭配本站翻譯閱讀。</li>
+                    <li><strong>互動支持：</strong>若喜歡作品，歡迎點擊下方的表情按鈕表達支持！</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script>
+/* =========================================
+   ⭐ 1. 資料庫 (JSON Data)
+   ========================================= */
+const videoData = [
+    
+];
+
+/* =========================================
+   ⭐ 2. 核心渲染功能
+   ========================================= */
+let currentMonth = 'all'; // 預設顯示全部月份
+    
+window.onload = function() {
+    // 1. 渲染卡片
+    if (typeof videoData !== 'undefined') {
+        renderAllCards(videoData);
+        // 初始化篩選器
+        ['live', 'program', 'radio', 'media'].forEach(cat => {
+            generateFilters(cat);
+        });
+    }
+
+    // 2. 讀取主題
+    const savedTheme = localStorage.getItem('site-theme') || 'theme-fancy';
+    setTheme(savedTheme);
+
+    // 3. 啟動回到頂端按鈕偵測 (修復 iPhone 沒反應的問題)
+    initBackToTop();
+};
+
+/**
+ * 關於本站 Modal 控制
+ */
+function openAbout() {
+    const modal = document.getElementById('aboutModal');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // 鎖定底層捲動
+    }
+}
+
+function closeAbout() {
+    const modal = document.getElementById('aboutModal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // 恢復捲動
+    }
+}
+
+// 點擊彈窗外部關閉
+window.addEventListener('click', function(event) {
+    const aboutModal = document.getElementById('aboutModal');
+    // 如果點擊的是背景（modal本身）而非內容區
+    if (event.target === aboutModal) {
+        closeAbout();
+    }
+});
+
+function createCardHTML(item) {
+    const badge = item.isNew ? '<span class="new-badge">NEW</span>' : '';
+    const credit = item.credit ? `<div class="card-credit">${item.credit}</div>` : '';
+
+    // 檢查此 ID 是否在收藏清單中
+    const favoriteIds = JSON.parse(localStorage.getItem('ly_favorites')) || [];
+    const isFav = favoriteIds.includes(item.id);
+    
+    return `
+    <article class="card" data-id="${item.id}" data-title="${item.title}">
+        <!-- 愛心收藏按鈕 (獨立於 <a> 標籤外，避免觸發跳轉) -->
+        <button class="fav-btn ${isFav ? 'active' : ''}" 
+                data-id="${item.id}" 
+                onclick="toggleFavorite('${item.id}', event)">
+            ${isFav ? '❤️' : '🤍'}
+        </button>
+        
+        <a href="${item.link}" target="_blank" style="text-decoration:none; color:inherit; display:block;">
+            <div class="card-img-wrap">
+                <img src="${item.img}" alt="${item.title.replace(/<br>/g, ' ')}" loading="lazy">
+                ${badge}
+            </div>
+            <div class="card-body">
+                <div class="card-title">${item.title}</div>
+                <div class="card-desc">${item.desc}</div>
+                ${credit}
+            </div>
+        </a>
+    </article>
+    `;
+}
+
+// 統一的排序邏輯 (依照 ID 數字由大到小)
+function getSortedData(data) {
+    return [...data].sort((a, b) => {
+        const numA = parseInt(a.id.match(/\d+/)[0]);
+        const numB = parseInt(b.id.match(/\d+/)[0]);
+        return numB - numA; 
+    });
+}
+
+function renderAllCards(data) {
+    // 1. 先呼叫 getSortedData 取得排序後的資料副本
+    const sortedData = getSortedData(data);
+
+    // 2. 執行月份過濾 (整合 currentMonth)
+    const monthFilteredData = sortedData.filter(i => {
+        if (currentMonth === 'all') return true;
+        // 判斷日期是否匹配 (支援字串或陣列格式)
+        return Array.isArray(i.date) ? i.date.includes(currentMonth) : i.date === currentMonth;
+    });
+
+    // 3. 取得各分類的容器
+    const containers = {
+        'live': document.getElementById('live-grid'),
+        'program': document.getElementById('program-grid'),
+        'radio': document.getElementById('radio-grid'),
+        'media': document.getElementById('media-grid'),
+        'stage': document.getElementById('stage-grid')
+    };
+
+    // 4. 根據過濾後的資料進行各分類渲染
+    Object.keys(containers).forEach(cat => {
+        const grid = containers[cat];
+        if (grid) {
+            const catData = monthFilteredData.filter(i => i.category === cat);
+            grid.innerHTML = catData.map(createCardHTML).join('');
+            
+            // 如果該月份沒有資料，可以選擇顯示提示文字 (選用)
+            if (catData.length === 0 && currentMonth !== 'all') {
+                // grid.innerHTML = '<div class="no-data">此月份暫無內容</div>';
+            }
+        }
+    });
+}
+
+/* =========================================
+   ⭐ 3. 通用篩選功能 (Generic Filters) - 已加入置頂排序
+   ========================================= */
+
+function generateFilters(category) {
+    // 1. 找出該分類的所有 cast
+    const items = videoData.filter(i => i.category === category);
+    const allCasts = items.flatMap(p => p.cast);
+    let uniqueCasts = [...new Set(allCasts)]; // 使用 let 讓我們可以對它進行排序
+
+    // 如果該分類沒有任何出演名單，就直接結束，不產生任何按鈕
+    if (uniqueCasts.length === 0) return;
+
+    // 2. ⭐ 定義優先顯示名單 (Priority List)
+    const priorityList = ['HANULIZ', '瀚音', '玗進'];
+
+    // 3. ⭐ 執行自定義排序
+    uniqueCasts.sort((a, b) => {
+        const indexA = priorityList.indexOf(a);
+        const indexB = priorityList.indexOf(b);
+
+        // 如果兩人都在優先名單內，依照 priorityList 的順序排
+        if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+
+        // 如果只有 A 在優先名單，A 排前面
+        if (indexA !== -1) return -1;
+
+        // 如果只有 B 在優先名單，B 排前面
+        if (indexB !== -1) return 1;
+
+        // 剩下的人，依照筆畫或字母順序排列 (使用 localeCompare)
+        return a.localeCompare(b, 'zh-TW'); 
+    });
+
+    // 4. 找到對應的容器 (例如 program-filters, live-filters...)
+    const filterContainer = document.getElementById(category + '-filters');
+    if (!filterContainer) return;
+    
+    // 5. 產生 "全部" 按鈕
+    let html = `<button class="filter-btn active" onclick="filterCategory('${category}', 'all', this)">全部</button>`;
+    
+    // 6. 產生排序後的參演人員按鈕
+    uniqueCasts.forEach(cast => {
+        html += `<button class="filter-btn" onclick="filterCategory('${category}', '${cast}', this)">${cast}</button>`;
+    });
+
+    filterContainer.innerHTML = html;
+}
+
+function filterCategory(category, cast, btnElement) {
+    // 按鈕樣式切換
+    const container = document.getElementById(category + '-filters');
+    const buttons = container.getElementsByClassName('filter-btn');
+    Array.from(buttons).forEach(btn => btn.classList.remove('active'));
+    btnElement.classList.add('active');
+
+    // 篩選邏輯
+    const gridId = category + '-grid';
+    const grid = document.getElementById(gridId);
+
+    // 同時過濾「分類」與「月份」
+    const targetData = videoData.filter(i => {
+        const isCategory = i.category === category;
+        const isMonth = (currentMonth === 'all') ? true : 
+                        (Array.isArray(i.date) ? i.date.includes(currentMonth) : i.date === currentMonth);
+        return isCategory && isMonth;
+    });
+
+    // 再根據「演出者」過濾
+    const filtered = (cast === 'all') 
+        ? targetData 
+        : targetData.filter(item => item.cast.includes(cast));
+
+    // 排序並渲染
+    const finalSortedData = getSortedData(filtered);
+    grid.innerHTML = finalSortedData.map(createCardHTML).join('');
+}
+
+// 控制 Modal 開關
+function toggleMonthModal(show) {
+    const modal = document.getElementById('monthModal');
+    if (show) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // 防止底層捲動
+    } else {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+// 選擇月份後執行的動作
+function selectMonth(month) {
+    currentMonth = month;
+    
+    // 更新 Modal 內的按鈕樣式
+    document.querySelectorAll('.month-grid .time-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-time') === month);
+    });
+
+    // 重點：選擇月份後，要讓「所有分頁」都依照新月份重新渲染一次
+    renderAllCards(videoData);
+    
+    // 如果你有目前的分類 (currentTab)，也要確保該分類的演出者篩選器回到「全部」
+    // 或者簡單做法：直接重新跑一遍初始化篩選器
+    ['live', 'program', 'radio', 'media', 'stage'].forEach(cat => {
+        const allBtn = document.querySelector(`#${cat}-filters button:first-child`);
+        if(allBtn) {
+            allBtn.classList.add('active'); // 視覺上重置為全部
+            // 移除其他按鈕的 active
+            const siblings = allBtn.parentNode.querySelectorAll('.filter-btn');
+            siblings.forEach(s => { if(s !== allBtn) s.classList.remove('active'); });
+        }
+    });
+
+    // 關閉視窗與更新按鈕文字
+    const expandBtn = document.querySelector('.month-expand-btn');
+    expandBtn.innerText = month === 'all' ? '📅 按月份搜尋' : `📅 已選：${month}`;
+    toggleMonthModal(false);
+}
+
+/* =========================================
+   ⭐ 4. 切換與搜尋功能
+   ========================================= */
+function switchTab(tabId, btn) {
+    document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.sidebar button').forEach(el => el.classList.remove('active'));
+    
+    const targetSection = document.getElementById(tabId);
+    if (targetSection) targetSection.classList.add('active');
+    btn.classList.add('active');
+
+    // --- 如果切換到收藏頁，執行渲染 ---
+    if (tabId === 'favorites') {
+        renderFavorites();
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // 側邊欄自動把選中的按鈕捲動到中間
+    btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+}
+
+const searchInput = document.getElementById('searchInput');
+const clearBtn = document.getElementById('clearSearch');
+const resultsBox = document.getElementById('searchResults');
+
+function handleSearch(keyword) {
+    resultsBox.innerHTML = '';
+    
+    if (!keyword.trim()) {
+        clearBtn.classList.remove('visible');
+        clearHighlight();
+        return;
+    }
+    
+    clearBtn.classList.add('visible');
+
+    const categories = {
+        'live': '📺 直播',
+        'program': '🎬 節目',
+        'radio': '📻 電台',
+        'media': '🎤 媒體採訪',
+        'stage': '🎶 舞台'
+    };
+
+    const matched = videoData.filter(item => 
+        item.title.toLowerCase().includes(keyword.toLowerCase())
+    );
+
+    ['live', 'program', 'radio', 'media', 'stage'].forEach(cat => {
+        const count = matched.filter(m => m.category === cat).length;
+        if (count > 0) {
+            const btn = document.createElement('button');
+            btn.innerText = `${categories[cat]} (${count})`;
+            btn.onclick = () => jumpToCategory(cat, keyword);
+            resultsBox.appendChild(btn);
+        }
+    });
+}
+
+function jumpToCategory(catId, keyword) {
+    const tabBtn = document.querySelector(`.sidebar button[onclick*="${catId}"]`);
+    switchTab(catId, tabBtn);
+
+    clearHighlight();
+
+    // 如果使用者之前篩選過，這裡可能需要重置篩選才能找到被隱藏的卡片
+    // 簡單解法：先自動觸發 "全部" 按鈕
+    const allBtn = document.querySelector(`#${catId}-filters button:first-child`);
+    if(allBtn) allBtn.click(); 
+
+    // 稍微延遲等渲染完
+    setTimeout(() => {
+        const container = document.getElementById(`${catId}-grid`);
+        const cards = container.querySelectorAll('.card');
+        let firstMatch = null;
+
+        cards.forEach(card => {
+            const title = card.getAttribute('data-title').toLowerCase();
+            if (title.includes(keyword.toLowerCase())) {
+                card.classList.add('search-highlight');
+                if (!firstMatch) firstMatch = card;
+            }
+        });
+
+        if (firstMatch) {
+            firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }, 50);
+}
+
+function clearHighlight() {
+    document.querySelectorAll('.search-highlight').forEach(el => el.classList.remove('search-highlight'));
+}
+
+clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    handleSearch('');
+    searchInput.focus();
+});
+
+function setTheme(theme) {
+    const themes = ['theme-fancy', 'theme-light', 'theme-dark'];
+    document.body.classList.remove(...themes);
+    document.body.classList.add(theme);
+    localStorage.setItem('site-theme', theme);
+}
+
+/* =========================================
+   收藏功能
+   ========================================= */
+function toggleFavorite(id, event) {
+    event.preventDefault();
+    event.stopPropagation(); // 防止點擊愛心時觸發卡片的 <a> 連結
+
+    let favoriteIds = JSON.parse(localStorage.getItem('ly_favorites')) || [];
+    const index = favoriteIds.indexOf(id);
+
+    if (index > -1) {
+        favoriteIds.splice(index, 1); // 移除
+    } else {
+        favoriteIds.push(id); // 新增
+    }
+
+    localStorage.setItem('ly_favorites', JSON.stringify(favoriteIds));
+
+    // 同步更新畫面上所有相同 ID 的愛心圖示 (包含各分類與收藏頁)
+    const allFavBtns = document.querySelectorAll(`.fav-btn[data-id="${id}"]`);
+    const isNowFav = favoriteIds.includes(id);
+    
+    allFavBtns.forEach(btn => {
+        btn.classList.toggle('active', isNowFav);
+        btn.innerText = isNowFav ? '❤️' : '🤍';
+    });
+
+    // 如果目前正好在「收藏頁面」，移除收藏時要即時讓卡片消失
+    const currentActiveSection = document.querySelector('.section.active');
+    if (currentActiveSection && currentActiveSection.id === 'favorites') {
+        renderFavorites(); 
+    }
+}
+
+// 渲染收藏頁面
+function renderFavorites() {
+    const favGrid = document.getElementById('favorites-grid');
+    if (!favGrid) return;
+
+    const favoriteIds = JSON.parse(localStorage.getItem('ly_favorites')) || [];
+    
+    // 從資料庫中篩選出有被收藏的項目
+    const favItems = videoData.filter(item => favoriteIds.includes(item.id));
+    
+    // 排序 (維持跟你其他分頁一樣的排序邏輯)
+    const sortedFavs = getSortedData(favItems);
+
+    if (sortedFavs.length === 0) {
+        favGrid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; color: #94a3b8; padding: 60px 20px;">
+                <div style="font-size: 40px; margin-bottom: 10px;">❤️</div>
+                <p>目前還沒有收藏任何影片喔！<br>點擊卡片上的愛心來收藏吧。</p>
+            </div>`;
+        return;
+    }
+
+    favGrid.innerHTML = sortedFavs.map(createCardHTML).join('');
+}
+
+/* =========================================
+   ⭐ 回到頂端功能 (Back to Top Logic)
+   ========================================= */
+function initBackToTop() {
+    const backToTopBtn = document.getElementById('backToTop');
+    if (!backToTopBtn) return;
+
+    // 使用 passive 提升手機捲動效能
+    window.addEventListener('scroll', () => {
+        // 相容性寫法：有些瀏覽器用 scrollY，有些用 documentElement.scrollTop
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+        if (scrollTop > 300) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    }, { passive: true });
+
+    backToTopBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // 防止手機版可能的跳動
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
+
+/* =========================================
+   ⭐ 5. 全域點擊偵測 (處理彈窗外部關閉)
+   ========================================= */
+window.addEventListener('click', function(event) {
+    const aboutModal = document.getElementById('aboutModal');
+    const monthModal = document.getElementById('monthModal');
+
+    // 如果點擊的是「關於本站」的背景層
+    if (event.target === aboutModal) {
+        closeAbout();
+    }
+
+    // 如果點擊的是「月份搜尋」的背景層
+    if (event.target === monthModal) {
+        toggleMonthModal(false);
+    }
+});
+</script>
+    
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAs9R785IE_kBsduUdEng3Vfqz1Ljl11f4",
+    authDomain: "flareu-tw-translation.firebaseapp.com",
+    projectId: "flareu-tw-translation",
+    storageBucket: "flareu-tw-translation.firebasestorage.app",
+    messagingSenderId: "753531558153",
+    appId: "1:753531558153:web:7106f9c2d253cae62fdbd8",
+    measurementId: "G-SLWB8QJJ3J"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  window.db = getDatabase(app);
+  window.fb_ref = ref;            
+  window.fb_onValue = onValue;      
+  window.fb_runTransaction = runTransaction; 
+</script>
+</body>
+</html>
