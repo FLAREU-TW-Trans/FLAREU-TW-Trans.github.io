@@ -41,10 +41,10 @@ body {
 /* ===== Header ===== */
 header {
     position: relative;
-    height: 200px;
+    height: 250px;
     background-image: url("images/header.jpg");
     background-size: cover;
-    background-position: 30% 35%;
+    background-position: center 20%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -820,7 +820,7 @@ body.modal-open {
 /* 1. 🌸 花俏模式 (Fancy) */
 body.theme-fancy .sidebar { background-image: url("images/sidebar.webp"); border-right: 1px solid rgba(255,255,255,0.4); }
 body.theme-fancy .content { background-image: url("images/content.webp"); }
-body.theme-fancy .sidebar button { background: rgba(255,255,255,0.6); color: #333; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+body.theme-fancy .sidebar button { background: rgba(255, 255, 255, 0.8); color: #333; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 body.theme-fancy .sidebar button:hover { background: #fff; transform: translateX(4px); }
 body.theme-fancy .sidebar button.active { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); color: var(--premium-yellow); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 body.theme-fancy .filter-btn { background: rgba(255, 255, 255, 0.55); color: #333; }
@@ -881,6 +881,23 @@ body.theme-fancy .news-item {
 
 body.theme-fancy .news-item:hover {
     background: rgba(255, 255, 255, 0.2);
+}
+
+/* 花俏模式下的搜尋模式 */
+body.theme-fancy .search-input-wrap input {
+    background: rgba(0, 0, 0, 0.4); /* 加深背景，讓白色 placeholder 顯現 */
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #fff;
+}
+
+body.theme-fancy .search-input-wrap input::placeholder {
+    color: rgba(255, 255, 255, 0.9); /* 讓「搜尋關鍵字」字體更白 */
+}
+
+body.theme-fancy .month-expand-btn {
+    background: rgba(0, 0, 0, 0.4); /* 月份按鈕也同步加深 */
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
 }
     
 /* 2. 🤍 高級白色模式 (Light) */
