@@ -16,7 +16,7 @@
     /* ==================== 
        1. 色彩變數與基礎設定
        ==================== */
-    :root { --bg-body: #f8f9f7; --bg-content: #ffffff; --text-main: #2d3436; --text-sub: #7b8a7e; --border-line: #e0e6e0;
+    :root { --bg-body: #f8f9f7; --bg-content: #ffffff; --reaction-box-bg: #f1f3f5; --text-main: #2d3436; --text-sub: #7b8a7e; --border-line: #e0e6e0;
       --btn-bg: #84a98c; --btn-hover: #52796f; --btn-text: #ffffff; --intro-bg: #f1f7f1; --intro-border: #dce4dc; --intro-text: #354f52; 
       --section-bg: #e9f5e9; --section-text: #354f52; --outfit-bg: #f8faf8; --outfit-border: #84a98c;
       --tab-bg: #ffffff; --tab-border: #e0e6e0; --tab-text: #7b8a7e; --tab-active-text: #52796f; --tab-active-border: #84a98c;
@@ -26,7 +26,7 @@
     }
 
     [data-theme="dark"] {
-      --bg-body: #1a1c1a; --bg-content: #242624; --text-main: #e0e2e0; --text-sub: #a0a8a0; --border-line: #3d403d;
+      --bg-body: #1a1c1a; --bg-content: #242624; --reaction-box-bg: #2f3136; --text-main: #e0e2e0; --text-sub: #a0a8a0; --border-line: #3d403d;
       --btn-bg: #52796f; --btn-hover: #84a98c; --btn-text: #ffffff; --intro-bg: #2d342d; --intro-border: #3d403d; --intro-text: #e0e2e0; 
       --section-bg: #353d35; --section-text: #a7c4a7; --outfit-bg: #2d342d; --outfit-border: #52796f;
       --tab-bg: #242624; --tab-border: #3d403d; --tab-text: #888; --tab-active-text: #a7c4a7; --tab-active-border: #52796f;
@@ -219,7 +219,7 @@
     #barrage-toggle-btn, .barrage-control, #barrage-container, #emoji-trigger-btn, #emoji-drawer { display: none !important; }
 
     .unified-reaction-box { 
-        background-color: var(--section-bg) !important; 
+        background-color: var(--reaction-box-bg) !important;
         border-radius: 12px; 
         margin: 20px; /* 完美對齊畫報寬度 */
         padding: 20px; 
