@@ -20,9 +20,9 @@
       --btn-bg: #84a98c; --btn-hover: #52796f; --btn-text: #ffffff; --intro-bg: #f1f7f1; --intro-border: #dce4dc; --intro-text: #354f52; 
       --section-bg: #e9f5e9; --section-text: #354f52; --outfit-bg: #f8faf8; --outfit-border: #84a98c;
       --tab-bg: #ffffff; --tab-border: #e0e6e0; --tab-text: #7b8a7e; --tab-active-text: #52796f; --tab-active-border: #84a98c;
-      --home-btn-bg: #eef3ee; --home-btn-hover: #dfe7df; --theme-btn-bg: #f0f0f0; --theme-btn-text: #666; --theme-btn-active: #ffffff;
+      --home-btn-bg: #e5e7EB; --home-btn-hover: #d5d7dc; --theme-btn-bg: #f0f0f0; --theme-btn-text: #666; --theme-btn-active: #ffffff;
       --reaction-text-shadow: none; --emoji-btn-active-border: #84a98c; --emoji-btn-active-text: #2d3436; --emoji-btn-bg-hover: rgba(132, 169, 140, 0.1); 
-      --emoji-btn-default-bg: rgba(0, 0, 0, 0.03); --emoji-btn-default-border: #e1e8ed; --emoji-btn-default-text: #8e8e8e; --subtitle-size: 22px; 
+      --emoji-btn-default-bg: #f1f3f5; --emoji-btn-default-border: #e1e8ed; --emoji-btn-default-text: #8e8e8e; --subtitle-size: 22px; 
     }
 
     [data-theme="dark"] {
@@ -39,7 +39,7 @@
       --emoji-btn-active-text: #e4e6eb;
       --emoji-btn-bg-hover: rgba(255, 255, 255, 0.1); /* 深色模式下懸停時的微弱背景 */
       /* 定義按鈕的「預設未選中」狀態 (深色) */
-      --emoji-btn-default-bg: rgba(255, 255, 255, 0.08); /* 保留原本 reaction.css 的微透白質感 */
+      --emoji-btn-default-bg: #3a3b3;
       --emoji-btn-default-border: #444;
       --emoji-btn-default-text: #aaa;
     }
@@ -98,6 +98,8 @@
     .video-controls-bar {
         background: #111; padding: 10px; display: flex; justify-content: center; align-items: center; gap: 15px; border-bottom: 1px solid #333; flex-wrap: wrap;
     }
+
+    .video-controls-bar p { color: white; margin: 0; font-weight: 600; }
     .video-controls-bar button {
         background: #333; color: white; border: 1px solid rgba(255,255,255,0.1); padding: 6px 16px; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease;
     }
@@ -454,9 +456,7 @@
       document.getElementById(tabId).classList.add('active');
       btnElement.classList.add('active');
 
-      if (tabId === 'tab-video1' || tabId === 'tab-video2') {
-          initVideo(tabId);
-      }
+      initVideo(tabId);
     }
 
     // 安全載入 YouTube 播放器
@@ -633,6 +633,9 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       updateButtonUI(localStorage.getItem('pageTheme') || 'light');
+
+      const firstTabBtn = document.querySelector('.tab-btn');
+      openTab('tab-video1', firstTabBtn);
     });
   </script>
 </body>
