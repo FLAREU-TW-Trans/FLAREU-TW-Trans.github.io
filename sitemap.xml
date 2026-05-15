@@ -3,7 +3,7 @@
 
   <url>
     <loc>https://flareu-tw-trans.github.io/</loc>
-    <lastmod>2026-05-14</lastmod>
+    <lastmod>2026-05-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -28,6 +28,18 @@
   <url>
     <loc>https://flareu-tw-trans.github.io/Media/20260428_KCONJAPAN2026/</loc>
     <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://flareu-tw-trans.github.io/Stage/</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://flareu-tw-trans.github.io/Stage/20260514_M_COUNTDOWN_EP.928/</loc>
+    <lastmod>2026-05-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
