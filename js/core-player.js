@@ -124,6 +124,15 @@ function startSubtitleSync() {
         }
 
         const t = player.getCurrentTime();
+        // 到達結束時間時停止播放
+        if (
+            typeof MY_VIDEO_END !== 'undefined' &&
+            t >= MY_VIDEO_END
+        ) {
+            player.pauseVideo();
+            return;
+        }
+        
         const activeSubs = subtitles.filter(
             x => t >= x.start && t <= x.end
         );
@@ -189,7 +198,10 @@ function onYouTubeIframeAPIReady() {
     player = new YT.Player("player", {
         videoId: MY_VIDEO_ID,
         playerVars: {
-            start: Math.floor(initStartTime), // 直接把時間塞進 start 參數 (必須用整數)
+            start: Math.floor(initStartTime), 
+            end: typeof MY_VIDEO_END !== 'undefined'
+                ? Math.floor(MY_VIDEO_END)
+                : undefined,
             rel: 0, 
             playsinline: 1, 
             modestbranding: 1, 
