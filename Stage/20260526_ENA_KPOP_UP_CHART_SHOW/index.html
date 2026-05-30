@@ -314,12 +314,13 @@
       <div class="tabs-container">
         <button class="tab-btn" onclick="openTab('tab-video1', this)">🎬 一</button>
         <button class="tab-btn" onclick="openTab('tab-video2', this)">🎬 二</button>
+        <button class="tab-btn" onclick="openTab('tab-video3', this)">🎬 三</button>
       </div>
     </header>
 
     <div id="tab-video1" class="tab-content">
       <div class="video-controls-bar">
-          <p>20260526 ENA K POP UP CHART SHOW(舞台全景)</p>
+          <p>20260526 ENA K POP UP CHART SHOW(播出版本)</p>
           <button onclick="triggerFullscreen('video-wrapper-1')">全螢幕</button>
       </div>
       <div id="video-wrapper-1" class="video-responsive-wrapper">
@@ -333,13 +334,27 @@
 
     <div id="tab-video2" class="tab-content">
       <div class="video-controls-bar">
-          <p>20260526 ENA K POP UP CHART SHOW(立于直拍)</p>
+          <p>20260526 ENA K POP UP CHART SHOW(舞台全景)</p>
           <button onclick="triggerFullscreen('video-wrapper-2')">全螢幕</button>
       </div>
       <div id="video-wrapper-2" class="video-responsive-wrapper">
           <div id="player-container-video2"></div>
           <div id="subtitle-video2" class="subtitle-overlay"></div>
           <button id="exit-fs-btn-2" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-2')">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+      </div>
+    </div>
+
+    <div id="tab-video3" class="tab-content">
+      <div class="video-controls-bar">
+          <p>20260526 ENA K POP UP CHART SHOW(立于直拍)</p>
+          <button onclick="triggerFullscreen('video-wrapper-3')">全螢幕</button>
+      </div>
+      <div id="video-wrapper-3" class="video-responsive-wrapper">
+          <div id="player-container-video3"></div>
+          <div id="subtitle-video3" class="subtitle-overlay"></div>
+          <button id="exit-fs-btn-3" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-3')">
               <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
       </div>
@@ -363,8 +378,9 @@
     
     // 影片資料 - 🌟 ID 必須跟上面的 HTML 一模一樣，影片才生得出來！
     const videoData = {
-        'tab-video1': { id: 'pTHUvoiGT1E', srt: '', player: null, subEl: 'subtitle-video1', container: 'player-container-video1', interval: null },
-        'tab-video2': { id: 'uy0oqVYrAys', srt: '', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null }
+        'tab-video1': { id: 'uQdwvjjX9WY', srt: '', player: null, subEl: 'subtitle-video1', container: 'player-container-video1', interval: null },
+        'tab-video2': { id: 'pTHUvoiGT1E', srt: '', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null },
+        'tab-video3': { id: 'uy0oqVYrAys', srt: '', player: null, subEl: 'subtitle-video3', container: 'player-container-video3', interval: null }
     };
 
     function updateButtonUI(theme) {
