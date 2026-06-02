@@ -5,7 +5,7 @@
   <link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>5/20~5/23舞台合輯</title>
+  <title>5/20~5/24舞台合輯</title>
   <link rel="stylesheet" href="../../css/reaction.css">
 
   <script>
@@ -295,6 +295,33 @@
         margin-bottom: 20px !important; 
         text-shadow: var(--reaction-text-shadow) !important; 
     }
+
+    /* ==================== 
+       6. 舞台合輯
+       ==================== */
+    .video-submenu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px;
+      justify-content: center;
+      border-bottom: 1px solid var(--border-line);
+    }
+
+    .video-submenu button {
+      border: none;
+      border-radius: 20px;
+      padding: 8px 14px;
+      cursor: pointer;
+      background: var(--btn-bg);
+      color: white;
+      font-weight: 600;
+    }
+
+    .video-submenu button.active {
+      background: var(--btn-hover);
+    }
+    
   </style>
 </head>
 <body>
@@ -302,7 +329,7 @@
   <div class="content-wrapper">
 
     <header class="header">
-      <h1>5/20~5/23舞台合輯</h1>
+      <h1>5/20~5/24舞台合輯</h1>
 
       <div class="controls-wrapper">
         <a href="../../index.html" class="home-btn">🏠 首頁</a> <div class="theme-toggle-group">
@@ -312,11 +339,12 @@
       </div>
 
       <div class="tabs-container">
-        <button class="tab-btn" onclick="openTab('tab-video1', this)">🎬 一</button>
-        <button class="tab-btn" onclick="openTab('tab-video2', this)">🎬 二</button>
-        <button class="tab-btn" onclick="openTab('tab-video3', this)">🎬 三</button>
-        <button class="tab-btn" onclick="openTab('tab-video4', this)">🎬 四</button>
-        <button class="tab-btn" onclick="openTab('tab-video5', this)">🎬 五</button>
+        <button class="tab-btn" onclick="openTab('tab-video1', this)">🎬 5/20</button>
+        <button class="tab-btn" onclick="openTab('tab-video2', this)">🎬 5/21</button>
+        <button class="tab-btn" onclick="openTab('tab-video3', this)">🎬 5/22</button>
+        <button class="tab-btn" onclick="openTab('tab-video4', this)">🎬 5/22</button>
+        <button class="tab-btn" onclick="openTab('tab-video5', this)">🎬 5/23</button>
+        <button class="tab-btn" onclick="openTab('tab-video6', this)">🎬 5/24</button>
       </div>
     </header>
 
@@ -393,6 +421,52 @@
       </div>
     </div>
 
+    <div id="tab-video6" class="tab-content">
+
+      <div class="video-controls-bar">
+        <p id="inkigayo-title">
+            20260524 人氣歌謠（播出版本）
+        </p>
+
+        <button onclick="triggerFullscreen('video-wrapper-6')">
+            全螢幕
+        </button>
+      </div>
+
+      <div class="video-submenu">
+
+        <button class="active" onclick="changeInkigayoVideo( 'r9KtIX1Yep0', '20260524 人氣歌謠（播出版本）', this )">
+            播出版本
+        </button>
+
+        <button onclick="changeInkigayoVideo('sVgoGCaCQaM','20260524 人氣歌謠（舞台全景）',this)">
+            舞台全景
+        </button>
+
+        <button onclick="changeInkigayoVideo('p8etzReAj_E','20260524 人氣歌謠（立于直拍）',this)">
+            立于直拍
+        </button>
+
+        <button onclick="changeInkigayoVideo('Tb5LCUyVWao','20260524 人氣歌謠（玗進直拍）',this)">
+            玗進直拍
+        </button>
+
+    </div>
+
+    <div id="video-wrapper-6" class="video-responsive-wrapper">
+
+        <div id="player-container-video6"></div>
+        <div id="subtitle-video6" class="subtitle-overlay"></div>
+
+        <button id="exit-fs-btn-6" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-6')">
+            <svg viewBox="0 0 24 24">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+  </div>
+
   <script async src="//www.instagram.com/embed.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
   
@@ -414,7 +488,8 @@
         'tab-video2': { id: '0IJmIyN3EBY', srt: '', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null },
         'tab-video3': { id: '8BxoN7yn9C0', srt: '', player: null, subEl: 'subtitle-video3', container: 'player-container-video3', interval: null },
         'tab-video4': { id: 'ncznydQLv60', srt: '', player: null, subEl: 'subtitle-video4', container: 'player-container-video4', interval: null },
-        'tab-video5': { id: 'EyQuJonKTm0', srt: '', player: null, subEl: 'subtitle-video5', container: 'player-container-video5', interval: null }
+        'tab-video5': { id: 'EyQuJonKTm0', srt: '', player: null, subEl: 'subtitle-video5', container: 'player-container-video5', interval: null },
+        'tab-video6': { id: 'r9KtIX1Yep0', srt: '', player: null, subEl: 'subtitle-video6', container: 'player-container-video6', interval: null }
     };
 
     function updateButtonUI(theme) {
@@ -622,6 +697,22 @@
       const firstTabBtn = document.querySelector('.tab-btn');
       openTab('tab-video1', firstTabBtn);
     });
+
+    // 舞台合輯
+    function changeInkigayoVideo(videoId, title, btn) {
+
+      const data = videoData['tab-video6'];
+
+      document.getElementById('inkigayo-title').textContent = title;
+
+      document.querySelectorAll('#tab-video6 .video-submenu button').forEach(b => b.classList.remove('active'));
+
+      btn.classList.add('active');
+
+      if (data.player) {
+        data.player.loadVideoById(videoId);
+      }
+    }
   </script>
 </body>
 </html>
