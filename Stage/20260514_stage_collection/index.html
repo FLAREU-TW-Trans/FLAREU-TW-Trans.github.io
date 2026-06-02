@@ -322,7 +322,12 @@
     .video-submenu button.active {
       background: var(--btn-hover);
     }
-    
+
+    .subtitle-label {
+      color: var(--text-main);
+      line-height: 1;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -351,10 +356,12 @@
 
       <div class="video-controls-bar">
         <p id="MCOUNTDOWN-title">20260514 M COUNTDOWN EP.928(採訪)</p>
-        <button onclick="changeSubtitleSize(-0.1, 'subtitle-video1')">A−</button>
-          <span style="color:white; line-height:1;">字幕</span>
+        <div id="subtitle-controls">
+          <button onclick="changeSubtitleSize(-0.1, 'subtitle-video1')">A−</button>
+          <span class="subtitle-label">字幕</span>
           <button onclick="changeSubtitleSize(0.1, 'subtitle-video1')">A＋</button>
-          <button onclick="triggerFullscreen('video-wrapper-1')">全螢幕</button>
+        </div>
+        <button onclick="triggerFullscreen('video-wrapper-1')">全螢幕</button>
       </div>
 
       <div class="video-submenu">
@@ -766,7 +773,31 @@
 
       btn.classList.add('active');
 
-      if (data.player) { data.player.loadVideoById(videoId); }
+      // 字幕區
+      const subtitleEl = document.getElementById(data.subEl);
+
+      // 只有採訪有字幕
+      if (videoId === 'kHoqPGrhdQQ') {
+        subtitleEl.style.display = 'flex';
+      } else {
+        subtitleEl.style.display = 'none';
+        subtitleEl.innerHTML = '';
+      }
+
+      if (data.player) {
+        data.player.loadVideoById(videoId);
+      }
+
+      const subtitleControls = document.getElementById('subtitle-controls');
+
+      if (videoId === 'kHoqPGrhdQQ') {
+        subtitleEl.style.display = 'flex';
+        subtitleControls.style.display = 'flex';
+      } else {
+        subtitleEl.style.display = 'none';
+        subtitleEl.innerHTML = '';
+        subtitleControls.style.display = 'none';
+      }
     }
   </script>
 </body>
