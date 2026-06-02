@@ -374,7 +374,7 @@
     <div id="tab-video3" class="tab-content">
 
       <div class="video-controls-bar">
-        <p id="inkigayo-title">
+        <p id="musicbank-title">
             20260522 Music Bank
         </p>
 
@@ -385,18 +385,18 @@
 
       <div class="video-submenu">
 
-        <button class="active" onclick="changeInkigayoVideo( 'r9KtIX1Yep0', '20260522 Music Bank', this )">
+        <button onclick="changeVideo( '8BxoN7yn9C0', '20260522 Music Bank', this, 'tab-video3', 'musicbank-title')">
             20260522 Music Bank
         </button>
 
-        <button onclick="changeInkigayoVideo('sVgoGCaCQaM','[MIC&] , Stone LIVE',this)">
+        <button onclick="changeVideo( 'ncznydQLv60', '[MIC&] , Stone LIVE', this, 'tab-video3', 'musicbank-title')">
             [MIC&] , Stone LIVE
         </button>
-    </div>
+      </div>
 
-    <div id="video-wrapper-3" class="video-responsive-wrapper">
+      <div id="video-wrapper-3" class="video-responsive-wrapper">
 
-        <div id="player-container-video6"></div>
+        <div id="player-container-video3"></div>
         <div id="subtitle-video3" class="subtitle-overlay"></div>
 
         <button id="exit-fs-btn-3" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-3')">
@@ -405,6 +405,7 @@
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
         </button>
+      </div>
     </div>
 
     <div id="tab-video4" class="tab-content">
@@ -435,19 +436,19 @@
 
       <div class="video-submenu">
 
-        <button class="active" onclick="changeInkigayoVideo( 'r9KtIX1Yep0', '20260524 人氣歌謠（播出版本）', this )">
+        <button class="active" onclick="changeVideo( 'r9KtIX1Yep0', '20260524 人氣歌謠（播出版本）', this, 'tab-video5', 'inkigayo-title')">
             播出版本
         </button>
 
-        <button onclick="changeInkigayoVideo('sVgoGCaCQaM','20260524 人氣歌謠（舞台全景）',this)">
+        <button onclick="changeVideo('sVgoGCaCQaM','20260524 人氣歌謠（舞台全景）',this)">
             舞台全景
         </button>
 
-        <button onclick="changeInkigayoVideo('p8etzReAj_E','20260524 人氣歌謠（立于直拍）',this)">
+        <button onclick="changeVideo('p8etzReAj_E','20260524 人氣歌謠（立于直拍）',this)">
             立于直拍
         </button>
 
-        <button onclick="changeInkigayoVideo('Tb5LCUyVWao','20260524 人氣歌謠（玗進直拍）',this)">
+        <button onclick="changeVideo('Tb5LCUyVWao','20260524 人氣歌謠（玗進直拍）',this)">
             玗進直拍
         </button>
 
@@ -455,7 +456,7 @@
 
     <div id="video-wrapper-5" class="video-responsive-wrapper">
 
-        <div id="player-container-video6"></div>
+        <div id="player-container-video5"></div>
         <div id="subtitle-video5" class="subtitle-overlay"></div>
 
         <button id="exit-fs-btn-5" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-5')">
@@ -488,7 +489,7 @@
         'tab-video2': { id: '0IJmIyN3EBY', srt: '', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null },
         'tab-video3': { id: '8BxoN7yn9C0', srt: '', player: null, subEl: 'subtitle-video3', container: 'player-container-video3', interval: null },
         'tab-video4': { id: 'EyQuJonKTm0', srt: '', player: null, subEl: 'subtitle-video4', container: 'player-container-video4', interval: null },
-        'tab-video65: { id: 'r9KtIX1Yep0', srt: '', player: null, subEl: 'subtitle-video5', container: 'player-container-video5', interval: null }
+        'tab-video5': { id: 'r9KtIX1Yep0', srt: '', player: null, subEl: 'subtitle-video5', container: 'player-container-video5', interval: null }
     };
 
     function updateButtonUI(theme) {
@@ -698,19 +699,17 @@
     });
 
     // 舞台合輯
-    function changeInkigayoVideo(videoId, title, btn) {
+    function changeVideo(videoId, title, btn, tabId, titleId) {
 
-      const data = videoData['tab-video6'];
+      const data = videoData[tabId];
 
-      document.getElementById('inkigayo-title').textContent = title;
+      document.getElementById(titleId).textContent = title;
 
-      document.querySelectorAll('#tab-video6 .video-submenu button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll(`#${tabId} .video-submenu button`).forEach(b => b.classList.remove('active'));
 
       btn.classList.add('active');
 
-      if (data.player) {
-        data.player.loadVideoById(videoId);
-      }
+      if (data.player) { data.player.loadVideoById(videoId); }
     }
   </script>
 </body>
