@@ -25,6 +25,7 @@
       --home-btn-bg: #e5e7EB; --home-btn-hover: #d5d7dc; --theme-btn-bg: #f0f0f0; --theme-btn-text: #666; --theme-btn-active: #ffffff;
       --reaction-text-shadow: none; --emoji-btn-active-border: #84a98c; --emoji-btn-active-text: #2d3436; --emoji-btn-bg-hover: rgba(132, 169, 140, 0.1); 
       --emoji-btn-default-bg: #f1f3f5; --emoji-btn-default-border: #e1e8ed; --emoji-btn-default-text: #8e8e8e; --subtitle-size: 22px; 
+      --video-controls-bg: #f0f3f5; --video-controls-border: #d8dee4; --video-submenu-bg: #fafbfc;
     }
 
     [data-theme="dark"] {
@@ -44,6 +45,10 @@
       --emoji-btn-default-bg: #3a3b3;
       --emoji-btn-default-border: #444;
       --emoji-btn-default-text: #aaa;
+      /*舞台合輯
+      --video-controls-bg: #2b2d31;
+      --video-controls-border: #3d403d;
+      --video-submenu-bg: #242624;
     }
 
     html, body { 
@@ -97,10 +102,10 @@
     /* ==================== 
        3. 影片區塊與字幕樣式
        ==================== */
-    .video-controls-bar { background: #e9f5e9; padding: 10px; display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; border-bottom: 2px solid #c7dcc7; box-shadow: 0 2px 6px rgba(0,0,0,0.06);}
-    .video-controls-bar p { color: #354f52; margin: 0; font-weight: 600; }
-    .video-controls-bar button { background: #84a98c; color: white; border: none; padding: 6px 16px; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease; }
-    .video-controls-bar button:hover { background: #52796f; transform: translateY(-1px); }
+    .video-controls-bar { background: var(--video-controls-bg); padding: 10px; display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; border-bottom: 1px solid var(--video-controls-border); box-shadow: 0 2px 6px rgba(0,0,0,0.06);}
+    .video-controls-bar p { color: var(--text-main); margin: 0; font-weight: 600; }
+    .video-controls-bar button { background: var(--btn-bg); color: var(--btn-text); border: 1px solid var(--border-line); padding: 6px 16px; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease; }
+    .video-controls-bar button:hover { background: var(--btn-hover); transform: translateY(-1px); }
 
     .video-responsive-wrapper {
         position: relative;
@@ -300,7 +305,7 @@
       gap: 8px;
       padding: 12px;
       justify-content: center;
-      background: #ffffff;
+      background: var(--video-submenu-bg);
       border-bottom: 1px solid var(--border-line);
     }
 
