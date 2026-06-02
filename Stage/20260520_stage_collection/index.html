@@ -97,15 +97,10 @@
     /* ==================== 
        3. 影片區塊與字幕樣式
        ==================== */
-    .video-controls-bar {
-        background: #111; padding: 10px; display: flex; justify-content: center; align-items: center; gap: 15px; border-bottom: 1px solid #333; flex-wrap: wrap;
-    }
-
-    .video-controls-bar p { color: white; margin: 0; font-weight: 600; }
-    .video-controls-bar button {
-        background: #333; color: white; border: 1px solid rgba(255,255,255,0.1); padding: 6px 16px; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease;
-    }
-    .video-controls-bar button:hover { background: #444; transform: translateY(-1px); }
+    .video-controls-bar { background: #e9f5e9; padding: 10px; display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; border-bottom: 2px solid #c7dcc7; box-shadow: 0 2px 6px rgba(0,0,0,0.06);}
+    .video-controls-bar p { color: #354f52; margin: 0; font-weight: 600; }
+    .video-controls-bar button { background: #84a98c; color: white; border: none; padding: 6px 16px; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease; }
+    .video-controls-bar button:hover { background: #52796f; transform: translateY(-1px); }
 
     .video-responsive-wrapper {
         position: relative;
@@ -305,6 +300,7 @@
       gap: 8px;
       padding: 12px;
       justify-content: center;
+      background: #ffffff;
       border-bottom: 1px solid var(--border-line);
     }
 
@@ -342,9 +338,8 @@
         <button class="tab-btn" onclick="openTab('tab-video1', this)">🎬 5/20</button>
         <button class="tab-btn" onclick="openTab('tab-video2', this)">🎬 5/21</button>
         <button class="tab-btn" onclick="openTab('tab-video3', this)">🎬 5/22</button>
-        <button class="tab-btn" onclick="openTab('tab-video4', this)">🎬 5/22</button>
-        <button class="tab-btn" onclick="openTab('tab-video5', this)">🎬 5/23</button>
-        <button class="tab-btn" onclick="openTab('tab-video6', this)">🎬 5/24</button>
+        <button class="tab-btn" onclick="openTab('tab-video4', this)">🎬 5/23</button>
+        <button class="tab-btn" onclick="openTab('tab-video5', this)">🎬 5/24</button>
       </div>
     </header>
 
@@ -377,22 +372,44 @@
     </div>
 
     <div id="tab-video3" class="tab-content">
+
       <div class="video-controls-bar">
-          <p>20260522 Music Bank</p>
-          <button onclick="triggerFullscreen('video-wrapper-3')">全螢幕</button>
+        <p id="inkigayo-title">
+            20260522 Music Bank
+        </p>
+
+        <button onclick="triggerFullscreen('video-wrapper-3')">
+            全螢幕
+        </button>
       </div>
-      <div id="video-wrapper-3" class="video-responsive-wrapper">
-          <div id="player-container-video3"></div>
-          <div id="subtitle-video3" class="subtitle-overlay"></div>
-          <button id="exit-fs-btn-3" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-3')">
-              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-          </button>
-      </div>
+
+      <div class="video-submenu">
+
+        <button class="active" onclick="changeInkigayoVideo( 'r9KtIX1Yep0', '20260522 Music Bank', this )">
+            20260522 Music Bank
+        </button>
+
+        <button onclick="changeInkigayoVideo('sVgoGCaCQaM','[MIC&] , Stone LIVE',this)">
+            [MIC&] , Stone LIVE
+        </button>
+    </div>
+
+    <div id="video-wrapper-3" class="video-responsive-wrapper">
+
+        <div id="player-container-video6"></div>
+        <div id="subtitle-video3" class="subtitle-overlay"></div>
+
+        <button id="exit-fs-btn-3" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-3')">
+            <svg viewBox="0 0 24 24">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
     </div>
 
     <div id="tab-video4" class="tab-content">
       <div class="video-controls-bar">
-          <p>[MIC&] , Stone LIVE</p>
+          <p>20260523 音樂中心</p>
           <button onclick="triggerFullscreen('video-wrapper-4')">全螢幕</button>
       </div>
       <div id="video-wrapper-4" class="video-responsive-wrapper">
@@ -405,27 +422,13 @@
     </div>
 
     <div id="tab-video5" class="tab-content">
-      <div class="video-controls-bar">
-          <p>20260523 音樂中心</p>
-          <button onclick="triggerFullscreen('video-wrapper-5')">全螢幕</button>
-      </div>
-      <div id="video-wrapper-5" class="video-responsive-wrapper">
-          <div id="player-container-video5"></div> 
-          <div id="subtitle-video5" class="subtitle-overlay"></div>
-          <button id="exit-fs-btn-5" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-5')">
-              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-          </button>
-      </div>
-    </div>
-
-    <div id="tab-video6" class="tab-content">
 
       <div class="video-controls-bar">
         <p id="inkigayo-title">
             20260524 人氣歌謠（播出版本）
         </p>
 
-        <button onclick="triggerFullscreen('video-wrapper-6')">
+        <button onclick="triggerFullscreen('video-wrapper-5')">
             全螢幕
         </button>
       </div>
@@ -450,12 +453,12 @@
 
     </div>
 
-    <div id="video-wrapper-6" class="video-responsive-wrapper">
+    <div id="video-wrapper-5" class="video-responsive-wrapper">
 
         <div id="player-container-video6"></div>
-        <div id="subtitle-video6" class="subtitle-overlay"></div>
+        <div id="subtitle-video5" class="subtitle-overlay"></div>
 
-        <button id="exit-fs-btn-6" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-6')">
+        <button id="exit-fs-btn-5" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-5')">
             <svg viewBox="0 0 24 24">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -484,9 +487,8 @@
         'tab-video1': { id: 'Mu9EwQfmMZU', srt: '', player: null, subEl: 'subtitle-video1', container: 'player-container-video1', interval: null },
         'tab-video2': { id: '0IJmIyN3EBY', srt: '', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null },
         'tab-video3': { id: '8BxoN7yn9C0', srt: '', player: null, subEl: 'subtitle-video3', container: 'player-container-video3', interval: null },
-        'tab-video4': { id: 'ncznydQLv60', srt: '', player: null, subEl: 'subtitle-video4', container: 'player-container-video4', interval: null },
-        'tab-video5': { id: 'EyQuJonKTm0', srt: '', player: null, subEl: 'subtitle-video5', container: 'player-container-video5', interval: null },
-        'tab-video6': { id: 'r9KtIX1Yep0', srt: '', player: null, subEl: 'subtitle-video6', container: 'player-container-video6', interval: null }
+        'tab-video4': { id: 'EyQuJonKTm0', srt: '', player: null, subEl: 'subtitle-video4', container: 'player-container-video4', interval: null },
+        'tab-video65: { id: 'r9KtIX1Yep0', srt: '', player: null, subEl: 'subtitle-video5', container: 'player-container-video5', interval: null }
     };
 
     function updateButtonUI(theme) {
