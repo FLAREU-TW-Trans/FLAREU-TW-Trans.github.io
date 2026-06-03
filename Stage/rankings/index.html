@@ -77,11 +77,11 @@
 }
 
 .category-menu button[data-category="liyu"].active{
-    background:#2e8b57;
+    background:#87ceeb;
 }
 
 .category-menu button[data-category="woojin"].active{
-    background:#4169e1;
+    background:#d8b4ff;
 }
 
 #favorites-container{
@@ -615,6 +615,19 @@
 
         renderFavorites();
     }
+
+    function getCategory(videoId){
+
+        if(videoId.includes('liyu')){
+            return 'liyu';
+        }
+
+        if(videoId.includes('woojin')){
+            return 'woojin';
+        }
+
+        return 'group';
+    }
     
     function renderFavorites(){
 
@@ -624,8 +637,8 @@
             localStorage.getItem('favoriteVideos') || '[]'
         );
 
-        const favorites = allFavorites.filter(
-            item => item.category === window.currentCategory
+        const favorites = allFavorites.filter(item =>
+            getCategory(item.videoDbId) === window.currentCategory
         );
 
         if(favorites.length===0){
