@@ -642,10 +642,9 @@
 
         btnElement.classList.add('active');
 
-        if(
-            document.getElementById('favorites-container')
-                .style.display === 'flex'
-        ){
+        const favoritesVisible = document.getElementById('favorites-container').style.display === 'grid';
+
+        if(favoritesVisible){
             renderFavorites();
         }else{
             renderRankings();
@@ -756,10 +755,6 @@
             `;
             container.innerHTML += card;
         });
-
-        console.log('目前分類',window.currentCategory);
-console.log('全部收藏',allFavorites);
-console.log('篩選結果',favorites);
     }
 </script>
 </body>
