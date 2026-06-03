@@ -77,11 +77,13 @@
 }
 
 .category-menu button[data-category="liyu"].active{
-    background:#87ceeb;
+    background:#00a8ff;
+    color:#fff;
 }
 
 .category-menu button[data-category="woojin"].active{
-    background:#d8b4ff;
+    background:#9b59ff;
+    color:#fff;
 }
 
 #favorites-container{
@@ -574,16 +576,24 @@
         });
     };
 
-    // 輔助函式：切換分類
+    // 切換分類
     window.switchCategory = function(category, btnElement) {
+
         window.currentCategory = category;
-        
-        // 切換按鈕 active 樣式
-        document.querySelectorAll('.category-menu button').forEach(btn => btn.classList.remove('active'));
+
+        document.querySelectorAll('.category-menu button')
+            .forEach(btn => btn.classList.remove('active'));
+
         btnElement.classList.add('active');
-        
-        // 重新渲染
-        renderRankings();
+
+        if(
+            document.getElementById('favorites-container')
+                .style.display === 'flex'
+        ){
+            renderFavorites();
+        }else{
+            renderRankings();
+        }
     };
 
     // 監聽視窗大小改變，自動調整電腦版/手機版的頒獎台左右順序
@@ -617,6 +627,10 @@
     }
 
     function getCategory(videoId){
+
+        if(!videoId){
+            return 'group';
+        }
 
         if(videoId.includes('liyu')){
             return 'liyu';
@@ -687,6 +701,10 @@
             `;
             container.innerHTML += card;
         });
+
+        console.log('目前分類',window.currentCategory);
+console.log('全部收藏',allFavorites);
+console.log('篩選結果',favorites);
     }
 </script>
 </body>
