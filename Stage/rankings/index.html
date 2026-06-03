@@ -211,148 +211,131 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // Firebase 配置 (與您主網頁相同)
-        const firebaseConfig = { 
-            apiKey: "AIzaSyAs9R785IE_kBsduUdEng3Vfqz1Ljl11f4", 
-            authDomain: "flareu-tw-translation.firebaseapp.com", 
-            databaseURL: "https://flareu-tw-translation-default-rtdb.asia-southeast1.firebasedatabase.app", 
-            projectId: "flareu-tw-translation", 
-            storageBucket: "flareu-tw-translation.firebasestorage.app", 
-            messagingSenderId: "753531558153", 
-            appId: "1:753531558153:web:7106f9c2d253cae62fdbd8" 
-        };
+    // Firebase 配置 (與您主網頁相同)
+    const firebaseConfig = { 
+        apiKey: "AIzaSyAs9R785IE_kBsduUdEng3Vfqz1Ljl11f4", 
+        authDomain: "flareu-tw-translation.firebaseapp.com", 
+        databaseURL: "https://flareu-tw-translation-default-rtdb.asia-southeast1.firebasedatabase.app", 
+        projectId: "flareu-tw-translation", 
+        storageBucket: "flareu-tw-translation.firebasestorage.app", 
+        messagingSenderId: "753531558153", 
+        appId: "1:753531558153:web:7106f9c2d253cae62fdbd8" 
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-        // 全域變數，紀錄目前選擇的分類與從 Firebase 撈出來的原始資料
-        window.currentCategory = 'group';
-        window.rawRankingData = {};
+    // 全域變數，紀錄目前選擇的分類與從 Firebase 撈出來的原始資料
+    window.currentCategory = 'group';
+    window.rawRankingData = {};
 
-        // 即時監聽整個 stage_rankings 節點
-        const rankingsRef = ref(db, 'stage_rankings');
-        onValue(rankingsRef, (snapshot) => {
-            if (snapshot.exists()) {
-                window.rawRankingData = snapshot.val();
-                renderRankings(); // 只要 Firebase 資料一變，立刻重新渲染
-            } else {
-                document.getElementById('podium-area').innerHTML = '<div class="no-data">目前尚無推薦數據</div>';
-            }
-        });
+    // 即時監聽整個 stage_rankings 節點
+    const rankingsRef = ref(db, 'stage_rankings');
+    onValue(rankingsRef, (snapshot) => {
+        if (snapshot.exists()) {
+            window.rawRankingData = snapshot.val();
+            renderRankings(); // 只要 Firebase 資料一變，立刻重新渲染
+        } else {
+            document.getElementById('podium-area').innerHTML = '<div class="no-data">目前尚無推薦數據</div>';
+        }
+    });
 
-        // 渲染排行榜主邏輯
-        window.renderRankings = function() {
-            const podiumArea = document.getElementById('podium-area');
-            const categoryData = window.rawRankingData[window.currentCategory];
+    // 渲染排行榜主邏輯
+    window.renderRankings = function() {
+        const podiumArea = document.getElementById('podium-area');
+        const categoryData = window.rawRankingData[window.currentCategory];
 
-            if (!categoryData) {
-                podiumArea.innerHTML = '<div class="no-data">該分類目前尚無推薦數據</div>';
-                return;
-            }
-
-            // 1. 將物件轉換成陣列，並自動過濾掉點擊數為 0 或是沒有 videoDbId 的資料
-            let items = [];
-            Object.keys(categoryData).forEach(videoDbId => {
-                items.push({
-                    videoDbId: videoDbId,
-                    title: categoryData[videoDbId].title || '未命名舞台',
-                    clickCount: categoryData[videoDbId].clickCount || 0
-                });
-            });
-
-            // 2. 依據推薦按鈕點擊數（clickCount）由大到小排序
-            items.sort((a, b) => b.clickCount - a.clickCount);
-
-            // 3. 只取前三名
-            let topThree = items.slice(0, 3);
-
-            if (topThree.length === 0) {
-                podiumArea.innerHTML = '<div class="no-data">該分類目前尚無推薦數據</div>';
-                return;
-            }
-
-            // 4. 為了達成電腦版上完美的頒獎台排版（左:第二名、中:第一名、右:第三名）
-            // 在大螢幕下，我們調整陣列順序。如果是手機版，透過 CSS Order 處理。
-            let displayOrder = [];
-            if (window.innerWidth > 768) {
-                if (topThree[1]) displayOrder.push({ item: topThree[1], rank: 2 }); // 放左邊
-                if (topThree[0]) displayOrder.push({ item: topThree[0], rank: 1 }); // 放中間
-                if (topThree[2]) displayOrder.push({ item: topThree[2], rank: 3 }); // 放右邊
-            } else {
-                // 手機版就直接 1 -> 2 -> 3 排下去
-                topThree.forEach((item, index) => {
-                    displayOrder.push({ item: item, rank: index + 1 });
-                });
-            }
-
-            // 5. 生成 HTML
-            podiumArea.innerHTML = '';
-            displayOrder.forEach(slot => {
-                const video = slot.item;
-                const rank = slot.rank;
-                
-                // 從 videoDbId 之中解析出 YouTube 縮圖所需的「影片ID」。
-                // 規則：你的 videoDbId 通常為 video_日期_電視台_型態，而在 changeVideo 內會對應真正的 YouTube ID。
-                // 為了最保險自動抓取，這裡直接使用 YouTube 官方高品質縮圖網址。
-                // ⚠️ 注意：如果需要精準縮圖，稍後看下方說明。這裡預設先解析 id。
-                const youtubeId = extractYoutubeId(video.videoDbId);
-                const thumbUrl = `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`;
-
-                const cardHtml = `
-                    <div class="podium-card rank-${rank}">
-                        <div class="thumb-wrapper">
-                            <div class="rank-badge">${rank}</div>
-                            <img src="${thumbUrl}" alt="舞台縮圖" onerror="this.src='https://flareu-tw-trans.github.io/images/favicon.png';">
-                        </div>
-                        <div class="video-info">
-                            <h3 class="video-title">${video.title}</h3>
-                            <span class="count-badge">❤️ ${video.clickCount} 次推薦</span>
-                        </div>
-                    </div>
-                `;
-                podiumArea.innerHTML += cardHtml;
-            });
-        };
-
-        // 輔助函式：切換分類
-        window.switchCategory = function(category, btnElement) {
-            window.currentCategory = category;
-            
-            // 切換按鈕 active 樣式
-            document.querySelectorAll('.category-menu button').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-            
-            // 重新渲染
-            renderRankings();
-        };
-
-        // 輔助功能：從資料庫標記轉換成實際對應的 Youtube ID 以顯示縮圖
-        function extractYoutubeId(dbId) {
-            // 這裡建立一個簡單的對照表，與你主網頁的 changeVideo 參數完全同步
-            const idMap = {
-                'video_20260526_ena_broadcast': 'uQdwvjjX9WY',
-                'video_20260526_ena_fullcam': 'pTHUvoiGT1E',
-                'video_20260526_ena_liyu': 'uy0oqVYrAys',
-                'video_20260524_inkigayo_broadcast': 'r9KtIX1Yep0',
-                'video_20260524_inkigayo_fullcam': 'sVgoGCaCQaM',
-                'video_20260524_inkigayo_liyu': 'p8etzReAj_E',
-                'video_20260524_inkigayo_woojin': 'Tb5LCUyVWao',
-                // 如果有其他網頁，像是 KCON：
-                'video_20260509_kconjapan_xstage': 'QvfgbXsWPes'
-            };
-            return idMap[dbId] || 'Mu9EwQfmMZU'; // 找不到時給一個預設的預防破圖
+        if (!categoryData) {
+            podiumArea.innerHTML = '<div class="no-data">該分類目前尚無推薦數據</div>';
+            return;
         }
 
-        // 監聽視窗大小改變，自動調整電腦版/手機版的頒獎台左右順序
-        window.addEventListener('resize', () => {
-            if (window.rawRankingData && Object.keys(window.rawRankingData).length > 0) {
-                renderRankings();
-            }
+        // 1. 將物件轉換成陣列，並自動過濾掉點擊數為 0 或是沒有 videoDbId 的資料
+        // 【修改點】：這裡加入了 ytId 欄位讀取
+        let items = [];
+        Object.keys(categoryData).forEach(videoDbId => {
+            items.push({
+                videoDbId: videoDbId,
+                title: categoryData[videoDbId].title || '未命名舞台',
+                clickCount: categoryData[videoDbId].clickCount || 0,
+                ytId: categoryData[videoDbId].ytId || '' // <-- 撈出點擊時存入的 YouTube ID
+            });
         });
-    </script>
+
+        // 2. 依據推薦按鈕點擊數（clickCount）由大到小排序
+        items.sort((a, b) => b.clickCount - a.clickCount);
+
+        // 3. 只取前三名
+        let topThree = items.slice(0, 3);
+
+        if (topThree.length === 0) {
+            podiumArea.innerHTML = '<div class="no-data">該分類目前尚無推薦數據</div>';
+            return;
+        }
+
+        // 4. 為了達成電腦版上完美的頒獎台排版（左:第二名、中:第一名、右:第三名）
+        // 在大螢幕下，我們調整陣列順序。如果是手機版，透過 CSS Order 處理。
+        let displayOrder = [];
+        if (window.innerWidth > 768) {
+            if (topThree[1]) displayOrder.push({ item: topThree[1], rank: 2 }); // 放左邊
+            if (topThree[0]) displayOrder.push({ item: topThree[0], rank: 1 }); // 放中間
+            if (topThree[2]) displayOrder.push({ item: topThree[2], rank: 3 }); // 放右邊
+        } else {
+            // 手機版就直接 1 -> 2 -> 3 排下去
+            topThree.forEach((item, index) => {
+                displayOrder.push({ item: item, rank: index + 1 });
+            });
+        }
+
+        // 5. 生成 HTML
+        podiumArea.innerHTML = '';
+        displayOrder.forEach(slot => {
+            const video = slot.item;
+            const rank = slot.rank;
+            
+            // 【核心修改】：直接讀取資料庫傳來的 ytId，不再經由手動對照表。
+            // 如果剛好是舊資料還沒有 ytId，則給予一個預設的 ID 防止縮圖破圖。
+            const youtubeId = video.ytId || 'Mu9EwQfmMZU';
+            const thumbUrl = `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`;
+
+            const cardHtml = `
+                <div class="podium-card rank-${rank}">
+                    <div class="thumb-wrapper">
+                        <div class="rank-badge">${rank}</div>
+                        <img src="${thumbUrl}" alt="舞台縮圖" onerror="this.src='https://flareu-tw-trans.github.io/images/favicon.png';">
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">${video.title}</h3>
+                        <span class="count-badge">❤️ ${video.clickCount} 次推薦</span>
+                    </div>
+                </div>
+            `;
+            podiumArea.innerHTML += cardHtml;
+        });
+    };
+
+    // 輔助函式：切換分類
+    window.switchCategory = function(category, btnElement) {
+        window.currentCategory = category;
+        
+        // 切換按鈕 active 樣式
+        document.querySelectorAll('.category-menu button').forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+        
+        // 重新渲染
+        renderRankings();
+    };
+
+    // 監聽視窗大小改變，自動調整電腦版/手機版的頒獎台左右順序
+    window.addEventListener('resize', () => {
+        if (window.rawRankingData && Object.keys(window.rawRankingData).length > 0) {
+            renderRankings();
+        }
+    });
+</script>
 </body>
 </html>
