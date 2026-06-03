@@ -750,44 +750,6 @@
       openTab('tab-video1', firstTabBtn);
     });
 
-    // 舞台合輯
-    function changeVideo(videoId, title, btn, tabId, titleId) {
-
-      const data = videoData[tabId];
-
-      document.getElementById(titleId).textContent = title;
-
-      document.querySelectorAll(`#${tabId} .video-submenu button`).forEach(b => b.classList.remove('active'));
-
-      btn.classList.add('active');
-
-      // 字幕區
-      const subtitleEl = document.getElementById(data.subEl);
-
-      // 只有採訪有字幕
-      if (videoId === 'kHoqPGrhdQQ') {
-        subtitleEl.style.display = 'flex';
-      } else {
-        subtitleEl.style.display = 'none';
-        subtitleEl.innerHTML = '';
-      }
-
-      if (data.player) {
-        data.player.loadVideoById(videoId);
-      }
-
-      const subtitleControls = document.getElementById('subtitle-controls');
-
-      if (videoId === 'kHoqPGrhdQQ') {
-        subtitleEl.style.display = 'flex';
-        subtitleControls.style.display = 'flex';
-      } else {
-        subtitleEl.style.display = 'none';
-        subtitleEl.innerHTML = '';
-        subtitleControls.style.display = 'none';
-      }
-    }
-
     // =====================================
     // 舞台合輯
     // =====================================
@@ -832,10 +794,30 @@
       document.querySelectorAll(`#${tabId} .video-submenu button`).forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      if (data && data.player) { 
-        data.player.loadVideoById(videoId); 
+      // 更新目前播放的 YouTube ID
+      if (data) {
+        data.id = videoId;
+        if (data.player && typeof data.player.loadVideoById === 'function') { 
+          data.player.loadVideoById(videoId); 
+        }
       }
 
+      // 控制字幕選單顯示（只有採訪顯示字幕控制項）
+      const subtitleEl = document.getElementById(data ? data.subEl : '');
+      const subtitleControls = document.getElementById('subtitle-controls');
+      
+      if (videoId === 'kHoqPGrhdQQ') {
+        if (subtitleEl) subtitleEl.style.display = 'flex';
+        if (subtitleControls) subtitleControls.style.display = 'flex';
+      } else {
+        if (subtitleEl) {
+          subtitleEl.style.display = 'none';
+          subtitleEl.innerHTML = '';
+        }
+        if (subtitleControls) subtitleControls.style.display = 'none';
+      }
+
+      // 紀錄當前推薦資料
       if (category && videoDbId && displayTitle) {
         window.currentSelectedVideo[tabId] = {
           category: category,
@@ -843,7 +825,6 @@
           displayTitle: displayTitle
         };
 
-        // 檢查本機快取
         const likeBtn = getLikeButton(tabId);
         if (likeBtn) {
           const hasLiked = localStorage.getItem(`liked_${videoDbId}`) === 'true';
@@ -880,7 +861,7 @@
         } else {
           currentData = {
             title: displayTitle,
-            clickCount: changeValue < 0 ? 0 : 1
+            clickCount: changeValue < 0 ? 0 : 1,
             ytId: videoId
           };
         }
