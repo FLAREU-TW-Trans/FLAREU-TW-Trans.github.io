@@ -306,31 +306,11 @@
     /*按鈕外層容器*/
     .actions-group { display: flex; gap: 10px; align-items: center; }
     
-    /*推薦按鈕*/ 
+    /* ===================================================
+       1. ❤️ 推薦按鈕 - 預設狀態 (高級感勃根地酒紅)
+       =================================================== */
     .video-controls-bar .like-btn { 
-  background: linear-gradient(135deg, #f7f4f0 0%, #ede6de 100%) !important; 
-  color: #8c7662 !important; 
-  border: 1px solid rgba(140, 118, 98, 0.25) !important; 
-  padding: 8px 16px; 
-  border-radius: 20px;
-  cursor: pointer; 
-  font-size: 13px; 
-  font-weight: 700; 
-  box-shadow: 0 2px 6px rgba(140, 118, 98, 0.05); 
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-}
-
-/* 預設狀態的滑鼠懸停 */
-.video-controls-bar .like-btn:hover { 
-  background: linear-gradient(135deg, #ede6de 0%, #e3d8cc 100%) !important; 
-  color: #735f4f !important;
-  transform: translateY(-1px); 
-  box-shadow: 0 4px 10px rgba(140, 118, 98, 0.12); 
-}
-
-/* ❤️ 推薦按鈕 - 已點擊狀態 (反轉為高級沉穩墨綠色) */
-.video-controls-bar .like-btn { 
-      background: #6b9075 !important; 
+      background: #a63a50 !important; 
       color: #ffffff !important; 
       border: none !important; 
       padding: 8px 16px; 
@@ -342,26 +322,29 @@
       transition: all 0.2s ease; 
     }
 
-    /* 預設推薦按鈕的滑鼠懸停 (稍微變深) */
+    /* 預設推薦按鈕的滑鼠懸停 (微微加深) */
     .video-controls-bar .like-btn:hover { 
-      background: #557a5f !important; 
+      background: #8c2f42 !important; 
       color: #ffffff !important;
       transform: translateY(-1px); 
       box-shadow: 0 4px 8px rgba(0,0,0,0.15); 
     }
 
-    /* ❤️ 推薦按鈕 - 已點擊狀態 (深邃墨綠黑) */
+    /* ===================================================
+       【核心修復】❤️ 推薦按鈕 - 已點擊狀態 (沉穩曜石灰黑)
+       =================================================== */
     .video-controls-bar .like-btn.liked { 
-      background: #2d3e33 !important; 
-      color: #ffeb3b !important; /* 變成亮眼星光黃字，提示已點 */
+      background: #2b2b2b !important; 
+      color: #ffeb3b !important; /* 點擊後內文變成亮眼星光黃，提示已點 */
       border: none !important;
       font-weight: 700;
       box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important; 
+      transform: none !important;
     }
 
     /* 已點擊狀態的滑鼠懸停 */
     .video-controls-bar .like-btn.liked:hover { 
-      background: #202c24 !important; 
+      background: #1f1f1f !important; 
       color: #ffeb3b !important;
     }
 
@@ -371,9 +354,11 @@
       transform: translateY(1px) scale(0.96) !important; 
     }
 
-    /* 2. 📺 全螢幕按鈕 - 預設狀態 (高級莫蘭迪霧煙藍灰) */
+    /* ===================================================
+       2. 📺 全螢幕按鈕 - 預設狀態 (適配酒紅的高級莫蘭迪霧藍灰)
+       =================================================== */
     .video-controls-bar .fullscreen-btn { 
-      background: #607d8b !important; 
+      background: #5c6bc0 !important; 
       color: #ffffff !important; 
       border: none !important; 
       padding: 8px 16px; 
@@ -385,9 +370,9 @@
       transition: all 0.2s ease; 
     }
 
-    /* 全螢幕滑鼠懸停 (轉為略深一階的煙灰藍) */
+    /* 全螢幕滑鼠懸停 (轉為深一階的優雅藍灰) */
     .video-controls-bar .fullscreen-btn:hover { 
-      background: #455a64 !important; 
+      background: #475399 !important; 
       color: #ffffff !important;
       transform: translateY(-1px); 
       box-shadow: 0 4px 8px rgba(0,0,0,0.15); 
