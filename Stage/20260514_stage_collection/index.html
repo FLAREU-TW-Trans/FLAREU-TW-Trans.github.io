@@ -350,12 +350,17 @@
 
       <div class="video-controls-bar">
         <p id="MCOUNTDOWN-title">5/14 M COUNTDOWN EP.928 (採訪)</p>
-        <div class="actions-group" id="subtitle-controls">
+  
+        <div class="actions-group">
           <button id="like-btn-video1" class="like-btn" onclick="likeCurrentVideo('tab-video1')">❤️推薦</button>
-          <button onclick="changeSubtitleSize(-0.1, 'subtitle-video1')">A−</button>
-          <span class="subtitle-label">字幕</span>
-          <button onclick="changeSubtitleSize(0.1, 'subtitle-video1')">A＋</button>
+    
+          <div id="subtitle-controls" style="display: flex; gap: 5px; align-items: center;">
+            <button onclick="changeSubtitleSize(-0.1, 'subtitle-video1')">A−</button>
+            <span class="subtitle-label">字幕</span>
+            <button onclick="changeSubtitleSize(0.1, 'subtitle-video1')">A＋</button>
+          </div>
         </div>
+  
         <button class="fullscreen-btn" onclick="triggerFullscreen('video-wrapper-1')">全螢幕</button>
       </div>
 
