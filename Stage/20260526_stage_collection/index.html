@@ -303,18 +303,21 @@
     .video-submenu button { border: none; border-radius: 20px; padding: 8px 14px; cursor: pointer; background: var(--btn-bg); color: white; font-weight: 600; }
     .video-submenu button.active { background: var(--btn-hover); }
 
-    /*推薦按鈕*/
+    /*按鈕外層容器*/
     .actions-group { display: flex; gap: 10px; align-items: center; }
-    .like-btn { background: linear-gradient(135deg, #fff0f2 0%, #ffe3e7 100%); color: #de475b; border: 1px solid rgba(222, 71, 91, 0.25); padding: 8px 16px; border-radius: 20px;
+    
+    /*推薦按鈕*/ 
+    .like-btn { background: linear-gradient(135deg, #fff0f2 0%, #ffe3e7 100%); color: #de475b; border: 1px solid rgba(222, 71, 91, 0.3); padding: 8px 16px; border-radius: 20px;
       cursor: pointer; font-size: 13px; font-weight: 700; box-shadow: 0 2px 6px rgba(222, 71, 91, 0.06); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-    .like-btn:hover:not(:disabled) { background: linear-gradient(135deg, #de475b 0%, #cc3b4f 100%); color: #ffffff; border-color: #cc3b4f; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(222, 71, 91, 0.25); }
-    .like-btn:active:not(:disabled) { transform: translateY(1px) scale(0.96); box-shadow: 0 1px 3px rgba(222, 71, 91, 0.15); }
-    .like-btn:disabled { background: #f3f4f6 !important; color: #9ca3af !important; border: 1px solid #e5e7eb !important; box-shadow: none !important; transform: none !important; cursor: not-allowed; }
+    .like-btn:hover { background: linear-gradient(135deg, #ffd9df 0%, #ffcbd4 100%); transform: translateY(-1px); box-shadow: 0 4px 10px rgba(222, 71, 91, 0.15); }
+    .like-btn.liked { background: linear-gradient(135deg, #de475b 0%, #cc3b4f 100%) !important; color: #ffffff !important; border-color: #cc3b4f !important; box-shadow: 0 2px 8px rgba(222, 71, 91, 0.3) !important; }
+    .like-btn.liked:hover { background: linear-gradient(135deg, #cc3b4f 0%, #b83244 100%) !important; box-shadow: 0 4px 12px rgba(222, 71, 91, 0.4) !important; }
+    .like-btn:active, .fullscreen-btn:active { transform: translateY(1px) scale(0.96); }
 
     /*全螢幕按鈕*/
-    .fullscreen-btn { background: linear-gradient(135deg, #f0f4f8 0%, #e2ebf4 100%); color: #445566; border: 1px solid rgba(68, 85, 102, 0.2); padding: 8px 16px; border-radius: 20px;
-      cursor: pointer; font-size: 13px; font-weight: 600; box-shadow: 0 2px 6px rgba(68, 85, 102, 0.04); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-    .fullscreen-btn:hover { background: linear-gradient(135deg, #445566 0%, #334455 100%); color: #ffffff; border-color: #334455; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(68, 85, 102, 0.2); }
+    .fullscreen-btn { background: linear-gradient(135deg, #445566 0%, #334455 100%); color: #ffffff; border: 1px solid #2a3a4a; padding: 8px 16px; border-radius: 20px;
+      cursor: pointer; font-size: 13px; font-weight: 600; box-shadow: 0 2px 6px rgba(51, 68, 85, 0.2); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    .fullscreen-btn:hover { background: linear-gradient(135deg, #556677 0%, #445566 100%); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(51, 68, 85, 0.3); }
     .fullscreen-btn:active { transform: translateY(1px) scale(0.96); box-shadow: 0 1px 3px rgba(68, 85, 102, 0.1); }
   </style>
 </head>
@@ -745,7 +748,7 @@
     };
     
     function changeVideo(videoId, title, btn, tabId, titleId, category, videoDbId, displayTitle) {
-      // 1. 執行原本的 YouTube 播放器切換與網頁 UI 更新
+      // 執行原本的 YouTube 播放器切換與網頁 UI 更新
       const data = videoData[tabId];
       if (document.getElementById(titleId)) {
         document.getElementById(titleId).textContent = title;
@@ -758,7 +761,6 @@
         data.player.loadVideoById(videoId); 
       }
 
-      // 當網友換影片時，更新全域變數
       if (category && videoDbId && displayTitle) {
         window.currentSelectedVideo[tabId] = {
           category: category,
@@ -766,50 +768,70 @@
           displayTitle: displayTitle
         };
     
-        // 按鈕文字重置（非必要，但可以給網友視覺反饋）
+        // 檢查本機快取
         const likeBtn = document.getElementById(`like-btn-${tabId}`);
         if (likeBtn) {
-          likeBtn.innerHTML = "❤️推薦";
-          likeBtn.disabled = false;
+          const hasLiked = localStorage.getItem(`liked_${videoDbId}`) === 'true';
+          if (hasLiked) {
+            likeBtn.innerHTML = "✨ 已推薦";
+            likeBtn.classList.add('liked');
+          } else {
+            likeBtn.innerHTML = "❤️ 推薦";
+            likeBtn.classList.remove('liked');
+          }
         }
       }
     }
 
-    // 當網友按下「推薦」按鈕時觸發的函數
+    // 推薦按鈕點擊函數
     function likeCurrentVideo(tabId) {
-      // 1. 抓取該頁籤當前正在播放的影片資訊
       const currentVideo = window.currentSelectedVideo[tabId];
-  
-      if (!currentVideo) {
-        console.error("找不到當前影片資訊");
-        return;
-      }
+      if (!currentVideo) return;
 
       const { category, videoDbId, displayTitle } = currentVideo;
       const likeBtn = document.getElementById(`like-btn-${tabId}`);
+  
+      // 檢查目前網友對這部片的狀態
+      const hasLiked = localStorage.getItem(`liked_${videoDbId}`) === 'true';
+  
+      // 如果之前按過，這次就是「取消推薦(-1)」；如果沒按過，這次就是「推薦(+1)」
+      const changeValue = hasLiked ? -1 : 1;
 
-      // 2. 送出數據到 Firebase (這部分與你的安全規則完美契合)
       const targetRef = window.fb_ref(window.db, `stage_rankings/${category}/${videoDbId}`);
   
       window.fb_runTransaction(targetRef, (currentData) => {
         if (currentData) {
-          currentData.clickCount = (currentData.clickCount || 0) + 1;
+          // 確保點擊數不會扣到變成負數
+          const newCount = (currentData.clickCount || 0) + changeValue;
+          currentData.clickCount = newCount < 0 ? 0 : newCount;
           currentData.title = displayTitle;
         } else {
+          // 如果是全新節點且是取消，給0；若是推薦給1
           currentData = {
             title: displayTitle,
-            clickCount: 1
+            clickCount: changeValue < 0 ? 0 : 1
           };
         }
         return currentData;
       }).then(() => {
-        // 3. 點擊成功後的優化：按鈕變成「已推薦」並禁用，防止網友連續狂點刷榜
-        if (likeBtn) {
-          likeBtn.innerHTML = "✨ 已送出推薦！";
-          likeBtn.disabled = true;
+        // Firebase 更新成功後，更新網頁 UI 與本地紀錄
+        if (hasLiked) {
+          // 狀態改為：未推薦
+          localStorage.setItem(`liked_${videoDbId}`, 'false');
+          if (likeBtn) {
+            likeBtn.innerHTML = "❤️ 推薦";
+            likeBtn.classList.remove('liked');
+          }
+        } else {
+          // 狀態改為：已推薦
+          localStorage.setItem(`liked_${videoDbId}`, 'true');
+          if (likeBtn) {
+            likeBtn.innerHTML = "✨ 已推薦";
+            likeBtn.classList.add('liked');
+          }
         }
       }).catch(error => {
-        console.error("推薦失敗:", error);
+        console.error("推薦操作失敗:", error);
       });
     }
   </script>
