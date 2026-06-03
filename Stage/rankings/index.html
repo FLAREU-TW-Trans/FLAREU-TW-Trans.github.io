@@ -586,25 +586,9 @@ window.showFavorites = function(){
     const container =
         document.getElementById('favorites-container');
 
-    let favorites=[];
-
-    for(let i=0;i<localStorage.length;i++){
-
-        const key=localStorage.key(i);
-
-        if(key.startsWith('favorite_')){
-
-            try{
-
-                const item=JSON.parse(
-                    localStorage.getItem(key)
-                );
-
-                favorites.push(item);
-
-            }catch(e){}
-        }
-    }
+    const favorites = JSON.parse(
+        localStorage.getItem('favoriteVideos') || '[]'
+    );
 
     if(favorites.length===0){
 
@@ -620,15 +604,28 @@ window.showFavorites = function(){
 
     favorites.forEach(video=>{
 
+        const config =
+            customVideoMapping[video.videoDbId] || {};
+
+        const pageUrl =
+            config.link ||
+            'https://flareu-tw-trans.github.io/';
+
+        const thumbUrl =
+            config.customThumb ||
+            `https://img.youtube.com/vi/${video.ytId}/mqdefault.jpg`;
+
         const card=`
         <div class="podium-card">
 
-            <a href="${video.pageUrl}"
+            <a href="${pageUrl}"
                target="_blank"
                class="thumb-wrapper">
 
-                <img src="${video.thumbUrl}"
-                     alt="${video.title}">
+                <img src="${thumbUrl}"
+                     alt="${video.title}"
+                     onerror="this.src='https://flareu-tw-trans.github.io/images/favicon.png';">
+
             </a>
 
             <div class="video-info">
@@ -646,7 +643,7 @@ window.showFavorites = function(){
         </div>
         `;
 
-        container.innerHTML+=card;
+        container.innerHTML += card;
     });
 }
 </script>
