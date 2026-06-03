@@ -307,18 +307,69 @@
     .actions-group { display: flex; gap: 10px; align-items: center; }
     
     /*推薦按鈕*/ 
-    .video-controls-bar .like-btn { background: linear-gradient(135deg, #fff0f2 0%, #ffe3e7 100%); color: #de475b; border: 1px solid rgba(222, 71, 91, 0.3); padding: 8px 16px; border-radius: 20px;
-      cursor: pointer; font-size: 13px; font-weight: 700; box-shadow: 0 2px 6px rgba(222, 71, 91, 0.06); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-    .video-controls-bar .like-btn:hover { background: linear-gradient(135deg, #ffd9df 0%, #ffcbd4 100%); transform: translateY(-1px); box-shadow: 0 4px 10px rgba(222, 71, 91, 0.15); }
-    .video-controls-bar .like-btn.liked { background: linear-gradient(135deg, #de475b 0%, #cc3b4f 100%) !important; color: #ffffff !important; border-color: #cc3b4f !important; box-shadow: 0 2px 8px rgba(222, 71, 91, 0.3) !important; }
-    .video-controls-bar .like-btn.liked:hover { background: linear-gradient(135deg, #cc3b4f 0%, #b83244 100%) !important; box-shadow: 0 4px 12px rgba(222, 71, 91, 0.4) !important; }
-    .video-controls-bar .like-btn:active, .fullscreen-btn:active { transform: translateY(1px) scale(0.96); }
+    .video-controls-bar .like-btn { 
+  background: linear-gradient(135deg, #f7f4f0 0%, #ede6de 100%) !important; 
+  color: #8c7662 !important; 
+  border: 1px solid rgba(140, 118, 98, 0.25) !important; 
+  padding: 8px 16px; 
+  border-radius: 20px;
+  cursor: pointer; 
+  font-size: 13px; 
+  font-weight: 700; 
+  box-shadow: 0 2px 6px rgba(140, 118, 98, 0.05); 
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+}
 
-    /*全螢幕按鈕*/
-    .video-controls-bar .fullscreen-btn { background: linear-gradient(135deg, #445566 0%, #334455 100%); color: #ffffff; border: 1px solid #2a3a4a; padding: 8px 16px; border-radius: 20px;
-      cursor: pointer; font-size: 13px; font-weight: 600; box-shadow: 0 2px 6px rgba(51, 68, 85, 0.2); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-    .video-controls-bar .fullscreen-btn:hover { background: linear-gradient(135deg, #556677 0%, #445566 100%); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(51, 68, 85, 0.3); }
-    .video-controls-bar .fullscreen-btn:active { transform: translateY(1px) scale(0.96); box-shadow: 0 1px 3px rgba(68, 85, 102, 0.1); }
+/* 預設狀態的滑鼠懸停 */
+.video-controls-bar .like-btn:hover { 
+  background: linear-gradient(135deg, #ede6de 0%, #e3d8cc 100%) !important; 
+  color: #735f4f !important;
+  transform: translateY(-1px); 
+  box-shadow: 0 4px 10px rgba(140, 118, 98, 0.12); 
+}
+
+/* ❤️ 推薦按鈕 - 已點擊狀態 (反轉為高級沉穩墨綠色) */
+.video-controls-bar .like-btn.liked { 
+  background: linear-gradient(135deg, #52796f 0%, #354f52 100%) !important; 
+  color: #ffffff !important; 
+  border-color: #354f52 !important; 
+  box-shadow: 0 2px 8px rgba(82, 121, 111, 0.25) !important; 
+}
+
+/* 已點擊狀態的滑鼠懸停 */
+.video-controls-bar .like-btn.liked:hover { 
+  background: linear-gradient(135deg, #354f52 0%, #2f4346 100%) !important; 
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(53, 79, 82, 0.35) !important; 
+}
+
+/* 點擊瞬間壓感回饋 */
+.video-controls-bar .like-btn:active, 
+.video-controls-bar .fullscreen-btn:active { 
+  transform: translateY(1px) scale(0.96) !important; 
+}
+
+/* 2. 📺 全螢幕按鈕 - 預設狀態 (調淺後的高級霧藍灰色調) */
+.video-controls-bar .fullscreen-btn { 
+  background: linear-gradient(135deg, #f0f4f8 0%, #e2ebf4 100%) !important; 
+  color: #556677 !important; 
+  border: 1px solid rgba(85, 102, 119, 0.2) !important; 
+  padding: 8px 16px; 
+  border-radius: 20px;
+  cursor: pointer; 
+  font-size: 13px; 
+  font-weight: 600; 
+  box-shadow: 0 2px 6px rgba(85, 102, 119, 0.05); 
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+
+/* 全螢幕滑鼠懸停 (轉為略深一點的知性藍灰) */
+.video-controls-bar .fullscreen-btn:hover { 
+  background: linear-gradient(135deg, #e2ebf4 0%, #d3e0ed 100%) !important; 
+  color: #445566 !important;
+  transform: translateY(-1px); 
+  box-shadow: 0 4px 12px rgba(85, 102, 119, 0.15); 
+}
   </style>
 </head>
 <body>
@@ -746,6 +797,23 @@
       'tab-video4': { category: 'group', videoDbId: 'video_20260530_musiccore_broadcast', displayTitle: '5/30 音樂中心' },
       'tab-video5': { category: 'group', videoDbId: 'video_20260531_inkigayo_broadcast', displayTitle: '5/31 人氣歌謠 播出版本' }
     };
+
+    document.addEventListener("DOMContentLoaded", () => {
+  Object.keys(window.currentSelectedVideo).forEach(tabId => {
+    const videoDbId = window.currentSelectedVideo[tabId].videoDbId;
+    const likeBtn = document.getElementById(`like-btn-${tabId}`);
+    if (likeBtn) {
+      const hasLiked = localStorage.getItem(`liked_${videoDbId}`) === 'true';
+      if (hasLiked) {
+        likeBtn.innerHTML = "✨ 已推薦";
+        likeBtn.classList.add('liked');
+      } else {
+        likeBtn.innerHTML = "❤️ 推薦";
+        likeBtn.classList.remove('liked');
+      }
+    }
+  });
+});
     
     function changeVideo(videoId, title, btn, tabId, titleId, category, videoDbId, displayTitle) {
       // 執行原本的 YouTube 播放器切換與網頁 UI 更新
