@@ -299,61 +299,23 @@
     /* ==================== 
        6. 舞台合輯
        ==================== */
-    .video-submenu {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      padding: 12px;
-      justify-content: center;
-      background: var(--video-submenu-bg);
-      border-bottom: 1px solid var(--border-line);
-    }
-
-    .video-submenu button {
-      border: none;
-      border-radius: 20px;
-      padding: 8px 14px;
-      cursor: pointer;
-      background: var(--btn-bg);
-      color: white;
-      font-weight: 600;
-    }
-
-    .video-submenu button.active {
-      background: var(--btn-hover);
-    }
+    .video-submenu { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; justify-content: center; background: var(--video-submenu-bg); border-bottom: 1px solid var(--border-line); }
+    .video-submenu button { border: none; border-radius: 20px; padding: 8px 14px; cursor: pointer; background: var(--btn-bg); color: white; font-weight: 600; }
+    .video-submenu button.active { background: var(--btn-hover); }
 
     /*推薦按鈕*/
-    .actions-group {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
+    .actions-group { display: flex; gap: 10px; align-items: center; }
+    .like-btn { background: linear-gradient(135deg, #fff0f2 0%, #ffe3e7 100%); color: #de475b; border: 1px solid rgba(222, 71, 91, 0.25); padding: 8px 16px; border-radius: 20px;
+      cursor: pointer; font-size: 13px; font-weight: 700; box-shadow: 0 2px 6px rgba(222, 71, 91, 0.06); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    .like-btn:hover:not(:disabled) { background: linear-gradient(135deg, #de475b 0%, #cc3b4f 100%); color: #ffffff; border-color: #cc3b4f; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(222, 71, 91, 0.25); }
+    .like-btn:active:not(:disabled) { transform: translateY(1px) scale(0.96); box-shadow: 0 1px 3px rgba(222, 71, 91, 0.15); }
+    .like-btn:disabled { background: #f3f4f6 !important; color: #9ca3af !important; border: 1px solid #e5e7eb !important; box-shadow: none !important; transform: none !important; cursor: not-allowed; }
 
-    .like-btn {
-      background-color: #e8f0fe;
-      color: #1a73e8;
-      border: 1px solid #b4c8dc;
-    padding: 6px 12px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: bold;
-      transition: all 0.2s ease;
-    }
-
-    .like-btn:hover {
-      background-color: #1a73e8;
-      color: white;
-      box-shadow: 0 2px 6px rgba(26, 115, 232, 0.2);
-    }
-
-    .like-btn:disabled {
-      background-color: #f1f3f4;
-      color: #9aa0a6;
-      border: 1px solid #dadce0;
-      cursor: not-allowed;
-    }
+    /*全螢幕按鈕*/
+    .fullscreen-btn { background: linear-gradient(135deg, #f0f4f8 0%, #e2ebf4 100%); color: #445566; border: 1px solid rgba(68, 85, 102, 0.2); padding: 8px 16px; border-radius: 20px;
+      cursor: pointer; font-size: 13px; font-weight: 600; box-shadow: 0 2px 6px rgba(68, 85, 102, 0.04); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    .fullscreen-btn:hover { background: linear-gradient(135deg, #445566 0%, #334455 100%); color: #ffffff; border-color: #334455; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(68, 85, 102, 0.2); }
+    .fullscreen-btn:active { transform: translateY(1px) scale(0.96); box-shadow: 0 1px 3px rgba(68, 85, 102, 0.1); }
   </style>
 </head>
 <body>
@@ -385,7 +347,7 @@
         <p id="ENA-title">20260526 ENA K POP UP CHART SHOW (播出版本)</p>
         <div class="actions-group">
           <button id="like-btn-video1" class="like-btn" onclick="likeCurrentVideo('tab-video1')">❤️推薦</button>
-          <button onclick="triggerFullscreen('video-wrapper-1')">全螢幕</button>
+          <button class="fullscreen-btn" onclick="triggerFullscreen('video-wrapper-1')">全螢幕</button>
         </div>
       </div>
 
@@ -425,7 +387,7 @@
         <p id="MCOUNTDOWN-title">20260528 M COUNTDOWN EP.930 (播出版本)</p>
         <div class="actions-group">
           <button id="like-btn-video2" class="like-btn" onclick="likeCurrentVideo('tab-video2')">❤️推薦</button>
-          <button onclick="triggerFullscreen('video-wrapper-2')">全螢幕</button>
+          <button class="fullscreen-btn" onclick="triggerFullscreen('video-wrapper-2')">全螢幕</button>
         </div>
       </div>
 
@@ -464,7 +426,7 @@
           <p id="musicbank-title">20260529 Music Bank</p>
           <div class="actions-group">
             <button id="like-btn-video3" class="like-btn" onclick="likeCurrentVideo('tab-video3')">❤️推薦</button>
-            <button onclick="triggerFullscreen('video-wrapper-3')">全螢幕</button>
+            <button class="fullscreen-btn" onclick="triggerFullscreen('video-wrapper-3')">全螢幕</button>
           </div>
       </div>
 
@@ -488,7 +450,7 @@
           <p id="musiccore-title">20260530 音樂中心</p>
           <div class="actions-group">
             <button id="like-btn-video4" class="like-btn" onclick="likeCurrentVideo('tab-video4')">❤️推薦</button>
-            <button onclick="triggerFullscreen('video-wrapper-4')">全螢幕</button>
+            <button class="fullscreen-btn" onclick="triggerFullscreen('video-wrapper-4')">全螢幕</button>
           </div>
       </div>
       <div class="video-submenu">
@@ -511,7 +473,7 @@
         <p id="inkigayo-title">20260531 人氣歌謠 (播出版本)</p>
         <div class="actions-group">
           <button id="like-btn-video5" class="like-btn" onclick="likeCurrentVideo('tab-video5')">❤️推薦</button>
-          <button onclick="triggerFullscreen('video-wrapper-5')">全螢幕</button>
+          <button class="fullscreen-btn" onclick="triggerFullscreen('video-wrapper-5')">全螢幕</button>
         </div>
       </div>
 
