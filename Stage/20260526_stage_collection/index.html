@@ -322,7 +322,38 @@
     .video-submenu button.active {
       background: var(--btn-hover);
     }
-    
+
+    /*推薦按鈕*/
+    .actions-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .like-btn {
+      background-color: #e8f0fe;
+      color: #1a73e8;
+      border: 1px solid #b4c8dc;
+    padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+
+    .like-btn:hover {
+      background-color: #1a73e8;
+      color: white;
+      box-shadow: 0 2px 6px rgba(26, 115, 232, 0.2);
+    }
+
+    .like-btn:disabled {
+      background-color: #f1f3f4;
+      color: #9aa0a6;
+      border: 1px solid #dadce0;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
@@ -351,8 +382,11 @@
     <div id="tab-video1" class="tab-content">
 
       <div class="video-controls-bar">
-        <p id="ENA-title">20260526 ENA K POP UP CHART SHOW(播出版本)</p>
-        <button onclick="triggerFullscreen('video-wrapper-1')">全螢幕</button>
+        <p id="ENA-title">20260526 ENA K POP UP CHART SHOW (播出版本)</p>
+        <div class="actions-group">
+          <button id="like-btn-video1" class="like-btn" onclick="likeCurrentVideo('tab-video1')">❤️推薦</button>
+          <button onclick="triggerFullscreen('video-wrapper-1')">全螢幕</button>
+        </div>
       </div>
 
       <div class="video-submenu">
@@ -388,8 +422,11 @@
     <div id="tab-video2" class="tab-content">
 
       <div class="video-controls-bar">
-        <p id="MCOUNTDOWN-title">20260528 M COUNTDOWN EP.930(播出版本)</p>
-        <button onclick="triggerFullscreen('video-wrapper-2')">全螢幕</button>
+        <p id="MCOUNTDOWN-title">20260528 M COUNTDOWN EP.930 (播出版本)</p>
+        <div class="actions-group">
+          <button id="like-btn-video2" class="like-btn" onclick="likeCurrentVideo('tab-video2')">❤️推薦</button>
+          <button onclick="triggerFullscreen('video-wrapper-2')">全螢幕</button>
+        </div>
       </div>
 
       <div class="video-submenu">
@@ -424,8 +461,11 @@
 
     <div id="tab-video3" class="tab-content">
       <div class="video-controls-bar">
-          <p id="musicbank-title">20260529 Music Bank(播出版本)</p>
-          <button onclick="triggerFullscreen('video-wrapper-3')">全螢幕</button>
+          <p id="musicbank-title">20260529 Music Bank</p>
+          <div class="actions-group">
+            <button id="like-btn-video3" class="like-btn" onclick="likeCurrentVideo('tab-video3')">❤️推薦</button>
+            <button onclick="triggerFullscreen('video-wrapper-3')">全螢幕</button>
+          </div>
       </div>
 
       <div class="video-submenu">
@@ -446,7 +486,10 @@
     <div id="tab-video4" class="tab-content">
       <div class="video-controls-bar">
           <p id="musiccore-title">20260530 音樂中心</p>
-          <button onclick="triggerFullscreen('video-wrapper-4')">全螢幕</button>
+          <div class="actions-group">
+            <button id="like-btn-video4" class="like-btn" onclick="likeCurrentVideo('tab-video4')">❤️推薦</button>
+            <button onclick="triggerFullscreen('video-wrapper-4')">全螢幕</button>
+          </div>
       </div>
       <div class="video-submenu">
         <button class="active" onclick="changeVideo('3KDJuV2Wopw', '20260530 音樂中心(播出版本)', this, 'tab-video4', 'musiccore-title', 'group', 'video_20260530_musiccore_broadcast', '5/30 音樂中心 團體舞台')">
@@ -465,8 +508,11 @@
     <div id="tab-video5" class="tab-content">
 
       <div class="video-controls-bar">
-        <p id="inkigayo-title">20260531 人氣歌謠(播出版本)</p>
-        <button onclick="triggerFullscreen('video-wrapper-5')">全螢幕</button>
+        <p id="inkigayo-title">20260531 人氣歌謠 (播出版本)</p>
+        <div class="actions-group">
+          <button id="like-btn-video5" class="like-btn" onclick="likeCurrentVideo('tab-video5')">❤️推薦</button>
+          <button onclick="triggerFullscreen('video-wrapper-5')">全螢幕</button>
+        </div>
       </div>
 
       <div class="video-submenu">
@@ -726,6 +772,16 @@
     });
 
     // 舞台合輯
+    // 建立一個全域物件，用來記錄每個頁籤（tab）目前被選中的影片資訊
+    // 網頁一載入時，預設填入各頁籤第一個影片的初始資料（請根據你的實際需求調整預設值）
+    window.currentSelectedVideo = {
+      'tab-video1': { category: 'group', videoDbId: 'video_20260526_ena_broadcast', displayTitle: '5/26 ENA 播出版本' },
+      'tab-video2': { category: 'group', videoDbId: 'video_20260528_mcd_broadcast', displayTitle: '5/28 MCOUNTDOWN 播出版本' },
+      'tab-video3': { category: 'group', videoDbId: 'video_20260529_musicbank_broadcast', displayTitle: '5/29 Music Bank' },
+      'tab-video4': { category: 'group', videoDbId: 'video_20260530_musiccore_broadcast', displayTitle: '5/30 音樂中心' },
+      'tab-video5': { category: 'group', videoDbId: 'video_20260531_inkigayo_broadcast', displayTitle: '5/31 人氣歌謠 播出版本' }
+    };
+    
     function changeVideo(videoId, title, btn, tabId, titleId, category, videoDbId, displayTitle) {
       // 1. 執行原本的 YouTube 播放器切換與網頁 UI 更新
       const data = videoData[tabId];
@@ -740,28 +796,59 @@
         data.player.loadVideoById(videoId); 
       }
 
-      // 2. 核心：Firebase 動態點擊計數器 (只有在有帶參數時才觸發，避免舊按鈕報錯)
+      // 當網友換影片時，更新全域變數
       if (category && videoDbId && displayTitle) {
-        // 使用全域掛載的 fb_ref 和 db 組出動態路徑： stage_rankings/$category/$video_db_id
-        const targetRef = window.fb_ref(window.db, `stage_rankings/${category}/${videoDbId}`);
+        window.currentSelectedVideo[tabId] = {
+          category: category,
+          videoDbId: videoDbId,
+          displayTitle: displayTitle
+        };
     
-        window.fb_runTransaction(targetRef, (currentData) => {
-          if (currentData) {
-            // 如果此節點已存在，點擊數 +1，並確保 title 更新
-            currentData.clickCount = (currentData.clickCount || 0) + 1;
-            currentData.title = displayTitle; 
-          } else {
-            // 如果是全新舞台影片，初始化建立，完全符合規則需要的結構
-            currentData = {
-              title: displayTitle,
-              clickCount: 1
-            };
-          }
-          return currentData;
-        }).catch(error => {
-          console.error("排行榜計數失敗，請檢查規則或參數限制:", error);
-        });
+        // 按鈕文字重置（非必要，但可以給網友視覺反饋）
+        const likeBtn = document.getElementById(`like-btn-${tabId}`);
+        if (likeBtn) {
+          likeBtn.innerHTML = "❤️推薦";
+          likeBtn.disabled = false;
+        }
       }
+    }
+
+    // 當網友按下「推薦」按鈕時觸發的函數
+    function likeCurrentVideo(tabId) {
+      // 1. 抓取該頁籤當前正在播放的影片資訊
+      const currentVideo = window.currentSelectedVideo[tabId];
+  
+      if (!currentVideo) {
+        console.error("找不到當前影片資訊");
+        return;
+      }
+
+      const { category, videoDbId, displayTitle } = currentVideo;
+      const likeBtn = document.getElementById(`like-btn-${tabId}`);
+
+      // 2. 送出數據到 Firebase (這部分與你的安全規則完美契合)
+      const targetRef = window.fb_ref(window.db, `stage_rankings/${category}/${videoDbId}`);
+  
+      window.fb_runTransaction(targetRef, (currentData) => {
+        if (currentData) {
+          currentData.clickCount = (currentData.clickCount || 0) + 1;
+          currentData.title = displayTitle;
+        } else {
+          currentData = {
+            title: displayTitle,
+            clickCount: 1
+          };
+        }
+        return currentData;
+      }).then(() => {
+        // 3. 點擊成功後的優化：按鈕變成「已推薦」並禁用，防止網友連續狂點刷榜
+        if (likeBtn) {
+          likeBtn.innerHTML = "✨ 已送出推薦！";
+          likeBtn.disabled = true;
+        }
+      }).catch(error => {
+        console.error("推薦失敗:", error);
+      });
     }
   </script>
 </body>
