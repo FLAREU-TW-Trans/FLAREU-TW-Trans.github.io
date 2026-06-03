@@ -10,21 +10,20 @@
 <title>KCON JAPAN 2026 X STAGE</title>
 
 <style>
-body {
-    margin: 0;
-    background: #111;
-    color: #fff;
-    font-family: Arial, "Noto Sans TC", sans-serif;
-    text-align: center;
-}
+body { margin: 0; background: #111; color: #fff; font-family: Arial, "Noto Sans TC", sans-serif; text-align: center; }
+html, body { background: #000 !important; height: 100%; width: 100%; margin: 0; }
 
-html, body {
-    background: #000 !important; /* 強制全黑 */
-    height: 100%;
-    width: 100%;
-    margin: 0;
-}
-
+/* ===================================================
+   ❤️ 推薦按鈕 
+   =================================================== */
+.video-controls-bar { max-width: 800px; margin: 15px auto 5px auto; display: flex; justify-content: space-between; align-items: center; padding: 0 10px; }
+.video-controls-bar h2 { margin: 0; font-size: 1.5rem; text-align: left; }
+.video-controls-bar .like-btn { background: #a63a50 !important; color: #ffffff !important; border: none !important; padding: 8px 16px; border-radius: 20px;
+    cursor: pointer; font-size: 13px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: all 0.2s ease; }
+.video-controls-bar .like-btn:hover { background: #8c2f42 !important; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.4); }
+.video-controls-bar .like-btn.liked { background: #2b2b2b !important; color: #ffeb3b !important; font-weight: 700; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5) !important; transform: none !important; }
+.video-controls-bar .like-btn.liked:hover { background: #1f1f1f !important; }
+.video-controls-bar .like-btn:active { transform: translateY(1px) scale(0.96) !important; }
 </style>
 </head>
 
@@ -59,7 +58,10 @@ html, body {
     </div>
 </div>
 
-<h2>KCON JAPAN 2026 X STAGE</h2>
+<div class="video-controls-bar">
+    <h2>KCON JAPAN 2026 X STAGE</h2>
+    <button id="independent-like-btn" class="like-btn" onclick="likeIndependentVideo()">❤️ 推薦</button>
+</div>
 
 <div id="video-wrapper">
     <div id="player"></div>
@@ -88,6 +90,77 @@ html, body {
 /* 影片ID和SRT文件 */
 const MY_VIDEO_ID = "QvfgbXsWPes"; 
 const MY_SRT_FILE = "20260509_KCONJAPAN2026_X_STAGE.srt";
+
+/* 推薦按鈕資料設定 */
+const INDEPENDENT_VIDEO_DATA = {
+    category: 'group', 
+    videoDbId: 'video_20260509_kconjapan_xstage', 
+    displayTitle: 'KCON JAPAN 2026 X STAGE'
+};
+
+// 網頁載入時強制初始化推薦狀態
+document.addEventListener("DOMContentLoaded", () => {
+    // 稍微延遲確保 Firebase 連線與 DOM 穩定
+    setTimeout(() => {
+        const likeBtn = document.getElementById("independent-like-btn");
+        if (likeBtn) {
+            const hasLiked = localStorage.getItem(`liked_${INDEPENDENT_VIDEO_DATA.videoDbId}`) === 'true';
+            if (hasLiked) {
+                likeBtn.innerHTML = "✨ 已推薦";
+                likeBtn.classList.add('liked');
+            } else {
+                likeBtn.innerHTML = "❤️ 推薦";
+                likeBtn.classList.remove('liked');
+            }
+        }
+    }, 100);
+});
+
+// 獨立網頁點擊推薦函式
+function likeIndependentVideo() {
+    if (!window.fb_runTransaction || !window.fb_ref || !window.db) {
+        console.error("Firebase 尚未載入完成");
+        return;
+    }
+
+    const { category, videoDbId, displayTitle } = INDEPENDENT_VIDEO_DATA;
+    const likeBtn = document.getElementById("independent-like-btn");
+    
+    const hasLiked = localStorage.getItem(`liked_${videoDbId}`) === 'true';
+    const changeValue = hasLiked ? -1 : 1;
+
+    const targetRef = window.fb_ref(window.db, `stage_rankings/${category}/${videoDbId}`);
+
+    window.fb_runTransaction(targetRef, (currentData) => {
+        if (currentData) {
+            const newCount = (currentData.clickCount || 0) + changeValue;
+            currentData.clickCount = newCount < 0 ? 0 : newCount;
+            currentData.title = displayTitle;
+        } else {
+            currentData = {
+                title: displayTitle,
+                clickCount: changeValue < 0 ? 0 : 1
+            };
+        }
+        return currentData;
+    }).then(() => {
+        if (hasLiked) {
+            localStorage.setItem(`liked_${videoDbId}`, 'false');
+            if (likeBtn) {
+                likeBtn.innerHTML = "❤️ 推薦";
+                likeBtn.classList.remove('liked');
+            }
+        } else {
+            localStorage.setItem(`liked_${videoDbId}`, 'true');
+            if (likeBtn) {
+                likeBtn.innerHTML = "✨ 已推薦";
+                likeBtn.classList.add('liked');
+            }
+        }
+    }).catch(error => {
+        console.error("推薦操作失敗:", error);
+    });
+}
 
 /* ===== 字幕大小設定 ===== */
 function changeSubtitleSize(delta) {
