@@ -330,14 +330,22 @@
     .video-controls-bar .fullscreen-btn:hover { background: #475399 !important; color: #ffffff !important; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
 
     /* 有字幕的影片變成兩排 */
-    @media (max-width: 768px) {
-      .video-controls-first { display: grid; grid-template-columns: 1fr; gap: 10px; }
-      .video-controls-first p { text-align: center; }
-      .video-controls-first .actions-group { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-      .video-controls-first #subtitle-controls { order: 2; }
-      .video-controls-first .fullscreen-btn { order: 3; }
-      .video-controls-first .actions-group, .video-controls-first .fullscreen-btn { justify-self: center; }
+    @media (max-width:768px){
+
+    .video-controls-first{
+        flex-direction: column;
+        gap: 10px;
     }
+
+    .video-controls-first .top-actions,
+    .video-controls-first .bottom-actions{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:10px;
+        flex-wrap:wrap;
+    }
+}
   </style>
 </head>
 <body>
