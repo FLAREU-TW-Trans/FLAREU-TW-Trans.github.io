@@ -35,7 +35,43 @@
             letter-spacing: 2px;
         }
 
-        /* 分類切換導覽列 (對齊原本的子選單簡約高級感) */
+        .top-menu{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+.nav-btn{
+    background:#2b2b2b;
+    color:#fff;
+    border:none;
+    border-radius:20px;
+    padding:10px 20px;
+    text-decoration:none;
+    cursor:pointer;
+    font-weight:600;
+    font-size:14px;
+    transition:.2s;
+}
+
+.nav-btn:hover{
+    background:#3d3d3d;
+}
+
+.nav-btn.active{
+    background:var(--burgundy);
+}
+
+        #favorites-container{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fill,minmax(250px,1fr));
+    gap:20px;
+}
+
+        /* 分類切換導覽列 */
         .category-menu {
             display: flex;
             gap: 10px;
@@ -200,6 +236,12 @@
 
     <h1>🏆 舞台推薦排行榜</h1>
 
+    <div class="top-menu">
+    <a href="../../index.html" class="nav-btn">🏠 首頁</a>
+    <button id="favorite-btn" class="nav-btn" onclick="showFavorites()">⭐ 我的收藏</button>
+    <button id="ranking-btn" class="nav-btn active" onclick="showRanking()">🏆 排行榜</button>
+</div>
+
     <div class="category-menu">
         <button class="active" onclick="switchCategory('group', this)">團體舞台</button>
         <button onclick="switchCategory('liyu', this)">立于直拍</button>
@@ -211,6 +253,8 @@
             <div class="no-data">資料載入中...</div>
         </div>
     </div>
+
+    <div id="favorites-container" class="ranking-container" style="display:none;"></div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -514,6 +558,97 @@
             renderRankings();
         }
     });
+
+    //收藏
+    window.showRanking = function(){
+
+    document.querySelector('.ranking-container').style.display='flex';
+
+    document.getElementById('favorites-container').style.display='none';
+
+    document.getElementById('ranking-btn').classList.add('active');
+    document.getElementById('favorite-btn').classList.remove('active');
+}
+
+window.showFavorites = function(){
+
+    document.querySelector('.ranking-container').style.display='none';
+
+    document.getElementById('favorites-container').style.display='flex';
+
+    document.getElementById('favorite-btn').classList.add('active');
+    document.getElementById('ranking-btn').classList.remove('active');
+
+    renderFavorites();
+}
+    function renderFavorites(){
+
+    const container =
+        document.getElementById('favorites-container');
+
+    let favorites=[];
+
+    for(let i=0;i<localStorage.length;i++){
+
+        const key=localStorage.key(i);
+
+        if(key.startsWith('favorite_')){
+
+            try{
+
+                const item=JSON.parse(
+                    localStorage.getItem(key)
+                );
+
+                favorites.push(item);
+
+            }catch(e){}
+        }
+    }
+
+    if(favorites.length===0){
+
+        container.innerHTML=
+        `<div class="no-data">
+            尚未收藏任何影片
+         </div>`;
+
+        return;
+    }
+
+    container.innerHTML='';
+
+    favorites.forEach(video=>{
+
+        const card=`
+        <div class="podium-card">
+
+            <a href="${video.pageUrl}"
+               target="_blank"
+               class="thumb-wrapper">
+
+                <img src="${video.thumbUrl}"
+                     alt="${video.title}">
+            </a>
+
+            <div class="video-info">
+
+                <h3 class="video-title">
+                    ${video.title}
+                </h3>
+
+                <span class="count-badge">
+                    ⭐ 已收藏
+                </span>
+
+            </div>
+
+        </div>
+        `;
+
+        container.innerHTML+=card;
+    });
+}
 </script>
 </body>
 </html>
