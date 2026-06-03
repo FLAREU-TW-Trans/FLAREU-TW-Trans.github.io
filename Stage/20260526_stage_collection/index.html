@@ -805,10 +805,15 @@
       'tab-video5': { category: 'group', videoDbId: 'video_20260531_inkigayo_broadcast', displayTitle: '5/31 人氣歌謠 播出版本' }
     };
 
-    document.addEventListener("DOMContentLoaded", () => {
+    function getLikeButton(tabId) {
+  return document.querySelector(`#${tabId} .like-btn`);
+}
+
+// 網頁載入時強制初始化推薦按鈕狀態
+document.addEventListener("DOMContentLoaded", () => {
   Object.keys(window.currentSelectedVideo).forEach(tabId => {
     const videoDbId = window.currentSelectedVideo[tabId].videoDbId;
-    const likeBtn = document.getElementById(`like-btn-${tabId}`);
+    const likeBtn = getLikeButton(tabId);
     if (likeBtn) {
       const hasLiked = localStorage.getItem(`liked_${videoDbId}`) === 'true';
       if (hasLiked) {
@@ -823,92 +828,82 @@
 });
     
     function changeVideo(videoId, title, btn, tabId, titleId, category, videoDbId, displayTitle) {
-      // 執行原本的 YouTube 播放器切換與網頁 UI 更新
-      const data = videoData[tabId];
-      if (document.getElementById(titleId)) {
-        document.getElementById(titleId).textContent = title;
-      }
+  const data = videoData[tabId];
+  if (document.getElementById(titleId)) {
+    document.getElementById(titleId).textContent = title;
+  }
 
-      document.querySelectorAll(`#${tabId} .video-submenu button`).forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  document.querySelectorAll(`#${tabId} .video-submenu button`).forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
 
-      if (data && data.player) { 
-        data.player.loadVideoById(videoId); 
-      }
+  if (data && data.player) { 
+    data.player.loadVideoById(videoId); 
+  }
 
-      if (category && videoDbId && displayTitle) {
-        window.currentSelectedVideo[tabId] = {
-          category: category,
-          videoDbId: videoDbId,
-          displayTitle: displayTitle
-        };
-    
-        // 檢查本機快取
-        const likeBtn = document.getElementById(`like-btn-${tabId}`);
-        if (likeBtn) {
-          const hasLiked = localStorage.getItem(`liked_${videoDbId}`) === 'true';
-          if (hasLiked) {
-            likeBtn.innerHTML = "✨ 已推薦";
-            likeBtn.classList.add('liked');
-          } else {
-            likeBtn.innerHTML = "❤️ 推薦";
-            likeBtn.classList.remove('liked');
-          }
-        }
-      }
-    }
+  if (category && videoDbId && displayTitle) {
+    window.currentSelectedVideo[tabId] = {
+      category: category,
+      videoDbId: videoDbId,
+      displayTitle: displayTitle
+    };
 
-    // 推薦按鈕點擊函數
-    function likeCurrentVideo(tabId) {
-      const currentVideo = window.currentSelectedVideo[tabId];
-      if (!currentVideo) return;
-
-      const { category, videoDbId, displayTitle } = currentVideo;
-      const likeBtn = document.getElementById(`like-btn-${tabId}`);
-  
-      // 檢查目前網友對這部片的狀態
+    // 檢查本機快取
+    const likeBtn = getLikeButton(tabId);
+    if (likeBtn) {
       const hasLiked = localStorage.getItem(`liked_${videoDbId}`) === 'true';
-  
-      // 如果之前按過，這次就是「取消推薦(-1)」；如果沒按過，這次就是「推薦(+1)」
-      const changeValue = hasLiked ? -1 : 1;
-
-      const targetRef = window.fb_ref(window.db, `stage_rankings/${category}/${videoDbId}`);
-  
-      window.fb_runTransaction(targetRef, (currentData) => {
-        if (currentData) {
-          // 確保點擊數不會扣到變成負數
-          const newCount = (currentData.clickCount || 0) + changeValue;
-          currentData.clickCount = newCount < 0 ? 0 : newCount;
-          currentData.title = displayTitle;
-        } else {
-          // 如果是全新節點且是取消，給0；若是推薦給1
-          currentData = {
-            title: displayTitle,
-            clickCount: changeValue < 0 ? 0 : 1
-          };
-        }
-        return currentData;
-      }).then(() => {
-        // Firebase 更新成功後，更新網頁 UI 與本地紀錄
-        if (hasLiked) {
-          // 狀態改為：未推薦
-          localStorage.setItem(`liked_${videoDbId}`, 'false');
-          if (likeBtn) {
-            likeBtn.innerHTML = "❤️ 推薦";
-            likeBtn.classList.remove('liked');
-          }
-        } else {
-          // 狀態改為：已推薦
-          localStorage.setItem(`liked_${videoDbId}`, 'true');
-          if (likeBtn) {
-            likeBtn.innerHTML = "✨ 已推薦";
-            likeBtn.classList.add('liked');
-          }
-        }
-      }).catch(error => {
-        console.error("推薦操作失敗:", error);
-      });
+      if (hasLiked) {
+        likeBtn.innerHTML = "✨ 已推薦";
+        likeBtn.classList.add('liked');
+      } else {
+        likeBtn.innerHTML = "❤️ 推薦";
+        likeBtn.classList.remove('liked');
+      }
     }
+  }
+}
+
+function likeCurrentVideo(tabId) {
+  const currentVideo = window.currentSelectedVideo[tabId];
+  if (!currentVideo) return;
+
+  const { category, videoDbId, displayTitle } = currentVideo;
+  const likeBtn = getLikeButton(tabId); // 使用修復後的抓取機制
+
+  const hasLiked = localStorage.getItem(`liked_${videoDbId}`) === 'true';
+  const changeValue = hasLiked ? -1 : 1;
+
+  const targetRef = window.fb_ref(window.db, `stage_rankings/${category}/${videoDbId}`);
+
+  window.fb_ref.runTransaction(targetRef, (currentData) => {
+    if (currentData) {
+      const newCount = (currentData.clickCount || 0) + changeValue;
+      currentData.clickCount = newCount < 0 ? 0 : newCount;
+      currentData.title = displayTitle;
+    } else {
+      currentData = {
+        title: displayTitle,
+        clickCount: changeValue < 0 ? 0 : 1
+      };
+    }
+    return currentData;
+  }).then(() => {
+    if (hasLiked) {
+      localStorage.setItem(`liked_${videoDbId}`, 'false');
+      if (likeBtn) {
+        likeBtn.innerHTML = "❤️ 推薦";
+        likeBtn.classList.remove('liked');
+      }
+    } else {
+      localStorage.setItem(`liked_${videoDbId}`, 'true');
+      if (likeBtn) {
+        likeBtn.innerHTML = "✨ 已推薦";
+        likeBtn.classList.add('liked');
+      }
+    }
+  }).catch(error => {
+    console.error("推薦操作失敗:", error);
+  });
+}
   </script>
 </body>
 </html>
