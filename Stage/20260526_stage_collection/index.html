@@ -307,18 +307,18 @@
     .actions-group { display: flex; gap: 10px; align-items: center; }
     
     /*推薦按鈕*/ 
-    .like-btn { background: linear-gradient(135deg, #fff0f2 0%, #ffe3e7 100%); color: #de475b; border: 1px solid rgba(222, 71, 91, 0.3); padding: 8px 16px; border-radius: 20px;
+    .video-controls-bar .like-btn { background: linear-gradient(135deg, #fff0f2 0%, #ffe3e7 100%); color: #de475b; border: 1px solid rgba(222, 71, 91, 0.3); padding: 8px 16px; border-radius: 20px;
       cursor: pointer; font-size: 13px; font-weight: 700; box-shadow: 0 2px 6px rgba(222, 71, 91, 0.06); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-    .like-btn:hover { background: linear-gradient(135deg, #ffd9df 0%, #ffcbd4 100%); transform: translateY(-1px); box-shadow: 0 4px 10px rgba(222, 71, 91, 0.15); }
-    .like-btn.liked { background: linear-gradient(135deg, #de475b 0%, #cc3b4f 100%) !important; color: #ffffff !important; border-color: #cc3b4f !important; box-shadow: 0 2px 8px rgba(222, 71, 91, 0.3) !important; }
-    .like-btn.liked:hover { background: linear-gradient(135deg, #cc3b4f 0%, #b83244 100%) !important; box-shadow: 0 4px 12px rgba(222, 71, 91, 0.4) !important; }
-    .like-btn:active, .fullscreen-btn:active { transform: translateY(1px) scale(0.96); }
+    .video-controls-bar .like-btn:hover { background: linear-gradient(135deg, #ffd9df 0%, #ffcbd4 100%); transform: translateY(-1px); box-shadow: 0 4px 10px rgba(222, 71, 91, 0.15); }
+    .video-controls-bar .like-btn.liked { background: linear-gradient(135deg, #de475b 0%, #cc3b4f 100%) !important; color: #ffffff !important; border-color: #cc3b4f !important; box-shadow: 0 2px 8px rgba(222, 71, 91, 0.3) !important; }
+    .video-controls-bar .like-btn.liked:hover { background: linear-gradient(135deg, #cc3b4f 0%, #b83244 100%) !important; box-shadow: 0 4px 12px rgba(222, 71, 91, 0.4) !important; }
+    .video-controls-bar .like-btn:active, .fullscreen-btn:active { transform: translateY(1px) scale(0.96); }
 
     /*全螢幕按鈕*/
-    .fullscreen-btn { background: linear-gradient(135deg, #445566 0%, #334455 100%); color: #ffffff; border: 1px solid #2a3a4a; padding: 8px 16px; border-radius: 20px;
+    .video-controls-bar .fullscreen-btn { background: linear-gradient(135deg, #445566 0%, #334455 100%); color: #ffffff; border: 1px solid #2a3a4a; padding: 8px 16px; border-radius: 20px;
       cursor: pointer; font-size: 13px; font-weight: 600; box-shadow: 0 2px 6px rgba(51, 68, 85, 0.2); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-    .fullscreen-btn:hover { background: linear-gradient(135deg, #556677 0%, #445566 100%); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(51, 68, 85, 0.3); }
-    .fullscreen-btn:active { transform: translateY(1px) scale(0.96); box-shadow: 0 1px 3px rgba(68, 85, 102, 0.1); }
+    .video-controls-bar .fullscreen-btn:hover { background: linear-gradient(135deg, #556677 0%, #445566 100%); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(51, 68, 85, 0.3); }
+    .video-controls-bar .fullscreen-btn:active { transform: translateY(1px) scale(0.96); box-shadow: 0 1px 3px rgba(68, 85, 102, 0.1); }
   </style>
 </head>
 <body>
