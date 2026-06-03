@@ -303,6 +303,10 @@
     .video-submenu button { border: none; border-radius: 20px; padding: 8px 14px; cursor: pointer; background: var(--btn-bg); color: white; font-weight: 600; }
     .video-submenu button.active { background: var(--btn-hover); }
 
+    /*字幕*/
+    #subtitle-controls { display: flex; align-items: center; gap: 8px; }
+    .subtitle-label { display: flex; align-items: center; color: var(--text-main); font-weight: 600; }
+
     /*按鈕外層容器*/
     .actions-group { display: flex; gap: 10px; align-items: center; }
     
@@ -313,6 +317,12 @@
     .video-controls-bar .like-btn.liked { background: #2b2b2b !important; color: #ffeb3b !important; border: none !important; font-weight: 700; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important; transform: none !important; }
     .video-controls-bar .like-btn.liked:hover { background: #1f1f1f !important; color: #ffeb3b !important; }
     .video-controls-bar .like-btn:active, .video-controls-bar .fullscreen-btn:active { transform: translateY(1px) scale(0.96) !important; }
+
+    /*⭐ 收藏按鈕*/
+    .video-controls-bar .favorite-btn { background: #d4a017 !important; color: #ffffff !important; border: none !important; padding: 8px 16px; border-radius: 20px;
+      cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s ease; }
+    .video-controls-bar .favorite-btn:hover { background: #b38710 !important; transform: translateY(-1px); }
+    .video-controls-bar .favorite-btn.favorited { background: #2b2b2b !important; color: #ffd700 !important; font-weight: 700; }
 
      /*全螢幕按鈕*/
     .video-controls-bar .fullscreen-btn { background: #5c6bc0 !important; color: #ffffff !important; border: none !important; padding: 8px 16px; border-radius: 20px; 
@@ -348,6 +358,7 @@
           <p>5/20 接力舞蹈</p>
           <div class="actions-group">
             <button id="like-btn-video1" class="like-btn" onclick="likeCurrentVideo('tab-video1')">❤️推薦</button>
+            <button id="favorite-btn-video1" class="favorite-btn" onclick="toggleFavorite('tab-video1')">⭐收藏</button>
             <button class="fullscreen-btn" onclick="triggerFullscreen('video-wrapper-1')">全螢幕</button>
           </div>
       </div>
@@ -370,6 +381,7 @@
           <p>5/21 M COUNTDOWN EP.929</p>
           <div class="actions-group">
             <button id="like-btn-video2" class="like-btn" onclick="likeCurrentVideo('tab-video2')">❤️推薦</button>
+            <button id="favorite-btn-video2" class="favorite-btn" onclick="toggleFavorite('tab-video2')">⭐收藏</button>
             <button class="fullscreen-btn" onclick="triggerFullscreen('video-wrapper-2')">全螢幕</button>
           </div>
       </div>
@@ -393,6 +405,7 @@
         <p id="musicbank-title">5/22 Music Bank</p>
         <div class="actions-group">
             <button id="like-btn-video3" class="like-btn" onclick="likeCurrentVideo('tab-video3')">❤️推薦</button>
+            <button id="favorite-btn-video3" class="favorite-btn" onclick="toggleFavorite('tab-video3')">⭐收藏</button>
             <button class="fullscreen-btn" onclick="triggerFullscreen('video-wrapper-3')">全螢幕</button>
           </div>
       </div>
@@ -427,6 +440,7 @@
           <p>5/23 音樂中心</p>
           <div class="actions-group">
             <button id="like-btn-video4" class="like-btn" onclick="likeCurrentVideo('tab-video4')">❤️推薦</button>
+            <button id="favorite-btn-video4" class="favorite-btn" onclick="toggleFavorite('tab-video4')">⭐收藏</button>
             <button class="fullscreen-btn" onclick="triggerFullscreen('video-wrapper-4')">全螢幕</button>
           </div>
       </div>
@@ -449,6 +463,7 @@
         <p id="inkigayo-title">5/24 人氣歌謠 (播出版本)</p>
         <div class="actions-group">
           <button id="like-btn-video5" class="like-btn" onclick="likeCurrentVideo('tab-video5')">❤️推薦</button>
+          <button id="favorite-btn-video5" class="favorite-btn" onclick="toggleFavorite('tab-video5')">⭐收藏</button>
           <button class="fullscreen-btn" onclick="triggerFullscreen('video-wrapper-5')">全螢幕</button>
         </div>
       </div>
@@ -732,6 +747,53 @@
       return document.querySelector(`#${tabId} .like-btn`);
     }
 
+    function getFavoriteButton(tabId) {
+      return document.querySelector(`#${tabId} .favorite-btn`);
+    }
+
+    function toggleFavorite(tabId) {
+
+      const currentVideo = window.currentSelectedVideo[tabId];
+      if (!currentVideo) return;
+
+      const favBtn = getFavoriteButton(tabId);
+
+      const favorites =
+        JSON.parse(localStorage.getItem("favoriteVideos") || "[]");
+
+      const index = favorites.findIndex(
+        item => item.videoDbId === currentVideo.videoDbId
+      );
+
+      if (index > -1) {
+
+        favorites.splice(index, 1);
+
+        if (favBtn) {
+          favBtn.innerHTML = "⭐收藏";
+          favBtn.classList.remove("favorited");
+        }
+
+      } else {
+
+        favorites.push({
+          videoDbId: currentVideo.videoDbId,
+          title: currentVideo.displayTitle,
+          ytId: videoData[tabId].id
+        });
+
+        if (favBtn) {
+          favBtn.innerHTML = "⭐已收藏";
+          favBtn.classList.add("favorited");
+        }
+      }
+
+      localStorage.setItem(
+        "favoriteVideos",
+        JSON.stringify(favorites)
+      );
+    }
+
     // 網頁載入時強制初始化推薦按鈕狀態
     document.addEventListener("DOMContentLoaded", () => {
       Object.keys(window.currentSelectedVideo).forEach(tabId => {
@@ -747,6 +809,20 @@
             likeBtn.classList.remove('liked');
           }
         }
+        const favBtn = getFavoriteButton(tabId);
+        if (favBtn) {
+          const favorites = JSON.parse(localStorage.getItem("favoriteVideos") || "[]");
+          const isFavorited = favorites.some(
+            item => item.videoDbId === videoDbId
+          );
+          if (isFavorited) {
+            favBtn.innerHTML = "⭐已收藏";
+            favBtn.classList.add("favorited");
+          } else {
+            favBtn.innerHTML = "⭐收藏";
+            favBtn.classList.remove("favorited");
+          }
+        }
       });
     });
     
@@ -759,10 +835,30 @@
       document.querySelectorAll(`#${tabId} .video-submenu button`).forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      if (data && data.player) { 
-        data.player.loadVideoById(videoId); 
+      // 更新目前播放的 YouTube ID
+      if (data) {
+        data.id = videoId;
+        if (data.player && typeof data.player.loadVideoById === 'function') { 
+          data.player.loadVideoById(videoId); 
+        }
       }
 
+      // 控制字幕選單顯示（只有採訪顯示字幕控制項）
+      const subtitleEl = document.getElementById(data ? data.subEl : '');
+      const subtitleControls = document.getElementById('subtitle-controls');
+      
+      if (videoId === 'kHoqPGrhdQQ') {
+        if (subtitleEl) subtitleEl.style.display = 'flex';
+        if (subtitleControls) subtitleControls.style.display = 'flex';
+      } else {
+        if (subtitleEl) {
+          subtitleEl.style.display = 'none';
+          subtitleEl.innerHTML = '';
+        }
+        if (subtitleControls) subtitleControls.style.display = 'none';
+      }
+
+      // 紀錄當前推薦資料
       if (category && videoDbId && displayTitle) {
         window.currentSelectedVideo[tabId] = {
           category: category,
@@ -770,7 +866,6 @@
           displayTitle: displayTitle
         };
 
-        // 檢查本機快取
         const likeBtn = getLikeButton(tabId);
         if (likeBtn) {
           const hasLiked = localStorage.getItem(`liked_${videoDbId}`) === 'true';
@@ -782,6 +877,22 @@
             likeBtn.classList.remove('liked');
           }
         }
+
+        const favBtn = getFavoriteButton(tabId);
+        if (favBtn) {
+          const favorites = JSON.parse(localStorage.getItem("favoriteVideos") || "[]");
+          const isFavorited = favorites.some(
+            item => item.videoDbId === videoDbId
+          );
+
+          if (isFavorited) {
+            favBtn.innerHTML = "⭐已收藏";
+            favBtn.classList.add("favorited");
+          } else {
+            favBtn.innerHTML = "⭐收藏";
+            favBtn.classList.remove("favorited");
+          }
+        }
       }
     }
 
@@ -790,6 +901,7 @@
       if (!currentVideo) return;
 
       const { category, videoDbId, displayTitle } = currentVideo;
+      const videoId = videoData[tabId] ? videoData[tabId].id : '';
       const likeBtn = getLikeButton(tabId); // 使用修復後的抓取機制
 
       const hasLiked = localStorage.getItem(`liked_${videoDbId}`) === 'true';
@@ -802,10 +914,12 @@
           const newCount = (currentData.clickCount || 0) + changeValue;
           currentData.clickCount = newCount < 0 ? 0 : newCount;
           currentData.title = displayTitle;
+          currentData.ytId = videoId;
         } else {
           currentData = {
             title: displayTitle,
-            clickCount: changeValue < 0 ? 0 : 1
+            clickCount: changeValue < 0 ? 0 : 1,
+            ytId: videoId
           };
         }
         return currentData;
