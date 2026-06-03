@@ -130,6 +130,8 @@
             position: relative;
             width: 100%;
             background: #000;
+            display: block; 
+            cursor: pointer;
         }
 
         .thumb-wrapper img {
@@ -170,7 +172,7 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            height: 42px; /* 固定高度防止因字數不同錯位 */
+            height: 42px; 
         }
 
         .count-badge {
@@ -184,7 +186,6 @@
             border: 1px solid rgba(166, 58, 80, 0.3);
         }
 
-        /* 無資料提示 */
         .no-data {
             text-align: center;
             padding: 4px 0;
@@ -233,6 +234,180 @@
     window.currentCategory = 'group';
     window.rawRankingData = {};
 
+    // 【手動添加與連結對照表】
+    const customVideoMapping = {
+        // KCON JAPAN 2026 X STAGE
+        'video_20260509_kconjapan_xstage': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260509_KCONJAPAN2026_X_STAGE/',
+            customThumb: '' // 留空代表預設自動抓 YouTube 採訪的縮圖
+        },
+        // 5/14 MCD 系列
+        'video_20260514_mcd_interview': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/',
+            customThumb: '' // 留空代表預設自動抓 YouTube 採訪的縮圖
+        },
+        'video_20260514_mcd_broadcast': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/',
+            customThumb: '' 
+        },
+        'video_20260514_mcd_fullcam': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/',
+            customThumb: '' 
+        },
+        'video_20260514_mcd_liyu': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/',
+            customThumb: '' 
+        },
+        'video_20260514_mcd_woojin': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/',
+            customThumb: '' 
+        },
+
+        // 5/15 Music Bank 系列
+        'video_20260515_musicbank_broadcast': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260515_musicbank_fullcam': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260515_musicbank_liyu': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260515_musicbank_woojin': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/', 
+            customThumb: ''
+        },
+
+        // 5/16 音樂中心 系列
+        'video_20260516_musiccore_broadcast': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260516_musiccore_fullcam': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260516_musiccore_liyu': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260516_musiccore_woojin': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/', 
+            customThumb: ''
+        },
+
+        // 5/17 人氣歌謠 系列
+        'video_20260517_inkigayo_broadcast': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260517_inkigayo_fullcam': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/', 
+            customThumb: ''
+        },
+
+        // 5/20 接力舞蹈 系列
+        'video_20260520_relaydance': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260520_stage_collection/', 
+            customThumb: ''
+        },
+
+        // 5/21 MCD 系列
+        'video_20260521_mcd_broadcast': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260520_stage_collection/', 
+            customThumb: ''
+        },
+
+        // 5/22 Music Bank 系列
+        'video_20260522_musicbank_broadcast': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260520_stage_collection/', 
+            customThumb: ''
+        },
+
+        // 5/22 [MIC&] , Stone LIVE 系列
+        'video_20260522_stone_live': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260520_stage_collection/', 
+            customThumb: ''
+        },
+
+        // 5/23 音樂中心 系列
+        'video_20260523_musiccore_broadcast': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260520_stage_collection/', 
+            customThumb: ''
+        },
+
+        // 5/24 人氣歌謠 系列
+        'video_20260524_inkigayo_broadcast': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260520_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260524_inkigayo_fullcam': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260520_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260524_inkigayo_liyu': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260520_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260524_inkigayo_woojin': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260520_stage_collection/', 
+            customThumb: ''
+        },
+
+        // 5/26 ENA K POP UP CHART SHOW 系列
+        'video_20260526_ena_broadcast': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260526_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260526_ena_fullcam': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260526_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260526_ena_liyu': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260526_stage_collection/', 
+            customThumb: ''
+        },
+
+        // 5/28 MCD 系列
+        'video_20260528_mcd_broadcast': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260526_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260528_mcd_fullcam': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260526_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260528_mcd_liyu': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260526_stage_collection/', 
+            customThumb: ''
+        },
+
+        // 5/29 Music Bank 系列
+        'video_20260529_musicbank_broadcast': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260526_stage_collection/', 
+            customThumb: ''
+        },
+
+        // 5/30 音樂中心 系列
+        'video_20260530_musiccore_broadcast': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260526_stage_collection/', 
+            customThumb: ''
+        },
+
+        // 5/31 人氣歌謠 系列
+        'video_20260531_inkigayo_broadcast': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260526_stage_collection/', 
+            customThumb: ''
+        },
+        'video_20260531_inkigayo_fullcam': {
+            link: 'https://flareu-tw-trans.github.io/Stage/20260526_stage_collection/', 
+            customThumb: ''
+        },
+    };
+
     // 即時監聽整個 stage_rankings 節點
     const rankingsRef = ref(db, 'stage_rankings');
     onValue(rankingsRef, (snapshot) => {
@@ -254,22 +429,17 @@
             return;
         }
 
-        // 1. 將物件轉換成陣列，並自動過濾掉點擊數為 0 或是沒有 videoDbId 的資料
-        // 【修改點】：這裡加入了 ytId 欄位讀取
         let items = [];
         Object.keys(categoryData).forEach(videoDbId => {
             items.push({
                 videoDbId: videoDbId,
                 title: categoryData[videoDbId].title || '未命名舞台',
                 clickCount: categoryData[videoDbId].clickCount || 0,
-                ytId: categoryData[videoDbId].ytId || '' // <-- 撈出點擊時存入的 YouTube ID
+                ytId: categoryData[videoDbId].ytId || ''
             });
         });
 
-        // 2. 依據推薦按鈕點擊數（clickCount）由大到小排序
         items.sort((a, b) => b.clickCount - a.clickCount);
-
-        // 3. 只取前三名
         let topThree = items.slice(0, 3);
 
         if (topThree.length === 0) {
@@ -277,37 +447,45 @@
             return;
         }
 
-        // 4. 為了達成電腦版上完美的頒獎台排版（左:第二名、中:第一名、右:第三名）
-        // 在大螢幕下，我們調整陣列順序。如果是手機版，透過 CSS Order 處理。
         let displayOrder = [];
         if (window.innerWidth > 768) {
-            if (topThree[1]) displayOrder.push({ item: topThree[1], rank: 2 }); // 放左邊
-            if (topThree[0]) displayOrder.push({ item: topThree[0], rank: 1 }); // 放中間
-            if (topThree[2]) displayOrder.push({ item: topThree[2], rank: 3 }); // 放右邊
+            if (topThree[1]) displayOrder.push({ item: topThree[1], rank: 2 });
+            if (topThree[0]) displayOrder.push({ item: topThree[0], rank: 1 });
+            if (topThree[2]) displayOrder.push({ item: topThree[2], rank: 3 });
         } else {
-            // 手機版就直接 1 -> 2 -> 3 排下去
             topThree.forEach((item, index) => {
                 displayOrder.push({ item: item, rank: index + 1 });
             });
         }
 
-        // 5. 生成 HTML
         podiumArea.innerHTML = '';
         displayOrder.forEach(slot => {
             const video = slot.item;
             const rank = slot.rank;
+            const dbId = video.videoDbId;
             
-            // 【核心修改】：直接讀取資料庫傳來的 ytId，不再經由手動對照表。
-            // 如果剛好是舊資料還沒有 ytId，則給予一個預設的 ID 防止縮圖破圖。
-            const youtubeId = video.ytId || 'Mu9EwQfmMZU';
-            const thumbUrl = `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`;
+            // 1. 取得對照表自訂內容
+            const customConfig = customVideoMapping[dbId] || {};
+            
+            // 2. 判斷連結：如果有自訂連結就用自訂的，沒有的話預設回首頁
+            const targetLink = customConfig.link || 'https://flareu-tw-trans.github.io/';
 
+            // 3. 判斷縮圖：優先使用手動添加的圖片網址。如果沒有，再自動抓 YouTube 縮圖
+            let thumbUrl = '';
+            if (customConfig.customThumb && customConfig.customThumb.trim() !== '') {
+                thumbUrl = customConfig.customThumb;
+            } else {
+                const youtubeId = video.ytId || 'Mu9EwQfmMZU';
+                thumbUrl = `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`;
+            }
+
+            // 4. 生成具有 <a> 標籤跳轉功能的 HTML 卡片
             const cardHtml = `
                 <div class="podium-card rank-${rank}">
-                    <div class="thumb-wrapper">
+                    <a href="${targetLink}" target="_blank" rel="noopener noreferrer" class="thumb-wrapper">
                         <div class="rank-badge">${rank}</div>
                         <img src="${thumbUrl}" alt="舞台縮圖" onerror="this.src='https://flareu-tw-trans.github.io/images/favicon.png';">
-                    </div>
+                    </a>
                     <div class="video-info">
                         <h3 class="video-title">${video.title}</h3>
                         <span class="count-badge">❤️ ${video.clickCount} 次推薦</span>
