@@ -874,7 +874,7 @@ function likeCurrentVideo(tabId) {
 
   const targetRef = window.fb_ref(window.db, `stage_rankings/${category}/${videoDbId}`);
 
-  window.fb_ref.runTransaction(targetRef, (currentData) => {
+  window.fb_runTransaction(targetRef, (currentData) => {
     if (currentData) {
       const newCount = (currentData.clickCount || 0) + changeValue;
       currentData.clickCount = newCount < 0 ? 0 : newCount;
