@@ -357,15 +357,15 @@
 
       <div class="video-submenu">
 
-        <button class="active" onclick="changeVideo( 'uQdwvjjX9WY', '20260526 ENA K POP UP CHART SHOW(播出版本)', this, 'tab-video1', 'ENA-title')">
+        <button class="active" onclick="changeVideo('uQdwvjjX9WY', '20260526 ENA K POP UP CHART SHOW(播出版本)', this, 'tab-video1', 'ENA-title', 'group', 'video_20260526_ena_broadcast', '5/26 ENA K POP UP CHART SHOW 團體舞台')">
             播出版本
         </button>
 
-        <button onclick="changeVideo('pTHUvoiGT1E','20260526 ENA K POP UP CHART SHOW(舞台全景)',this, 'tab-video1', 'ENA-title')">
+        <button onclick="changeVideo('pTHUvoiGT1E','20260526 ENA K POP UP CHART SHOW(舞台全景)',this, 'tab-video1', 'ENA-title', 'group', 'video_20260526_ena_fullcam', '5/26 ENA K POP UP CHART SHOW 舞台全景')">
             舞台全景
         </button>
 
-        <button onclick="changeVideo('uy0oqVYrAys','20260526 ENA K POP UP CHART SHOW(立于直拍)',this, 'tab-video1', 'ENA-title')">
+        <button onclick="changeVideo('uy0oqVYrAys','20260526 ENA K POP UP CHART SHOW(立于直拍)',this, 'tab-video1', 'ENA-title', 'liyu', 'video_20260526_ena_liyu', '5/26 ENA K POP UP CHART SHOW 立于直拍')">
             立于直拍
         </button>
 
@@ -394,16 +394,16 @@
 
       <div class="video-submenu">
 
-        <button class="active" onclick="changeVideo( 'EWmkXIR5Qk8', '20260528 M COUNTDOWN EP.930(播出版本)', this, 'tab-video2', 'MCOUNTDOWN-title')">
-            播出版本
+        <button class="active" onclick="changeVideo('EWmkXIR5Qk8', '20260528 M COUNTDOWN EP.930(播出版本)', this, 'tab-video2', 'MCOUNTDOWN-title', 'group', 'video_20260528_mcd_broadcast', '5/28 M COUNTDOWN 團體舞台')">
+          播出版本
         </button>
 
-        <button onclick="changeVideo('2iQiWKRKiIQ','20260528 M COUNTDOWN EP.930(舞台全景)',this, 'tab-video2', 'MCOUNTDOWN-title')">
-            舞台全景
+        <button onclick="changeVideo('2iQiWKRKiIQ', '20260528 M COUNTDOWN EP.930(舞台全景)', this, 'tab-video2', 'MCOUNTDOWN-title', 'group', 'video_20260528_mcd_fullcam', '5/28 M COUNTDOWN 舞台全景')">
+          舞台全景
         </button>
 
-        <button onclick="changeVideo('z0uQoUNSrPQ','20260528 M COUNTDOWN EP.930(立于直拍)',this, 'tab-video2', 'MCOUNTDOWN-title')">
-            立于直拍
+        <button onclick="changeVideo('z0uQoUNSrPQ', '20260528 M COUNTDOWN EP.930(立于直拍)', this, 'tab-video2', 'MCOUNTDOWN-title', 'liyu', 'video_20260528_mcd_liyu', '5/28 M COUNTDOWN 立于直拍')">
+          立于直拍
         </button>
 
       </div>
@@ -424,9 +424,16 @@
 
     <div id="tab-video3" class="tab-content">
       <div class="video-controls-bar">
-          <p>20260529 Music Bank</p>
+          <p id="musicbank-title">20260529 Music Bank(播出版本)</p>
           <button onclick="triggerFullscreen('video-wrapper-3')">全螢幕</button>
       </div>
+
+      <div class="video-submenu">
+        <button class="active" onclick="changeVideo('ryEf2ZTquG4', '20260529 Music Bank(播出版本)', this, 'tab-video3', 'musicbank-title', 'group', 'video_20260529_musicbank_broadcast', '5/29 Music Bank 團體舞台')">
+            播出版本
+        </button>
+      </div>
+      
       <div id="video-wrapper-3" class="video-responsive-wrapper">
           <div id="player-container-video3"></div>
           <div id="subtitle-video3" class="subtitle-overlay"></div>
@@ -438,8 +445,13 @@
 
     <div id="tab-video4" class="tab-content">
       <div class="video-controls-bar">
-          <p>20260530 音樂中心</p>
+          <p id="musiccore-title">20260530 音樂中心</p>
           <button onclick="triggerFullscreen('video-wrapper-4')">全螢幕</button>
+      </div>
+      <div class="video-submenu">
+        <button class="active" onclick="changeVideo('3KDJuV2Wopw', '20260530 音樂中心(播出版本)', this, 'tab-video4', 'musiccore-title', 'group', 'video_20260530_musiccore_broadcast', '5/30 音樂中心 團體舞台')">
+            播出版本
+        </button>
       </div>
       <div id="video-wrapper-4" class="video-responsive-wrapper">
           <div id="player-container-video4"></div>
@@ -459,12 +471,12 @@
 
       <div class="video-submenu">
 
-        <button class="active" onclick="changeVideo( 'NfV1Zy23B1w', '20260531 人氣歌謠(播出版本)', this, 'tab-video5', 'inkigayo-title')">
-            播出版本
+        <button class="active" onclick="changeVideo('NfV1Zy23B1w', '20260531 人氣歌謠(播出版本)', this, 'tab-video5', 'inkigayo-title', 'group', 'video_20260531_inkigayo_broadcast', '5/31 人氣歌謠 團體舞台')">
+          播出版本
         </button>
 
-        <button onclick="changeVideo('DfP10PkDIgE','20260531 人氣歌謠(舞台全景)',this, 'tab-video5', 'inkigayo-title')">
-            舞台全景
+        <button onclick="changeVideo('DfP10PkDIgE', '20260531 人氣歌謠(舞台全景)', this, 'tab-video5', 'inkigayo-title', 'group', 'video_20260531_inkigayo_fullcam', '5/31 人氣歌謠 舞台全景')">
+          舞台全景
         </button>
 
       </div>
@@ -714,17 +726,42 @@
     });
 
     // 舞台合輯
-    function changeVideo(videoId, title, btn, tabId, titleId) {
-
+    function changeVideo(videoId, title, btn, tabId, titleId, category, videoDbId, displayTitle) {
+      // 1. 執行原本的 YouTube 播放器切換與網頁 UI 更新
       const data = videoData[tabId];
-
-      document.getElementById(titleId).textContent = title;
+      if (document.getElementById(titleId)) {
+        document.getElementById(titleId).textContent = title;
+      }
 
       document.querySelectorAll(`#${tabId} .video-submenu button`).forEach(b => b.classList.remove('active'));
-
       btn.classList.add('active');
 
-      if (data.player) { data.player.loadVideoById(videoId); }
+      if (data && data.player) { 
+        data.player.loadVideoById(videoId); 
+      }
+
+      // 2. 核心：Firebase 動態點擊計數器 (只有在有帶參數時才觸發，避免舊按鈕報錯)
+      if (category && videoDbId && displayTitle) {
+        // 使用全域掛載的 fb_ref 和 db 組出動態路徑： stage_rankings/$category/$video_db_id
+        const targetRef = window.fb_ref(window.db, `stage_rankings/${category}/${videoDbId}`);
+    
+        window.fb_runTransaction(targetRef, (currentData) => {
+          if (currentData) {
+            // 如果此節點已存在，點擊數 +1，並確保 title 更新
+            currentData.clickCount = (currentData.clickCount || 0) + 1;
+            currentData.title = displayTitle; 
+          } else {
+            // 如果是全新舞台影片，初始化建立，完全符合規則需要的結構
+            currentData = {
+              title: displayTitle,
+              clickCount: 1
+            };
+          }
+          return currentData;
+        }).catch(error => {
+          console.error("排行榜計數失敗，請檢查規則或參數限制:", error);
+        });
+      }
     }
   </script>
 </body>
