@@ -98,26 +98,32 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://flareu-tw-trans.github.io/Stage/20260514_M_COUNTDOWN_EP.928/</loc>
-    <lastmod>2026-05-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://flareu-tw-trans.github.io/Stage/20260509_KCONJAPAN2026_X_STAGE/</loc>
     <lastmod>2026-05-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://flareu-tw-trans.github.io/Stage/20260515_MusicBank/</loc>
-    <lastmod>2026-05-17</lastmod>
+    <loc>https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/</loc>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://flareu-tw-trans.github.io/Stage/20260516_Show!MusicCore/</loc>
-    <lastmod>2026-05-17</lastmod>
+    <loc>https://flareu-tw-trans.github.io/Stage/20260514_stage_collection/</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://flareu-tw-trans.github.io/Stage/20260520_stage_collection/</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://flareu-tw-trans.github.io/Stage/20260526_stage_collection/</loc>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
