@@ -64,11 +64,45 @@
     background:var(--burgundy);
 }
 
-        #favorites-container{
+#ranking-btn.active{
+    background:#a63a50;
+}
+
+#favorite-btn.active{
+    background:#d49a00;
+}
+
+.category-menu button[data-category="group"].active{
+    background:#a63a50;
+}
+
+.category-menu button[data-category="liyu"].active{
+    background:#2e8b57;
+}
+
+.category-menu button[data-category="woojin"].active{
+    background:#4169e1;
+}
+
+#favorites-container{
     display:grid;
     grid-template-columns:
-        repeat(auto-fill,minmax(250px,1fr));
-    gap:20px;
+        repeat(auto-fill,minmax(180px,220px));
+    justify-content:center;
+    gap:16px;
+}
+
+#favorites-container .thumb-wrapper{
+    height:120px;
+}
+
+#favorites-container .video-title{
+    height:auto;
+    font-size:14px;
+}
+
+#favorites-container .video-info{
+    padding:12px;
 }
 
         /* 分類切換導覽列 */
@@ -91,9 +125,9 @@
             transition: all 0.2s ease;
         }
 
-        .category-menu button.active {
-            background: var(--burgundy);
-        }
+        .category-menu button.active{
+    color:#fff;
+}
 
         .category-menu button:hover:not(.active) {
             background: #3d3d3d;
@@ -243,9 +277,9 @@
 </div>
 
     <div class="category-menu">
-        <button class="active" onclick="switchCategory('group', this)">團體舞台</button>
-        <button onclick="switchCategory('liyu', this)">立于直拍</button>
-        <button onclick="switchCategory('woojin', this)">玗進直拍</button>
+        <button data-category="group" class="active" onclick="switchCategory('group', this)">團體舞台</button>
+        <button data-category="liyu" onclick="switchCategory('liyu', this)">立于直拍</button>
+        <button data-category="woojin" onclick="switchCategory('woojin', this)">玗進直拍</button>
     </div>
 
     <div class="ranking-container">
@@ -562,90 +596,85 @@
     //收藏
     window.showRanking = function(){
 
-    document.querySelector('.ranking-container').style.display='flex';
+        document.querySelector('.ranking-container').style.display='flex';
 
-    document.getElementById('favorites-container').style.display='none';
+        document.getElementById('favorites-container').style.display='none';
 
-    document.getElementById('ranking-btn').classList.add('active');
-    document.getElementById('favorite-btn').classList.remove('active');
-}
-
-window.showFavorites = function(){
-
-    document.querySelector('.ranking-container').style.display='none';
-
-    document.getElementById('favorites-container').style.display='flex';
-
-    document.getElementById('favorite-btn').classList.add('active');
-    document.getElementById('ranking-btn').classList.remove('active');
-
-    renderFavorites();
-}
-    function renderFavorites(){
-
-    const container =
-        document.getElementById('favorites-container');
-
-    const favorites = JSON.parse(
-        localStorage.getItem('favoriteVideos') || '[]'
-    );
-
-    if(favorites.length===0){
-
-        container.innerHTML=
-        `<div class="no-data">
-            尚未收藏任何影片
-         </div>`;
-
-        return;
+        document.getElementById('ranking-btn').classList.add('active');
+        document.getElementById('favorite-btn').classList.remove('active');
     }
 
-    container.innerHTML='';
+    window.showFavorites = function(){
 
-    favorites.forEach(video=>{
+        document.querySelector('.ranking-container').style.display='none';
 
-        const config =
-            customVideoMapping[video.videoDbId] || {};
+        document.getElementById('favorites-container').style.display='flex';
 
-        const pageUrl =
-            config.link ||
-            'https://flareu-tw-trans.github.io/';
+        document.getElementById('favorite-btn').classList.add('active');
+        document.getElementById('ranking-btn').classList.remove('active');
 
-        const thumbUrl =
-            config.customThumb ||
-            `https://img.youtube.com/vi/${video.ytId}/mqdefault.jpg`;
+        renderFavorites();
+    }
+    
+    function renderFavorites(){
 
-        const card=`
-        <div class="podium-card">
+        const container = document.getElementById('favorites-container');
 
-            <a href="${pageUrl}"
-               target="_blank"
-               class="thumb-wrapper">
+        const allFavorites = JSON.parse(
+            localStorage.getItem('favoriteVideos') || '[]'
+        );
 
-                <img src="${thumbUrl}"
-                     alt="${video.title}"
-                     onerror="this.src='https://flareu-tw-trans.github.io/images/favicon.png';">
+        const favorites = allFavorites.filter(
+            item => item.category === window.currentCategory
+        );
 
-            </a>
+        if(favorites.length===0){
+            container.innerHTML=
+            `<div class="no-data">
+                尚未收藏任何影片
+             </div>`;
+            return;
+        }
 
-            <div class="video-info">
+        container.innerHTML='';
 
-                <h3 class="video-title">
-                    ${video.title}
-                </h3>
+        favorites.forEach(video=>{
 
-                <span class="count-badge">
-                    ⭐ 已收藏
-                </span>
+            const config = customVideoMapping[video.videoDbId] || {};
 
+            const pageUrl =
+                config.link ||
+                'https://flareu-tw-trans.github.io/';
+
+            const thumbUrl =
+                config.customThumb ||
+                `https://img.youtube.com/vi/${video.ytId}/mqdefault.jpg`;
+
+            const card=`
+            <div class="podium-card">
+                <a href="${pageUrl}"
+                   target="_blank"
+                   class="thumb-wrapper">
+
+                    <img src="${thumbUrl}"
+                         alt="${video.title}"
+                         onerror="this.src='https://flareu-tw-trans.github.io/images/favicon.png';">
+                </a>
+
+                <div class="video-info">
+                    <h3 class="video-title">
+                        ${video.title}
+                    </h3>
+
+                    <span class="count-badge">
+                        ⭐ 已收藏
+                    </span>
+                </div>
             </div>
-
-        </div>
-        `;
-
-        container.innerHTML += card;
-    });
-}
+            `;
+            container.innerHTML += card;
+        });
+    }
 </script>
 </body>
 </html>
