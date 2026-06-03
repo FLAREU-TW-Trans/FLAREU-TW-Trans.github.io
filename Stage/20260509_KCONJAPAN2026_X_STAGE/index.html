@@ -60,7 +60,10 @@ html, body { background: #000 !important; height: 100%; width: 100%; margin: 0; 
 
 <div class="video-controls-bar">
     <h2>KCON JAPAN 2026 X STAGE</h2>
-    <button id="independent-like-btn" class="like-btn" onclick="likeIndependentVideo()">❤️ 推薦</button>
+    <div style="display:flex;gap:10px;">
+        <button id="favorite-btn" class="like-btn" onclick="toggleFavorite()">⭐ 收藏</button>
+        <button id="independent-like-btn" class="like-btn" onclick="likeIndependentVideo()">❤️ 推薦</button>
+    </div>
 </div>
 
 <div id="video-wrapper">
@@ -93,9 +96,10 @@ const MY_SRT_FILE = "20260509_KCONJAPAN2026_X_STAGE.srt";
 
 /* 推薦按鈕資料設定 */
 const INDEPENDENT_VIDEO_DATA = {
-    category: 'group', 
-    videoDbId: 'video_20260509_kconjapan_xstage', 
-    displayTitle: 'KCON JAPAN 2026 X STAGE'
+    category: 'group',
+    videoDbId: 'video_20260509_kconjapan_xstage',
+    displayTitle: 'KCON JAPAN 2026 X STAGE',
+    ytId: 'QvfgbXsWPes'
 };
 
 // 網頁載入時強制初始化推薦狀態
@@ -113,8 +117,62 @@ document.addEventListener("DOMContentLoaded", () => {
                 likeBtn.classList.remove('liked');
             }
         }
+
+        // 收藏狀態
+        const favoriteBtn = document.getElementById("favorite-btn");
+
+        const favorites = JSON.parse(
+            localStorage.getItem("favoriteVideos") || "[]"
+        );
+
+        const isFavorite = favorites.some(
+            v => v.videoDbId === INDEPENDENT_VIDEO_DATA.videoDbId
+        );
+
+        if(isFavorite){
+            favoriteBtn.innerHTML = "⭐ 已收藏";
+            favoriteBtn.classList.add("liked");
+        }
     }, 100);
 });
+
+// 收藏
+function toggleFavorite(){
+
+    const btn = document.getElementById("favorite-btn");
+
+    let favorites = JSON.parse(
+        localStorage.getItem("favoriteVideos") || "[]"
+    );
+
+    const index = favorites.findIndex(
+        v => v.videoDbId === INDEPENDENT_VIDEO_DATA.videoDbId
+    );
+
+    if(index >= 0){
+
+        favorites.splice(index,1);
+
+        btn.innerHTML = "⭐ 收藏";
+        btn.classList.remove("liked");
+
+    }else{
+
+        favorites.push({
+            videoDbId: INDEPENDENT_VIDEO_DATA.videoDbId,
+            title: INDEPENDENT_VIDEO_DATA.displayTitle,
+            ytId: INDEPENDENT_VIDEO_DATA.ytId
+        });
+
+        btn.innerHTML = "⭐ 已收藏";
+        btn.classList.add("liked");
+    }
+
+    localStorage.setItem(
+        "favoriteVideos",
+        JSON.stringify(favorites)
+    );
+}
 
 // 獨立網頁點擊推薦函式
 function likeIndependentVideo() {
