@@ -864,6 +864,7 @@
       if (!currentVideo) return;
 
       const { category, videoDbId, displayTitle } = currentVideo;
+      const videoId = videoData[tabId] ? videoData[tabId].id : '';
       const likeBtn = getLikeButton(tabId); // 使用修復後的抓取機制
 
       const hasLiked = localStorage.getItem(`liked_${videoDbId}`) === 'true';
@@ -876,10 +877,12 @@
           const newCount = (currentData.clickCount || 0) + changeValue;
           currentData.clickCount = newCount < 0 ? 0 : newCount;
           currentData.title = displayTitle;
+          currentData.ytId = videoId;
         } else {
           currentData = {
             title: displayTitle,
             clickCount: changeValue < 0 ? 0 : 1
+            ytId: videoId
           };
         }
         return currentData;
