@@ -329,47 +329,69 @@
 }
 
 /* ❤️ 推薦按鈕 - 已點擊狀態 (反轉為高級沉穩墨綠色) */
-.video-controls-bar .like-btn.liked { 
-  background: linear-gradient(135deg, #52796f 0%, #354f52 100%) !important; 
-  color: #ffffff !important; 
-  border-color: #354f52 !important; 
-  box-shadow: 0 2px 8px rgba(82, 121, 111, 0.25) !important; 
-}
+.video-controls-bar .like-btn { 
+      background: #6b9075 !important; 
+      color: #ffffff !important; 
+      border: none !important; 
+      padding: 8px 16px; 
+      border-radius: 20px;
+      cursor: pointer; 
+      font-size: 13px; 
+      font-weight: 600; 
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      transition: all 0.2s ease; 
+    }
 
-/* 已點擊狀態的滑鼠懸停 */
-.video-controls-bar .like-btn.liked:hover { 
-  background: linear-gradient(135deg, #354f52 0%, #2f4346 100%) !important; 
-  color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(53, 79, 82, 0.35) !important; 
-}
+    /* 預設推薦按鈕的滑鼠懸停 (稍微變深) */
+    .video-controls-bar .like-btn:hover { 
+      background: #557a5f !important; 
+      color: #ffffff !important;
+      transform: translateY(-1px); 
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15); 
+    }
 
-/* 點擊瞬間壓感回饋 */
-.video-controls-bar .like-btn:active, 
-.video-controls-bar .fullscreen-btn:active { 
-  transform: translateY(1px) scale(0.96) !important; 
-}
+    /* ❤️ 推薦按鈕 - 已點擊狀態 (深邃墨綠黑) */
+    .video-controls-bar .like-btn.liked { 
+      background: #2d3e33 !important; 
+      color: #ffeb3b !important; /* 變成亮眼星光黃字，提示已點 */
+      border: none !important;
+      font-weight: 700;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important; 
+    }
 
-/* 2. 📺 全螢幕按鈕 - 預設狀態 (調淺後的高級霧藍灰色調) */
-.video-controls-bar .fullscreen-btn { 
-  background: linear-gradient(135deg, #f0f4f8 0%, #e2ebf4 100%) !important; 
-  color: #556677 !important; 
-  border: 1px solid rgba(85, 102, 119, 0.2) !important; 
-  padding: 8px 16px; 
-  border-radius: 20px;
-  cursor: pointer; 
-  font-size: 13px; 
-  font-weight: 600; 
-  box-shadow: 0 2px 6px rgba(85, 102, 119, 0.05); 
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-}
+    /* 已點擊狀態的滑鼠懸停 */
+    .video-controls-bar .like-btn.liked:hover { 
+      background: #202c24 !important; 
+      color: #ffeb3b !important;
+    }
 
-/* 全螢幕滑鼠懸停 (轉為略深一點的知性藍灰) */
-.video-controls-bar .fullscreen-btn:hover { 
-  background: linear-gradient(135deg, #e2ebf4 0%, #d3e0ed 100%) !important; 
-  color: #445566 !important;
-  transform: translateY(-1px); 
-  box-shadow: 0 4px 12px rgba(85, 102, 119, 0.15); 
-}
+    /* 點擊瞬間物理壓感回饋 */
+    .video-controls-bar .like-btn:active, 
+    .video-controls-bar .fullscreen-btn:active { 
+      transform: translateY(1px) scale(0.96) !important; 
+    }
+
+    /* 2. 📺 全螢幕按鈕 - 預設狀態 (高級莫蘭迪霧煙藍灰) */
+    .video-controls-bar .fullscreen-btn { 
+      background: #607d8b !important; 
+      color: #ffffff !important; 
+      border: none !important; 
+      padding: 8px 16px; 
+      border-radius: 20px;
+      cursor: pointer; 
+      font-size: 13px; 
+      font-weight: 600; 
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08); 
+      transition: all 0.2s ease; 
+    }
+
+    /* 全螢幕滑鼠懸停 (轉為略深一階的煙灰藍) */
+    .video-controls-bar .fullscreen-btn:hover { 
+      background: #455a64 !important; 
+      color: #ffffff !important;
+      transform: translateY(-1px); 
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15); 
+    }
   </style>
 </head>
 <body>
