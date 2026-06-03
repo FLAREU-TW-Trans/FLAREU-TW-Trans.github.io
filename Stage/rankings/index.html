@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>舞台推薦排行榜</title>
+    <link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
+    
+    <style>
+        :root {
+            --bg-color: #111111;
+            --card-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --text-muted: #aaaaaa;
+            --burgundy: #a63a50;
+            --burgundy-hover: #8c2f42;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: Arial, "Noto Sans TC", sans-serif;
+            padding: 20px;
+            padding-bottom: 60px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
+        /* 分類切換導覽列 (對齊原本的子選單簡約高級感) */
+        .category-menu {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .category-menu button {
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #2b2b2b;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .category-menu button.active {
+            background: var(--burgundy);
+        }
+
+        .category-menu button:hover:not(.active) {
+            background: #3d3d3d;
+        }
+
+        /* 排行榜主容器 */
+        .ranking-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* 頒獎台視覺排版 (第一名最大、最顯眼) */
+        .podium-section {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 20px;
+            align-items: end; /* 讓底部對齊，營造階梯感 */
+            margin-bottom: 20px;
+        }
+
+        /* 響應式：手機版改為垂直排列 */
+        @media (max-width: 768px) {
+            .podium-section {
+                grid-template-columns: 1fr;
+                align-items: stretch;
+            }
+            /* 手機版強制依 1 -> 2 -> 3 順序顯示 */
+            .podium-card.rank-1 { order: 1; }
+            .podium-card.rank-2 { order: 2; }
+            .podium-card.rank-3 { order: 3; }
+        }
+
+        /* 卡片基礎樣式 */
+        .podium-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .podium-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* 透過 CSS 讓第一名最大、依序遞減 */
+        .rank-1 { 
+            border: 2px solid var(--gold); 
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.15);
+        }
+        .rank-1 .thumb-wrapper { height: 220px; }
+        .rank-1 .rank-badge { background: var(--gold); color: #000; font-size: 24px; width: 45px; height: 45px; }
+        .rank-1 .video-title { font-size: 18px; font-weight: 700; }
+
+        .rank-2 { border: 1px solid var(--silver); }
+        .rank-2 .thumb-wrapper { height: 18px; height: 180px; }
+        .rank-2 .rank-badge { background: var(--silver); color: #000; }
+
+        .rank-3 { border: 1px solid var(--bronze); }
+        .rank-3 .thumb-wrapper { height: 160px; }
+        .rank-3 .rank-badge { background: var(--bronze); color: #fff; }
+
+        /* 影片縮圖容器 */
+        .thumb-wrapper {
+            position: relative;
+            width: 100%;
+            background: #000;
+        }
+
+        .thumb-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 名次標籤 */
+        .rank-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            z-index: 2;
+        }
+
+        /* 文字內容區 */
+        .video-info {
+            padding: 16px;
+            text-align: left;
+        }
+
+        .video-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0 0 10px 0;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 42px; /* 固定高度防止因字數不同錯位 */
+        }
+
+        .count-badge {
+            display: inline-block;
+            background: rgba(166, 58, 80, 0.15);
+            color: #ff8a9e;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid rgba(166, 58, 80, 0.3);
+        }
+
+        /* 無資料提示 */
+        .no-data {
+            text-align: center;
+            padding: 4px 0;
+            color: var(--text-muted);
+            font-size: 15px;
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🏆 舞台推薦排行榜</h1>
+
+    <div class="category-menu">
+        <button class="active" onclick="switchCategory('group', this)">團體舞台</button>
+        <button onclick="switchCategory('liyu', this)">立于直拍</button>
+        <button onclick="switchCategory('woojin', this)">玗進直拍</button>
+    </div>
+
+    <div class="ranking-container">
+        <div id="podium-area" class="podium-section">
+            <div class="no-data">資料載入中...</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // Firebase 配置 (與您主網頁相同)
+        const firebaseConfig = { 
+            apiKey: "AIzaSyAs9R785IE_kBsduUdEng3Vfqz1Ljl11f4", 
+            authDomain: "flareu-tw-translation.firebaseapp.com", 
+            databaseURL: "https://flareu-tw-translation-default-rtdb.asia-southeast1.firebasedatabase.app", 
+            projectId: "flareu-tw-translation", 
+            storageBucket: "flareu-tw-translation.firebasestorage.app", 
+            messagingSenderId: "753531558153", 
+            appId: "1:753531558153:web:7106f9c2d253cae62fdbd8" 
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // 全域變數，紀錄目前選擇的分類與從 Firebase 撈出來的原始資料
+        window.currentCategory = 'group';
+        window.rawRankingData = {};
+
+        // 即時監聽整個 stage_rankings 節點
+        const rankingsRef = ref(db, 'stage_rankings');
+        onValue(rankingsRef, (snapshot) => {
+            if (snapshot.exists()) {
+                window.rawRankingData = snapshot.val();
+                renderRankings(); // 只要 Firebase 資料一變，立刻重新渲染
+            } else {
+                document.getElementById('podium-area').innerHTML = '<div class="no-data">目前尚無推薦數據</div>';
+            }
+        });
+
+        // 渲染排行榜主邏輯
+        window.renderRankings = function() {
+            const podiumArea = document.getElementById('podium-area');
+            const categoryData = window.rawRankingData[window.currentCategory];
+
+            if (!categoryData) {
+                podiumArea.innerHTML = '<div class="no-data">該分類目前尚無推薦數據</div>';
+                return;
+            }
+
+            // 1. 將物件轉換成陣列，並自動過濾掉點擊數為 0 或是沒有 videoDbId 的資料
+            let items = [];
+            Object.keys(categoryData).forEach(videoDbId => {
+                items.push({
+                    videoDbId: videoDbId,
+                    title: categoryData[videoDbId].title || '未命名舞台',
+                    clickCount: categoryData[videoDbId].clickCount || 0
+                });
+            });
+
+            // 2. 依據推薦按鈕點擊數（clickCount）由大到小排序
+            items.sort((a, b) => b.clickCount - a.clickCount);
+
+            // 3. 只取前三名
+            let topThree = items.slice(0, 3);
+
+            if (topThree.length === 0) {
+                podiumArea.innerHTML = '<div class="no-data">該分類目前尚無推薦數據</div>';
+                return;
+            }
+
+            // 4. 為了達成電腦版上完美的頒獎台排版（左:第二名、中:第一名、右:第三名）
+            // 在大螢幕下，我們調整陣列順序。如果是手機版，透過 CSS Order 處理。
+            let displayOrder = [];
+            if (window.innerWidth > 768) {
+                if (topThree[1]) displayOrder.push({ item: topThree[1], rank: 2 }); // 放左邊
+                if (topThree[0]) displayOrder.push({ item: topThree[0], rank: 1 }); // 放中間
+                if (topThree[2]) displayOrder.push({ item: topThree[2], rank: 3 }); // 放右邊
+            } else {
+                // 手機版就直接 1 -> 2 -> 3 排下去
+                topThree.forEach((item, index) => {
+                    displayOrder.push({ item: item, rank: index + 1 });
+                });
+            }
+
+            // 5. 生成 HTML
+            podiumArea.innerHTML = '';
+            displayOrder.forEach(slot => {
+                const video = slot.item;
+                const rank = slot.rank;
+                
+                // 從 videoDbId 之中解析出 YouTube 縮圖所需的「影片ID」。
+                // 規則：你的 videoDbId 通常為 video_日期_電視台_型態，而在 changeVideo 內會對應真正的 YouTube ID。
+                // 為了最保險自動抓取，這裡直接使用 YouTube 官方高品質縮圖網址。
+                // ⚠️ 注意：如果需要精準縮圖，稍後看下方說明。這裡預設先解析 id。
+                const youtubeId = extractYoutubeId(video.videoDbId);
+                const thumbUrl = `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`;
+
+                const cardHtml = `
+                    <div class="podium-card rank-${rank}">
+                        <div class="thumb-wrapper">
+                            <div class="rank-badge">${rank}</div>
+                            <img src="${thumbUrl}" alt="舞台縮圖" onerror="this.src='https://flareu-tw-trans.github.io/images/favicon.png';">
+                        </div>
+                        <div class="video-info">
+                            <h3 class="video-title">${video.title}</h3>
+                            <span class="count-badge">❤️ ${video.clickCount} 次推薦</span>
+                        </div>
+                    </div>
+                `;
+                podiumArea.innerHTML += cardHtml;
+            });
+        };
+
+        // 輔助函式：切換分類
+        window.switchCategory = function(category, btnElement) {
+            window.currentCategory = category;
+            
+            // 切換按鈕 active 樣式
+            document.querySelectorAll('.category-menu button').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            
+            // 重新渲染
+            renderRankings();
+        };
+
+        // 輔助功能：從資料庫標記轉換成實際對應的 Youtube ID 以顯示縮圖
+        function extractYoutubeId(dbId) {
+            // 這裡建立一個簡單的對照表，與你主網頁的 changeVideo 參數完全同步
+            const idMap = {
+                'video_20260526_ena_broadcast': 'uQdwvjjX9WY',
+                'video_20260526_ena_fullcam': 'pTHUvoiGT1E',
+                'video_20260526_ena_liyu': 'uy0oqVYrAys',
+                'video_20260524_inkigayo_broadcast': 'r9KtIX1Yep0',
+                'video_20260524_inkigayo_fullcam': 'sVgoGCaCQaM',
+                'video_20260524_inkigayo_liyu': 'p8etzReAj_E',
+                'video_20260524_inkigayo_woojin': 'Tb5LCUyVWao',
+                // 如果有其他網頁，像是 KCON：
+                'video_20260509_kconjapan_xstage': 'QvfgbXsWPes'
+            };
+            return idMap[dbId] || 'Mu9EwQfmMZU'; // 找不到時給一個預設的預防破圖
+        }
+
+        // 監聽視窗大小改變，自動調整電腦版/手機版的頒獎台左右順序
+        window.addEventListener('resize', () => {
+            if (window.rawRankingData && Object.keys(window.rawRankingData).length > 0) {
+                renderRankings();
+            }
+        });
+    </script>
+</body>
+</html>
