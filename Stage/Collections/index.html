@@ -455,28 +455,38 @@
     };
 
     //說明欄
-    document.addEventListener("DOMContentLoaded", () => {
-        // 檢查粉絲之前有沒有關閉過這個功能說明欄
-        const hasSeenModal = localStorage.getItem("hasSeenInstructionModal_v1");
+    window.openInstructionModal = function() {
+        const modal = document.getElementById("instruction-modal");
+        if (!modal) return;
         
-        // 如果是第一次進來（沒有紀錄），就顯示說明欄
-        if (!hasSeenModal) {
-            document.getElementById("instruction-modal").style.display = "flex";
-        }
-    });
+        modal.style.display = "flex";
+        modal.style.transition = "opacity 0.3s ease";
+        // 微調延遲確保 display: flex 生效後才做淡入動畫
+        setTimeout(() => {
+            modal.style.opacity = "1";
+        }, 30);
+    };
 
-    // 關閉說明欄的函式
     window.closeInstructionModal = function() {
         const modal = document.getElementById("instruction-modal");
-        modal.style.transition = "opacity 0.3s ease";
-        modal.style.opacity = "0";
+        if (!modal) return;
         
+        modal.style.opacity = "0";
         setTimeout(() => {
             modal.style.display = "none";
-            // 在瀏覽器留下記錄，之後不會重複跳出打擾讀者
+            // 關閉後留下紀錄，下次進網頁就不會自動打擾
             localStorage.setItem("hasSeenInstructionModal_v1", "true");
         }, 300);
     };
+
+    // 網頁 DOM 載入完成後的自動檢查邏輯
+    document.addEventListener("DOMContentLoaded", () => {
+        const hasSeenModal = localStorage.getItem("hasSeenInstructionModal_v1");
+        // 如果是第一次進來（沒有紀錄），就自動觸發開啟
+        if (!hasSeenModal) {
+            window.openInstructionModal();
+        }
+    });
 
     // 即時監聽整個 stage_rankings 節點
     const rankingsRef = ref(db, 'stage_rankings');
