@@ -802,16 +802,25 @@
 
       if (targetVideoDbId) {
         setTimeout(() => {
-          // 使用單引號包裹變數，確保屬性選取器萬無一失
-          const targetBtn = document.querySelector(`.video-submenu button[onclick*="'${targetVideoDbId}'"]`);
-      
+          // 1. 抓取該選單內所有的按鈕
+          const allButtons = document.querySelectorAll('.video-submenu button');
+          let targetBtn = null;
+
+          // 2. 用最安全的 includes() 檢查誰的 onclick 裡面含有該影片識別碼
+          allButtons.forEach(btn => {
+            const onclickAttr = btn.getAttribute('onclick') || '';
+            if (onclickAttr.includes(targetVideoDbId)) {
+              targetBtn = btn;
+            }
+          });
+  
           if (targetBtn) {
-            console.log("成功找到目標按鈕，觸發自動切換:", targetVideoDbId);
+            console.log("【成功】找到目標按鈕，現在觸發點擊:", targetVideoDbId);
             targetBtn.click();
           } else {
-            console.warn("找不到對應的影片按鈕:", targetVideoDbId);
+            console.warn("【失敗】在 HTML 按鈕中完全找不到這個 videoDbId:", targetVideoDbId);
           }
-        }, 500); 
+        }, 500);
       }
     });
 
