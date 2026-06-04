@@ -795,6 +795,19 @@
 
       const firstTabBtn = document.querySelector('.tab-btn');
       openTab('tab-video1', firstTabBtn);
+
+      // 檢查網址有沒有帶 video 參數進來
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetVideoDbId = urlParams.get('video'); 
+
+      if (targetVideoDbId) {
+        // 在子選單（.video-submenu）中，找到對應這個 videoDbId 的按鈕
+        const targetBtn = document.querySelector(`.video-submenu button[onclick*="${targetVideoDbId}"]`);
+    
+        if (targetBtn) {
+          targetBtn.click();
+        }
+      }
     });
 
     // =====================================
