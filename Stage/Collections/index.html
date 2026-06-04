@@ -563,10 +563,10 @@
         });
     }
 
-    function removeFavorite(videoDbId) {
+    window.removeFavorite = function(videoDbId) {
         // 1. 跳出瀏覽器原生詢問視窗
         const isConfirmed = confirm("確定要取消收藏這部影片嗎？");
-    
+
         if (!isConfirmed) {
             return; 
         }
@@ -574,7 +574,7 @@
         // 2. 點選「確定」，讀取並過濾掉該筆資料
         const allFavorites = JSON.parse(localStorage.getItem('favoriteVideos') || '[]');
         const updatedFavorites = allFavorites.filter(item => item.videoDbId !== videoDbId);
-    
+
         // 3. 將更新後的陣列存回 localStorage
         localStorage.setItem('favoriteVideos', JSON.stringify(updatedFavorites));
 
