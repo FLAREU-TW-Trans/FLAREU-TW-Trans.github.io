@@ -963,50 +963,55 @@
       });
     }
 
-    //從排行榜點擊連結
+    // =====================================
+    // 從排行榜點擊連結
+    // =====================================
     window.addEventListener("load", () => {
+      const params = new URLSearchParams(window.location.search);
+      const targetVideo = params.get("video");
 
-    const params = new URLSearchParams(window.location.search);
-    const targetVideo = params.get("video");
-    if (!targetVideo) return;
+      if (!targetVideo) return;
 
-    const targetBtn = document.querySelector(`button[onclick*="${targetVideo}"]`);
-    if (!targetBtn) return;
+      const targetBtn = document.querySelector(`button[onclick*="${targetVideo}"]`);
+      if (!targetBtn) return;
 
-    // 找出所在 tab
-    const tabContent = targetBtn.closest(".tab-content");
+      const tabContent = targetBtn.closest(".tab-content");
 
-    if (tabContent) {
-      const tabId = tabContent.id;
-      const tabs = [...document.querySelectorAll(".tab-content")];
-      const index = tabs.indexOf(tabContent);
-      const targetTabBtn = document.querySelectorAll(".tab-btn")[index];
+      if (tabContent) {
+        const tabId = tabContent.id;
+        const tabs = [...document.querySelectorAll(".tab-content")];
+        const index = tabs.indexOf(tabContent);
+        const targetTabBtn = document.querySelectorAll(".tab-btn")[index];
 
-      if (targetTabBtn) {
-        // 在啟動播放器前，先攔截它的 onReady 事件
-        // 檢查原先定義好的 events，如果沒有就補上
-        if (!videoData[tabId].events) {
-          videoData[tabId].events = {};
-        }
-      
-        // 儲存原本寫在 videoData 裡可能就有的 onReady 邏輯（例如載入字幕）
-        const originalOnReady = videoData[tabId].events.onReady;
+        if (targetTabBtn) {
+          const vData = videoData[tabId];
 
-        // 強行注入要在 Ready 時觸發的「自動點擊影片」邏輯
-        videoData[tabId].events.onReady = function(event) {
-          // 如果原本有載入字幕等舊邏輯，先讓他執行
-          if (typeof originalOnReady === 'function') {
-            originalOnReady(event);
+          // 如果 Tab 的播放器已經被預先建立了（例如預設的 tab-video1）
+          if (vData && vData.player) {
+            console.log("【5/26 專屬優化】播放器已存在，直接觸發點擊:", targetVideo);
+            // 微小延遲 100 毫秒，確保播放器殼子穩定後注入新影片 ID
+            setTimeout(() => {
+              targetBtn.click();
+            }, 100);
+          } 
+          // 如果播放器還沒建立（其他 tab-video2, 3, 4），則維持你原本完美的監聽流程
+          else {
+            if (!vData.events) vData.events = {};
+            const originalOnReady = vData.events.onReady;
+
+            vData.events.onReady = function(event) {
+              if (typeof originalOnReady === 'function') {
+                originalOnReady(event);
+              }
+              console.log("【其他頁籤就緒】自動觸發點擊:", targetVideo);
+              targetBtn.click();
+            };
+
+            openTab(tabId, targetTabBtn);
           }
-
-          targetBtn.click();
-        };
-
-        // 做完監聽設定後，才正式打開 Tab 並建立播放器
-        openTab(tabId, targetTabBtn);
+        }
       }
-    }
-  });
+    });
   </script>
 </body>
 </html>
