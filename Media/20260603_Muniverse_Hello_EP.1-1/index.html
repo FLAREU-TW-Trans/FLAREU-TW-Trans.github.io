@@ -295,6 +295,26 @@
         margin-bottom: 20px !important; 
         text-shadow: var(--reaction-text-shadow) !important; 
     }
+
+    /* ==================== 
+       6. 官方連結
+       ==================== */
+    /* 官方連結外容器 */
+    .official-link-container { text-align: center; margin: 20px auto; padding: 0 16px; max-width: 650px; }
+    /* 提示文字 */
+    .notice-text { font-size: 14px; color: #aaaaaa; margin-bottom: 12px; letter-spacing: 0.5px; }
+    /* Muniverse 專屬高級感按鈕 */
+    .muniverse-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: linear-gradient(135deg, #4a154b 0%, #a63a50 100%); color: #ffffff; text-decoration: none;
+      padding: 14px 28px; border-radius: 30px; font-size: 15px; font-weight: 600; letter-spacing: 0.5px;
+      border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 4px 15px rgba(166, 58, 80, 0.2);   
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; }
+    /* 動態星星圖示 */
+    .muniverse-btn .btn-icon { font-size: 16px; transition: transform 0.3s ease; }
+    .muniverse-btn:hover { transform: translateY(-2px); background: linear-gradient(135deg, #5b1b5c 0%, #b8435b 100%);
+      box-shadow: 0 6px 20px rgba(166, 58, 80, 0.4), 0 0 15px rgba(255, 215, 0, 0.1); border-color: rgba(255, 255, 255, 0.3); }
+    .muniverse-btn:hover .btn-icon { transform: rotate(20deg) scale(1.2); }
+    .muniverse-btn:active { transform: translateY(1px); box-shadow: 0 2px 10px rgba(166, 58, 80, 0.3); }
   </style>
 </head>
 <body>
@@ -303,7 +323,12 @@
 
     <header class="header">
       <h1>我們邁向夢想的起點｜＜喂？＞ 📞 EP.1-1 崔立于</h1>
-
+      <div class="official-link-container">
+        <p class="notice-text">💡 觀看翻譯影片前，別忘了先至官方網站支持原影片唷！</p>
+        <a href="https://www.muniverse.io/titles/23fd787d-761c-4d43-ad2e-2fa34cd27b39?defaultTab=vod_season&seasonCode=2fb6ff42-f791-4544-b6ee-35b0f340711a" target="_blank" rel="noopener noreferrer" class="muniverse-btn">
+          <span class="btn-icon">MUNIVERSE</span>
+        </a>
+      </div>
       <div class="controls-wrapper">
         <a href="../../index.html" class="home-btn">🏠 首頁</a> <div class="theme-toggle-group">
           <button class="theme-btn" id="btn-light" onclick="switchTheme('light')">☀️ 淺色</button>
