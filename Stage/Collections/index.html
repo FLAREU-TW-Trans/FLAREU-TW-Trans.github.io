@@ -533,29 +533,49 @@
                 `https://img.youtube.com/vi/${video.ytId}/mqdefault.jpg`;
 
             const card=`
-            <div class="podium-card">
-                <a href="${pageUrl}"
-                   target="_blank"
-                   class="thumb-wrapper">
+        <div class="podium-card">
+            <a href="${pageUrl}"
+               target="_blank"
+               class="thumb-wrapper">
+                <img src="${thumbUrl}"
+                     alt="${video.title}"
+                     onerror="this.src='https://flareu-tw-trans.github.io/images/favicon.png';">
+            </a>
 
-                    <img src="${thumbUrl}"
-                         alt="${video.title}"
-                         onerror="this.src='https://flareu-tw-trans.github.io/images/favicon.png';">
-                </a>
-
-                <div class="video-info">
-                    <h3 class="video-title">
-                        ${video.title}
-                    </h3>
-
-                    <span class="count-badge">
-                        ⭐ 已收藏
-                    </span>
-                </div>
+            <div class="video-info">
+                <h3 class="video-title">
+                    ${video.title}
+                </h3>
+                
+                <button class="count-badge remove-fav-btn" 
+                        onclick="removeFavorite('${video.videoDbId}')" 
+                        style="cursor: pointer; border: none; transition: background 0.2s;">
+                    ⭐ 已收藏
+                </button>
             </div>
-            `;
-            container.innerHTML += card;
+        </div>
+        `;
+        container.innerHTML += card;
         });
+    }
+
+    function removeFavorite(videoDbId) {
+        // 1. 跳出瀏覽器原生詢問視窗
+        const isConfirmed = confirm("確定要取消收藏這部影片嗎？");
+    
+        if (!isConfirmed) {
+            return; 
+        }
+
+        // 2. 點選「確定」，讀取並過濾掉該筆資料
+        const allFavorites = JSON.parse(localStorage.getItem('favoriteVideos') || '[]');
+        const updatedFavorites = allFavorites.filter(item => item.videoDbId !== videoDbId);
+    
+        // 3. 將更新後的陣列存回 localStorage
+        localStorage.setItem('favoriteVideos', JSON.stringify(updatedFavorites));
+
+        // 4. 重新刷新收藏夾畫面，被刪除的卡片會立刻在眼前消失
+        renderFavorites();
     }
 </script>
 </body>
