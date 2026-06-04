@@ -1028,30 +1028,29 @@
 
     if (tabContent) {
 
-        document.querySelectorAll(".tab-content").forEach(tab => {
-            tab.classList.remove("active");
-        });
-
-        tabContent.classList.add("active");
-
-        // 同步上方 Tab 按鈕
         const tabs = [...document.querySelectorAll(".tab-content")];
         const index = tabs.indexOf(tabContent);
-
-        document.querySelectorAll(".tab-btn").forEach(btn => {
-            btn.classList.remove("active");
-        });
 
         const targetTabBtn =
             document.querySelectorAll(".tab-btn")[index];
 
         if (targetTabBtn) {
-            targetTabBtn.classList.add("active");
+            openTab(tabContent.id, targetTabBtn);
         }
     }
 
-    // 執行原本按鈕的 changeVideo()
-    targetBtn.click();
+    const waitPlayer = setInterval(() => {
+
+        const data = videoData[tabContent.id];
+
+        if (data && data.player) {
+
+            clearInterval(waitPlayer);
+
+            targetBtn.click();
+        }
+
+    }, 100);
 
   });
   </script>
