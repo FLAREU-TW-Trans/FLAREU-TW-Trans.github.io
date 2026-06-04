@@ -106,6 +106,43 @@
         /* 取消收藏 */
         .remove-fav-btn:hover { background-color: #ff8a9e !important;  color: #ffffff !important; transform: scale(1.03); }
         .remove-fav-btn:active { transform: scale(0.97); }
+
+        /* 說明框 */
+        /* 彈窗背景遮罩 */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 8, 16, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); 
+            display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; animation: fadeIn 0.4s ease forwards; padding: 20px; box-sizing: border-box; }
+        /* 彈窗主體 */
+        .modal-content { position: relative; background: rgba(25, 20, 35, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; width: 100%; max-width: 520px;
+            padding: 30px; box-sizing: border-box; color: #ffffff; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(166, 58, 80, 0.15); transform: translateY(30px);
+            animation: slideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; overflow: hidden; }
+        /* 高級感氛圍微光 */
+        .modal-glow { position: absolute; top: -50px; left: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(166, 58, 80, 0.4) 0%, rgba(0, 0, 0, 0) 70%); pointer-events: none; }
+        /* 標題區 */
+        .modal-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 15px; }
+        .modal-icon { font-size: 24px; }
+        .modal-header h2 { font-size: 22px; margin: 0; font-weight: 700; background: linear-gradient(90deg, #ffffff, #ffb3c1); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; letter-spacing: 0.5px; }
+        /* 說明內文排版 */
+        .modal-body p { font-size: 15px; line-height: 1.6; color: #e0e0e0; margin-top: 0; margin-bottom: 16px; }
+        /* 指南列表條目 */
+        .guide-list { list-style: none; padding: 0; margin: 20px 0;}
+        .guide-list li { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
+        .list-num { background: linear-gradient(135deg, #4a154b 0%, #a63a50 100%); color: #fff; font-size: 12px; font-weight: 700; width: 22px; height: 22px; border-radius: 50px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; box-shadow: 0 2px 8px rgba(166, 58, 80, 0.3);}
+        .guide-list p { margin: 0; font-size: 14.5px; color: #cdcdcd; }
+        .guide-list strong { color: #ffffff; }
+        .highlight-text { color: #ffb3c1 !important; font-size: 13.5px !important; line-height: 1.5 !important; }
+        .modal-footer-text { text-align: center; font-size: 14px !important; color: #aaaaaa !important; margin-top: 25px !important; margin-bottom: 0 !important; font-style: italic; }
+        /* 底部按鈕區 */
+        .modal-footer { display: flex; justify-content: center; margin-top: 25px; }
+        /* 高級漸層按鈕 */
+        .modal-close-btn { background: linear-gradient(135deg, #4a154b 0%, #a63a50 100%); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.15); padding: 12px 45px;
+            font-size: 15px; font-weight: 600; border-radius: 25px; cursor: pointer; box-shadow: 0 4px 15px rgba(166, 58, 80, 0.3); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); letter-spacing: 1px; }
+        .modal-close-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(166, 58, 80, 0.5); background: linear-gradient(135deg, #5b1b5c 0%, #b8435b 100%); }
+        .modal-close-btn:active { transform: translateY(1px); }
+        /* 動態特效動畫 */
+        @keyframes fadeIn { to { opacity: 1; }}
+        @keyframes slideUp { to { transform: translateY(0); }}
     </style>
 </head>
 
@@ -114,10 +151,10 @@
     <h1>舞台收藏與推薦排行榜</h1>
 
     <div class="top-menu">
-    <a href="../../index.html" class="nav-btn">🏠 首頁</a>
-    <button id="ranking-btn" class="nav-btn active" onclick="showRanking()">🏆 排行榜</button>
-    <button id="favorite-btn" class="nav-btn" onclick="showFavorites()">⭐ 我的收藏</button>   
-</div>
+        <a href="../../index.html" class="nav-btn">🏠 首頁</a>
+        <button id="ranking-btn" class="nav-btn active" onclick="showRanking()">🏆 排行榜</button>
+        <button id="favorite-btn" class="nav-btn" onclick="showFavorites()">⭐ 我的收藏</button>   
+    </div>
 
     <div class="category-menu">
         <button data-category="group" class="active" onclick="switchCategory('group', this)">團體舞台</button>
@@ -132,6 +169,46 @@
     </div>
 
     <div id="favorites-container" style="display:none;"></div>
+
+    <div id="instruction-modal" class="modal-overlay" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-glow"></div>
+    
+        <div class="modal-header">
+          <span class="modal-icon">✨</span>
+          <h2>新功能上線說明</h2>
+        </div>
+    
+        <div class="modal-body">
+          <p>歡迎來到全新的<strong>舞台收藏與推薦排行榜</strong>！以下為本功能的使用小指南：</p>
+      
+          <ul class="guide-list">
+            <li>
+              <span class="list-num">1</span>
+              <p>請從首頁的舞台欄位點進任一<strong>舞台合輯</strong>，觀看影片後可自由選擇點擊 <strong>❤️推薦</strong> 或 <strong>⭐收藏</strong> 按鈕。</p>
+            </li>
+            <li>
+              <span class="list-num">2</span>
+              <p>點擊<strong>推薦</strong>會即時反映在本排行榜上；點擊<strong>收藏</strong>則會收錄在「我的收藏」分頁中。</p>
+            </li>
+            <li>
+              <span class="list-num">3</span>
+              <p>如果畫面的數據沒有即時重新整理反應，請嘗試<strong>重新整理網頁 (F5)</strong> 即可。</p>
+            </li>
+            <li>
+              <span class="list-num">⚠️</span>
+              <p class="highlight-text">若您曾在系統測試階段使用過本功能，請先<strong>自行取消全部按鈕後再次點擊</strong>，數據才能完美同步唷！</p>
+            </li>
+          </ul>
+      
+          <p class="modal-footer-text">希望各位 U'RE們 會喜歡這次開發的新功能！🥰</p>
+        </div>
+    
+        <div class="modal-footer">
+          <button class="modal-close-btn" onclick="closeInstructionModal()">了解</button>
+        </div>
+      </div>
+    </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
