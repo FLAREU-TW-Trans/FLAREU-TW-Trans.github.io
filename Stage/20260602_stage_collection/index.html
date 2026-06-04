@@ -491,7 +491,7 @@
             height: '100%',
             host: 'https://www.youtube-nocookie.com',
             playerVars: { 'autoplay': 0, 'rel': 0, 'playsinline': 1 }, // 絕對不偷播
-            events: {
+            events: vData.events || {
                 'onReady': function(event) {
                     loadSRT(vData.srt, vData.subEl, event.target);
                 }
@@ -859,6 +859,51 @@
         console.error("推薦操作失敗:", error);
       });
     }
+
+    //從排行榜點擊連結
+    window.addEventListener("load", () => {
+
+    const params = new URLSearchParams(window.location.search);
+    const targetVideo = params.get("video");
+    if (!targetVideo) return;
+
+    const targetBtn = document.querySelector(`button[onclick*="${targetVideo}"]`);
+    if (!targetBtn) return;
+
+    // 找出所在 tab
+    const tabContent = targetBtn.closest(".tab-content");
+
+    if (tabContent) {
+      const tabId = tabContent.id;
+      const tabs = [...document.querySelectorAll(".tab-content")];
+      const index = tabs.indexOf(tabContent);
+      const targetTabBtn = document.querySelectorAll(".tab-btn")[index];
+
+      if (targetTabBtn) {
+        // 在啟動播放器前，先攔截它的 onReady 事件
+        // 檢查原先定義好的 events，如果沒有就補上
+        if (!videoData[tabId].events) {
+          videoData[tabId].events = {};
+        }
+      
+        // 儲存原本寫在 videoData 裡可能就有的 onReady 邏輯（例如載入字幕）
+        const originalOnReady = videoData[tabId].events.onReady;
+
+        // 強行注入要在 Ready 時觸發的「自動點擊影片」邏輯
+        videoData[tabId].events.onReady = function(event) {
+          // 如果原本有載入字幕等舊邏輯，先讓他執行
+          if (typeof originalOnReady === 'function') {
+            originalOnReady(event);
+          }
+
+          targetBtn.click();
+        };
+
+        // 做完監聽設定後，才正式打開 Tab 並建立播放器
+        openTab(tabId, targetTabBtn);
+      }
+    }
+  });
   </script>
 </body>
 </html>
