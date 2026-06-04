@@ -7,26 +7,37 @@
     <link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
     
     <style>
-        :root { --bg-color: #111111; --card-bg: #1a1a1a; --text-color: #ffffff; --text-muted: #aaaaaa; --emerald-green: #119da4; --emerald-hover: #0c7c82;
-            --burgundy: #a63a50; --burgundy-hover: #8c2f42; --gold: #ffd700; --silver: #c0c0c0; --bronze: #cd7f32; }
+        :root { --bg-color: #0b0914; --card-bg: #161322; --text-color: #ffffff; --text-muted: #a5a2b5; --emerald-green: #119da4; --emerald-hover: #0c7c82;
+            --burgundy: #a63a50; --burgundy-hover: #8c2f42; --gold: #ffd700; --silver: #c0c0c0; --bronze: #cd7f32;
+            --neon-pink: #ff5e7e; --neon-blue: #00f0ff; --neon-purple: #b624ff; --neon-green: #2ec4b6;}
         body { margin: 0; background: var(--bg-color); color: var(--text-color);
             font-family: Arial, "Noto Sans TC", sans-serif; padding: 20px; padding-bottom: 60px; }
-        h1 { text-align: center; margin-bottom: 30px; font-size: 2rem; letter-spacing: 2px; }
+        h1 { text-align: center; margin-bottom: 30px; font-size: 2.2rem; letter-spacing: 3px; font-weight: 800;
+            background: linear-gradient(45deg, #fff 20%, #ffb3c1 50%, #00f0ff 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(255,255,255,0.1)); }            
         .top-menu{ display:flex; justify-content:center; gap:10px; margin-bottom:25px; flex-wrap:wrap; }
 
-        .nav-btn{ background:#2b2b2b; color:#fff; border:none; border-radius:20px; padding:10px 20px;
-            text-decoration:none; cursor:pointer; font-weight:600; font-size:14px; transition:.2s; }
-        .nav-btn:hover{ background:#3d3d3d; }
+       .nav-btn{ background:#1f1b30; color:#fff; border:1px solid rgba(255,255,255,0.08); border-radius:20px; padding:10px 20px;
+            text-decoration:none; cursor:pointer; font-weight:600; font-size:14px; transition:.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .nav-btn:hover{ background:#2d2744; border-color: rgba(255,255,255,0.2); }
         .nav-btn.active{ background:var(--burgundy); }
 
-        #ranking-btn.active{ background:#a63a50; }
-        #favorite-btn.active{ background:#d49a00; }
+        #ranking-btn.active{ background:#a63a50; box-shadow: 0 0 15px rgba(166, 58, 80, 0.4); }
+        #favorite-btn.active{ background:#d49a00; box-shadow: 0 0 15px rgba(212, 154, 0, 0.4); }
 
+        /* ===== 說明欄 ===== */
+        #info-btn { background: linear-gradient(135deg, #24193b 0%, #3b1931 100%); border: 1px solid rgba(255, 94, 126, 0.3); }
+        #info-btn:hover { background: linear-gradient(135deg, #322354 0%, #522344 100%); box-shadow: 0 0 12px rgba(255, 94, 126, 0.2); }
+
+        /* 分類按鈕 */
         .category-menu button[data-category="group"].active{ background: linear-gradient(135deg, #2ec4b6 0%, var(--emerald-green) 100%); 
-            box-shadow: 0 0 15px rgba(46, 196, 182, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .category-menu button[data-category="liyu"].active{ background:#6eb7e8; color:#fff; }
-        .category-menu button[data-category="woojin"].active{ background:#b79adf; color:#fff; }
-
+            box-shadow: 0 0 20px rgba(46, 196, 182, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .category-menu button[data-category="liyu"].active{ background: linear-gradient(135deg, #51b5f7 0%, #1c72ce 100%); color:#fff;
+            box-shadow: 0 0 20px rgba(28, 114, 206, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .category-menu button[data-category="woojin"].active{ background: linear-gradient(135deg, #c39eff 0%, #8344e3 100%); color:#fff;
+            box-shadow: 0 0 20px rgba(131, 68, 227, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); }
+        
         /* ===== 收藏區 ===== */
         #favorites-container{ width:100%; max-width:1600px; margin:0 auto; display:grid; gap:20px; grid-template-columns:1fr; }
 
@@ -49,10 +60,10 @@
 
         /* 分類切換導覽列 */
         .category-menu { display: flex; gap: 10px; justify-content: center; margin-bottom: 40px; }
-        .category-menu button { border: none; border-radius: 20px; padding: 10px 20px; cursor: pointer;
-            background: #2b2b2b; color: #ffffff; font-weight: 600; font-size: 14px; transition: all 0.2s ease; }
+        .category-menu button { border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 10px 20px; cursor: pointer;
+            background: #1f1b30; color: #ffffff; font-weight: 600; font-size: 14px; transition: all 0.2s ease; }
         .category-menu button.active{ color:#fff; }
-        .category-menu button:hover:not(.active) { background: #3d3d3d; }
+        .category-menu button:hover:not(.active) { background: #2d2744; border-color: rgba(255,255,255,0.15); }
 
         /* 排行榜主容器 */
         .ranking-container { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px;}
@@ -70,23 +81,23 @@
         }
 
         /* 卡片基礎樣式 */
-        .podium-card { background: var(--card-bg); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: transform 0.3s ease; position: relative; border: 1px solid rgba(255,255,255,0.05);}
-        .podium-card:hover { transform: translateY(-5px); }
+        .podium-card { background: var(--card-bg); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; position: relative; border: 1px solid rgba(255,255,255,0.05);}
+        .podium-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.8); }
 
         /* 透過 CSS 讓第一名最大、依序遞減 */
-        .rank-1 { border: 2px solid var(--gold); box-shadow: 0 8px 25px rgba(255, 215, 0, 0.15); }
+        .rank-1 { border: 2px solid var(--gold); box-shadow: 0 8px 30px rgba(255, 215, 0, 0.25); }
         .rank-1 .thumb-wrapper { height: 220px; }
-        .rank-1 .rank-badge { background: var(--gold); color: #000; font-size: 24px; width: 45px; height: 45px; }
-        .rank-1 .video-title { font-size: 18px; font-weight: 700; }
+        .rank-1 .rank-badge { background: linear-gradient(135deg, #fff2a3 0%, var(--gold) 100%); color: #000; font-size: 24px; width: 45px; height: 45px; }
+        .rank-1 .video-title { font-size: 18px; font-weight: 700; color: #fff2a3; }
 
-        .rank-2 { border: 1px solid var(--silver); }
-        .rank-2 .thumb-wrapper { height: 18px; height: 180px; }
-        .rank-2 .rank-badge { background: var(--silver); color: #000; }
+        .rank-2 { border: 1px solid var(--silver); box-shadow: 0 4px 20px rgba(192, 192, 192, 0.15); }
+        .rank-2 .thumb-wrapper { height: 180px; }
+        .rank-2 .rank-badge { background: linear-gradient(135deg, #ffffff 0%, var(--silver) 100%); color: #000; }
 
-        .rank-3 { border: 1px solid var(--bronze); }
+        .rank-3 { border: 1px solid var(--bronze); box-shadow: 0 4px 20px rgba(205, 127, 50, 0.15); }
         .rank-3 .thumb-wrapper { height: 160px; }
-        .rank-3 .rank-badge { background: var(--bronze); color: #fff; }
+        .rank-3 .rank-badge { background: linear-gradient(135deg, #ffd1a9 0%, var(--bronze) 100%); color: #fff; }
 
         /* 影片縮圖容器 */
         .thumb-wrapper { position: relative; width: 100%; background: #000; display: block; cursor: pointer;}
@@ -109,39 +120,53 @@
         .remove-fav-btn:active { transform: scale(0.97); }
 
         /* 說明框 */
-        /* 彈窗背景遮罩 */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 8, 16, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); 
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 5, 12, 0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); 
             display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; animation: fadeIn 0.4s ease forwards; padding: 20px; box-sizing: border-box; }
-        /* 彈窗主體 */
-        .modal-content { position: relative; background: rgba(25, 20, 35, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; width: 100%; max-width: 520px;
-            padding: 30px; box-sizing: border-box; color: #ffffff; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(166, 58, 80, 0.15); transform: translateY(30px);
-            animation: slideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; overflow: hidden; }
-        /* 高級感氛圍微光 */
-        .modal-glow { position: absolute; top: -50px; left: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(166, 58, 80, 0.4) 0%, rgba(0, 0, 0, 0) 70%); pointer-events: none; }
+    
+        .modal-content { position: relative; background: rgba(26, 21, 44, 0.9); border: 2px solid transparent; border-radius: 24px; width: 100%; max-width: 540px;
+            padding: 35px; box-sizing: border-box; color: #ffffff; 
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 240, 255, 0.15); 
+            transform: translateY(30px); animation: slideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; overflow: hidden;
+            background-image: linear-gradient(rgba(26, 21, 44, 0.95), rgba(26, 21, 44, 0.95)), linear-gradient(135deg, var(--neon-pink), var(--neon-purple), var(--neon-blue));
+            background-origin: border-box; background-clip: padding-box, border-box; }
+            
+        .modal-glow { position: absolute; top: -80px; right: -80px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(0, 240, 255, 0.25) 0%, rgba(0, 0, 0, 0) 70%); pointer-events: none; }
+        .modal-glow-left { position: absolute; bottom: -80px; left: -80px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(255, 94, 126, 0.2) 0%, rgba(0, 0, 0, 0) 70%); pointer-events: none; }
+        
         /* 標題區 */
-        .modal-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 15px; }
-        .modal-icon { font-size: 24px; }
-        .modal-header h2 { font-size: 22px; margin: 0; font-weight: 700; background: linear-gradient(90deg, #ffffff, #ffb3c1); -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent; letter-spacing: 0.5px; }
+        .modal-header { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 18px; }
+        .modal-icon { font-size: 26px; filter: drop-shadow(0 0 8px var(--neon-pink)); }
+        .modal-header h2 { font-size: 24px; margin: 0; font-weight: 800; background: linear-gradient(90deg, #ffffff, #ffb3c1, #c39eff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; }
+        
         /* 說明內文排版 */
-        .modal-body p { font-size: 15px; line-height: 1.6; color: #e0e0e0; margin-top: 0; margin-bottom: 16px; }
-        /* 指南列表條目 */
-        .guide-list { list-style: none; padding: 0; margin: 20px 0;}
-        .guide-list li { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
-        .list-num { background: linear-gradient(135deg, #4a154b 0%, #a63a50 100%); color: #fff; font-size: 12px; font-weight: 700; width: 22px; height: 22px; border-radius: 50px;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; box-shadow: 0 2px 8px rgba(166, 58, 80, 0.3);}
-        .guide-list p { margin: 0; font-size: 14.5px; color: #cdcdcd; }
-        .guide-list strong { color: #ffffff; }
-        .highlight-text { color: #ffb3c1 !important; font-size: 13.5px !important; line-height: 1.5 !important; }
-        .modal-footer-text { text-align: center; font-size: 14px !important; color: #aaaaaa !important; margin-top: 25px !important; margin-bottom: 0 !important; font-style: italic; }
-        /* 底部按鈕區 */
-        .modal-footer { display: flex; justify-content: center; margin-top: 25px; }
-        /* 高級漸層按鈕 */
-        .modal-close-btn { background: linear-gradient(135deg, #4a154b 0%, #a63a50 100%); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.15); padding: 12px 45px;
-            font-size: 15px; font-weight: 600; border-radius: 25px; cursor: pointer; box-shadow: 0 4px 15px rgba(166, 58, 80, 0.3); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); letter-spacing: 1px; }
-        .modal-close-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(166, 58, 80, 0.5); background: linear-gradient(135deg, #5b1b5c 0%, #b8435b 100%); }
+        .modal-body p { font-size: 15.5px; line-height: 1.6; color: #e5e2f3; margin-top: 0; margin-bottom: 18px; }
+        
+        /* 指南列表 */
+        .guide-list { list-style: none; padding: 0; margin: 22px 0;}
+        .guide-list li { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
+        
+        .guide-list li:nth-child(1) .list-num { background: linear-gradient(135deg, #ff5e7e 0%, #ff2a55 100%); box-shadow: 0 0 10px rgba(255,94,126,0.4); }
+        .guide-list li:nth-child(2) .list-num { background: linear-gradient(135deg, #00f0ff 0%, #00a2ff 100%); box-shadow: 0 0 10px rgba(0,240,255,0.4); color: #000; }
+        .guide-list li:nth-child(3) .list-num { background: linear-gradient(135deg, #b624ff 0%, #8344e3 100%); box-shadow: 0 0 10px rgba(182,36,255,0.4); }
+        .guide-list li:nth-child(4) .list-num { background: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%); box-shadow: 0 0 10px rgba(255,204,0,0.4); color: #000; }
+
+        .list-num { color: #fff; font-size: 12.5px; font-weight: 800; width: 24px; height: 24px; border-radius: 50% ;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+        .guide-list p { margin: 0; font-size: 15px; color: #d5d2e8; line-height: 1.6; }
+        .guide-list strong { color: #ffffff; font-weight: 700; background: rgba(255,255,255,0.08); padding: 1px 5px; border-radius: 4px; }
+        
+        .highlight-text { color: #ffb3c1 !important; font-weight: 600; }
+        
+        .modal-footer-text { text-align: center; font-size: 14.5px !important; color: #bca0ff !important; margin-top: 28px !important; margin-bottom: 0 !important; font-weight: 600; text-shadow: 0 0 8px rgba(188,160,255,0.3); }
+        
+        .modal-footer { display: flex; justify-content: center; margin-top: 28px; }
+        
+        /* 閉合按鈕 */
+        .modal-close-btn { background: linear-gradient(90deg, #ff5e7e 0%, #b624ff 100%); color: #ffffff; border: none; padding: 13px 55px;
+            font-size: 15px; font-weight: 700; border-radius: 25px; cursor: pointer; box-shadow: 0 5px 20px rgba(182, 36, 255, 0.4); transition: all 0.3s ease; letter-spacing: 2px; }
+        .modal-close-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255, 94, 126, 0.6); filter: brightness(1.1); }
         .modal-close-btn:active { transform: translateY(1px); }
-        /* 動態特效動畫 */
+
         @keyframes fadeIn { to { opacity: 1; }}
         @keyframes slideUp { to { transform: translateY(0); }}
     </style>
@@ -155,6 +180,7 @@
         <a href="../../index.html" class="nav-btn">🏠 首頁</a>
         <button id="ranking-btn" class="nav-btn active" onclick="showRanking()">🏆 排行榜</button>
         <button id="favorite-btn" class="nav-btn" onclick="showFavorites()">⭐ 我的收藏</button>   
+        <button id="info-btn" class="nav-btn" onclick="openInstructionModal()">💡 功能說明</button>   
     </div>
 
     <div class="category-menu">
@@ -174,6 +200,7 @@
     <div id="instruction-modal" class="modal-overlay" style="display: none;">
       <div class="modal-content">
         <div class="modal-glow"></div>
+        <div class="modal-glow-left"></div>
     
         <div class="modal-header">
           <span class="modal-icon">✨</span>
@@ -186,7 +213,7 @@
           <ul class="guide-list">
             <li>
               <span class="list-num">1</span>
-              <p>請從首頁的舞台欄位點進任一<strong>舞台合輯</strong>，觀看影片後可自由選擇點擊 <strong>❤️推薦</strong> 或 <strong>⭐收藏</strong> 按鈕。</p>
+              <p>請從首頁的舞台欄位點進任一<strong>舞台合輯</strong>，觀觀看影片後可自由選擇點擊 <strong>❤️推薦</strong> 或 <strong>⭐收藏</strong> 按鈕。</p>
             </li>
             <li>
               <span class="list-num">2</span>
@@ -202,7 +229,7 @@
             </li>
           </ul>
       
-          <p class="modal-footer-text">希望各位 U'RE們 會喜歡這次開發的新功能！🥰</p>
+          <div class="modal-footer-text">希望各位 U'RE們 會喜歡這次開發的新功能！🥰</div>
         </div>
     
         <div class="modal-footer">
