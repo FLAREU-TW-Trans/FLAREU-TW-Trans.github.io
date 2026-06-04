@@ -1008,6 +1008,83 @@
         console.error("推薦操作失敗:", error);
       });
     }
+
+    const videoParamMapping = {
+    // MCD
+    video_20260514_mcd_interview: () =>
+        document.querySelector('#tab-video1 .video-submenu button:nth-child(1)').click(),
+
+    video_20260514_mcd_broadcast: () =>
+        document.querySelector('#tab-video1 .video-submenu button:nth-child(2)').click(),
+
+    video_20260514_mcd_fullcam: () =>
+        document.querySelector('#tab-video1 .video-submenu button:nth-child(3)').click(),
+
+    video_20260514_mcd_liyu: () =>
+        document.querySelector('#tab-video1 .video-submenu button:nth-child(4)').click(),
+
+    video_20260514_mcd_woojin: () =>
+        document.querySelector('#tab-video1 .video-submenu button:nth-child(5)').click(),
+
+    // Music Bank
+    video_20260515_musicbank_broadcast: () =>
+        document.querySelector('#tab-video2 .video-submenu button:nth-child(1)').click(),
+
+    video_20260515_musicbank_fullcam: () =>
+        document.querySelector('#tab-video2 .video-submenu button:nth-child(2)').click(),
+
+    video_20260515_musicbank_liyu: () =>
+        document.querySelector('#tab-video2 .video-submenu button:nth-child(3)').click(),
+
+    video_20260515_musicbank_woojin: () =>
+        document.querySelector('#tab-video2 .video-submenu button:nth-child(4)').click(),
+
+    // 音樂中心
+    video_20260516_musiccore_broadcast: () =>
+        document.querySelector('#tab-video3 .video-submenu button:nth-child(1)').click(),
+
+    video_20260516_musiccore_fullcam: () =>
+        document.querySelector('#tab-video3 .video-submenu button:nth-child(2)').click(),
+
+    video_20260516_musiccore_liyu: () =>
+        document.querySelector('#tab-video3 .video-submenu button:nth-child(3)').click(),
+
+    video_20260516_musiccore_woojin: () =>
+        document.querySelector('#tab-video3 .video-submenu button:nth-child(4)').click(),
+
+    // 人氣歌謠
+    video_20260517_inkigayo_broadcast: () =>
+        document.querySelector('#tab-video4 .video-submenu button:nth-child(1)').click(),
+
+    video_20260517_inkigayo_fullcam: () =>
+        document.querySelector('#tab-video4 .video-submenu button:nth-child(2)').click()
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+      const videoId = new URLSearchParams(window.location.search).get("video");
+
+      if (videoId && videoParamMapping[videoId]) {
+
+        // 切換到正確分頁
+        if(videoId.startsWith("video_20260514_mcd")){
+            switchTab("tab-video1");
+        }
+        else if(videoId.startsWith("video_20260515_musicbank")){
+            switchTab("tab-video2");
+        }
+        else if(videoId.startsWith("video_20260516_musiccore")){
+            switchTab("tab-video3");
+        }
+        else if(videoId.startsWith("video_20260517_inkigayo")){
+            switchTab("tab-video4");
+        }
+
+        setTimeout(() => {
+            videoParamMapping[videoId]();
+        }, 100);
+      }
+  });
   </script>
 </body>
 </html>
