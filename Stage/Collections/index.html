@@ -11,10 +11,10 @@
             --emerald-hover: #0c7c82; --burgundy: #a63a50; --gold: #ffd700; --silver: #c0c0c0; --bronze: #cd7f32; }
         body { margin: 0; background: var(--bg-color); color: var(--text-color);
             font-family: Arial, "Noto Sans TC", sans-serif; padding: 20px; padding-bottom: 60px; }
-        h1 { text-align: center; margin-bottom: 30px; font-size: 2.2rem; letter-spacing: 4px; font-weight: 700;
-            background: linear-gradient(135deg, #ffffff 30%, #f4e4c1 70%, #e2c997 100%);
+        h1 { text-align: center; margin-bottom: 30px; font-size: 2.3rem; letter-spacing: 3px; font-weight: 800;
+            background: linear-gradient(90deg, #ff758f 0%, #b39ddb 50%, #70e1f5 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(255,255,255,0.05); }            
+            -webkit-text-stroke: 0.5px #000000; filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.8)); }      
         .top-menu{ display:flex; justify-content:center; gap:10px; margin-bottom:25px; flex-wrap:wrap; }
 
        .nav-btn{ background:#2b2b2b; color:#fff; border:none; border-radius:20px; padding:10px 20px;
@@ -30,10 +30,9 @@
         #info-btn:hover { background: #444444; }
 
         /* 分類按鈕 */
-        .category-menu button[data-category="group"].active{ background: linear-gradient(135deg, #2ec4b6 0%, var(--emerald-green) 100%); 
-            box-shadow: 0 0 15px rgba(46, 196, 182, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .category-menu button[data-category="liyu"].active{ background:#6eb7e8; color:#fff; }
-        .category-menu button[data-category="woojin"].active{ background:#b79adf; color:#fff; }
+        .category-menu button[data-category="group"].active{ background: #a2e8dd; color: #0f4c43; font-weight: 700; border: none; }
+        .category-menu button[data-category="liyu"].active{ background: #6eb7e8; color: #fff; font-weight: 700; border: none; }
+        .category-menu button[data-category="woojin"].active{ background: #b79adf; color: #fff; font-weight: 700; border: none; }
         
         /* ===== 收藏區 ===== */
         #favorites-container{ width:100%; max-width:1600px; margin:0 auto; display:grid; gap:20px; grid-template-columns:1fr; }
@@ -99,55 +98,47 @@
         /* 說明框 */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(255, 255, 255, 0.12); 
-            backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); 
+            background: rgba(0, 0, 0, 0.5); /* 乾淨穩定的遮罩，不加模糊特效 */
             display: flex; align-items: center; justify-content: center; z-index: 9999; 
-            opacity: 0; animation: fadeIn 0.4s ease forwards; padding: 20px; box-sizing: border-box; 
+            opacity: 0; padding: 20px; box-sizing: border-box; 
         }
         
         .modal-content { 
             position: relative; 
-            background: rgba(255, 255, 255, 0.94);
-            border: 1px solid rgba(255, 255, 255, 0.7); 
-            border-radius: 24px; width: 100%; max-width: 520px; padding: 35px; box-sizing: border-box; 
-            color: #222222; 
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 40px rgba(255, 255, 255, 0.5) inset; 
-            transform: translateY(30px); animation: slideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; 
-            overflow: hidden; 
+            background: #ffffff; /* 純白底色，保證絕對明亮清晰 */
+            border: 2px solid #333333; 
+            border-radius: 16px; width: 100%; max-width: 540px; padding: 35px; box-sizing: border-box; 
+            color: #111111; /* 深炭灰純文字，拒絕看不清 */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); 
         }
         
-        .modal-glow { position: absolute; top: -60px; left: -60px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(230, 243, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%); pointer-events: none; }
-        
         /* 標題區 */
-        .modal-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #eaeaea; padding-bottom: 15px; }
-        .modal-icon { font-size: 22px; color: #dbaf57; }
-        .modal-header h2 { font-size: 22px; margin: 0; font-weight: 700; color: #333333; letter-spacing: 0.5px; }
+        .modal-header { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; border-bottom: 2px solid #eeeeee; padding-bottom: 15px; }
+        .modal-icon { font-size: 24px; }
+        .modal-header h2 { font-size: 24px; margin: 0; font-weight: 800; color: #111111; letter-spacing: 0.5px; }
         
         /* 內文 */
-        .modal-body p { font-size: 15px; line-height: 1.6; color: #555555; margin-top: 0; margin-bottom: 16px; }
+        .modal-body p { font-size: 17px; line-height: 1.6; color: #222222; margin-top: 0; margin-bottom: 18px; }
         
-        .guide-list { list-style: none; padding: 0; margin: 20px 0; }
-        .guide-list li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; }
+        .guide-list { list-style: none; padding: 0; margin: 22px 0; }
+        .guide-list li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 18px; }
         
-        .list-dot { color: #8ba3bd; font-size: 14px; margin-top: 2px; flex-shrink: 0; font-weight: bold; }
-        .list-dot.warn { color: #e07a5f; } 
+        .list-dot { color: #556677; font-size: 16px; margin-top: 2px; flex-shrink: 0; font-weight: bold; }
+        .list-dot.warn { color: #d9534f; } 
         
-        .guide-list p { margin: 0; font-size: 14.5px; color: #444444; line-height: 1.6; }
-        .guide-list strong { color: #111111; font-weight: 700; background: #f0f3f6; padding: 2px 6px; border-radius: 4px; }
+        .guide-list p { margin: 0; font-size: 16.5px; color: #222222; line-height: 1.6; }
+        .guide-list strong { color: #000000; font-weight: 700; background: #eef2f5; padding: 2px 6px; border-radius: 4px; }
         
-        .highlight-text { color: #d65a31 !important; font-weight: 600; }
-        .modal-footer-text { text-align: center; font-size: 14.5px !important; color: #6b7c96 !important; margin-top: 25px !important; margin-bottom: 0 !important; font-weight: 600; }
+        .highlight-text { color: #c9302c !important; font-weight: 700; }
+        .modal-footer-text { text-align: center; font-size: 16.5px !important; color: #4b6584 !important; margin-top: 28px !important; margin-bottom: 0 !important; font-weight: 700; }
         
-        .modal-footer { display: flex; justify-content: center; margin-top: 25px; }
+        .modal-footer { display: flex; justify-content: center; margin-top: 28px; }
         
         /* 關閉按鈕 */
-        .modal-close-btn { background: #2f3e46; color: #ffffff; border: none; padding: 12px 50px;
-            font-size: 15px; font-weight: 600; border-radius: 25px; cursor: pointer; box-shadow: 0 4px 15px rgba(47, 62, 70, 0.2); transition: all 0.25s ease; letter-spacing: 1px; }
-        .modal-close-btn:hover { background: #354f52; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(47, 62, 70, 0.3); }
-        .modal-close-btn:active { transform: translateY(1px); }
+        .modal-close-btn { background: #111111; color: #ffffff; border: none; padding: 12px 60px;
+            font-size: 16px; font-weight: 700; border-radius: 6px; cursor: pointer; transition: background 0.2s; letter-spacing: 1px; }
+        .modal-close-btn:hover { background: #333333; }
 
-        @keyframes fadeIn { to { opacity: 1; }}
-        @keyframes slideUp { to { transform: translateY(0); }}
     </style>
 </head>
 
