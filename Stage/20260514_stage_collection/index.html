@@ -638,7 +638,7 @@
             height: '100%',
             host: 'https://www.youtube-nocookie.com',
             playerVars: { 'autoplay': 0, 'rel': 0, 'playsinline': 1 }, // 絕對不偷播
-            events: {
+            events: vData.events || {
                 'onReady': function(event) {
                     loadSRT(vData.srt, vData.subEl, event.target);
                 }
