@@ -7,7 +7,7 @@
     <link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
     
     <style>
-        :root { --bg-color: #111111; --card-bg: #1a1a1a; --text-color: #ffffff; --text-muted: #aaaaaa;
+        :root { --bg-color: #111111; --card-bg: #1a1a1a; --text-color: #ffffff; --text-muted: #aaaaaa; --emerald-green: #119da4; --emerald-hover: #0c7c82;
             --burgundy: #a63a50; --burgundy-hover: #8c2f42; --gold: #ffd700; --silver: #c0c0c0; --bronze: #cd7f32; }
         body { margin: 0; background: var(--bg-color); color: var(--text-color);
             font-family: Arial, "Noto Sans TC", sans-serif; padding: 20px; padding-bottom: 60px; }
@@ -22,7 +22,8 @@
         #ranking-btn.active{ background:#a63a50; }
         #favorite-btn.active{ background:#d49a00; }
 
-        .category-menu button[data-category="group"].active{ background:#a63a50; }
+        .category-menu button[data-category="group"].active{ background: linear-gradient(135deg, #2ec4b6 0%, var(--emerald-green) 100%); 
+            box-shadow: 0 0 15px rgba(46, 196, 182, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); }
         .category-menu button[data-category="liyu"].active{ background:#6eb7e8; color:#fff; }
         .category-menu button[data-category="woojin"].active{ background:#b79adf; color:#fff; }
 
@@ -424,6 +425,30 @@
             link: 'https://flareu-tw-trans.github.io/Stage/20260602_stage_collection/?video=video_20260603_Show_Champion_woojin', 
             customThumb: 'https://flareu-tw-trans.github.io/images/20260603_Show_Champion_EP.599_woojin.webp'
         },
+    };
+
+    //說明欄
+    document.addEventListener("DOMContentLoaded", () => {
+        // 檢查粉絲之前有沒有關閉過這個功能說明欄
+        const hasSeenModal = localStorage.getItem("hasSeenInstructionModal_v1");
+        
+        // 如果是第一次進來（沒有紀錄），就顯示說明欄
+        if (!hasSeenModal) {
+            document.getElementById("instruction-modal").style.display = "flex";
+        }
+    });
+
+    // 關閉說明欄的函式
+    window.closeInstructionModal = function() {
+        const modal = document.getElementById("instruction-modal");
+        modal.style.transition = "opacity 0.3s ease";
+        modal.style.opacity = "0";
+        
+        setTimeout(() => {
+            modal.style.display = "none";
+            // 在瀏覽器留下記錄，之後不會重複跳出打擾讀者
+            localStorage.setItem("hasSeenInstructionModal_v1", "true");
+        }, 300);
     };
 
     // 即時監聽整個 stage_rankings 節點
