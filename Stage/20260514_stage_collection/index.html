@@ -801,12 +801,17 @@
       const targetVideoDbId = urlParams.get('video'); 
 
       if (targetVideoDbId) {
-        // 在子選單（.video-submenu）中，找到對應這個 videoDbId 的按鈕
-        const targetBtn = document.querySelector(`.video-submenu button[onclick*="${targetVideoDbId}"]`);
-    
-        if (targetBtn) {
-          targetBtn.click();
-        }
+        setTimeout(() => {
+          // 使用單引號包裹變數，確保屬性選取器萬無一失
+          const targetBtn = document.querySelector(`.video-submenu button[onclick*="'${targetVideoDbId}'"]`);
+      
+          if (targetBtn) {
+            console.log("成功找到目標按鈕，觸發自動切換:", targetVideoDbId);
+            targetBtn.click();
+          } else {
+            console.warn("找不到對應的影片按鈕:", targetVideoDbId);
+          }
+        }, 300); 
       }
     });
 
