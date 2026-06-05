@@ -363,10 +363,18 @@
 
       <div class="video-submenu">
 
-        <button class="active" onclick="changeVideo('vy8RXkX8VCM', '6/2 [THE SHOW] Hyper', this, 'tab-video1', 'THESHOW-title', 'group', 'video_20260602_theshow_broadcast', '6/2 [THE SHOW] Hyper')">
+        <button class="active" onclick="changeVideo('vy8RXkX8VCM', '6/2 [THE SHOW] Hyper (播出版本)', this, 'tab-video1', 'THESHOW-title', 'group', 'video_20260602_theshow_Hyper_broadcast', '6/2 [THE SHOW] Hyper 團體舞台')">
             播出版本
         </button>
-
+        <button onclick="changeVideo('19P4NehU2LU', '6/2 [THE SHOW] Hyper (舞台全景)', this, 'tab-video1', 'THESHOW-title', 'group', 'video_20260602_theshow_Hyper_fullcam', '6/2 [THE SHOW] Hyper 舞台全景')">
+            舞台全景
+        </button>
+        <button onclick="changeVideo('gnVS6PaecGE', '6/2 [THE SHOW] WAY 2 U (播出版本)', this, 'tab-video1', 'THESHOW-title', 'group', 'video_20260602_theshow_WAY2U_broadcast', '6/2 [THE SHOW] WAY 2 U 團體舞台')">
+            播出版本
+        </button>
+        <button onclick="changeVideo('DVNPHdMuk4k', '6/2 [THE SHOW] WAY 2 U (舞台全景)', this, 'tab-video1', 'THESHOW-title', 'group', 'video_20260602_theshow_WAY2U_fullcam', '6/2 [THE SHOW] WAY 2 U 舞台全景')">
+            舞台全景
+        </button>
       </div>
 
       <div id="video-wrapper-1" class="video-responsive-wrapper">
@@ -657,7 +665,7 @@
     // 建立一個全域物件，用來記錄每個頁籤（tab）目前被選中的影片資訊
     // 網頁一載入時，預設填入各頁籤第一個影片的初始資料（請根據你的實際需求調整預設值）
     window.currentSelectedVideo = {
-      'tab-video1': { category: 'group', videoDbId: 'video_20260602_theshow_broadcast', displayTitle: '6/2 [THE SHOW] Hyper' },
+      'tab-video1': { category: 'group', videoDbId: 'video_20260602_theshow_Hyper_broadcast', displayTitle: '6/2 [THE SHOW] Hyper 團體舞台' },
       'tab-video2': { category: 'group', videoDbId: 'video_20260603_Show_Champion_broadcast', displayTitle: '6/3 Show Champion EP.599 播出版本' }
     };
 
@@ -883,15 +891,11 @@
         if (targetTabBtn) {
           const vData = videoData[tabId];
 
-          // 如果 Tab 的播放器已經被預先建立了（例如預設的 tab-video1）
           if (vData && vData.player) {
-            console.log("【5/26 專屬優化】播放器已存在，直接觸發點擊:", targetVideo);
-            // 微小延遲 100 毫秒，確保播放器殼子穩定後注入新影片 ID
             setTimeout(() => {
               targetBtn.click();
             }, 100);
           } 
-          // 如果播放器還沒建立（其他 tab-video2, 3, 4），則維持你原本完美的監聽流程
           else {
             if (!vData.events) vData.events = {};
             const originalOnReady = vData.events.onReady;
@@ -900,7 +904,6 @@
               if (typeof originalOnReady === 'function') {
                 originalOnReady(event);
               }
-              console.log("【其他頁籤就緒】自動觸發點擊:", targetVideo);
               targetBtn.click();
             };
 
