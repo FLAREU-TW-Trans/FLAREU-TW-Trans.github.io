@@ -888,30 +888,38 @@
         const index = tabs.indexOf(tabContent);
         const targetTabBtn = document.querySelectorAll(".tab-btn")[index];
 
-        if (targetTabBtn) {
-          const vData = videoData[tabId];
-
-          if (vData && vData.player) {
-            setTimeout(() => {
-              targetBtn.click();
-            }, 100);
-          } 
-          else {
-            if (!vData.events) vData.events = {};
-            const originalOnReady = vData.events.onReady;
-
-            vData.events.onReady = function(event) {
-              if (typeof originalOnReady === 'function') {
-                originalOnReady(event);
-              }
-              targetBtn.click();
-            };
-
-            openTab(tabId, targetTabBtn);
-          }
-        }
+      if (targetTabBtn) {
+        openTab(tabId, targetTabBtn);
       }
-    });
+
+      if (targetBtn.classList.contains("active")) {
+        return; 
+      }
+
+      const vData = videoData ? videoData[tabId] : null;
+
+      if (vData && vData.player) {
+        setTimeout(() => {
+          targetBtn.click();
+        }, 150); 
+      } 
+      else if (vData) {
+        if (!vData.events) vData.events = {};
+        const originalOnReady = vData.events.onReady;
+
+        vData.events.onReady = function(event) {
+          if (typeof originalOnReady === 'function') {
+            originalOnReady(event);
+          }
+          targetBtn.click();
+        };
+      } else {
+        setTimeout(() => {
+          targetBtn.click();
+        }, 150);
+      }
+    }
+  });
   </script>
 </body>
 </html>
