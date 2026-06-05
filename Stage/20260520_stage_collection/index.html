@@ -121,11 +121,7 @@
 
     /* 字幕外層 */
     .subtitle-overlay { position: absolute; left: 50%; transform: translateX(-50%); bottom: 8%;
-        width: 90vw; max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px); 
-        padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right);
-        box-sizing: border-box; z-index: 100; pointer-events: none;
-        display: flex; justify-content: center; text-align: center;
-    }
+      width: 90%; max-width: 90%; z-index: 100; pointer-events: none; display: flex; justify-content: center; text-align: center; }
 
     /* 字幕本體 */
     .subtitle-overlay span { display: block; width: 100%; max-width: 100%; padding: 0.25em 0.7em;
@@ -584,14 +580,16 @@
             .then(text => {
                 const subs = parseSRT(text);
                 setInterval(() => {
-                    if (player && player.getPlayerState() === 1) { 
-                        const time = player.getCurrentTime();
-                        const currentSub = subs.find(s => time >= s.start && time <= s.end);
-                        document.getElementById(subtitleId).innerHTML = currentSub ? `<span>${currentSub.text}</span>` : '';
-                    } else {
-                        document.getElementById(subtitleId).innerHTML = ''; 
-                    }
-                }, 200);
+                  if (!player) return;
+                  const subtitleElement = document.getElementById(subtitleId);
+                  const time = player.getCurrentTime();
+                  const currentSub = subs.find(s => time >= s.start && time <= s.end);
+                  if (currentSub) {
+                    subtitleElement.innerHTML = `<span>${currentSub.text}</span>`;
+                  } else if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+                  subtitleElement.innerHTML = '';
+                }
+              }, 200);
             }).catch(e => console.log("字幕載入失敗", e));
     }
 
