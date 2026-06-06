@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select: none">
     <title>智慧同步播放器 - 終極相容版</title>
     <style>
-        :root { --ui-scale: 1.0; }
+        :root { --ui-scale: 1.0; --lyric-font-size: 22px; }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         html, body { height: 100%; width: 100%; overflow: hidden; font-family: sans-serif; background-color: #121212; color: #ffffff; }
         
@@ -143,7 +143,6 @@
     </div>
 
     <script>
-        // 移除 DOMContentLoaded，直接最速執行執行，防止被跨域 iframe 阻斷
         const body = document.body;
         const btnToggleMode = document.getElementById('btnToggleMode');
         const videoBox = document.getElementById('videoBox');
@@ -152,44 +151,64 @@
         const timeDisplay = document.getElementById('timeDisplay');
         const btnPlayPause = document.getElementById('btnPlayPause');
 
-        let isVerticalMode = true;
-        let isDragging = false;
-        let startPos = 0;
-        let startSize = 0;
+        // ==========================================
+        // 【讀取記憶機制】從 localStorage 還原所有設定
+        // ==========================================
+        let isVerticalMode = localStorage.getItem('isVerticalMode') !== 'false'; // 預設直向(true)
+        let currentUiScale = parseFloat(localStorage.getItem('currentUiScale')) || 1.0; // 預設 1.0
+        let currentFontSize = parseInt(localStorage.getItem('currentFontSize')) || 22; // 預設 22px
+        let savedVideoHeight = localStorage.getItem('savedVideoHeight'); // 直向時影片高度
+        let savedVideoWidth = localStorage.getItem('savedVideoWidth');   // 橫向時影片寬度
 
-        // 【核心縮放邏輯】控制動態 CSS 全域變數
-        let currentUiScale = 1.0; 
+        // 初始化套用記憶的設定
+        document.documentElement.style.setProperty('--ui-scale', currentUiScale);
+        document.documentElement.style.setProperty('--lyric-font-size', currentFontSize + 'px');
+        
+        if (!isVerticalMode) {
+            body.className = 'mode-horizontal';
+            btnToggleMode.innerText = "⇄ 切換上下";
+            if (savedVideoWidth) videoBox.style.width = savedVideoWidth;
+        } else {
+            body.className = 'mode-vertical';
+            btnToggleMode.innerText = "⇄ 切換左右";
+            if (savedVideoHeight) videoBox.style.height = savedVideoHeight;
+        }
+
+        // 1. 按鈕縮放控制（加入記憶儲存）
         function changeUiScale(amount) {
-            // 限制縮放範圍在 0.6 倍 到 3.0 倍之間，防止畫面爆掉
             currentUiScale = Math.max(0.6, Math.min(3.0, currentUiScale + amount));
             document.documentElement.style.setProperty('--ui-scale', currentUiScale);
+            localStorage.setItem('currentUiScale', currentUiScale); // 儲存按鈕大小
             updateUI(true);
         }
-        document.getElementById('btnUiUp').onclick = () => changeUiScale(0.2);   // 每次放大 0.2 倍
-        document.getElementById('btnUiDown').onclick = () => changeUiScale(-0.2); // 每次縮小 0.2 倍
+        document.getElementById('btnUiUp').onclick = () => changeUiScale(0.2);
+        document.getElementById('btnUiDown').onclick = () => changeUiScale(-0.2);
 
-        // 1. 模式切換功能
+        // 2. 模式切換功能（加入記憶儲存）
         btnToggleMode.onclick = function() {
             videoBox.style.width = '';
             videoBox.style.height = '';
             if (isVerticalMode) {
                 body.className = 'mode-horizontal';
-                btnToggleMode.innerText = "⇄ 切換上下畫面";
+                btnToggleMode.innerText = "⇄ 切換上下";
+                if (savedVideoWidth) videoBox.style.width = savedVideoWidth;
             } else {
                 body.className = 'mode-vertical';
-                btnToggleMode.innerText = "⇄ 切換左右畫面";
+                btnToggleMode.innerText = "⇄ 切換左右";
+                if (savedVideoHeight) videoBox.style.height = savedVideoHeight;
             }
             isVerticalMode = !isVerticalMode;
+            localStorage.setItem('isVerticalMode', isVerticalMode); // 儲存目前的顯示模式
             updateUI(true);
         };
 
-        // 2. 高相容智慧拖曳邏輯
+        // 3. 智慧拖曳與畫面大小記憶
         function onStart(pos) {
             isDragging = true;
             startPos = pos;
             startSize = isVerticalMode ? videoBox.offsetHeight : videoBox.offsetWidth;
             dragAxis.classList.add('dragging');
-            videoBox.classList.add('iframe-disabled'); // 拖曳時啟用遮罩，防止滑鼠事件被 iframe 吃掉
+            videoBox.classList.add('iframe-disabled'); 
         }
         
         function onMove(pos) {
@@ -197,9 +216,15 @@
             let delta = pos - startPos;
             let newSize = startSize + delta;
             if (isVerticalMode) {
-                if (newSize >= 80 && newSize <= window.innerHeight * 0.9) videoBox.style.height = newSize + 'px';
+                if (newSize >= 80 && newSize <= window.innerHeight * 0.9) {
+                    videoBox.style.height = newSize + 'px';
+                    localStorage.setItem('savedVideoHeight', newSize + 'px'); // 儲存直向影片高度
+                }
             } else {
-                if (newSize >= 80 && newSize <= window.innerWidth * 0.9) videoBox.style.width = newSize + 'px';
+                if (newSize >= 80 && newSize <= window.innerWidth * 0.9) {
+                    videoBox.style.width = newSize + 'px';
+                    localStorage.setItem('savedVideoWidth', newSize + 'px');  // 儲存橫向影片寬度
+                }
             }
         }
         
@@ -211,21 +236,23 @@
             } 
         }
 
-        // 電腦事件
+        let isDragging = false;
+        let startPos = 0;
+        let startSize = 0;
+
         dragAxis.addEventListener('mousedown', e => onStart(isVerticalMode ? e.clientY : e.clientX));
         document.addEventListener('mousemove', e => onMove(isVerticalMode ? e.clientY : e.clientX));
         document.addEventListener('mouseup', onEnd);
 
-        // 手機事件
         dragAxis.addEventListener('touchstart', e => onStart(isVerticalMode ? e.touches[0].clientY : e.touches[0].clientX), { passive: true });
         document.addEventListener('touchmove', e => { if (isDragging) { if(e.cancelable) e.preventDefault(); onMove(isVerticalMode ? e.touches[0].clientY : e.touches[0].clientX); } }, { passive: false });
         document.addEventListener('touchend', onEnd);
 
-        // 3. 字幕資料與渲染
+        // 4. 字幕資料與渲染
         const lyricsData = [
-            { time: 0, text: "【系統提示】終極相容版已成功載入！" },
-            { time: 3.0, text: "點擊任意一行中文字幕即可精準跳轉時間。" },
-            { time: 7.0, text: "點擊播放按鈕，字幕會開始向上同步跑動。" },
+            { time: 0, text: "【系統提示】終極記憶相容版已成功載入！" },
+            { time: 3.0, text: "現在隨意調整按鈕大小、字體、畫面比例或切換版面..." },
+            { time: 7.0, text: "直接重新整理網頁，所有狀態都會完美保持原樣！" },
             { time: 12.0, text: "按住中間灰色橫條，在電腦或手機上皆能自由拖曳。" },
             { time: 17.0, text: "所有的控制按鈕均已放大，方便進行觸控與點擊。" },
             { time: 22.0, text: "（測試結束，可開始替換你所需的歌詞與時間軸）" }
@@ -234,9 +261,7 @@
         let currentTime = 0;
         let isPlaying = false;
         let timerInterval = null;
-        let currentFontSize = 22;
 
-        // 渲染字幕到畫面上
         lyricsData.forEach(item => {
             const p = document.createElement('p');
             p.className = 'lyric-line';
@@ -247,7 +272,7 @@
 
         const lyricElements = document.querySelectorAll('.lyric-line');
 
-        // 4. UI 刷新與偏上滾動對齊
+        // 5. UI 刷新與偏上滾動對齊
         function updateUI(forceScroll = false) {
             let mins = Math.floor(currentTime / 60).toString().padStart(2, '0');
             let secs = Math.floor(currentTime % 60).toString().padStart(2, '0');
@@ -265,7 +290,6 @@
                 if (!currentEl.classList.contains('active') || forceScroll) {
                     lyricElements.forEach(el => el.classList.remove('active'));
                     currentEl.classList.add('active');
-                    // 減去 4.5 分之一的高度，強迫其固定偏向上方顯示
                     lyricsContainer.scrollTop = currentEl.offsetTop - (lyricsContainer.clientHeight / 4.5);
                 }
             } else if (currentTime === 0) {
@@ -278,10 +302,10 @@
         btnPlayPause.onclick = function() {
             if (isPlaying) {
                 clearInterval(timerInterval);
-                btnPlayPause.innerText = "▶ 播放字幕";
+                btnPlayPause.innerText = "▶ 播放";
             } else {
                 timerInterval = setInterval(() => { currentTime += 0.1; updateUI(); }, 100);
-                btnPlayPause.innerText = "設 ⏸ 暫停字幕";
+                btnPlayPause.innerText = "橫 ⏸ 暫停";
             }
             isPlaying = !isPlaying;
         };
@@ -290,9 +314,11 @@
         document.getElementById('btnPlus').onclick = function() { currentTime += 1; updateUI(true); };
         document.getElementById('btnReset').onclick = function() { currentTime = 0; if(isPlaying) btnPlayPause.click(); updateUI(true); };
 
+        // 字體大小控制（加入記憶儲存）
         function changeFont(amount) {
             currentFontSize = Math.max(14, Math.min(45, currentFontSize + amount));
             document.documentElement.style.setProperty('--lyric-font-size', currentFontSize + 'px');
+            localStorage.setItem('currentFontSize', currentFontSize); // 儲存字幕大小
             updateUI(true);
         }
         document.getElementById('btnFontUp').onclick = () => changeFont(2);
