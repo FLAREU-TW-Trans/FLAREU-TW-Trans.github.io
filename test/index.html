@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>影片與流動字幕同步播放器</title>
+    <title>上下可調比例 - 手動同步字幕播放器</title>
     <style>
         * {
             box-sizing: border-box;
@@ -16,20 +16,20 @@
             background-color: #121212;
             color: #ffffff;
             display: flex;
-            flex-direction: column; /* 改為垂直排列 */
+            flex-direction: column;
             height: 100vh;
             overflow: hidden;
+            user-select: none; /* 防止拖曳時選取到文字 */
         }
 
         /* 上半邊：影片區塊 */
         .video-box {
-            flex: 1.2; /* 數值可以調整影片佔畫面的比例 */
+            height: 50vh; /* 初始高度各佔一半 */
+            min-height: 100px;
             background-color: #000;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-bottom: 2px solid #333; /* 改為底部邊框 */
-            position: relative;
         }
 
         .video-box iframe {
@@ -38,17 +38,82 @@
             border: none;
         }
 
-        /* 下半邊：歌詞字幕區塊 */
-        .lyrics-box {
-            flex: 1; /* 字幕區塊佔比 */
+        /* 核心：可拖曳的分隔調整軸 */
+        .resizer {
+            height: 8px;
+            background-color: #333;
+            cursor: ns-resize; /* 顯示上下調整的滑鼠游標 */
+            transition: background-color 0.2s;
+            position: relative;
+            z-index: 10;
+        }
+
+        .resizer:hover, .resizer.dragging {
+            background-color: #ff9800; /* 懸停或拖曳時變亮橘色 */
+        }
+
+        /* 下半邊：字幕與控制區容器 */
+        .bottom-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             background-color: #181818;
+            overflow: hidden;
+            min-height: 150px;
+        }
+
+        /* 控制面板 */
+        .control-panel {
+            background-color: #222;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #333;
+        }
+
+        .btn {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #444;
+        }
+
+        .btn-main {
+            background-color: #ff9800;
+            color: black;
+            font-weight: bold;
+        }
+
+        .btn-main:hover {
+            background-color: #e68a00;
+        }
+
+        .time-display {
+            font-family: monospace;
+            font-size: 1.1rem;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        /* 字幕捲動區塊 */
+        .lyrics-box {
+            flex: 1;
             overflow-y: auto;
             position: relative;
             scroll-behavior: smooth;
-            padding: 25vh 20px; /* 調整上下 padding 讓字幕在下半部畫面能居中 */
+            padding: 20vh 20px; /* 讓字幕在下方區塊中能保持居中 */
         }
 
-        /* 隱藏捲軸 */
         .lyrics-box::-webkit-scrollbar {
             width: 6px;
         }
@@ -57,34 +122,44 @@
             border-radius: 3px;
         }
 
-        /* 單行歌詞樣式 */
+        /* 單行字幕樣式 */
         .lyric-line {
             font-size: 1.3rem;
             line-height: 2.2;
-            padding: 12px 0;
+            padding: 10px 0;
             text-align: center;
-            color: #666;
-            transition: all 0.3s ease;
+            color: #555;
+            transition: all 0.2s ease;
             transform: scale(0.95);
-            opacity: 0.5;
+            opacity: 0.4;
         }
 
-        /* 當前播放到的歌詞高亮樣式 */
+        /* 當前字幕高亮 */
         .lyric-line.active {
-            color: #ff9800; /* 改為亮橘色，在黑底更顯眼 */
-            font-size: 1.7rem;
+            color: #ff9800;
+            font-size: 1.6rem;
             font-weight: bold;
             transform: scale(1);
             opacity: 1;
-            text-shadow: 0 0 12px rgba(255, 152, 0, 0.4);
+            text-shadow: 0 0 10px rgba(255, 152, 0, 0.3);
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="video-box">
-            <iframe src="https://www.mnetplus.world/media/zh-TW/videos/6a220a29568bf5527248b9d1" allowfullscreen></iframe>
+    <div class="video-box" id="videoBox">
+        <iframe src="https://www.mnetplus.world/media/zh-TW/videos/6a220a29568bf5527248b9d1" allowfullscreen></iframe>
+    </div>
+
+    <div class="resizer" id="dragAxis"></div>
+
+    <div class="bottom-container">
+        <div class="control-panel">
+            <button class="btn" id="btnMinus">- 1 秒</button>
+            <button class="btn btn-main" id="btnPlayPause">播放字幕</button>
+            <button class="btn" id="btnPlus">+ 1 秒</button>
+            <button class="btn" id="btnReset">重設</button>
+            <div class="time-display" id="timeDisplay">00:00.0</div>
         </div>
 
         <div class="lyrics-box" id="lyricsContainer">
@@ -92,34 +167,81 @@
     </div>
 
     <script>
-        // 1. 設定你的中文字幕與時間軸 (單位：秒)
+        // ==========================================
+        // 功能一：拖曳調整上下畫面大小
+        // ==========================================
+        const videoBox = document.getElementById('videoBox');
+        const dragAxis = document.getElementById('dragAxis');
+
+        dragAxis.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            dragAxis.classList.add('dragging');
+            document.addEventListener('mousemove', resizeUpdate);
+            document.addEventListener('mouseup', resizeStop);
+        });
+
+        function resizeUpdate(e) {
+            // 計算滑鼠當前位置佔視窗高度的百分比，並轉為 vh 單位
+            let newHeight = (e.clientY / window.innerHeight) * 100;
+            
+            // 設定限制限制，避免拉到最頂或最底不見
+            if (newHeight > 15 && newHeight < 85) {
+                videoBox.style.height = newHeight + 'vh';
+            }
+        }
+
+        function resizeStop() {
+            dragAxis.classList.remove('dragging');
+            document.removeEventListener('mousemove', resizeUpdate);
+            document.removeEventListener('mouseup', resizeStop);
+        }
+
+
+        // ==========================================
+        // 功能二：字幕資料與手動計時器
+        // ==========================================
+        // 請在此填入你的中文字幕與時間點 (單位：秒)
         const lyricsData = [
             { time: 0, text: "（音樂前奏）" },
-            { time: 5.5, text: "這是第一句動態中文字幕" },
-            { time: 10.2, text: "當時間到達時，字幕會自動滾動高亮" },
-            { time: 15.0, text: "調整左側的 iframe 網址即可更換影片" },
-            { time: 20.8, text: "這是第四句歌詞效果展示" },
-            { time: 26.3, text: "（歌曲結束）" }
+            { time: 4.5, text: "這是手動計時字幕的第一句" },
+            { time: 9.0, text: "點擊上方的「播放字幕」，時間就會開始跑" },
+            { time: 14.2, text: "如果發現字幕比影片快或慢" },
+            { time: 18.5, text: "可以使用 ＋1秒 或 －1秒 按鈕來微調" },
+            { time: 23.0, text: "中間的橘色軸線可以自由上下拖曳調整大小" },
+            { time: 28.0, text: "（歌曲結束）" }
         ];
 
-        const lyricsContainer = document.getElementById('lyricsContainer');
+        let currentTime = 0;
+        let isPlaying = false;
+        let timerInterval = null;
 
-        // 2. 渲染歌詞到網頁上
-        lyricsData.forEach((item, index) => {
+        const lyricsContainer = document.getElementById('lyricsContainer');
+        const btnPlayPause = document.getElementById('btnPlayPause');
+        const btnMinus = document.getElementById('btnMinus');
+        const btnPlus = document.getElementById('btnPlus');
+        const btnReset = document.getElementById('btnReset');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        // 渲染字幕到網頁上
+        lyricsData.forEach((item) => {
             const p = document.createElement('p');
             p.className = 'lyric-line';
-            p.setAttribute('data-time', item.time);
             p.innerText = item.text;
             lyricsContainer.appendChild(p);
         });
 
         const lyricElements = document.querySelectorAll('.lyric-line');
 
-        // 3. 歌詞滾動與高亮邏輯
-        function updateLyrics(currentTime) {
-            let activeIndex = -1;
+        // 更新時間顯示與滾動高亮
+        function updateUI() {
+            // 格式化時間為 MM:SS.m
+            let mins = Math.floor(currentTime / 60).toString().padStart(2, '0');
+            let secs = Math.floor(currentTime % 60).toString().padStart(2, '0');
+            let ms = Math.floor((currentTime % 1) * 10);
+            timeDisplay.innerText = `${mins}:${secs}.${ms}`;
 
-            // 找出當前時間對應的歌詞索引
+            // 尋找當前該高亮的字幕
+            let activeIndex = -1;
             for (let i = 0; i < lyricsData.length; i++) {
                 if (currentTime >= lyricsData[i].time) {
                     activeIndex = i;
@@ -128,17 +250,16 @@
                 }
             }
 
-            // 更新樣式與滾動位置
+            // 執行滾動與變色
             if (activeIndex !== -1) {
                 lyricElements.forEach((el, index) => {
                     if (index === activeIndex) {
-                        el.classList.add('active');
-                        
-                        // 讓當前歌詞滾動到容器的中央
-                        const containerHeight = lyricsContainer.clientHeight;
-                        const elOffsetTop = el.offsetTop;
-                        const elHeight = el.clientHeight;
-                        lyricsContainer.scrollTop = elOffsetTop - (containerHeight / 2) + (elHeight / 2);
+                        if (!el.classList.contains('active')) {
+                            el.classList.add('active');
+                            // 滾動置中
+                            const containerHeight = lyricsContainer.clientHeight;
+                            lyricsContainer.scrollTop = el.offsetTop - (containerHeight / 2) + (el.clientHeight / 2);
+                        }
                     } else {
                         el.classList.remove('active');
                     }
@@ -146,22 +267,51 @@
             }
         }
 
-        /* ⚠️ 重要技術限制提示：
-        因為你是使用 <iframe> 嵌入「外部非 YouTube 網站」，
-        瀏覽器基於安全性限制（同源政策 Same-Origin Policy），JavaScript 無法直接讀取外部 iframe 內的播放時間。
-        
-        以下提供兩種解決方案來驅動 updateLyrics() 函式：
-        */
+        // 控制：播放與暫停
+        btnPlayPause.addEventListener('click', () => {
+            if (isPlaying) {
+                // 轉為暫停
+                clearInterval(timerInterval);
+                btnPlayPause.innerText = "播放字幕";
+                btnPlayPause.style.backgroundColor = "#ff9800";
+            } else {
+                // 轉為播放 (每 100 毫秒增加 0.1 秒)
+                timerInterval = setInterval(() => {
+                    currentTime += 0.1;
+                    updateUI();
+                }, 100);
+                btnPlayPause.innerText = "暫停字幕";
+                btnPlayPause.style.backgroundColor = "#e0e0e0";
+            }
+            isPlaying = !isPlaying;
+        });
 
-        // 方案 A：如果該外部網站支援 postMessage API 或你有權限操控它，請接收其傳回的時間並呼叫 updateLyrics(秒數)。
-        
-        // 方案 B（備用模擬方案）：點擊右側歌詞區即可模擬時間流逝（測試流動效果用）
-        let fakeTime = 0;
-        setInterval(() => {
-            // 如果你想測試滾動效果，可以取消下方註解來模擬時間跑動：
-             fakeTime += 0.5;
-             updateLyrics(fakeTime);
-        }, 500);
+        // 控制：微調時間 -1 秒
+        btnMinus.addEventListener('click', () => {
+            currentTime = Math.max(0, currentTime - 1);
+            updateUI();
+        });
+
+        // 控制：微調時間 +1 秒
+        btnPlus.addEventListener('click', () => {
+            currentTime += 1;
+            updateUI();
+        });
+
+        // 控制：重設歸零
+        btnReset.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            isPlaying = false;
+            currentTime = 0;
+            btnPlayPause.innerText = "播放字幕";
+            btnPlayPause.style.backgroundColor = "#ff9800";
+            updateUI();
+            lyricsContainer.scrollTop = 0;
+            lyricElements.forEach(el => el.classList.remove('active'));
+        });
+
+        // 初始執行一次確保畫面正確
+        updateUI();
     </script>
 </body>
 </html>
