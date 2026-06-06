@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select: none">
     <title>智慧同步播放器 - 終極相容版</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -37,85 +37,76 @@
         .control-panel { 
             flex-shrink: 0; 
             background-color: #222; 
-            padding: 16px; 
+            padding: calc(16px * var(--ui-scale)); 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             flex-wrap: wrap; 
-            gap: 16px; /* 寬度加寬，防止按鈕上下排時黏在一起 */
+            gap: calc(16px * var(--ui-scale)); 
             border-bottom: 1px solid #333; 
         }
-        .btn-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .btn-group { 
+            display: flex; 
+            gap: calc(10px * var(--ui-scale)); 
+            align-items: center; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+        }
         
         /* 大按鈕改進 */
         .btn { 
             background-color: #333; 
             color: white; 
             border: none; 
-            padding: 16px 26px; /* 大幅增加上下、左右內距，變成超大方塊 */
-            font-size: 20px; /* 字體再度放大 */
+            padding: calc(14px * var(--ui-scale)) calc(22px * var(--ui-scale)); 
+            font-size: calc(18px * var(--ui-scale)); 
             font-weight: bold; 
-            border-radius: 10px; /* 更圓潤好按的觸控角 */
+            border-radius: calc(10px * var(--ui-scale)); 
             cursor: pointer; 
-            min-height: 55px; /* 強制設定最小高度，確保在任何手機上都有分量 */
+            min-height: calc(52px * var(--ui-scale)); 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         .btn:active { background-color: #444; }
         .btn-main { background-color: #ff9800; color: black; }
         .btn-mode { background-color: #0076ff; }
-        .time-display { font-family: monospace; font-size: 26px; font-weight: bold; min-width: 120px; text-align: center; color: #ff9800; }
+        .btn-scale { background-color: #e91e63; color: white; }
+        .time-display { 
+            font-family: monospace; 
+            font-size: calc(26px * var(--ui-scale)); 
+            font-weight: bold; 
+            min-width: calc(120px * var(--ui-scale)); 
+            text-align: center; 
+            color: #ff9800; 
+        }
         
         /* 字幕重心上移優化 */
         .lyrics-box { flex: 1; overflow-y: auto; position: relative; scroll-behavior: smooth; padding: 10vh 20px 45vh 20px; width: 100%; }
-        .lyric-line { font-size: var(--lyric-font-size, 22px); line-height: 1.8; padding: 18px 0; text-align: center; color: #555; cursor: pointer; width: 100%; word-wrap: break-word; }
-        .lyric-line.active { color: #ff9800; font-size: calc(var(--lyric-font-size, 22px) + 8px); font-weight: bold; text-shadow: 0 0 15px rgba(255, 152, 0, 0.5); }
+        .lyric-line { font-size: var(--lyric-font-size); line-height: 1.8; padding: 18px 0; text-align: center; color: #555; cursor: pointer; width: 100%; word-wrap: break-word; }
+        .lyric-line.active { color: #ff9800; font-size: calc(var(--lyric-font-size) + 8px); font-weight: bold; text-shadow: 0 0 15px rgba(255, 152, 0, 0.5); }
 
         @media (max-width: 768px) {
             .control-panel {
                 display: grid !important; 
                 grid-template-columns: repeat(4, 1fr) !important; 
-                gap: 10px !important;
-                padding: 12px !important;
-                min-height: auto !important; /* 解除可能被擠壓的限制 */
+                gap: calc(10px * var(--ui-scale)) !important;
+                padding: calc(12px * var(--ui-scale)) !important;
             }
-            
-            .btn-group {
-                display: contents !important; 
-            }
-            
-            /* 手機版按鈕全面強制放大 */
-            .btn {
-                width: 100% !important;
-                height: 60px !important; /* 確保按鈕有足夠高度 */
-                min-height: 60px !important;
-                font-size: 22px !important; /* 字體全面放大 */
-                padding: 0 !important;
-                border-radius: 10px !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-            }
-            
-            .btn-mode { 
-                grid-column: span 2 !important; 
-                font-size: 18px !important; /* 控制寬度防止折行 */
-            } 
-            
+            .btn-group { display: contents !important; }
+            .btn { width: 100% !important; height: calc(60px * var(--ui-scale)) !important; padding: 0 !important; }
+            .btn-mode { grid-column: span 2 !important; } 
             .time-display { 
                 grid-column: span 2 !important; 
-                font-size: 26px !important; 
                 background-color: #1a1a1a !important;
-                border-radius: 10px !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
-                height: 60px !important;
-                min-height: 60px !important;
+                height: calc(60px * var(--ui-scale)) !important;
             }
-            
             #btnMinus { grid-column: span 1 !important; }
             #btnPlayPause { grid-column: span 2 !important; }
             #btnPlus { grid-column: span 1 !important; }
-            
             #btnReset { grid-column: span 2 !important; }
             #btnFontDown { grid-column: span 1 !important; }
             #btnFontUp { grid-column: span 1 !important; }
@@ -133,6 +124,8 @@
     <div class="bottom-container">
         <div class="control-panel">
             <button class="btn btn-mode" id="btnToggleMode">⇄ 切換左右畫面</button>
+            <button class="btn btn-scale" id="btnUiDown">按鈕－</button>
+            <button class="btn btn-scale" id="btnUiUp">按鈕＋</button>
             <div class="btn-group">
                 <button class="btn" id="btnMinus">-1s</button>
                 <button class="btn btn-main" id="btnPlayPause">▶ 播放字幕</button>
@@ -162,6 +155,17 @@
         let isDragging = false;
         let startPos = 0;
         let startSize = 0;
+
+        // 【核心縮放邏輯】控制動態 CSS 全域變數
+        let currentUiScale = 1.0; 
+        function changeUiScale(amount) {
+            // 限制縮放範圍在 0.6 倍 到 3.0 倍之間，防止畫面爆掉
+            currentUiScale = Math.max(0.6, Math.min(3.0, currentUiScale + amount));
+            document.documentElement.style.setProperty('--ui-scale', currentUiScale);
+            updateUI(true);
+        }
+        document.getElementById('btnUiUp').onclick = () => changeUiScale(0.2);   // 每次放大 0.2 倍
+        document.getElementById('btnUiDown').onclick = () => changeUiScale(-0.2); // 每次縮小 0.2 倍
 
         // 1. 模式切換功能
         btnToggleMode.onclick = function() {
