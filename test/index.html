@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select: none", viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>智慧同步播放器 - 終極相容版</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -72,47 +72,53 @@
         @media (max-width: 768px) {
             .control-panel {
                 display: grid !important; 
-                grid-template-columns: repeat(4, 1fr); 
-                gap: 12px;
-                padding: 14px;
+                grid-template-columns: repeat(4, 1fr) !important; 
+                gap: 10px !important;
+                padding: 12px !important;
+                min-height: auto !important; /* 解除可能被擠壓的限制 */
             }
             
             .btn-group {
-                display: contents; 
+                display: contents !important; 
             }
             
-            /* 針對手機裝置把高度、字體開到最大 */
+            /* 手機版按鈕全面強制放大 */
             .btn {
                 width: 100% !important;
-                height: 65px !important; /* 按鈕加高，非常防呆好點擊 */
-                font-size: 24px !important; /* 字體全面放大，清晰顯眼 */
+                height: 60px !important; /* 確保按鈕有足夠高度 */
+                min-height: 60px !important;
+                font-size: 22px !important; /* 字體全面放大 */
                 padding: 0 !important;
-                border-radius: 12px;
+                border-radius: 10px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
             }
             
             .btn-mode { 
-                grid-column: span 2; 
-                font-size: 18px !important; /* 字數較多，微調防折行 */
+                grid-column: span 2 !important; 
+                font-size: 18px !important; /* 控制寬度防止折行 */
             } 
             
             .time-display { 
-                grid-column: span 2; 
-                font-size: 28px !important; 
-                background-color: #1a1a1a;
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 65px;
+                grid-column: span 2 !important; 
+                font-size: 26px !important; 
+                background-color: #1a1a1a !important;
+                border-radius: 10px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                height: 60px !important;
+                min-height: 60px !important;
             }
             
-            #btnMinus { grid-column: span 1; }
-            #btnPlayPause { grid-column: span 2; }
-            #btnPlus { grid-column: span 1; }
+            #btnMinus { grid-column: span 1 !important; }
+            #btnPlayPause { grid-column: span 2 !important; }
+            #btnPlus { grid-column: span 1 !important; }
             
-            #btnReset { grid-column: span 2; }
-            #btnFontDown { grid-column: span 1; }
-            #btnFontUp { grid-column: span 1; }
+            #btnReset { grid-column: span 2 !important; }
+            #btnFontDown { grid-column: span 1 !important; }
+            #btnFontUp { grid-column: span 1 !important; }
         }
     </style>
 </head>
