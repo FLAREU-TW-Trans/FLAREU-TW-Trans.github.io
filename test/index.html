@@ -16,25 +16,20 @@
             background-color: #121212;
             color: #ffffff;
             display: flex;
+            flex-direction: column; /* 改為垂直排列 */
             height: 100vh;
             overflow: hidden;
         }
 
-        /* 左右平分畫面 */
-        .container {
-            display: flex;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* 左半邊：影片區塊 */
+        /* 上半邊：影片區塊 */
         .video-box {
-            flex: 1;
+            flex: 1.2; /* 數值可以調整影片佔畫面的比例 */
             background-color: #000;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-right: 2px solid #333;
+            border-bottom: 2px solid #333; /* 改為底部邊框 */
+            position: relative;
         }
 
         .video-box iframe {
@@ -43,17 +38,17 @@
             border: none;
         }
 
-        /* 右半邊：歌詞字幕區塊 */
+        /* 下半邊：歌詞字幕區塊 */
         .lyrics-box {
-            flex: 1;
+            flex: 1; /* 字幕區塊佔比 */
             background-color: #181818;
             overflow-y: auto;
             position: relative;
             scroll-behavior: smooth;
-            padding: 50vh 20px; /* 讓第一句和最後一句歌詞都能居中 */
+            padding: 25vh 20px; /* 調整上下 padding 讓字幕在下半部畫面能居中 */
         }
 
-        /* 隱藏捲軸（選擇性） */
+        /* 隱藏捲軸 */
         .lyrics-box::-webkit-scrollbar {
             width: 6px;
         }
@@ -64,24 +59,24 @@
 
         /* 單行歌詞樣式 */
         .lyric-line {
-            font-size: 1.25rem;
-            line-height: 2;
-            padding: 10px 0;
+            font-size: 1.3rem;
+            line-height: 2.2;
+            padding: 12px 0;
             text-align: center;
             color: #666;
             transition: all 0.3s ease;
-            transform: scale(0.9);
+            transform: scale(0.95);
             opacity: 0.5;
         }
 
         /* 當前播放到的歌詞高亮樣式 */
         .lyric-line.active {
-            color: #1db954; /* Spotify 綠，可自行修改 */
-            font-size: 1.6rem;
+            color: #ff9800; /* 改為亮橘色，在黑底更顯眼 */
+            font-size: 1.7rem;
             font-weight: bold;
             transform: scale(1);
             opacity: 1;
-            text-shadow: 0 0 10px rgba(29, 185, 84, 0.3);
+            text-shadow: 0 0 12px rgba(255, 152, 0, 0.4);
         }
     </style>
 </head>
