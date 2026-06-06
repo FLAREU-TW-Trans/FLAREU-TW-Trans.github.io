@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select: none">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select: none", viewport-fit=cover">
     <title>智慧同步播放器 - 終極相容版</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -71,37 +71,39 @@
 
         @media (max-width: 768px) {
             .control-panel {
-                display: grid !important; /* 強制切換為網格 */
-                grid-template-columns: repeat(4, 1fr); /* 切分為 4 等分 */
+                display: grid !important; 
+                grid-template-columns: repeat(4, 1fr); 
                 gap: 12px;
                 padding: 14px;
             }
             
-            /* 解除電腦版原本的群組限制，讓按鈕直接參與網格排版 */
             .btn-group {
                 display: contents; 
             }
             
-            /* 手機版按鈕再度拉高、字體變大 */
+            /* 針對手機裝置把高度、字體開到最大 */
             .btn {
                 width: 100% !important;
-                height: 60px !important; /* 確保按鈕有足夠高度 */
-                font-size: 22px !important; /* 手機版字體加大 */
+                height: 65px !important; /* 按鈕加高，非常防呆好點擊 */
+                font-size: 24px !important; /* 字體全面放大，清晰顯眼 */
                 padding: 0 !important;
-                border-radius: 8px;
+                border-radius: 12px;
             }
             
-            /* 手機版兩行排版位置配置 */
-            .btn-mode { grid-column: span 2; font-size: 18px !important; } /* 切換畫面文字較多，字體微調防止折行 */
+            .btn-mode { 
+                grid-column: span 2; 
+                font-size: 18px !important; /* 字數較多，微調防折行 */
+            } 
+            
             .time-display { 
                 grid-column: span 2; 
-                font-size: 26px !important; 
+                font-size: 28px !important; 
                 background-color: #1a1a1a;
-                border-radius: 8px;
+                border-radius: 12px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                height: 60px;
+                height: 65px;
             }
             
             #btnMinus { grid-column: span 1; }
