@@ -32,44 +32,74 @@
 
         .bottom-container { flex: 1; display: flex; flex-direction: column; background-color: #181818; overflow: hidden; }
         
-        /* 【核心優化】控制面板：加大 Padding 與內置元件間距，允許自動換行 */
+        /* 控制面板改為網格（Grid）佈局，確保手機上完美對齊且填滿 */
         .control-panel { 
             flex-shrink: 0; 
             background-color: #222; 
-            padding: 16px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            flex-wrap: wrap; 
-            gap: 16px; /* 寬度加寬，防止按鈕上下排時黏在一起 */
+            padding: 12px; 
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); /* 電腦版預設均分 */
+            gap: 10px;
             border-bottom: 1px solid #333; 
         }
         
-        .btn-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
-        
-        /* 【核心優化】超級無敵大按鈕設定 */
+        /* 智慧大按鈕 */
         .btn { 
+            grid-column: span 1;
             background-color: #333; 
             color: white; 
             border: none; 
-            padding: 16px 26px; /* 大幅增加上下、左右內距，變成超大方塊 */
-            font-size: 20px; /* 字體再度放大 */
+            height: 55px; /* 固定高度，極好按 */
+            font-size: 18px; 
             font-weight: bold; 
-            border-radius: 10px; /* 更圓潤好按的觸控角 */
+            border-radius: 8px; 
             cursor: pointer; 
-            min-height: 55px; /* 強制設定最小高度，確保在任何手機上都有分量 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
         }
         .btn:active { background-color: #444; }
         .btn-main { background-color: #ff9800; color: black; }
-        .btn-mode { background-color: #0076ff; }
         
-        /* 大時間顯示 */
-        .time-display { font-family: monospace; font-size: 26px; font-weight: bold; min-width: 120px; text-align: center; color: #ff9800; }
+        /* 模式切換鈕與時間顯示跨欄設定 */
+        .btn-mode { grid-column: span 2; background-color: #0076ff; }
+        .time-display { 
+            grid-column: span 2;
+            font-family: monospace; 
+            font-size: 26px; 
+            font-weight: bold; 
+            color: #ff9800; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+        }
         
-        /* 字幕重心上移優化 */
+        /* 字幕重心上移 */
         .lyrics-box { flex: 1; overflow-y: auto; position: relative; scroll-behavior: smooth; padding: 10vh 20px 45vh 20px; width: 100%; }
         .lyric-line { font-size: var(--lyric-font-size, 22px); line-height: 1.8; padding: 18px 0; text-align: center; color: #555; cursor: pointer; width: 100%; word-wrap: break-word; }
         .lyric-line.active { color: #ff9800; font-size: calc(var(--lyric-font-size, 22px) + 8px); font-weight: bold; text-shadow: 0 0 15px rgba(255, 152, 0, 0.5); }
+
+        /* 【關鍵】手機版 RWD 回應式佈局：自動切換為兩行滿版大按鈕 */
+        @media (max-width: 768px) {
+            .control-panel {
+                grid-template-columns: repeat(4, 1fr); /* 改為 4 欄網格 */
+            }
+            .btn {
+                height: 60px; /* 手機版按鈕再度加高 */
+                font-size: 20px; /* 字體加大 */
+            }
+            .btn-mode { grid-column: span 2; }
+            .time-display { grid-column: span 2; font-size: 24px; }
+            #btnMinus { grid-column: span 1; }
+            #btnPlayPause { grid-column: span 2; }
+            #btnPlus { grid-column: span 1; }
+            #btnReset { grid-column: span 2; }
+            #btnFontDown { grid-column: span 1; }
+            #btnFontUp { grid-column: span 1; }
+        }
     </style>
 </head>
 <body class="mode-vertical">
@@ -84,21 +114,14 @@
 
     <div class="bottom-container">
         <div class="control-panel">
-            <button class="btn btn-mode" id="btnToggleMode">⇄ 切換左右畫面</button>
-            
-            <div class="btn-group">
-                <button class="btn" id="btnMinus">-1s</button>
-                <button class="btn btn-main" id="btnPlayPause">▶ 播放字幕</button>
-                <button class="btn" id="btnPlus">+1s</button>
-            </div>
-            
+            <button class="btn btn-mode" id="btnToggleMode">⇄ 切換畫面</button>
+            <button class="btn" id="btnMinus">-1s</button>
+            <button class="btn btn-main" id="btnPlayPause">▶ 播放</button>
+            <button class="btn" id="btnPlus">+1s</button>
             <div class="time-display" id="timeDisplay">00:00.0</div>
-            
-            <div class="btn-group">
-                <button class="btn" id="btnReset">重設</button>
-                <button class="btn" id="btnFontDown">A-</button>
-                <button class="btn" id="btnFontUp">A+</button>
-            </div>
+            <button class="btn" id="btnReset">重設</button>
+            <button class="btn" id="btnFontDown">A-</button>
+            <button class="btn" id="btnFontUp">A+</button>
         </div>
         <div class="lyrics-box" id="lyricsContainer"></div>
     </div>
@@ -123,10 +146,10 @@
             videoBox.style.height = '';
             if (isVerticalMode) {
                 body.className = 'mode-horizontal';
-                btnToggleMode.innerText = "⇄ 切換上下畫面";
+                btnToggleMode.innerText = "⇄ 切換畫面";
             } else {
                 body.className = 'mode-vertical';
-                btnToggleMode.innerText = "⇄ 切換左右畫面";
+                btnToggleMode.innerText = "⇄ 切換畫面";
             }
             isVerticalMode = !isVerticalMode;
             updateUI(true);
@@ -161,87 +184,4 @@
         }
 
         // 電腦事件
-        dragAxis.addEventListener('mousedown', e => onStart(isVerticalMode ? e.clientY : e.clientX));
-        document.addEventListener('mousemove', e => onMove(isVerticalMode ? e.clientY : e.clientX));
-        document.addEventListener('mouseup', onEnd);
-
-        // 手機事件
-        dragAxis.addEventListener('touchstart', e => onStart(isVerticalMode ? e.touches[0].clientY : e.touches[0].clientX), { passive: true });
-        document.addEventListener('touchmove', e => { if (isDragging) { if(e.cancelable) e.preventDefault(); onMove(isVerticalMode ? e.touches[0].clientY : e.touches[0].clientX); } }, { passive: false });
-        document.addEventListener('touchend', onEnd);
-
-        // 3. 字幕資料與渲染
-        const lyricsData = [
-            { time: 0, text: "【系統提示】終極相容版已成功載入！" },
-            { time: 3.0, text: "點擊任意一行中文字幕即可精準跳轉時間。" },
-            { time: 7.0, text: "點擊播放按鈕，字幕會開始向上同步跑動。" },
-            { time: 12.0, text: "按住中間灰色橫條，在電腦或手機上皆能自由拖曳。" },
-            { time: 17.0, text: "所有的控制按鈕均已放大，方便進行觸控與點擊。" },
-            { time: 22.0, text: "（測試結束，可開始替換你所需的歌詞與時間軸）" }
-        ];
-
-        let currentTime = 0;
-        let isPlaying = false;
-        let timerInterval = null;
-        let currentFontSize = 22;
-
-        // 渲染字幕到畫面上
-        lyricsData.forEach(item => {
-            const p = document.createElement('p');
-            p.className = 'lyric-line';
-            p.innerText = item.text;
-            p.onclick = function() { currentTime = item.time; updateUI(true); };
-            lyricsContainer.appendChild(p);
-        });
-
-        const lyricElements = document.querySelectorAll('.lyric-line');
-
-        // 4. UI 刷新與偏上滾動對齊
-        function updateUI(forceScroll = false) {
-            let mins = Math.floor(currentTime / 60).toString().padStart(2, '0');
-            let secs = Math.floor(currentTime % 60).toString().padStart(2, '0');
-            let ms = Math.floor((currentTime % 1) * 10);
-            timeDisplay.innerText = `${mins}:${secs}.${ms}`;
-
-            let activeIndex = -1;
-            for (let i = 0; i < lyricsData.length; i++) {
-                if (currentTime >= lyricsData[i].time) activeIndex = i;
-                else break;
-            }
-
-            if (activeIndex !== -1 && lyricElements[activeIndex]) {
-                const currentEl = lyricElements[activeIndex];
-                if (!currentEl.classList.contains('active') || forceScroll) {
-                    lyricElements.forEach(el => el.classList.remove('active'));
-                    currentEl.classList.add('active');
-                    lyricsContainer.scrollTop = currentEl.offsetTop - (lyricsContainer.clientHeight / 4.5);
-                }
-            } else if (currentTime === 0) {
-                lyricElements.forEach(el => el.classList.remove('active'));
-                lyricsContainer.scrollTop = 0;
-            }
-        }
-
-        // 按鈕控制
-        btnPlayPause.onclick = function() {
-            if (isPlaying) {
-                clearInterval(timerInterval);
-                btnPlayPause.innerText = "▶ 播放字幕";
-            } else {
-                timerInterval = setInterval(() => { currentTime += 0.1; updateUI(); }, 100);
-                btnPlayPause.innerText = "設 ⏸ 暫停字幕";
-            }
-            isPlaying = !isPlaying;
-        };
-
-        document.getElementById('btnMinus').onclick = function() { currentTime = Math.max(0, currentTime - 1); updateUI(true); };
-        document.getElementById('btnPlus').onclick = function() { currentTime += 1; updateUI(true); };
-        document.getElementById('btnReset').onclick = function() { currentTime = 0; if(isPlaying) btnPlayPause.click(); updateUI(true); };
-
-        function changeFont(amount) {
-            currentFontSize = Math.max(14, Math.min(45, currentFontSize + amount));
-            document.documentElement.style.setProperty('--lyric-font-size', currentFontSize + 'px');
-            updateUI(true);
-        }
-        document.getElementById('btnFontUp').onclick = () => changeFont(2);
-        document.getElementById('
+        dragAxis.addEventListener('mousedown', e => onStart
