@@ -68,6 +68,50 @@
         .lyrics-box { flex: 1; overflow-y: auto; position: relative; scroll-behavior: smooth; padding: 10vh 20px 45vh 20px; width: 100%; }
         .lyric-line { font-size: var(--lyric-font-size, 22px); line-height: 1.8; padding: 18px 0; text-align: center; color: #555; cursor: pointer; width: 100%; word-wrap: break-word; }
         .lyric-line.active { color: #ff9800; font-size: calc(var(--lyric-font-size, 22px) + 8px); font-weight: bold; text-shadow: 0 0 15px rgba(255, 152, 0, 0.5); }
+
+        @media (max-width: 768px) {
+            .control-panel {
+                display: grid !important; /* 強制切換為網格 */
+                grid-template-columns: repeat(4, 1fr); /* 切分為 4 等分 */
+                gap: 12px;
+                padding: 14px;
+            }
+            
+            /* 解除電腦版原本的群組限制，讓按鈕直接參與網格排版 */
+            .btn-group {
+                display: contents; 
+            }
+            
+            /* 手機版按鈕再度拉高、字體變大 */
+            .btn {
+                width: 100% !important;
+                height: 60px !important; /* 確保按鈕有足夠高度 */
+                font-size: 22px !important; /* 手機版字體加大 */
+                padding: 0 !important;
+                border-radius: 8px;
+            }
+            
+            /* 手機版兩行排版位置配置 */
+            .btn-mode { grid-column: span 2; font-size: 18px !important; } /* 切換畫面文字較多，字體微調防止折行 */
+            .time-display { 
+                grid-column: span 2; 
+                font-size: 26px !important; 
+                background-color: #1a1a1a;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 60px;
+            }
+            
+            #btnMinus { grid-column: span 1; }
+            #btnPlayPause { grid-column: span 2; }
+            #btnPlus { grid-column: span 1; }
+            
+            #btnReset { grid-column: span 2; }
+            #btnFontDown { grid-column: span 1; }
+            #btnFontUp { grid-column: span 1; }
+        }
     </style>
 </head>
 <body class="mode-vertical"> <div class="video-box" id="videoBox">
