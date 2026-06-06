@@ -8,7 +8,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         html, body { height: 100%; width: 100%; overflow: hidden; font-family: sans-serif; background-color: #121212; color: #ffffff; }
         
-        /* 基礎佈局 */
         body { display: flex; }
         
         /* 上下模式 */
@@ -24,8 +23,6 @@
         body.mode-horizontal .resizer-line { width: 6px; height: 70px; }
 
         .video-box { background-color: #000; flex-shrink: 0; display: flex; justify-content: center; align-items: center; position: relative; }
-        
-        /* 核心修正：防止拖曳時滑鼠進到 iframe 導致事件中斷 */
         .video-box.iframe-disabled::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 999; }
         .video-box iframe { width: 100%; height: 100%; border: none; }
         
@@ -34,15 +31,40 @@
         .resizer-container:hover .resizer-line, .resizer-container.dragging .resizer-line { background-color: #ff9800; }
 
         .bottom-container { flex: 1; display: flex; flex-direction: column; background-color: #181818; overflow: hidden; }
-        .control-panel { flex-shrink: 0; background-color: #222; padding: 15px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid #333; }
-        .btn-group { display: flex; gap: 8px; align-items: center; }
         
-        /* 大按鈕改進 */
-        .btn { background-color: #333; color: white; border: none; padding: 14px 22px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+        /* 【核心優化】控制面板：加大 Padding 與內置元件間距，允許自動換行 */
+        .control-panel { 
+            flex-shrink: 0; 
+            background-color: #222; 
+            padding: 16px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 16px; /* 寬度加寬，防止按鈕上下排時黏在一起 */
+            border-bottom: 1px solid #333; 
+        }
+        
+        .btn-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+        
+        /* 【核心優化】超級無敵大按鈕設定 */
+        .btn { 
+            background-color: #333; 
+            color: white; 
+            border: none; 
+            padding: 16px 26px; /* 大幅增加上下、左右內距，變成超大方塊 */
+            font-size: 20px; /* 字體再度放大 */
+            font-weight: bold; 
+            border-radius: 10px; /* 更圓潤好按的觸控角 */
+            cursor: pointer; 
+            min-height: 55px; /* 強制設定最小高度，確保在任何手機上都有分量 */
+        }
         .btn:active { background-color: #444; }
         .btn-main { background-color: #ff9800; color: black; }
         .btn-mode { background-color: #0076ff; }
-        .time-display { font-family: monospace; font-size: 24px; font-weight: bold; min-width: 110px; text-align: center; color: #ff9800; }
+        
+        /* 大時間顯示 */
+        .time-display { font-family: monospace; font-size: 26px; font-weight: bold; min-width: 120px; text-align: center; color: #ff9800; }
         
         /* 字幕重心上移優化 */
         .lyrics-box { flex: 1; overflow-y: auto; position: relative; scroll-behavior: smooth; padding: 10vh 20px 45vh 20px; width: 100%; }
@@ -50,7 +72,9 @@
         .lyric-line.active { color: #ff9800; font-size: calc(var(--lyric-font-size, 22px) + 8px); font-weight: bold; text-shadow: 0 0 15px rgba(255, 152, 0, 0.5); }
     </style>
 </head>
-<body class="mode-vertical"> <div class="video-box" id="videoBox">
+<body class="mode-vertical">
+
+    <div class="video-box" id="videoBox">
         <iframe src="https://www.mnetplus.world/media/zh-TW/videos/6a220a29568bf5527248b9d1"></iframe>
     </div>
 
@@ -61,12 +85,15 @@
     <div class="bottom-container">
         <div class="control-panel">
             <button class="btn btn-mode" id="btnToggleMode">⇄ 切換左右畫面</button>
+            
             <div class="btn-group">
                 <button class="btn" id="btnMinus">-1s</button>
                 <button class="btn btn-main" id="btnPlayPause">▶ 播放字幕</button>
                 <button class="btn" id="btnPlus">+1s</button>
             </div>
+            
             <div class="time-display" id="timeDisplay">00:00.0</div>
+            
             <div class="btn-group">
                 <button class="btn" id="btnReset">重設</button>
                 <button class="btn" id="btnFontDown">A-</button>
@@ -77,7 +104,6 @@
     </div>
 
     <script>
-        // 移除 DOMContentLoaded，直接最速執行執行，防止被跨域 iframe 阻斷
         const body = document.body;
         const btnToggleMode = document.getElementById('btnToggleMode');
         const videoBox = document.getElementById('videoBox');
@@ -112,7 +138,7 @@
             startPos = pos;
             startSize = isVerticalMode ? videoBox.offsetHeight : videoBox.offsetWidth;
             dragAxis.classList.add('dragging');
-            videoBox.classList.add('iframe-disabled'); // 拖曳時啟用遮罩，防止滑鼠事件被 iframe 吃掉
+            videoBox.classList.add('iframe-disabled');
         }
         
         function onMove(pos) {
@@ -188,7 +214,6 @@
                 if (!currentEl.classList.contains('active') || forceScroll) {
                     lyricElements.forEach(el => el.classList.remove('active'));
                     currentEl.classList.add('active');
-                    // 減去 4.5 分之一的高度，強迫其固定偏向上方顯示
                     lyricsContainer.scrollTop = currentEl.offsetTop - (lyricsContainer.clientHeight / 4.5);
                 }
             } else if (currentTime === 0) {
@@ -219,10 +244,4 @@
             updateUI(true);
         }
         document.getElementById('btnFontUp').onclick = () => changeFont(2);
-        document.getElementById('btnFontDown').onclick = () => changeFont(-2);
-
-        // 初始首次執行
-        updateUI();
-    </script>
-</body>
-</html>
+        document.getElementById('
