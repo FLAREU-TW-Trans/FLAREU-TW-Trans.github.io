@@ -1,8 +1,172 @@
- <div class="left-panel">
-            <a href="https://www.mnetplus.world/media/en/videos/6a220a29568bf5527248b9d1" 
-               target="_blank" 
-               class="video-btn">
-               🎬 長按影片連結選擇在新分頁開起
-            </a>
-            
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>影片與流動字幕同步播放器</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 左右平分畫面 */
+        .container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 左半邊：影片區塊 */
+        .video-box {
+            flex: 1;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-right: 2px solid #333;
+        }
+
+        .video-box iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 右半邊：歌詞字幕區塊 */
+        .lyrics-box {
+            flex: 1;
+            background-color: #181818;
+            overflow-y: auto;
+            position: relative;
+            scroll-behavior: smooth;
+            padding: 50vh 20px; /* 讓第一句和最後一句歌詞都能居中 */
+        }
+
+        /* 隱藏捲軸（選擇性） */
+        .lyrics-box::-webkit-scrollbar {
+            width: 6px;
+        }
+        .lyrics-box::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+
+        /* 單行歌詞樣式 */
+        .lyric-line {
+            font-size: 1.25rem;
+            line-height: 2;
+            padding: 10px 0;
+            text-align: center;
+            color: #666;
+            transition: all 0.3s ease;
+            transform: scale(0.9);
+            opacity: 0.5;
+        }
+
+        /* 當前播放到的歌詞高亮樣式 */
+        .lyric-line.active {
+            color: #1db954; /* Spotify 綠，可自行修改 */
+            font-size: 1.6rem;
+            font-weight: bold;
+            transform: scale(1);
+            opacity: 1;
+            text-shadow: 0 0 10px rgba(29, 185, 84, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="video-box">
+            <iframe src="https://www.mnetplus.world/media/zh-TW/videos/6a220a29568bf5527248b9d1" allowfullscreen></iframe>
         </div>
+
+        <div class="lyrics-box" id="lyricsContainer">
+            </div>
+    </div>
+
+    <script>
+        // 1. 設定你的中文字幕與時間軸 (單位：秒)
+        const lyricsData = [
+            { time: 0, text: "（音樂前奏）" },
+            { time: 5.5, text: "這是第一句動態中文字幕" },
+            { time: 10.2, text: "當時間到達時，字幕會自動滾動高亮" },
+            { time: 15.0, text: "調整左側的 iframe 網址即可更換影片" },
+            { time: 20.8, text: "這是第四句歌詞效果展示" },
+            { time: 26.3, text: "（歌曲結束）" }
+        ];
+
+        const lyricsContainer = document.getElementById('lyricsContainer');
+
+        // 2. 渲染歌詞到網頁上
+        lyricsData.forEach((item, index) => {
+            const p = document.createElement('p');
+            p.className = 'lyric-line';
+            p.setAttribute('data-time', item.time);
+            p.innerText = item.text;
+            lyricsContainer.appendChild(p);
+        });
+
+        const lyricElements = document.querySelectorAll('.lyric-line');
+
+        // 3. 歌詞滾動與高亮邏輯
+        function updateLyrics(currentTime) {
+            let activeIndex = -1;
+
+            // 找出當前時間對應的歌詞索引
+            for (let i = 0; i < lyricsData.length; i++) {
+                if (currentTime >= lyricsData[i].time) {
+                    activeIndex = i;
+                } else {
+                    break;
+                }
+            }
+
+            // 更新樣式與滾動位置
+            if (activeIndex !== -1) {
+                lyricElements.forEach((el, index) => {
+                    if (index === activeIndex) {
+                        el.classList.add('active');
+                        
+                        // 讓當前歌詞滾動到容器的中央
+                        const containerHeight = lyricsContainer.clientHeight;
+                        const elOffsetTop = el.offsetTop;
+                        const elHeight = el.clientHeight;
+                        lyricsContainer.scrollTop = elOffsetTop - (containerHeight / 2) + (elHeight / 2);
+                    } else {
+                        el.classList.remove('active');
+                    }
+                });
+            }
+        }
+
+        /* ⚠️ 重要技術限制提示：
+        因為你是使用 <iframe> 嵌入「外部非 YouTube 網站」，
+        瀏覽器基於安全性限制（同源政策 Same-Origin Policy），JavaScript 無法直接讀取外部 iframe 內的播放時間。
+        
+        以下提供兩種解決方案來驅動 updateLyrics() 函式：
+        */
+
+        // 方案 A：如果該外部網站支援 postMessage API 或你有權限操控它，請接收其傳回的時間並呼叫 updateLyrics(秒數)。
+        
+        // 方案 B（備用模擬方案）：點擊右側歌詞區即可模擬時間流逝（測試流動效果用）
+        let fakeTime = 0;
+        setInterval(() => {
+            // 如果你想測試滾動效果，可以取消下方註解來模擬時間跑動：
+             fakeTime += 0.5;
+             updateLyrics(fakeTime);
+        }, 500);
+    </script>
+</body>
+</html>
