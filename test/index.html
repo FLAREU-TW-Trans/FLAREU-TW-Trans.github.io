@@ -3,41 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select: none">
-    <title>最終修正版 - 上下可調字幕播放器</title>
+    <title>豪華優化版 - 多模式字幕播放器</title>
     <style>
         /* 基礎樣式重設 */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            -webkit-tap-highlight-color: transparent; /* 防止手機點擊出現藍框 */
+            -webkit-tap-highlight-color: transparent;
         }
 
         html, body {
             height: 100%;
             width: 100%;
-            overflow: hidden; /* 防止整個網頁產生捲軸 */
+            overflow: hidden;
             font-family: 'Microsoft JhengHei', sans-serif;
             background-color: #121212;
             color: #ffffff;
         }
 
+        /* 預設為全螢幕 Flex 佈局（透過 class 控制上下或左右） */
         body {
             display: flex;
-            flex-direction: column;
+            transition: flex-direction 0.3s ease;
         }
 
-        /* 1. 上方影片區塊 - 使用 px 指定初始高度，JS 更好操控 */
-        .video-box {
-            height: 300px; /* 預設一個固定高度，手機上較友善 */
-            min-height: 100px;
-            max-height: 80vh; /* 防止拉太下面 */
-            background-color: #000;
+        /* 【模式一】上下排版樣式 */
+        body.mode-vertical {
+            flex-direction: column;
+        }
+        body.mode-vertical .video-box {
             width: 100%;
+            height: 40%; /* 初始高度佔 40% */
+            min-height: 150px;
+            max-height: 80vh;
+        }
+        body.mode-vertical .resizer-container {
+            height: 35px; /* 超大觸控感應區 */
+            width: 100%;
+            cursor: ns-resize;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+        body.mode-vertical .resizer-line {
+            width: 70px; height: 6px;
+        }
+
+        /* 【模式二】左右排版樣式 */
+        body.mode-horizontal {
+            flex-direction: row;
+        }
+        body.mode-horizontal .video-box {
+            height: 100%;
+            width: 50%; /* 初始寬度佔 50% */
+            min-width: 200px;
+            max-width: 80vw;
+        }
+        body.mode-horizontal .resizer-container {
+            width: 35px; /* 超大觸控感應區 */
+            height: 100%;
+            cursor: ew-resize;
+            border-left: 1px solid #333;
+            border-right: 1px solid #333;
+        }
+        body.mode-horizontal .resizer-line {
+            width: 6px; height: 70px;
+        }
+
+        /* 影片區塊 */
+        .video-box {
+            background-color: #000;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .video-box iframe {
@@ -46,25 +86,18 @@
             border: none;
         }
 
-        /* 2. 中間調整軸 - 大幅增加物理感應區 */
+        /* 調整軸容器 */
         .resizer-container {
-            height: 30px; /* 30px 高的感應區，超級好按 */
             background-color: #1a1a1a;
-            cursor: ns-resize;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100%;
             z-index: 100;
-            touch-action: none; /* 重要：防止手機原生捲動干擾 */
-            flex-shrink: 0; /* 防止被 flex 壓縮 */
-            border-top: 1px solid #333;
-            border-bottom: 1px solid #333;
+            touch-action: none;
+            flex-shrink: 0;
         }
 
         .resizer-line {
-            width: 60px;
-            height: 6px;
             background-color: #555;
             border-radius: 3px;
             transition: background-color 0.2s;
@@ -72,113 +105,118 @@
 
         .resizer-container:hover .resizer-line, 
         .resizer-container.dragging .resizer-line {
-            background-color: #ff9800; /* 拉動時變亮橘色 */
+            background-color: #ff9800;
         }
 
-        /* 拖曳時在 body 加入此 class，防止選取干擾 */
-        .dragging-active {
-            cursor: ns-resize;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        /* 3. 下方容器 - 強制填滿剩餘空間 */
+        /* 下方/右方 內容整合容器 */
         .bottom-container {
-            flex: 1; /* 填滿除了影片和調整軸以外的所有空間 */
+            flex: 1;
             display: flex;
             flex-direction: column;
             background-color: #181818;
-            overflow: hidden; /* 很重要，防止整個區塊產生捲軸 */
-            width: 100%;
+            overflow: hidden;
         }
 
-        /* 控制面板 */
+        /* 【全部按鈕變大】控制面板樣式 */
         .control-panel {
-            flex-shrink: 0; /* 防止控制面板被壓縮 */
+            flex-shrink: 0;
             background-color: #222;
-            padding: 10px;
+            padding: 15px; /* 加大內距 */
             display: flex;
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 12px; /* 加大間距 */
             border-bottom: 1px solid #333;
         }
 
         .btn-group {
             display: flex;
-            gap: 4px;
+            gap: 8px;
             align-items: center;
         }
 
+        /* 大按鈕設定 */
         .btn {
             background-color: #333;
             color: white;
             border: none;
-            padding: 6px 12px;
-            font-size: 14px;
-            border-radius: 4px;
+            padding: 12px 20px; /* 大幅增加點擊面積 */
+            font-size: 18px; /* 字體變大 */
+            font-weight: bold;
+            border-radius: 8px; /* 圓角變大更美觀 */
             cursor: pointer;
+            transition: background 0.1s, transform 0.1s;
         }
 
-        .btn:active { background-color: #444; }
+        .btn:active {
+            background-color: #444;
+            transform: scale(0.95); /* 點擊動態回饋 */
+        }
 
         .btn-main {
             background-color: #ff9800;
             color: black;
-            font-weight: bold;
+        }
+        
+        .btn-mode {
+            background-color: #0076ff; /* 模式切換鈕用藍色醒目提示 */
         }
 
+        /* 大時間顯示 */
         .time-display {
             font-family: monospace;
-            font-size: 16px;
-            min-width: 70px;
+            font-size: 24px; /* 時間顯示變大 */
+            font-weight: bold;
+            min-width: 110px;
             text-align: center;
-            color: #aaa;
+            color: #ff9800;
         }
 
-        /* 字幕捲動區塊 - 這裏必須正確產生捲軸 */
+        /* 字幕捲動區塊 */
         .lyrics-box {
-            flex: 1; /* 填滿 bottom-container 剩餘空間 */
-            overflow-y: scroll; /* 強制開啟垂直捲軸 */
-            -webkit-overflow-scrolling: touch; /* 手機平滑捲動 */
+            flex: 1;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
             position: relative;
             scroll-behavior: smooth;
-            padding: 15vh 15px; /* 上下 padding 讓字幕置中 */
+            /* 【優化】上方 Padding 縮小(10vh)，下方加大(40vh)，讓字幕整體偏上 */
+            padding: 10vh 20px 40vh 20px; 
             width: 100%;
         }
 
-        /* 隱藏捲軸樣式（選用） */
-        .lyrics-box::-webkit-scrollbar { width: 5px; }
-        .lyrics-box::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        .lyrics-box::-webkit-scrollbar { width: 6px; }
+        .lyrics-box::-webkit-scrollbar-thumb { background: #3b3b3b; border-radius: 3px; }
 
         /* 字幕單行樣式 */
         .lyric-line {
-            font-size: var(--lyric-font-size, 18px);
+            font-size: var(--lyric-font-size, 22px); /* 預設基礎字體變大 (22px) */
             line-height: 1.8;
-            padding: 15px 0;
+            padding: 18px 0; /* 加大間距好點擊 */
             text-align: center;
-            color: #666;
-            transition: all 0.2s ease;
+            color: #555;
+            transition: color 0.2s, font-size 0.2s, opacity 0.2s;
             cursor: pointer;
             width: 100%;
-            word-wrap: break-word; /* 防止長英文爆版面 */
+            word-wrap: break-word;
         }
 
         /* 當前高亮字幕 */
         .lyric-line.active {
             color: #ff9800;
-            font-size: calc(var(--lyric-font-size, 18px) + 6px);
+            font-size: calc(var(--lyric-font-size, 22px) + 8px); /* 高亮放大更多 */
             font-weight: bold;
             opacity: 1;
-            text-shadow: 0 0 10px rgba(255, 152, 0, 0.4);
+            text-shadow: 0 0 15px rgba(255, 152, 0, 0.5);
         }
+
+        /* 拖曳時全螢幕的滑鼠樣式限制 */
+        .dragging-v { cursor: ns-resize; user-select: none; -webkit-user-select: none; }
+        .dragging-h { cursor: ew-resize; user-select: none; -webkit-user-select: none; }
     </style>
 </head>
-<body>
-
-    <div class="video-box" id="videoBox">
-        <iframe src="https://www.mnetplus.world/media/zh-TW/videos/6a220a29568bf5527248b9d1" allowfullscreen></iframe>
+<body class="mode-vertical"> <div class="video-box" id="videoBox">
+        <iframe src="https://example.com" allowfullscreen></iframe>
     </div>
 
     <div class="resizer-container" id="dragAxis">
@@ -187,12 +225,16 @@
 
     <div class="bottom-container">
         <div class="control-panel">
+            <button class="btn btn-mode" id="btnToggleMode">⇄ 切換左右畫面</button>
+            
             <div class="btn-group">
                 <button class="btn" id="btnMinus">-1s</button>
-                <button class="btn btn-main" id="btnPlayPause">▶ 播放</button>
+                <button class="btn btn-main" id="btnPlayPause">▶ 播放字幕</button>
                 <button class="btn" id="btnPlus">+1s</button>
             </div>
+            
             <div class="time-display" id="timeDisplay">00:00.0</div>
+            
             <div class="btn-group">
                 <button class="btn" id="btnReset">重設</button>
                 <button class="btn" id="btnFontDown">A-</button>
@@ -205,183 +247,42 @@
 
     <script>
         // ==========================================
-        // 核心修正一：高相容性拖曳邏輯 (滑鼠 & 觸控)
+        // 功能一：版面模式切換 (上下 <-> 左右)
         // ==========================================
-        const videoBox = document.getElementById('videoBox');
-        const dragAxis = document.getElementById('dragAxis');
         const body = document.body;
+        const btnToggleMode = document.getElementById('btnToggleMode');
+        const videoBox = document.getElementById('videoBox');
+        
+        let isVerticalMode = true; // 預設為上下
 
-        let isDragging = false;
-        let startY = 0;
-        let startHeight = 0;
+        btnToggleMode.addEventListener('click', () => {
+            // 清除原本拖曳產生的行內樣式，避免高度/寬度衝突
+            videoBox.style.width = '';
+            videoBox.style.height = '';
 
-        // --- 統一的處理函式 ---
-        function onStart(y) {
-            isDragging = true;
-            startY = y;
-            startHeight = videoBox.offsetHeight; // 取得當前像素高度
-            dragAxis.classList.add('dragging');
-            body.classList.add('dragging-active');
-        }
-
-        function onMove(y) {
-            if (!isDragging) return;
-            let deltaY = y - startY;
-            let newHeight = startHeight + deltaY;
-
-            // 限制高度範圍 (以 px 為單位更精準)
-            if (newHeight >= 100 && newHeight <= window.innerHeight * 0.8) {
-                videoBox.style.height = newHeight + 'px';
-            }
-        }
-
-        function onEnd() {
-            if (!isDragging) return;
-            isDragging = false;
-            dragAxis.classList.remove('dragging');
-            body.classList.remove('dragging-active');
-        }
-
-        // --- 滑鼠事件監聽 ---
-        dragAxis.addEventListener('mousedown', (e) => {
-            onStart(e.clientY);
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
-        });
-
-        function onMouseMove(e) { onMove(e.clientY); }
-        function onMouseUp() { 
-            onEnd();
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-        }
-
-        // --- 觸控事件監聽 (手機) ---
-        dragAxis.addEventListener('touchstart', (e) => {
-            // e.preventDefault(); // 有時會干擾點擊，先取消
-            onStart(e.touches[0].clientY);
-        }, { passive: true });
-
-        document.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            if(e.cancelable) e.preventDefault(); // 拖曳中禁止網頁捲動
-            onMove(e.touches[0].clientY);
-        }, { passive: false });
-
-        document.addEventListener('touchend', onEnd);
-
-
-        // ==========================================
-        // 核心修正二：字幕顯示與手動控制
-        // ==========================================
-        // ⚠️ 測試用字幕資料
-        const lyricsData = [
-            { time: 0, text: "（音樂前奏 - 測試字幕顯示）" },
-            { time: 3.0, text: "如果你能看到這行字，代表字幕顯示成功了！" },
-            { time: 7.0, text: "試著點擊這一行字幕，看看時間有無跳轉？" },
-            { time: 11.0, text: "現在試試看拖曳中間的灰色橫條..." },
-            { time: 15.0, text: "如果橫條變亮橘色且可以上下拉動，代表拖曳修正成功。" },
-            { time: 19.0, text: "點擊右下角的 A+ 和 A- 試試調整大小。" },
-            { time: 23.0, text: "（歌曲測試結束）" }
-        ];
-
-        let currentTime = 0;
-        let isPlaying = false;
-        let timerInterval = null;
-        let currentFontSize = 18; // 單位 px
-
-        const lyricsContainer = document.getElementById('lyricsContainer');
-        const timeDisplay = document.getElementById('timeDisplay');
-        const btnPlayPause = document.getElementById('btnPlayPause');
-
-        // 渲染字幕 (確保這步一定會執行)
-        if (lyricsContainer && lyricsData.length > 0) {
-            lyricsData.forEach((item) => {
-                const p = document.createElement('p');
-                p.className = 'lyric-line';
-                p.innerText = item.text;
-                
-                // 點擊字幕跳轉
-                p.addEventListener('click', () => {
-                    currentTime = item.time;
-                    updateUI(true);
-                });
-                
-                lyricsContainer.appendChild(p);
-            });
-        } else {
-            console.error("無法找到 lyricsContainer 或資料為空");
-        }
-
-        const lyricElements = document.querySelectorAll('.lyric-line');
-
-        // 更新介面
-        function updateUI(forceScroll = false) {
-            // 時間顯示 MM:SS.m
-            let mins = Math.floor(currentTime / 60).toString().padStart(2, '0');
-            let secs = Math.floor(currentTime % 60).toString().padStart(2, '0');
-            let ms = Math.floor((currentTime % 1) * 10);
-            timeDisplay.innerText = `${mins}:${secs}.${ms}`;
-
-            // 尋找高亮索引
-            let activeIndex = -1;
-            for (let i = 0; i < lyricsData.length; i++) {
-                if (currentTime >= lyricsData[i].time) activeIndex = i;
-                else break;
-            }
-
-            // 更新高亮與捲動
-            if (activeIndex !== -1 && lyricElements[activeIndex]) {
-                const currentEl = lyricElements[activeIndex];
-                
-                if (!currentEl.classList.contains('active') || forceScroll) {
-                    // 清除舊高亮
-                    lyricElements.forEach(el => el.classList.remove('active'));
-                    // 加新高亮
-                    currentEl.classList.add('active');
-                    // 執行滾動置中
-                    const containerHeight = lyricsContainer.clientHeight;
-                    const elOffsetTop = currentEl.offsetTop;
-                    const elHeight = currentEl.clientHeight;
-                    // 使用 scrollTop 賦值，比 smooth 更穩定
-                    lyricsContainer.scrollTop = elOffsetTop - (containerHeight / 2) + (elHeight / 2);
-                }
-            } else if (currentTime === 0) {
-                 lyricElements.forEach(el => el.classList.remove('active'));
-                 lyricsContainer.scrollTop = 0;
-            }
-        }
-
-        // --- 按鈕事件綁定 ---
-        btnPlayPause.addEventListener('click', () => {
-            if (isPlaying) {
-                clearInterval(timerInterval);
-                btnPlayPause.innerText = "▶ 播放";
+            if (isVerticalMode) {
+                body.classList.remove('mode-vertical');
+                body.classList.add('mode-horizontal');
+                btnToggleMode.innerText = "⇄ 切換上下畫面";
             } else {
-                timerInterval = setInterval(() => {
-                    currentTime += 0.1;
-                    updateUI();
-                }, 100);
-                btnPlayPause.innerText = " ⏸ 暫停";
+                body.classList.remove('mode-horizontal');
+                body.classList.add('mode-vertical');
+                btnToggleMode.innerText = "⇄ 切換左右畫面";
             }
-            isPlaying = !isPlaying;
+            isVerticalMode = !isVerticalMode;
+            updateUI(true); // 切換排版後重新計算置中位置
         });
 
-        document.getElementById('btnMinus').addEventListener('click', () => { currentTime = Math.max(0, currentTime - 1); updateUI(true); });
-        document.getElementById('btnPlus').addEventListener('click', () => { currentTime += 1; updateUI(true); });
-        document.getElementById('btnReset').addEventListener('click', () => { currentTime = 0; if(isPlaying) btnPlayPause.click(); updateUI(true); });
+        // ==========================================
+        // 功能二：支援雙模式的智慧拖曳調整軸
+        // ==========================================
+        const dragAxis = document.getElementById('dragAxis');
+        let isDragging = false;
+        let startPos = 0;
+        let startSize = 0;
 
-        // --- 字幕大小 ---
-        function changeFont(amount) {
-            currentFontSize = Math.max(12, Math.min(40, currentFontSize + amount));
-            document.documentElement.style.setProperty('--lyric-font-size', currentFontSize + 'px');
-            updateUI(true);
-        }
-        document.getElementById('btnFontUp').addEventListener('click', () => changeFont(2));
-        document.getElementById('btnFontDown').addEventListener('click', () => changeFont(-2));
-
-        // 初始執行
-        updateUI();
-    </script>
-</body>
-</html>
+        function onStart(pos) {
+            isDragging = true;
+            startPos = pos;
+            // 根據目前模式獲取初始的 高度 或 寬度
+            startSize = isVerticalMode ?
