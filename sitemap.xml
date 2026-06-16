@@ -140,6 +140,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://flareu-tw-trans.github.io/</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://flareu-tw-trans.github.io/Stage/</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>monthly</changefreq>
