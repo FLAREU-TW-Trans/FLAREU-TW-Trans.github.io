@@ -597,7 +597,7 @@
                 </div>
                 <div class="barrage-control">
                     <span>範圍</span>
-                    <input type="range" id="barrage-height-slider" min="10" max="100" value="40" oninput="updateBarrageHeight(this.value)">
+                    <input type="range" id="barrage-height-slider" min="10" max="100" value="40" oninput="document.getElementById('height-val').innerText = this.value + '%'; document.getElementById('barrage-container').style.height = this.value + '%'; if(typeof updateBarrageHeight === 'function') updateBarrageHeight(this.value);">
                     <span id="height-val">40%</span>
                 </div>
                 <div class="barrage-control">
