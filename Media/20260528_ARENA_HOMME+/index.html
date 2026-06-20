@@ -1,121 +1,644 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
 <link rel="stylesheet" href="../../css/reaction.css">
-  
+  
 <title>[ARENA HOMME+企劃合輯] 我們FLARE U都不會哭，反而很會說話呢</title>
 
 <style>
-body {
-    margin: 0;
-    background: #111;
-    color: #fff;
-    font-family: Arial, "Noto Sans TC", sans-serif;
-    text-align: center;
-}
+    /* ==================== 
+       1. 色彩變數與基礎設定 (黃色系主題)
+       ==================== */
+    :root { 
+        /* 淺色黃色系 */
+        --bg-body: #FFFCF5; 
+        --bg-content: #FFFFFF; 
+        --text-main: #3D352D; 
+        --text-sub: #7A6F62; 
+        --border-line: #F4E8D1;
+        --btn-bg: #F3C623; 
+        --btn-hover: #D8AD1A; 
+        --btn-text: #2C2416; 
+        --intro-bg: #FFF8E7; 
+        --intro-border: #FBE6B3; 
+        --intro-text: #4A3F33; 
+        --section-bg: #FFF3CD; 
+        --section-text: #856404; 
+        
+        --tab-bg: #FFFFFF; 
+        --tab-border: #F4E8D1; 
+        --tab-text: #A09383; 
+        --tab-active-text: #D8AD1A; 
+        --tab-active-border: #F3C623;
+        
+        --home-btn-bg: #FFF8E7; 
+        --home-btn-hover: #FBE6B3; 
+        --theme-btn-bg: #F0F0F0; 
+        --theme-btn-text: #666; 
+        --theme-btn-active: #FFFFFF;
+        
+        --reaction-text-shadow: none; 
+        --emoji-btn-active-border: #F3C623; 
+        --emoji-btn-active-text: #3D352D; 
+        --emoji-btn-bg-hover: rgba(243, 198, 35, 0.1); 
+        --emoji-btn-default-bg: rgba(0, 0, 0, 0.02); 
+        --emoji-btn-default-border: #E8E1D5; 
+        --emoji-btn-default-text: #8E8579; 
+        
+        --subtitle-size: 22px; 
+    }
 
-html, body {
-    background: #000 !important; /* 強制全黑 */
-    height: 100%;
-    width: 100%;
-    margin: 0;
-}
+    [data-theme="dark"] {
+        /* 深色模式 */
+        --bg-body: #161512; 
+        --bg-content: #22201D; 
+        --text-main: #EAE6DF; 
+        --text-sub: #A69E93; 
+        --border-line: #3D3A35;
+        --btn-bg: #CFA61E; 
+        --btn-hover: #F3C623; 
+        --btn-text: #161512; 
+        --intro-bg: #2C2924; 
+        --intro-border: #4A453A; 
+        --intro-text: #D4CDAC; 
+        --section-bg: #332D20; 
+        --section-text: #E8CC78; 
+        
+        --tab-bg: #22201D; 
+        --tab-border: #3D3A35; 
+        --tab-text: #888; 
+        --tab-active-text: #E8CC78; 
+        --tab-active-border: #CFA61E;
+        
+        --home-btn-bg: #33302A; 
+        --home-btn-hover: #444038;
+        --theme-btn-bg: #2A2A2A; 
+        --theme-btn-text: #999; 
+        --theme-btn-active: #111;
+        
+        --reaction-text-shadow: 0px 1px 3px rgba(0,0,0,0.8);
+        --emoji-btn-active-border: #E8CC78; 
+        --emoji-btn-active-text: #F8F5EE;
+        --emoji-btn-bg-hover: rgba(255, 255, 255, 0.08); 
+        --emoji-btn-default-bg: rgba(255, 255, 255, 0.05); 
+        --emoji-btn-default-border: #444;
+        --emoji-btn-default-text: #AAA;
+    }
 
+    html, body { 
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+        background-color: var(--bg-body); 
+        color: var(--text-main); 
+        margin: 0; padding: 0; 
+        overflow-x: hidden; height: auto; -webkit-text-size-adjust: 100%;
+        display: flex; justify-content: center; 
+        transition: background-color 0.3s ease, color 0.3s ease; 
+    }
+
+    .content-wrapper { 
+        max-width: 800px; width: 100%; background: var(--bg-content); 
+        min-height: 100vh; box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+        padding-bottom: 40px; transition: all 0.3s ease; 
+    }
+
+    /* ==================== 
+       2. 版面與導覽列
+       ==================== */
+    .header { background-color: var(--bg-content); padding: 30px 20px 0 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+    .header h1 { font-size: 1.4rem; margin: 0; font-weight: 800; color: var(--text-main); line-height: 1.4; letter-spacing: 0.5px; }
+
+    .controls-wrapper { display: flex; gap: 12px; align-items: center; margin-top: 15px; margin-bottom: 20px; }
+    .home-btn { background-color: var(--home-btn-bg); color: var(--text-main); text-decoration: none; padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; transition: background 0.2s; }
+    .home-btn:hover { background-color: var(--home-btn-hover); }
+    
+    .theme-toggle-group { display: inline-flex; background-color: var(--theme-btn-bg); border-radius: 24px; padding: 4px; }
+    .theme-btn { background: none; border: none; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; color: var(--theme-btn-text); cursor: pointer; font-weight: bold; transition: all 0.2s; }
+    .theme-btn.active { background-color: var(--theme-btn-active); color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+
+    .tabs-container { display: flex; width: 100%; border-bottom: 2px solid var(--tab-border); background-color: var(--tab-bg); }
+    .tab-btn { flex: 1; background: none; border: none; padding: 16px 10px; font-size: 1.05rem; font-weight: bold; color: var(--tab-text); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
+    .tab-btn.active { color: var(--tab-active-text); border-bottom: 3px solid var(--tab-active-border); }
+
+    .tab-content { display: none; animation: fadeIn 0.4s ease; }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ==================== 
+       3. 文章文字排版 (多樣化與靠左)
+       ==================== */
+    .article-container { padding: 0 25px; text-align: left; }
+    
+    .btn-article { display: block; background-color: var(--btn-bg); color: var(--btn-text); text-align: center; padding: 14px 20px; margin: 20px 0; border-radius: 12px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 10px rgba(243, 198, 35, 0.2); transition: transform 0.2s; }
+    .btn-article:hover { transform: translateY(-2px); }
+
+    .intro-text { font-size: 1.05rem; line-height: 1.8; color: var(--intro-text); padding: 25px; background-color: var(--intro-bg); border-radius: 12px; border: 1px solid var(--intro-border); margin-bottom: 30px; }
+    .intro-text h3 { margin-top: 0; color: var(--section-text); font-size: 1.2rem; margin-bottom: 15px; }
+
+    .image-caption { font-size: 0.9rem; color: var(--text-sub); border-left: 3px solid var(--btn-bg); padding-left: 12px; margin: 20px 0; line-height: 1.6; background: rgba(0,0,0,0.02); padding-top: 8px; padding-bottom: 8px; border-radius: 0 8px 8px 0; }
+    .image-caption strong { color: var(--section-text); }
+
+    .qa-block { margin-bottom: 35px; }
+    .question { font-size: 1.15rem; font-weight: 700; color: var(--section-text); margin-bottom: 12px; line-height: 1.6; }
+    .answer { font-size: 1.05rem; line-height: 1.8; color: var(--text-main); margin-bottom: 10px; padding-left: 5px; }
+    .speaker { font-weight: 700; color: var(--text-main); background: var(--intro-border); padding: 2px 8px; border-radius: 4px; font-size: 0.95rem; margin-right: 5px; display: inline-block; margin-bottom: 4px;}
+
+    .highlight-quote { font-size: 1.15rem; font-style: italic; font-weight: 600; color: var(--section-text); text-align: center; margin: 40px 10px; padding: 25px; border-top: 2px dashed var(--intro-border); border-bottom: 2px dashed var(--intro-border); line-height: 1.7; background: var(--intro-bg); border-radius: 16px; }
+    .quote-author { display: block; font-size: 0.95rem; font-style: normal; font-weight: bold; margin-top: 15px; color: var(--text-sub); }
+
+    hr.divider { border: 0; height: 1px; background: var(--intro-border); margin: 40px 0; }
+
+    /* ==================== 
+       4. 影片區塊與字幕樣式
+       ==================== */
+    .video-controls-bar { background: var(--bg-content); padding: 15px; display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; border-bottom: 1px solid var(--border-line); }
+    .video-controls-bar button { background: var(--btn-bg); color: var(--btn-text); border: none; padding: 8px 18px; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease; }
+    .video-controls-bar button:hover { background: var(--btn-hover); transform: translateY(-1px); }
+
+    .video-responsive-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; transition: all 0.3s ease; }
+    .video-responsive-wrapper iframe { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; display: block; }
+
+    .subtitle-overlay { position: absolute; left: 50%; transform: translateX(-50%); bottom: 8%; width: 90vw; max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px); padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); box-sizing: border-box; z-index: 100; pointer-events: none; display: flex; justify-content: center; text-align: center; }
+    .subtitle-overlay span { display: block; width: 100%; max-width: 100%; padding: 0.25em 0.7em; background: rgba(0,0,0,0.72); border-radius: 8px; color: rgba(255,255,255,0.96); font-size: var(--subtitle-size); line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; text-shadow: 0 2px 4px rgba(0,0,0,.5); backdrop-filter: blur(2px); box-sizing: border-box; }
+    
+    @media (min-width: 1024px) { .subtitle-overlay { font-size: 28px; line-height: 1.7; } }
+
+    /* 隱藏原生彈幕工具與不必要的按鈕 */
+    #barrage-toggle-btn, .barrage-control, #barrage-container, #emoji-trigger-btn, #emoji-drawer { display: none !important; }
+
+    /* ==================== 
+       5. 表情牆修復
+       ==================== */
+    .unified-reaction-box { background-color: var(--section-bg) !important; border-radius: 16px; margin: 30px 20px; padding: 25px; text-align: center; border: 1px solid var(--intro-border); box-sizing: border-box; display: flex; flex-direction: column; align-items: center; }
+    .reaction-section { text-align: center !important; width: 100%; background: transparent !important; height: auto !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; }
+    .reaction-wall { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 15px; background: transparent !important;}
+
+    .unified-reaction-box .emoji-btn:not(.active) { background-color: var(--emoji-btn-default-bg) !important; border: 1px solid var(--emoji-btn-default-border) !important; transition: all 0.2s ease; transform: scale(1) translateY(0) !important; box-shadow: none !important; }
+    .unified-reaction-box p, .unified-reaction-box span { color: var(--text-main) !important; font-size: 1.05rem !important; text-shadow: var(--reaction-text-shadow) !important; box-shadow: none !important; }
+    .unified-reaction-box .emoji-btn { background-color: transparent !important; border: 1px solid var(--border-line) !important; transition: all 0.2s ease; }
+    .unified-reaction-box .emoji-btn span { color: var(--text-sub) !important; text-shadow: none !important; }
+    .unified-reaction-box .emoji-btn:hover { background-color: var(--emoji-btn-bg-hover) !important; }
+    .unified-reaction-box .emoji-btn.active { background-color: transparent !important; border: 2px solid var(--emoji-btn-active-border) !important; transform: scale(1.05) translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important; }
+    .unified-reaction-box .emoji-btn.active span { color: var(--emoji-btn-active-text) !important; font-weight: bold !important; }
+    #reaction-title { color: var(--text-main) !important; font-weight: bold !important; margin-bottom: 20px !important; text-shadow: var(--reaction-text-shadow) !important; }
 </style>
 </head>
 
 <body>
-<div id="controls">
-    <div class="control-row">
-        <button onclick="toggleBarrageDisplay()" id="barrage-toggle-btn">即時表情：開</button>
+<div class="content-wrapper">
 
-        <div class="control-group barrage-control">
-            <span>大小</span>
-            <input type="range" id="barrage-size-slider" min="16" max="60" value="24" oninput="updateBarrageSize(this.value)">
-        </div>
+    <!-- 頂部標題與導覽 -->
+    <header class="header">
+      <h1>ARENA HOMME+企劃合輯</h1>
 
-        <div class="control-group barrage-control">
-            <span>範圍</span>
-            <input type="range" id="barrage-height-slider" min="10" max="100" value="40" oninput="updateBarrageHeight(this.value)">
-            <span id="height-val">40%</span>
-        </div>
+      <div class="controls-wrapper">
+        <a href="/" class="home-btn">🏠 首頁</a> 
+        <div class="theme-toggle-group">
+          <button class="theme-btn active" id="btn-light" onclick="switchTheme('light')">☀️ 淺色</button>
+          <button class="theme-btn" id="btn-dark" onclick="switchTheme('dark')">🌙 深色</button>
+        </div>
+      </div>
 
-        <div class="control-group barrage-control">
-            <span>速度</span>
-            <input type="range" id="barrage-speed-slider" min="3" max="10" step="1" value="5" oninput="updateBarrageSpeed(this.value)">
-        </div>
+      <div class="tabs-container">
+        <button class="tab-btn active" onclick="openTab('tab-pictorial', this)">📸 文章</button>
+        <button class="tab-btn" onclick="openTab('tab-video', this)">🎬 影片</button>
+      </div>
+    </header>
 
-        <div class="control-group">
-            <button class="sub-btn" onclick="changeSubtitleSize(-0.1)">A−</button>
-            <span>字幕</span>
-            <button class="sub-btn" onclick="changeSubtitleSize(0.1)">A＋</button>
-        </div>
-        <button id="home-btn" onclick="window.location.href='/'">首頁</button>
-        <button id="fs-btn">進入全螢幕</button>
-    </div>
+    <!-- 分頁 1: 文章內容 -->
+    <div id="tab-pictorial" class="tab-content active">
+        <div class="article-container">
+            <a href="https://www.arenakorea.com/news/articleView.html?idxno=71519" target="_blank" class="btn-article">
+                👉 點此開啟 ARENA HOMME+ 官方原文看照片
+            </a>
+
+            <div class="intro-text">
+                <h3>INTERVIEW TWINKLING YOUTH</h3>
+                同行時更加閃耀的兩位青春少年，攜手站在起跑線上。<br />
+                從《BOYS II PLANET》開啟的故事，如今即將以「FLARE U」畫下完美的起點。<br />
+                我們遇見了此時此刻比任何人都更加耀眼奪目的崔立于與姜玗進。
+            </div>
+
+            <div class="image-caption">
+                <strong>圖一：</strong><br>
+                立于：襯衫－VDR、褲子－Balmain、戒指－PROGRESS 、項鍊&樂福鞋都是造型師私物<br>
+                玗進：夾克&長褲－Diesel、運動鞋－PEMONT、右手戒指－PANDORA、左手戒指－PROGRESS、內搭上衣&襪子都是造型師私物  
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 你們即將以演藝圈罕見的雙人組合「FLARE U」正式出道，心情怎麼樣呢？</p>
+                <div class="answer">
+                    <span class="speaker">姜玗進</span> 如您所說，雙人男子組合真的很少見。<br>
+                    在剛得知要以兩人體制活動的決定時，坦白說，我心裡其實很擔心自己到底能不能做好。<br>
+                    不過後來和立于哥不斷地深入聊天、討論，反而覺得雙人組能展現出非常有新鮮感的面貌；<br>
+                    再加上這也是粉絲們所期盼的，為了不辜負大家的期待，我們正全力以赴地準備。現在組合已是既定事實，我們一定會好好證明給大家看。
+                </div>
+                <div class="answer">
+                    <span class="speaker">崔立于</span> 我和玗進私底下真的聊了非常多。<br>
+                    我也是看著一條條默默等待著我們的粉絲的留言與反應，從中獲得了極大的勇氣，也下定決心要做好。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 剛才拍攝畫報時，你們同框的畫面不僅非常自然，連顏值也很和諧。雖然性格截然不同，卻給人一種完美互補的感覺。</p>
+                <div class="answer"><span class="speaker">立于</span> 沒錯。我們的性格可說是截然不同。但也有很多地方非常契合。</div>
+                <div class="answer"><span class="speaker">玗進</span> 我們的笑點真的很類似。不管對方說什麼都可以笑的很開心。</div>
+                <div class="answer"><span class="speaker">立于</span> 感覺就算只有我們兩個人也可以過得很開心 (笑)</div>
+            </div>
+
+            <div class="image-caption">
+                <strong>圖二：</strong><br>
+                針織上衣&長褲都是TEK 、耳環&項鍊&手環都是造型師私物
+            </div>
+
+            <blockquote class="highlight-quote">
+                「雙人組合雖然不常見，但也正因為如此，我們擁有只屬於我們兩人的專屬色彩。我想透過未來所有的靈感、音樂與舞台，將最真實的樣貌毫無保留地展現出來。」
+                <span class="quote-author">—— 立于</span>
+            </blockquote>
+
+            <div class="qa-block">
+                <p class="question">—— 你們的宿舍生活剛開始不久，同住好玩嗎？</p>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 我們甚至還幫廚餘處理機取了名字喔！<br>
+                    因為它的品牌名叫 NIX，所以我們就直接用品牌名當作暱稱（笑）。我們平時真的會對著它說：「NIX 啊～該吃飯囉！」
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 看來你們的宿舍生活過得相當有趣呢。FLARE U帶有「兩道閃耀的光芒相遇，融合成一體的光芒瞬間」的含意，其中的「U」更包含了「You（粉絲）」、「Universe（攜手打造的世界）」、「Unity（合而為一的瞬間）」以及「Unique（各自的獨特個性）」四種意義。對你們來說，最打動你們的意義是哪一個呢？</p>
+                <div class="answer"><span class="speaker">玗進</span> 絕對是代表著粉絲的「You」對我來說意義最重大。未來在活動時，我也會時刻將這個意義銘記於心。</div>
+                <div class="answer"><span class="speaker">立于</span> 我也抱持著完全相同的看法。</div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="qa-block">
+                <p class="question">—— 在剛才的影片採訪中，問到出道後最大的改變時，玗進回答了「產生了使命感」，這點讓人印象非常深刻。你是從什麼時候開始產生這種使命感的呢？</p>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 我們能以FLARE U作為組合出道起初是從《BOYS II PLANET》做為起點的對吧?<br>
+                    對我來說這真的是一個非常好的契機，正因如此才有了現在的我，但畢竟那是個選秀節目所以有非常多艱辛的時刻。<br>
+                    當時我的心態純粹只是「能怎麼辦呢？只能拼命努力了」。但在這之後我在粉絲見面會上見到許多來看我並給予我不計其數的加油打氣的粉絲們，我就有了「光是盲目地努力是不行的，我必須要做到最好、拿出完美的實力來回報給他們」的想法產生。
+                </div>
+                <div class="answer">
+                    <span class="speaker">立于</span> 我非常能感同身受。<br>
+                    錄節目時有真的壓力很大，出道後開始跑活動腦海就會充滿粉絲們的身影。這也讓我的責任感在好的層面上變得更加沉甸甸了。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 當身邊的人聽到你們即將出道的消息時，有什麼反應？</p>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 我的 KAKAOTALK 整個炸掉 (笑)。<br>
+                    每個人都驚訝到不行，但包含我的朋友、家人，甚至老師們都紛紛傳來祝賀，這時候才真正有了「哇，我真的要出道了」的實感。
+                </div>
+                <div class="answer">
+                    <span class="speaker">立于</span> 在消息還沒正式公布前，身邊的朋友就對我接下來的活動方向非常好奇。<br>
+                    出道消息一發布，我就陸續收到好多「現在是真的要組團出道了嗎？」、「什麼時候正式出道？」、「恭喜你！」等一連串的詢問與祝賀。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 你們是什麼時候才真正感受到「你們是一個團隊」的呢？</p>
+                <div class="answer"><span class="speaker">立于</span> 搬進宿舍的那一天（笑）。那時候心想：哇，這裡就是我們真正的起點了。</div>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 和哥一起住真的太有趣了。<br>
+                    其實我們私底下的對話就像一般朋友一樣，常常聊些無關緊要的小事（笑）。<br>
+                    像是「垃圾好像該倒了，但好懶喔」之類的對話大概佔了 60% 吧；剩下的 40% 才是比如「明天有這個行程，該注意些什麼」、「好想推出這種風格的歌」等等。
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="qa-block">
+                <p class="question">—— 先前官方公開了你們即將在「KCON JAPAN 2026」舞台上帶來特別演出的消息。作為雙人組的初舞台，你們目前是怎麼準備的呢？</p>
+                <div class="answer"><span class="speaker">立于</span> 我們真的很認真的在準備，除了像今天這種拍攝行程之外，其他時間幾乎都在練習，努力到這種程度。</div>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 每天大概都練習 6 到 7 小時。甚至還立下決心要「死後再睡」（笑）。<br>
+                    雖然聽到粉絲們誇獎舞台很好看、誇我們做得好會很開心，但我更希望這一次，大家能透過舞台感受到我們在背後準備的種種過程。只要大家能感受到我們這份真心，我們就心滿意足了。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 可以稍微透露一點關於出道專輯的提示嗎？</p>
+                <div class="answer">
+                    <span class="speaker">立于</span> 首先有編舞的歌曲大概是三首左右。<br>
+                    其中主打歌《WAY 2 U》傳達的是我們對粉絲們飽含的心意。<br>
+                    如果看MV的話會發現玗進在裡面有喜歡的人，而我會幫助他們兩人的關係更進一步。接著故事會延續到《Hyper》這首歌，雖然戀情失敗但能看見我們兩人的友情更加深厚的故事。
+                </div>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 在《WAY 2 U》MV中我會向某個人告白而哥會幫助我。<br>
+                    雖然戀情失敗了但也以此為契機讓我跟哥兩人的關係變得更親近。作為番外篇的《WOO-HOO》則是描述成為摯友的兩人一起去旅行的故事，舞蹈裡甚至還有模仿開車的動作，有很多有趣的小亮點在裡面。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 在這張迷你專輯收錄的六首歌曲當中，你們各自最愛哪一首歌？</p>
+                <div class="answer">
+                    <span class="speaker">立于</span> 我最喜歡《MIRACLE》。<br>
+                    這是一首寫給粉絲們的FAN SONG，當我唱著唱著心底就會湧現一股激昂與感動的情緒。這首歌不僅能我們對粉絲的心意很好地傳遞出去，也是我很喜歡的高能流行（Hyperpop）曲風。
+                </div>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 我也是最喜歡《MIRACLE》。<br>
+                    我原本就很喜歡複雜的和弦編排。如果單聽人聲的話會覺得非常溫柔平靜，但在背景樂器裡卻是層層堆疊、不斷爆發的。這種對比鮮明的音色非常美麗，而且越聽到歌曲後半段，人聲的層次與情感就越豐富，非常有魅力。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 聽完你們的介紹讓人更期待了呢。和當年在《BOYS II PLANET》時期相比，你們覺得現在的自己最大的轉變是什麼？</p>
+                <div class="answer">
+                    <span class="speaker">立于</span> 當時在錄節目時我們都還只是練習生，即使上了節目還是像練習生一樣有很多經驗不足的地方。<br>
+                    但現在處於出道的臨界點，有很多想挑戰的事物，感覺自己轉變成為一位會主動提出想法、積極參與的藝人了。
+                </div>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 就像剛才說的使命感變強了。覺得不管任何事都不能隨隨便便敷衍了事。<br>
+                    和立于一起住後我們的關係變得更好了。我們會互相補足對方不足之處，也從哥身上學到很多東西。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 具體來說學到了什麼？</p>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 哥很會拍照。<br>
+                    雖然看起來是件小事，但他很知道粉絲們喜歡什麼。我也想向他看齊。<br>
+                    而且他在舞台上表演時的表情管理也做得很好，每次看到哥我都會想著「下次我也要試著像他一樣做做看」。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 那立于看玗進呢？</p>
+                <div class="answer">
+                    <span class="speaker">立于</span> 玗進是那種任何事一旦做了就會不成功不罷休的類型。<br>
+                    性格非常勤奮踏實，他也很清楚自己想要的是什麼，也能明確地表達自己的意見。<br>
+                    而且他的吉他彈得非常好，那種出眾的音樂才華，是我想向他學習的地方。
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="qa-block">
+                <p class="question">—— 你們是在什麼時候，感受到「自己真的比以前更加成長了」？</p>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 《BOYS II PLANET》是體力上會感到很吃力的節目。<br>
+                    在極大負擔的狀態下，我們常常一連兩、三天幾乎沒睡就得硬撐著站上舞台。像這樣進行了四個月的錄製，現在不管任何事都能充滿自信、游刃有餘地處理好。像是這次的MV拍攝我也覺得相對來說很順利。
+                </div>
+                <div class="answer">
+                    <span class="speaker">立于</span> 《BOYS II PLANET》是我人生中第一次站在舞台上。<br>
+                    再加上每次我都覺得舞台是攸關存亡的任務所以沒辦法好好享受。在我出道後才漸漸學會享受舞台，這對我來說是最大的變化以及成長。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 在準備活動的期間，雖然充滿了喜悅與期待，但也一定有感到疲憊的時刻。什麼時候會覺得對方是自己最堅實的支柱？</p>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 其實以前當我覺得辛苦時我傾向一個人待著。<br>
+                    遇到了難過的事，也習慣靠獨自散步來默默消化。但自從和哥一起住之後我才發現，比起我一個人待著，在辛苦的時候透過和哥一起聊天、大笑、打鬧，反而能從中得到安慰。
+                </div>
+                <div class="answer">
+                    <span class="speaker">立于</span> 我也差不多。<br>
+                    在和玗進組團前都是一個人在活動，所以辛苦的時候比起跟身邊的人傾訴，我更多時候是一個人克服過去的。現在光是有玗進這個成員的存在就能帶給我力量。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 你們兩個人在一起有產生什麼一加一的大於二的加乘效應嗎？</p>
+                <div class="answer"><span class="speaker">立于</span> 當然了。我們不管對方做什麼都會笑，這樣平日有來有回的聊著，吐槽打鬧是我們獨有的魅力。</div>
+                <div class="answer"><span class="speaker">玗進</span> 粉絲們也覺得我們這種相處模式很可愛。</div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 的確，立于自己一個人待著的時候，和跟玗進待在一起時整個人完全都不一樣呢。</p>
+                <div class="answer"><span class="speaker">立于</span> 真的不一樣。一個人時我不太會說話通常都是看著手機。</div>
+                <div class="answer"><span class="speaker">玗進</span> 你和我在一起時話就會很多對吧?</div>
+                <div class="answer"><span class="speaker">立于</span> 我心裡想說的話其實很多，但我不擅長主動開口。如果玗進先開啟話題我就會跟著聊下去。</div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="qa-block">
+                <p class="question">—— 你們真的是天生一對。如果讓你們靈魂交換、過一天對方的生活，你們覺得誰會過得比較痛苦？</p>
+                <div class="answer"><span class="speaker">立于</span> 如果以玗進的身分生活感覺會很有趣，應該一天很快就會過去（笑）。</div>
+                <div class="answer"><span class="speaker">玗進</span> 如果我體驗當一天立于哥過著他的生活應該會覺得很無聊。因為哥太安靜了。</div>
+                <div class="answer"><span class="speaker">立于</span> 我其實比你想得更加有趣喔～</div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 雖然外表看不出來，但一個人待著的時候內心世界也是很精采、很享受的。如果要用一個詞來定義對方，你們會怎麼形容？</p>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 立于哥像「石頭」，很沉穩也很堅毅。<br>
+                    雖然很安靜但很明確知道自己要的是什麼，同時也有著不輕易妥協的固執一面。
+                </div>
+                <div class="answer">
+                    <span class="speaker">立于</span> 「魚」（笑）。一開始只是開玩笑這樣叫他，但現在真的覺得魚和玗進很像。<br>
+                    而且魚不是在水裡面自由自在地游動的生物嗎？玗進最近給人的感覺，正好就是這種自由的氛圍。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 我知道立于的興趣是攝影，最近還有什麼沉迷的新愛好嗎？</p>
+                <div class="answer">
+                    <span class="speaker">立于</span> 我拍照還是持續有再拍。<br>
+                    如果有想留下的瞬間就會用手機或是用富士數位相機X-E5馬上記錄下來。還有我也想重新把吉他練起來。
+                </div>
+                <div class="answer"><span class="speaker">玗進</span> 哥很會彈吉他，比一般人還要會彈。</div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 玗進你常常教他對吧？</p>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 我只有教他理論而已。<br>
+                    彈吉他最核心的關鍵是在於「手指的直覺與手感」，雙手必須非常靈活地一邊撥弦一邊按指法，這點其實很難；但哥在這方面做得非常好，讓我感覺他真的很有天分。
+                </div>
+                <div class="answer"><span class="speaker">立于</span> 國中我有自學過，但沒想到你會誇獎我到這個程度（笑）。我想要努力的練習試著彈出一整首《MIRACLE》。</div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="qa-block">
+                <p class="question">—— 玗進除了平時喜歡寫作、品嚐世界各國的巧克力之外，最近有培養什麼新興趣嗎？</p>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 我又再次對巧克力萌生興趣了。<br>
+                    就像在寒冷的地方吃下高熱量的食物一樣，我在冬天會吃很多巧克力。最近練習時每當有壓力我就會吃甜的。<br>
+                    我想發掘出世界上真正美味的巧克力，最近甚至還上網去研究了專門製作巧克力工藝的「巧克力職人」，打算買幾款來品嚐。另外，我也非常喜歡「瑞士蓮（Lindt）」這個品牌推出的LINDOR夾心巧克力球。聽說瑞士當地有一座瑞士蓮巧克力博物館，我想親自去朝聖一趟！因為聽說在那裡可以一次品嚐到LINDOR所有口味。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 你真的很喜歡巧克力耶。平時也經常寫作嗎？</p>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 我有充裕的時間才會寫字。如果只是零碎地擠出一點空檔，時間不夠充足的話，就很難投入。<br>
+                    所以我通常是在通勤移動時，看著車窗外的風景突然萌生了某種感觸，或是休息時靈感突然湧現，才會把它寫下來。像這樣動筆也對我作詞帶來很多幫助。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 兩位先前曾在MBC FM4U的電台節目《親密朋友廣播部》中當過電台DJ。在當電台 DJ 的那段日子裡，有什麼印象深刻的瞬間嗎?</p>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 比起某個瞬間，光是能夠整整一個月都擔任DJ這件事本身就讓我充滿了感激。<br>
+                    對我來說是非常好的機會，不僅能見到很多前輩，作為電台DJ主持電台也讓我培養了社交能力，面對鏡頭和主持也變得比較游刃有餘了。
+                </div>
+                <div class="answer">
+                    <span class="speaker">立于</span> 因為我是外國人嘛，一開始聽到要讓我去當電台DJ的時候，我想著「我有辦法勝任嗎?」有過很多擔憂。<br>
+                    不過開始主持後，覺得最有趣的單元是「明天的營養午餐是什麼?」。每次進行那個單元都像在考韓文能力，因為每次都會出現這輩子從來沒聽過的菜名。
+                </div>
+                <div class="answer"><span class="speaker">玗進</span> 像是「河蜆湯」、「彩虹年糕」之類的東西（笑）。</div>
+                <div class="answer">
+                    <span class="speaker">立于</span> 每次到那個單元，我都會問製作人說「這是什麼？」然後製作人就會透過畫面告訴我答案（笑）。不知道為什麼我在最後一天哭了。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 看來立于是個心思細膩、很感性的人呢。</p>
+                <div class="answer"><span class="speaker">玗進</span> 哥他很常哭，眼淚特別多。</div>
+                <div class="answer"><span class="speaker">立于</span> 其實我本來不常哭的，但自從上了節目後就開始經常會哭。</div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 因為你平常的性格不擅長主動表露情感，所以當那些沉澱在心底已久，覺得感動的瞬間、美好的記憶壓抑不住爆發出來時，眼淚就會宣洩而出對吧?</p>
+                <div class="answer"><span class="speaker">立于</span> 好像是這樣沒錯，電台主持的最後一天心裡真的充滿著感激之心。</div>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 您知道《無限挑戰》裡那個「夾在F人中間的T人」的梗圖嗎？<br>
+                    就是當周遭所有人都在哭泣時，只有朴明洙前輩一個人心想：「呃……我是不是現在也得擠出幾滴眼淚才行啊？」的那種神情。當時我就是像那樣在旁邊安慰他說：「好啦，哥～沒事了、別哭啦」。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 你們平常就會聽電台嗎？</p>
+                <div class="answer"><span class="speaker">玗進</span> 我國小就很常聽電台。</div>
+                <div class="answer">
+                    <span class="speaker">立于</span> 我常常在睡前聽Podcast。<br>
+                    我很常看一個叫做「壹加壹（1+1）」的YouTuber。1+1他們兩人經營著YouTube頻道同時也會做Podcast，Podcast內容主要是兩個人在輕鬆地隨性閒聊，聽起來非常舒服、解壓；而且因為他們對攝影與相機的知識非常淵博，YouTube上傳的每一支影片美感都極高，我很喜歡聽和看他們製作的內容。
+                </div>
+            </div>
+
+            <div class="qa-block">
+                <p class="question">—— 現在FLARE U正攜手站在全新的起跑線上。未來，你們想向大眾展現出什麼樣的面貌呢？</p>
+                <div class="answer">
+                    <span class="speaker">立于</span> 雙人組合雖然不常見，但也正因為如此，我們擁有只屬於我們兩人的專屬色彩。<br>
+                    我想透過未來所有的靈感、音樂與舞台，將最真實的樣貌毫無保留地展現出來。
+                </div>
+                <div class="answer">
+                    <span class="speaker">玗進</span> 我有很多想展現給大家看的東西。<br>
+                    無論未來會以什麼形式呈現，我都會以絕對的真心努力的做。因為不管是在音樂、舞台還是粉絲見面會都我們所獲得的每一份來自粉絲們的愛，都是粉絲們為此付出了時間和金錢；因此我不想只是做做樣子，我會一直帶著這份真心希望能讓粉絲們都能感受到我的誠意。
+                </div>
+            </div>
+
+            <div class="image-caption">
+                <strong>圖四：</strong><br>
+                玗進：襯衫&褲子&貝蕾帽都是Maison Margiela、眼鏡－RIETI、項鍊&手鍊都是Messika、戒指－造型師私物<br>
+                立于：夾克&襯衫&針織衫&領帶&裙子都是Thom Browne、眼鏡－RIETI
+            </div>
+            <div class="image-caption">
+                <strong>圖五：</strong><br>
+                POLO衫&項鍊都是Vivienne Westwood
+            </div>
+
+            <blockquote class="highlight-quote">
+                「其實以前當我覺得辛苦時我傾向一個人待著。遇到了難過的事，也習慣靠獨自散步來默默消化。但自從和哥一起住之後我才發現，比起我一個人待著，在辛苦的時候透過和哥一起聊天、大笑、打鬧，反而能從中得到安慰。」
+                <span class="quote-author">—— 玗進</span>
+            </blockquote>
+
+            <div class="image-caption" style="margin-bottom: 40px;">
+                <strong>圖六：</strong><br>
+                連帽上衣&內搭襯衫&帽子都是VDR
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 分頁 2: 影片與字幕 -->
+    <div id="tab-video" class="tab-content">
+        <div class="video-controls-bar">
+            <button class="sub-btn" onclick="changeSubtitleSize(-0.1)">A−</button>
+            <span style="font-weight: bold; color: var(--text-main);">字幕</span>
+            <button class="sub-btn" onclick="changeSubtitleSize(0.1)">A＋</button>
+            <button id="fs-btn">進入全螢幕</button>
+        </div>
+
+        <div id="video-wrapper" class="video-responsive-wrapper">
+            <div id="player"></div>
+            <div id="subtitle" class="subtitle-overlay"><span>字幕載入中...</span></div>
+            
+            <!-- 隱藏但保留以防 core-player.js 報錯 -->
+            <div id="barrage-container"></div>
+            <button id="emoji-trigger-btn">😊</button>
+            <div id="emoji-drawer"></div>
+            
+            <button id="exit-fs-btn" class="exit-fs-btn-global" title="退出全螢幕">
+                <svg viewBox="0 0 24 24">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- 反應區塊 (共用) -->
+    <div class="unified-reaction-box">
+        <div class="reaction-section">
+            <p id="reaction-title">覺得這篇專訪/影片如何？點個表情吧！</p>
+            <div class="reaction-wall"></div>
+        </div>
+    </div>
+
 </div>
 
-<h2>[ARENA HOMME+企劃合輯] 我們FLARE U都不會哭，反而很會說話呢</h2>
-
-<div id="video-wrapper">
-    <div id="player"></div>
-    <div id="subtitle">字幕載入中...</div>
-    <div id="barrage-container"></div>
-
-    <button id="emoji-trigger-btn" onclick="toggleEmojiDrawer(event)">😊</button>
-
-    <div id="emoji-drawer"></div>
-    
-    <button id="exit-fs-btn" title="退出全螢幕" style="display: none; opacity: 0;">
-        <svg viewBox="0 0 24 24">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-    </button>
-</div>
-
-<div class="reaction-section">
-    <p id="reaction-title">覺得這部翻譯影片如何？點個表情吧！</p>
-    <div class="reaction-wall"></div>
-    <br>
-</div>
-
+<!-- ===== JS 腳本區塊 ===== -->
 <script>
-/* 影片ID和SRT文件 */
-const MY_VIDEO_ID = "XaNjbQ2JM54"; 
-const MY_SRT_FILE = "20260601_ARENA_HOMME+.srt";
+    /* 影片ID和SRT文件設定 */
+    const MY_VIDEO_ID = "XaNjbQ2JM54"; 
+    const MY_SRT_FILE = "20260601_ARENA_HOMME+.srt";
 
-/* ===== 字幕大小設定 ===== */
-function changeSubtitleSize(delta) {
-        if (typeof coreChangeSubtitleSize === "function") coreChangeSubtitleSize(delta);
-}
+    /* 字幕大小設定 */
+    function changeSubtitleSize(delta) {
+        if (typeof coreChangeSubtitleSize === "function") coreChangeSubtitleSize(delta);
+    }
+
+    /* 分頁切換功能 */
+    function openTab(tabId, btnElement) {
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        btnElement.classList.add('active');
+    }
+
+    /* 主題切換功能 */
+    function switchTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        document.getElementById('btn-light').classList.remove('active');
+        document.getElementById('btn-dark').classList.remove('active');
+        document.getElementById('btn-' + theme).classList.add('active');
+    }
 </script>
-    
+    
 <script type="module">
-  // 1. 載入 Firebase 核心功能與 Analytics
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-  // 加上這行來載入分析模組
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-    
-  // 2. Firebase 設定
-  const firebaseConfig = { apiKey: "AIzaSyAs9R785IE_kBsduUdEng3Vfqz1Ljl11f4", authDomain: "flareu-tw-translation.firebaseapp.com", databaseURL: "https://flareu-tw-translation-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "flareu-tw-translation", storageBucket: "flareu-tw-translation.firebasestorage.app", messagingSenderId: "753531558153", appId: "1:753531558153:web:7106f9c2d253cae62fdbd8" };
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+    
+  const firebaseConfig = { 
+      apiKey: "AIzaSyAs9R785IE_kBsduUdEng3Vfqz1Ljl11f4", 
+      authDomain: "flareu-tw-translation.firebaseapp.com", 
+      databaseURL: "https://flareu-tw-translation-default-rtdb.asia-southeast1.firebasedatabase.app", 
+      projectId: "flareu-tw-translation", 
+      storageBucket: "flareu-tw-translation.firebasestorage.app", 
+      messagingSenderId: "753531558153", 
+      appId: "1:753531558153:web:7106f9c2d253cae62fdbd8" 
+  };
 
-  // 3. 啟動連線
-  const app = initializeApp(firebaseConfig);
-  
-  // 啟動 Analytics
-  const analytics = getAnalytics(app);
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
 
-  // 借給外部 JS 使用
-  window.db = getDatabase(app);
-  window.fb_ref = ref;            
-  window.fb_onValue = onValue;    
-  window.fb_runTransaction = runTransaction; 
+  window.db = getDatabase(app);
+  window.fb_ref = ref;            
+  window.fb_onValue = onValue;    
+  window.fb_runTransaction = runTransaction; 
 </script>
 
 <script src="../../js/core-player.js"></script>
@@ -123,517 +646,4 @@ function changeSubtitleSize(delta) {
 <script src="https://www.youtube.com/iframe_api"></script>
 
 </body>
-</html>我想要在目前的index.html裡面加上另一個文字版面 樣式可以參考如下:<style>
-    /* ==================== 
-       1. 色彩變數與基礎設定
-       ==================== */
-    :root { --bg-body: #f8f9f7; --bg-content: #ffffff; --text-main: #2d3436; --text-sub: #7b8a7e; --border-line: #e0e6e0;
-      --btn-bg: #84a98c; --btn-hover: #52796f; --btn-text: #ffffff; --intro-bg: #f1f7f1; --intro-border: #dce4dc; --intro-text: #354f52; 
-      --section-bg: #e9f5e9; --section-text: #354f52; --outfit-bg: #f8faf8; --outfit-border: #84a98c;
-      --tab-bg: #ffffff; --tab-border: #e0e6e0; --tab-text: #7b8a7e; --tab-active-text: #52796f; --tab-active-border: #84a98c;
-      --home-btn-bg: #eef3ee; --home-btn-hover: #dfe7df; --theme-btn-bg: #f0f0f0; --theme-btn-text: #666; --theme-btn-active: #ffffff;
-      --reaction-text-shadow: none; --emoji-btn-active-border: #84a98c; --emoji-btn-active-text: #2d3436; --emoji-btn-bg-hover: rgba(132, 169, 140, 0.1); 
-      --emoji-btn-default-bg: rgba(0, 0, 0, 0.03); --emoji-btn-default-border: #e1e8ed; --emoji-btn-default-text: #8e8e8e; --subtitle-size: 22px; 
-    }
-
-    [data-theme="dark"] {
-      --bg-body: #1a1c1a; --bg-content: #242624; --text-main: #e0e2e0; --text-sub: #a0a8a0; --border-line: #3d403d;
-      --btn-bg: #52796f; --btn-hover: #84a98c; --btn-text: #ffffff; --intro-bg: #2d342d; --intro-border: #3d403d; --intro-text: #e0e2e0; 
-      --section-bg: #353d35; --section-text: #a7c4a7; --outfit-bg: #2d342d; --outfit-border: #52796f;
-      --tab-bg: #242624; --tab-border: #3d403d; --tab-text: #888; --tab-active-text: #a7c4a7; --tab-active-border: #52796f;
-      --home-btn-bg: #3a3b3c; --home-btn-hover: #4a4b4c;
-      --theme-btn-bg: #333333; --theme-btn-text: #aaaaaa; --theme-btn-active: #1e1e1e;
-      /* 深色模式下，保留微弱的立體感 */
-      --reaction-text-shadow: 0px 1px 3px rgba(0,0,0,0.8);
-      /* 表情按鈕選中時的框線與數字顏色 (深色模式) */
-      --emoji-btn-active-border: #8ebfec; 
-      --emoji-btn-active-text: #e4e6eb;
-      --emoji-btn-bg-hover: rgba(255, 255, 255, 0.1); /* 深色模式下懸停時的微弱背景 */
-      /* 定義按鈕的「預設未選中」狀態 (深色) */
-      --emoji-btn-default-bg: rgba(255, 255, 255, 0.08); /* 保留原本 reaction.css 的微透白質感 */
-      --emoji-btn-default-border: #444;
-      --emoji-btn-default-text: #aaa;
-    }
-
-    html, body { 
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
-      background-color: var(--bg-body) !important; color: var(--text-main) !important; margin: 0 !important; padding: 0 !important; 
-      overflow-x: hidden !important; height: auto !important; -webkit-text-size-adjust: 100%;
-      display: flex; justify-content: center; transition: background-color 0.3s ease, color 0.3s ease; 
-    }
-
-    .content-wrapper { max-width: 800px; width: 100%; background: var(--bg-content); min-height: 100vh; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding-bottom: 20px; transition: all 0.3s ease; }
-
-    /* ==================== 
-       2. 版面與畫報排版
-       ==================== */
-    .header { background-color: var(--bg-content); padding: 20px 20px 0 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
-    .header h1 { font-size: 1.3rem; margin: 0; font-weight: 600; color: var(--text-main); line-height: 1.4; }
-
-    .controls-wrapper { display: flex; gap: 12px; align-items: center; margin-top: 10px; margin-bottom: 16px; }
-    .home-btn { background-color: var(--home-btn-bg); color: var(--text-main); text-decoration: none; padding: 6px 16px; border-radius: 16px; font-size: 0.9rem; font-weight: bold; }
-    .theme-toggle-group { display: inline-flex; background-color: var(--theme-btn-bg); border-radius: 20px; padding: 4px; }
-    .theme-btn { background: none; border: none; padding: 6px 16px; border-radius: 16px; font-size: 0.9rem; color: var(--theme-btn-text); cursor: pointer; font-weight: bold; }
-    .theme-btn.active { background-color: var(--theme-btn-active); color: var(--text-main); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-
-    .tabs-container { display: flex; width: 100%; border-bottom: 2px solid var(--tab-border); background-color: var(--tab-bg); }
-    .tab-btn { flex: 1; background: none; border: none; padding: 14px 10px; font-size: 1rem; font-weight: bold; color: var(--tab-text); cursor: pointer; border-bottom: 3px solid transparent; }
-    .tab-btn.active { color: var(--tab-active-text); border-bottom: 3px solid var(--tab-active-border); }
-
-    .tab-content { display: none; animation: fadeIn 0.3s ease; }
-    .tab-content.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-    .btn-article { display: block; background-color: var(--btn-bg); color: var(--btn-text); text-align: center; padding: 14px 20px; margin: 20px 20px 0 20px; border-radius: 8px; text-decoration: none; font-weight: bold; }
-    .intro-box { padding: 0 20px 24px 20px; margin-top: 16px; }
-    .intro-text { font-size: 1.05rem; line-height: 1.8; color: var(--intro-text); white-space: pre-line; padding: 25px; background-color: var(--intro-bg); border-radius: 12px; border: 1px solid var(--intro-border); text-align: left !important; word-break: break-all; }
-    .section-title { background-color: var(--section-bg); padding: 16px 20px; margin: 0 0 24px 0; font-size: 1.1rem; color: var(--section-text); font-weight: bold; border-bottom: 1px solid var(--intro-border); border-top: 1px solid var(--intro-border); }
-    .post-item { margin-bottom: 12px; padding-bottom: 16px; }
-    .instagram-media { margin: 0 auto !important; max-width: 500px !important; }
-    .translation-box { padding: 16px 20px; max-width: 600px; margin: 0 auto; }
-    .translation-box, .caption-text, .outfit-section { text-align: left !important; }
-    .outfit-section { background-color: var(--outfit-bg); padding: 16px 20px; border-radius: 8px; border-left: 4px solid var(--outfit-border); }
-    .photo-tag { display: inline-block; font-weight: 600; color: var(--section-text); font-size: 1.1rem; margin-bottom: 12px; }
-    .outfit-text { font-size: 0.95rem; line-height: 1.8; margin: 0; }
-    .carousel-list { list-style: none; padding: 0; margin: 0; }
-    .carousel-list li { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px dashed var(--border-line); }
-
-    .outfit-pagination { display: flex; justify-content: center; gap: 8px; margin-bottom: 12px; align-items: center; flex-wrap: nowrap; }
-    .page-btn { width: 40px; height: 40px; font-size: 1.1rem; border-radius: 50%; border: 1px solid var(--border-line); background: var(--bg-content); 
-               color: var(--text-main); cursor: pointer; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
-    .page-btn.active { background: var(--btn-bg); color: white; border-color: var(--btn-bg);}
-
-    /* ==================== 
-       3. 影片區塊與字幕樣式
-       ==================== */
-    .video-controls-bar {
-        background: #111; padding: 10px; display: flex; justify-content: center; align-items: center; gap: 15px; border-bottom: 1px solid #333; flex-wrap: wrap;
-    }
-    .video-controls-bar button {
-        background: #333; color: white; border: 1px solid rgba(255,255,255,0.1); padding: 6px 16px; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease;
-    }
-    .video-controls-bar button:hover { background: #444; transform: translateY(-1px); }
-
-    .video-responsive-wrapper {
-        position: relative;
-        width: 100%;
-        padding-bottom: 56.25%; /* 16:9 神奇比例 */
-        background: #000;
-        transition: all 0.3s ease;
-    }
-    .video-responsive-wrapper iframe {
-        position: absolute;
-        top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; display: block;
-    }
-
-    /* 字幕外層 */
-    .subtitle-overlay { position: absolute; left: 50%; transform: translateX(-50%); bottom: 8%;
-        width: 90vw; max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px); 
-        padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right);
-        box-sizing: border-box; z-index: 100; pointer-events: none;
-        display: flex; justify-content: center; text-align: center;
-    }
-
-    /* 字幕本體 */
-    .subtitle-overlay span { display: block; width: 100%; max-width: 100%; padding: 0.25em 0.7em;
-        background: rgba(0,0,0,0.72); border-radius: 8px; color: rgba(255,255,255,0.96);
-        font-size: var(--subtitle-size); line-height: 1.6; white-space: pre-wrap;
-        overflow-wrap: anywhere; word-break: break-word; text-shadow: 0 2px 4px rgba(0,0,0,.5);
-        backdrop-filter: blur(2px); box-sizing: border-box;
-    }
-    
-    @media (min-width: 1024px) { .subtitle-overlay { font-size: 28px; line-height: 1.7; } }
-
-    /* =========================================
-       4. 全螢幕與偽全螢幕專屬樣式 (極致移植) 
-       ========================================= */
-    /* [A] 電腦版 (滑鼠操作) 全螢幕：字幕保持在底部，避免擋臉 */
-    @media (pointer: fine) {
-        :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay {
-            bottom: 8% !important; width: 90vw !important; 
-            max-width: calc(
-              100vw
-              - env(safe-area-inset-left)
-              - env(safe-area-inset-right)
-              - 16px
-            ) !important;
-        }
-        :fullscreen .video-responsive-wrapper, :-webkit-full-screen .video-responsive-wrapper {
-            width: 100vw; height: 100vh; max-width: none; margin: 0; padding-bottom: 0;
-        }
-    }
-
-    /* [B] 手機版 (觸控操作) 全螢幕：字幕拉高，避免被螢幕邊緣或黑邊切掉 */
-    @media (pointer: coarse) {
-        /* 原生全螢幕 */
-        :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay { 
-            bottom: calc(15% + env(safe-area-inset-bottom)) !important;
-            width: 90vw !important;
-            max-width: calc(
-              100vw
-              - env(safe-area-inset-left)
-              - env(safe-area-inset-right)
-              - 16px
-            ) !important;
-        }
-        :fullscreen .video-responsive-wrapper, :-webkit-full-screen .video-responsive-wrapper {
-            width: 100vw; height: 100vh; max-width: none; margin: 0; padding-bottom: 0;
-        }
-
-        /* 偽全螢幕 (iPhone Safari) */
-        .pseudo-fullscreen {
-            position: fixed !important; top: 0 !important; left: 0 !important;
-            width: 100vw !important; height: 100vh !important; height: 100dvh !important;
-            z-index: 2147483647 !important; background: #000 !important; margin: 0 !important; padding: 0 !important;
-            display: flex !important; align-items: center; justify-content: center;
-            padding-left: env(safe-area-inset-left) !important; padding-right: env(safe-area-inset-right) !important;
-        }
-        .pseudo-fullscreen iframe { width: 100vw !important; height: 100dvh !important; object-fit: contain; }
-        .pseudo-fullscreen .subtitle-overlay { 
-            width: min(88vw, 88%) !important;
-            max-width: 88vw !important;
-            bottom: calc(15% + env(safe-area-inset-bottom)) !important; 
-        }
-
-        /* 橫向模式再加強 */
-        @media screen and (orientation: landscape) {
-            :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay, .pseudo-fullscreen .subtitle-overlay {
-                bottom: calc(18% + env(safe-area-inset-bottom)) !important; /* 橫向時拉得更高 */
-            }
-        }
-    }
-
-    /* 鎖死背景 */
-    body.is-in-fullscreen {
-        overflow: hidden !important; position: fixed; width: 100vw; height: 100vh; height: -webkit-fill-available;
-        background: #000 !important; touch-action: none; overscroll-behavior: none;
-    }
-
-    /* 退出按鈕 */
-    .exit-fs-btn-global {
-        display: none; opacity: 0; position: fixed !important; 
-        top: calc(20px + env(safe-area-inset-top)) !important; right: 20px !important; 
-        width: 50px !important; height: 50px !important;
-        background: rgba(0, 0, 0, 0.6) !important; border: 1px solid rgba(255, 255, 255, 0.3) !important; border-radius: 50%;
-        color: white !important; z-index: 2147483647 !important; cursor: pointer; align-items: center; justify-content: center; padding: 0;
-    }
-    .exit-fs-btn-global svg { width: 28px; height: 28px; stroke: currentColor; stroke-width: 2.5; fill: none; }
-    .exit-fs-btn-global:hover { background: rgba(50, 50, 50, 0.9) !important; transform: scale(1.1); }
-    @media screen and (orientation: landscape) { .exit-fs-btn-global { right: calc(45px + env(safe-area-inset-right)) !important; top: 15px !important; } }
-
-    /* ==================== 
-       5. 完美修復表情牆
-       ==================== */
-    /* 隱藏彈幕工具 */
-    #barrage-toggle-btn, .barrage-control, #barrage-container, #emoji-trigger-btn, #emoji-drawer { display: none !important; }
-
-    .unified-reaction-box { 
-        background-color: var(--section-bg) !important; 
-        border-radius: 12px; 
-        margin: 20px; /* 完美對齊畫報寬度 */
-        padding: 20px; 
-        text-align: center; 
-        border: 1px solid var(--intro-border);
-        box-sizing: border-box; 
-        display: flex; 
-        flex-direction: column;
-        align-items: center; /* 確保按鈕置中 */
-    }
-
-    .reaction-section { text-align: center !important; width: 100%; }
-    .reaction-wall { display: flex; justify-content: center; /* 確保按鈕排隊置中 */ flex-wrap: wrap; gap: 10px; margin-top: 15px; }
-
-    /* 打敗 reaction.css 裡的黑底 */
-    .reaction-section, .reaction-wall, .reaction-container {
-        background: transparent !important; background-color: transparent !important;
-        height: auto !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important;
-    }
-
-    /* 強制規範沒有active的預設按鈕狀態 */
-    .unified-reaction-box .emoji-btn:not(.active) {
-        background-color: var(--emoji-btn-default-bg) !important; 
-        border: 1px solid var(--emoji-btn-default-border) !important; 
-        transition: all 0.2s ease;
-        transform: scale(1) translateY(0) !important;
-        box-shadow: none !important;
-    }
-
-    /* 根據主題切換陰影，淺色清晰、深色立體 */
-    .unified-reaction-box p, 
-    .unified-reaction-box span, 
-    .reaction-section { 
-        color: var(--text-main) !important; 
-        font-size: 1.05rem !important; 
-        text-shadow: var(--reaction-text-shadow) !important; 
-        box-shadow: none !important;
-    }
-    /* 重新定義表情按鈕的外觀，避免背景變純黑/純白 */
-    .unified-reaction-box .emoji-btn {
-        background-color: transparent !important; /* 預設透明 */
-        border: 1px solid var(--border-line) !important; /* 預設細框 */
-        transition: all 0.2s ease;
-    }
-
-    .unified-reaction-box .emoji-btn span {
-        color: var(--text-sub) !important; /* 預設數字顏色稍淺 */
-        text-shadow: none !important;
-    }
-
-    .unified-reaction-box .emoji-btn:hover {
-        background-color: var(--emoji-btn-bg-hover) !important; /* 懸停時微亮/微暗 */
-    }
-
-    /* 按下(選中)時的狀態：不改背景色，只凸顯框線和數字！ */
-    .unified-reaction-box .emoji-btn.active {
-        background-color: transparent !important; /* 保持透明！ */
-        border: 2px solid var(--emoji-btn-active-border) !important; /* 凸顯框線 */
-        transform: scale(1.05) translateY(-2px);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important; /* 輕微陰影 */
-    }
-
-    .unified-reaction-box .emoji-btn.active span {
-        color: var(--emoji-btn-active-text) !important; /* 數字顏色變深/變亮 */
-        font-weight: bold !important; /* 加粗數字 */
-    }
-
-    #reaction-title { 
-        color: var(--text-main) !important; 
-        font-weight: bold !important;  
-        margin-bottom: 20px !important; 
-        text-shadow: var(--reaction-text-shadow) !important; 
-    }
-  </style> 文字內容如下:<div class="content-wrapper">
-
-    <header class="header">
-      <h1>ARENA HOMME+企劃合輯</h1>
-
-      <div class="controls-wrapper">
-        <a href="../../index.html" class="home-btn">🏠 首頁</a> <div class="theme-toggle-group">
-          <button class="theme-btn" id="btn-light" onclick="switchTheme('light')">☀️ 淺色</button>
-          <button class="theme-btn" id="btn-dark" onclick="switchTheme('dark')">🌙 深色</button>
-        </div>
-      </div>
-
-      <div class="tabs-container">
-        <button class="tab-btn active" onclick="openTab('tab-pictorial', this)">📸 文章</button>
-        <button class="tab-btn" onclick="openTab('tab-video1', this)">🎬 影片</button>
-      </div>
-    </header>
-
-    <div id="tab-pictorial" class="tab-content active">
-      <a href="https://www.arenakorea.com/news/articleView.html?idxno=71519" class="btn-article">
-        👉 點此開啟 ARENA HOMME+ 官方原文看照片
-      </a>
-
-      <div class="intro-box">
-        <h3>INTERVIEW TWINKLING YOUTH</h3>
-        同行時更加閃耀的兩位青春少年，攜手站在起跑線上。<br />
-        從《BOYS II PLANET》開啟的故事，如今即將以「FLARE U」畫下完美的起點。<br />
-        我們遇見了此時此刻比任何人都更加耀眼奪目的崔立于與姜玗進。
-        <br />
-        <strong>圖一</strong> 立于：襯衫－VDR、褲子－Balmain、戒指－PROGRESS 、項鍊&樂福鞋都是造型師私物<br />
-        玗進：夾克&長褲－Diesel、運動鞋－PEMONT、右手戒指－PANDORA、左手戒指－PROGRESS、內搭上衣&襪子都是造型師私物  
-        <br />
-        <strong>—— 你們即將以演藝圈罕見的雙人組合「FLARE U」正式出道，心情怎麼樣呢？</strong><br />
-        <strong>姜玗進（以下簡稱玗進）：</strong>如您所說，雙人男子組合真的很少見。<br />
-在剛得知要以兩人體制活動的決定時，坦白說，我心裡其實很擔心自己到底能不能做好。<br />
-不過後來和立于哥不斷地深入聊天、討論，反而覺得雙人組能展現出非常有新鮮感的面貌；<br />
-再加上這也是粉絲們所期盼的，為了不辜負大家的期待，我們正全力以赴地準備。<br />
-現在組合已是既定事實，我們一定會好好證明給大家看。<br />
-        <strong>崔立于（以下簡稱立于）：</strong>我和玗進私底下真的聊了非常多。<br />
-我也是看著一條條默默等待著我們的粉絲的留言與反應，從中獲得了極大的勇氣，也下定決心要做好。
-        <br />
-        <strong>—— 剛才拍攝畫報時，你們同框的畫面不僅非常自然，連顏值也很和諧。雖然性格截然不同，卻給人一種完美互補的感覺。</strong><br />
-        <strong>立于：</strong>沒錯。我們的性格可說是截然不同。但也有很多地方非常契合。<br />
-        <strong>玗進：</strong>我們的笑點真的很類似。不管對方說什麼都可以笑的很開心。<br />
-        <strong>立于：</strong>感覺就算只有我們兩個人也可以過得很開心(笑)
-        <br />
-        <strong>圖二</strong>針織上衣&長褲都是TEK 、耳環&項鍊&手環都是造型師私物
-        <br />
-        <strong>「雙人組合雖然不常見，但也正因為如此，我們擁有只屬於我們兩人的專屬色彩。我想透過未來所有的靈感、音樂與舞台，將最真實的樣貌毫無保留地展現出來。」—— 立于</strong>
-        <br />
-        <strong>——你們的宿舍生活剛開始不久，同住好玩嗎？</strong><br />
-        <strong>玗進：</strong>我們甚至還幫廚餘處理機取了名字喔！<br />
-        因為它的品牌名叫 NIX，所以我們就直接用品牌名當作暱稱（笑）。<br />
-        我們平時真的會對著它說：「NIX 啊～該吃飯囉！」
-        <br />
-        <strong>——看來你們的宿舍生活過得相當有趣呢。<br />
-        FLARE U帶有「兩道閃耀的光芒相遇，融合成一體的光芒瞬間」的含意，其中的「U」更包含了「You（粉絲）」、「Universe（攜手打造的世界）」、「Unity（合而為一的瞬間）」以及「Unique（各自的獨特個性）」四種意義。<br />
-          對你們來說，最打動你們的意義是哪一個呢？</strong><br />
-        <strong>玗進：</strong>絕對是代表著粉絲的「You」對我來說意義最重大。<br />
-        未來在活動時，我也會時刻將這個意義銘記於心。<br />
-        <strong>立于：</strong>我也抱持著完全相同的看法。
-        <br />
-        <strong>—— 在剛才的影片採訪中，問到出道後最大的改變時，玗進回答了「產生了使命感」，這點讓人印象非常深刻。你是從什麼時候開始產生這種使命感的呢？</strong><br />
-        <strong>玗進：</strong>我們能以FLARE U作為組合出道起初是從《BOYS II PLANET》做為起點的對吧? <br />
-對我來說這真的是一個非常好的契機，正因如此才有了現在的我，但畢竟那是個選秀節目所以有非常多艱辛的時刻。<br />
-當時我的心態純粹只是「能怎麼辦呢？只能拼命努力了」。<br />
-但在這之後我在粉絲見面會上見到許多來看我並給予我不計其數的加油打氣的粉絲們，我就有了「光是盲目地努力是不行的，我必須要做到最好、拿出完美的實力來回報給他們」的想法產生。<br />
-        <strong>立于：</strong>我非常能感同身受。<br />
-錄節目時有真的壓力很大，出道後開始跑活動腦海就會充滿粉絲們的身影。<br />
-這也讓我的責任感在好的層面上變得更加沉甸甸了。
-        <br />
-        <strong>—— 當身邊的人聽到你們即將出道的消息時，有什麼反應？</strong><br />
-        <strong>玗進：</strong>我的KAKATALK整個炸掉(笑) 。<br />
-每個人都驚訝到不行，但包含我的朋友、家人，甚至老師們都紛紛傳來祝賀，這時候才真正有了「哇，我真的要出道了」的實感。<br />
-        <strong>立于：</strong>在消息還沒正式公布前，身邊的朋友就對我接下來的活動方向非常好奇。<br />
-出道消息一發布，我就陸續收到好多「現在是真的要組團出道了嗎？」、「什麼時候正式出道？」、「恭喜你！」等一連串的詢問與祝賀。
-        <br />
-        <strong>—— 你們是什麼時候才真正感受到「你們是一個團隊」的呢？</strong><br />
-        <strong>立于： </strong>搬進宿舍的那一天（笑）。那時候心想：哇，這裡就是我們真正的起點了<br />
-        <strong>玗進：</strong>和哥一起住真的太有趣了。<br />
-其實我們私底下的對話就像一般朋友一樣，常常聊些無關緊要的小事（笑）。<br />
-像是「垃圾好像該倒了，但好懶喔」之類的對話大概佔了60%吧；<br />
-剩下的40%才是比如「明天有這個行程，該注意些什麼」、「好想推出這種風格的歌」等等。
-        <br />
-        <strong>—— 先前官方公開了你們即將在「KCON JAPAN 2026」舞台上帶來特別演出的消息。作為雙人組的初舞台，你們目前是怎麼準備的呢？</strong><br />
-        <strong>立于：</strong>我們真的很認真的在準備，除了像今天這種拍攝行程之外，其他時間幾乎都在練習，努力到這種程度。<br />
-        <strong>玗進：</strong>每天大概都練習6到7小時。<br />
-甚至還立下決心要「死後再睡」（笑）。<br />
-雖然聽到粉絲們誇獎舞台很好看、誇我們做得好會很開心，但我更希望這一次，大家能透過舞台感受到我們在背後準備的種種過程。<br />
-只要大家能感受到我們這份真心，我們就心滿意足了。
-        <br />
-        <strong>—— 可以稍微透露一點關於出道專輯的提示嗎？</strong><br />
-        <strong>立于：</strong>首先有編舞的歌曲大概是三首左右。<br />
-其中主打歌《WAY 2 U》傳達的是我們對粉絲們飽含的心意。<br />
-如果看MV的話會發現玗進在裡面有喜歡的人，而我會幫助他們兩人的關係更進一步。<br />
-接著故事會延續到《Hyper》這首歌，雖然戀情失敗但能看見我們兩人的友情更加深厚的故事。<br />
-        <strong>玗進：</strong>在《WAY 2 U》MV中我會向某個人告白而哥會幫助我。<br />
-雖然戀情失敗了但也以此為契機讓我跟哥兩人的關係變得更親近。<br />
-作為番外篇的《WOO-HOO》則是描述成為摯友的兩人一起去旅行的故事，舞蹈裡甚至還有模仿開車的動作，有很多有趣的小亮點在裡面。
-        <br />
-        <strong>—— 在這張迷你專輯收錄的六首歌曲當中，你們各自最愛哪一首歌？</strong><br />
-        <strong>立于： </strong>我最喜歡《MIRACLE》。<br />
-這是一首寫給粉絲們的FAN SONG，當我唱著唱著心底就會湧現一股激昂與感動的情緒。<br />
-這首歌不僅能我們對粉絲的心意很好地傳遞出去，也是我很喜歡的高能流行（Hyperpop）曲風。<br />
-        <strong>玗進：</strong>我也是最喜歡《MIRACLE》。<br />
-我原本就很喜歡複雜的和弦編排。<br />
-如果單聽人聲的話會覺得非常溫柔平靜，但在背景樂器裡卻是層層堆疊、不斷爆發的。<br />
-這種對比鮮明的音色非常美麗，而且越聽到歌曲後半段，人聲的層次與情感就越豐富，非常有魅力。
-        <br />
-        <strong>—— 聽完你們的介紹讓人更期待了呢。和當年在《BOYS II PLANET》時期相比，你們覺得現在的自己最大的轉變是什麼？</strong><br />
-        <strong>立于：</strong>當時在錄節目時我們都還只是練習生，即使上了節目還是像練習生一樣有很多經驗不足的地方。<br />
-但現在處於出道的臨界點，有很多想挑戰的事物，感覺自己轉變成為一位會主動提出想法、積極參與的藝人了。<br />
-        <strong>玗進：</strong>就像剛才說的使命感變強了。<br />
-覺得不管任何事都不能隨隨便便敷衍了事。<br />
-和立于一起住後我們的關係變得更好了。<br />
-我們會互相補足對方不足之處，也從哥身上學到很多東西。
-        <br />
-        <strong>—— 具體來說學到了什麼？</strong><br />
-        <strong>玗進：</strong>哥很會拍照。<br />
-雖然看起來是件小事，但他很知道粉絲們喜歡什麼。我也想向他看齊。<br />
-而且他在舞台上表演時的表情管理也做得很好，每次看到哥我都會想著「下次我也要試著像他一樣做做看」。
-        <br />
-        <strong>—— 那立于看玗進呢？</strong><br />
-        <strong>立于：</strong>玗進是那種任何事一旦做了就會不成功不罷休的類型。<br />
-性格非常勤奮踏實，他也很清楚自己想要的是什麼，也能明確地表達自己的意見。<br />
-而且他的吉他彈得非常好，那種出眾的音樂才華，是我想向他學習的地方。
-        <br />
-        <strong>—— 你們是在什麼時候，感受到「自己真的比以前更加成長了」？</strong><br />
-        <strong>玗進：</strong>《BOYS II PLANET》是體力上會感到很吃力的節目。<br />
-在極大負擔的狀態下，我們常常一連兩、三天幾乎沒睡就得硬撐著站上舞台。<br />
-像這樣進行了四個月的錄製，現在不管任何事都能充滿自信、游刃有餘地處理好。<br />
-像是這次的MV拍攝我也覺得相對來說很順利。<br />
-        <strong>立于：</strong>《BOYS II PLANET》是我人生中第一次站在舞台上。<br />
-再加上每次我都覺得舞台是攸關存亡的任務所以沒辦法好好享受。<br />
-在我出道後才漸漸學會享受舞台，這對我來說是最大的變化以及成長。
-        <br />
-        <strong>—— 在準備活動的期間，雖然充滿了喜悅與期待，但也一定有感到疲憊的時刻。什麼時候會覺得對方是自己最堅實的支柱？</strong><br />
-        <strong>玗進：</strong>其實以前當我覺得辛苦時我傾向一個人待著。<br />
-遇到了難過的事，也習慣靠獨自散步來默默消化。<br />
-但自從和哥一起住之後我才發現，比起我一個人待著，在辛苦的時候透過和哥一起聊天、大笑、打鬧，反而能從中得到安慰。<br />
-        <strong>立于：</strong>我也差不多。<br />
-在和玗進組團前都是一個人在活動，所以辛苦的時候比起跟身邊的人傾訴，我更多時候是一個人克服過去的。<br />
-現在光是有玗進這個成員的存在就能帶給我力量。
-        <br />
-        <strong>—— 你們兩個人在一起有產生什麼一加一的大於二的加乘效應嗎？</strong><br />
-        <strong>立于：</strong>當然了。我們不管對方做什麼都會笑，這樣平日有來有回的聊著，吐槽打鬧是我們獨有的魅力。<br />
-        <strong>玗進：</strong>粉絲們也覺得我們這種相處模式很可愛。
-        <br />
-        <strong>—— 的確，立于自己一個人待著的時候，和跟玗進待在一起時整個人完全都不一樣呢。</strong><br />
-        <strong>立于：</strong>真的不一樣。一個人時我不太會說話通常都是看著手機。<br />
-        <strong>玗進：</strong>你和我在一起時話就會很多對吧?<br />
-        <strong>立于：</strong>我心裡想說的話其實很多，但我不擅長主動開口。<br />
-如果玗進先開啟話題我就會跟著聊下去。
-        <br />
-        <strong>—— 你們真的是天生一對。如果讓你們靈魂交換、過一天對方的生活，你們覺得誰會過得比較痛苦？</strong><br />
-        <strong>立于：</strong>如果以玗進的身分生活感覺會很有趣，應該一天很快就會過去（笑）。<br />
-        <strong>玗進：</strong>如果我體驗當一天立于哥過著他的生活應該會覺得很無聊。因為哥太安靜了。<br />
-        <strong>立于：</strong>我其實比你想得更加有趣喔～<br />
-        <strong>——雖然外表看不出來，但一個人待著的時候內心世界也是很精采、很享受的。如果要用一個詞來定義對方，你們會怎麼形容？</strong><br />
-        <strong>玗進：</strong>立于哥像「石頭」，很沉穩也很堅毅。<br />
-雖然很安靜但很明確知道自己要的是什麼，同時也有著不輕易妥協的固執一面。<br />
-        <strong>立于：</strong>「魚」（笑）。一開始只是開玩笑這樣叫他，但現在真的覺得魚和玗進很像。<br />
-而且魚不是在水裡面自由自在地游動的生物嗎？<br />
-玗進最近給人的感覺，正好就是這種自由的氛圍。
-        <br />
-        <strong>—— 我知道立于的興趣是攝影，最近還有什麼沉迷的新愛好嗎？</strong><br />
-        <strong>立于：</strong>我拍照還是持續有再拍。<br />
-如果有想留下的瞬間就會用手機或是用富士數位相機X-E5馬上記錄下來。<br />
-還有我也想重新把吉他練起來。<br />
-        <strong>玗進：</strong>哥很會彈吉他，比一般人還要會彈。
-        <br />
-        <strong>——玗進你常常教他對吧</strong><br />
-        <strong>玗進：</strong>我只有教他理論而已。<br />
-彈吉他最核心的關鍵是在於「手指的直覺與手感」，雙手必須非常靈活地一邊撥弦一邊按指法，這點其實很難；<br />
-但哥在這方面做得非常好，讓我感覺他真的很有天分。<br />
-        <strong>立于：</strong>國中我有自學過，但沒想到你會誇獎我到這個程度（笑）。<br />
-我想要努力的練習試著彈出一整首《MIRACLE》。
-        <br />
-        <strong>—— 玗進除了平時喜歡寫作、品嚐世界各國的巧克力之外，最近有培養什麼新興趣嗎？</strong><br />
-        <strong>玗進：</strong>我又再次對巧克力萌生興趣了。<br />
-就像在寒冷的地方吃下高熱量的食物一樣，我在冬天會吃很多巧克力。<br />
-最近練習時每當有壓力我就會吃甜的。<br />
-我想發掘出世界上真正美味的巧克力，最近甚至還上網去研究了專門製作巧克力工藝的「巧克力職人」，打算買幾款來品嚐。<br />
-另外，我也非常喜歡「瑞士蓮（Lindt）」這個品牌推出的LINDOR夾心巧克力球。<br />
-聽說瑞士當地有一座瑞士蓮巧克力博物館，我想親自去朝聖一趟！<br />
-因為聽說在那裡可以一次品嚐到LINDOR所有口味。
-        <br />
-        <strong>——你真的很喜歡巧克力耶。平時也經常寫作嗎？</strong><br />
-        <strong>玗進：</strong>我有充裕的時間才會寫字。如果只是零碎地擠出一點空檔，時間不夠充足的話，就很難投入。<br />
-所以我通常是在通勤移動時，看著車窗外的風景突然萌生了某種感觸，或是休息時靈感突然湧現，才會把它寫下來。<br />
-像這樣動筆也對我作詞帶來很多幫助。
-        <br />
-        <strong>—— 兩位先前曾在MBC FM4U的電台節目《親密朋友廣播部》中當過電台DJ。在當電台 DJ 的那段日子裡，有什麼印象深刻的瞬間嗎?</strong><br />
-        <strong>玗進：</strong>比起某個瞬間，光是能夠整整一個月都擔任DJ這件事本身就讓我充滿了感激。<br />
-對我來說是非常好的機會，不僅能見到很多前輩，作為電台DJ主持電台也讓我培養了社交能力，面對鏡頭和主持也變得比較游刃有餘了。<br />
-        <strong>立于：</strong>因為我是外國人嘛，一開始聽到要讓我去當電台DJ的時候，我想著「我有辦法勝任嗎?」有過很多擔憂。<br />
-不過開始主持後，覺得最有趣的單元是「明天的營養午餐是什麼?」。<br />
-每次進行那個單元都像在考韓文能力，因為每次都會出現這輩子從來沒聽過的菜名。<br />
-        <strong>玗進：</strong>像是「河蜆湯」、「彩虹年糕」之類的東西（笑）。<br />
-        <strong>立于：</strong>每次到那個單元，我都會問製作人說「這是什麼？」然後製作人就會透過畫面告訴我答案（笑）。<br />
-不知道為什麼我在最後一天哭了。
-        <br />
-        <strong>—— 看來立于是個心思細膩、很感性的人呢。</strong><br />
-        <strong>玗進：</strong>哥他很常哭，眼淚特別多。<br />
-        <strong>立于：</strong>其實我本來不常哭的，但自從上了節目後就開始經常會哭。<br />
-        <strong>——因為你平常的性格不擅長主動表露情感，所以當那些沉澱在心底已久，覺得感動的瞬間、美好的記憶壓抑不住爆發出來時，眼淚就會宣洩而出對吧?</strong><br />
-        <strong>立于：</strong>好像是這樣沒錯，電台主持的最後一天心裡真的充滿著感激之心。<br />
-        <strong>玗進：</strong>您知道《無限挑戰》裡那個「夾在F人中間的T人」的梗圖嗎？<br />
-就是當周遭所有人都在哭泣時，只有朴明洙前輩一個人心想：「呃……我是不是現在也得擠出幾滴眼淚才行啊？」的那種神情。<br />
-當時我就是像那樣在旁邊安慰他說：「好啦，哥～沒事了、別哭啦」。
-        <br />
-        <strong>——你們平常就會聽電台嗎？</strong><br />
-        <strong>玗進：</strong>我國小就很常聽電台。<br />
-        <strong>立于：</strong>我常常在睡前聽Podcast。<br />
-我很常看一個叫做「壹加壹（1+1）」的YouTuber。<br />
-1+1他們兩人經營著YouTube頻道同時也會做Podcast，Podcast內容主要是兩個人在輕鬆地隨性閒聊，聽起來非常舒服、解壓；<br />
-而且因為他們對攝影與相機的知識非常淵博，YouTube上傳的每一支影片美感都極高，我很喜歡聽和看他們製作的內容。
-        <br />
-        <strong>—— 現在FLARE U正攜手站在全新的起跑線上。未來，你們想向大眾展現出什麼樣的面貌呢？</strong><br />
-        <strong>立于：</strong>雙人組合雖然不常見，但也正因為如此，我們擁有只屬於我們兩人的專屬色彩。<br />
-        我想透過未來所有的靈感、音樂與舞台，將最真實的樣貌毫無保留地展現出來。<br />
-        <strong>玗進：</strong>我有很多想展現給大家看的東西。<br />
-無論未來會以什麼形式呈現，我都會以絕對的真心努力的做。<br />
-因為不管是在音樂、舞台還是粉絲見面會都我們所獲得的每一份來自粉絲們的愛，都是粉絲們為此付出了時間和金錢；<br />
-因此我不想只是做做樣子，我會一直帶著這份真心希望能讓粉絲們都能感受到我的誠意。
-        <br />
-        <strong>圖四</strong>玗進：襯衫&褲子&貝蕾帽都是Maison Margiela、眼鏡－RIETI、項鍊&手鍊都是Messika、戒指－造型師私物<br />
-        立于：夾克&襯衫&針織衫&領帶&裙子都是Thom Browne、眼鏡－RIETI<br />
-        <strong>圖五</strong>POLO衫&項鍊都是Vivienne Westwood<br />
-        <strong>「其實以前當我覺得辛苦時我傾向一個人待著。
-遇到了難過的事，也習慣靠獨自散步來默默消化。
-但自從和哥一起住之後我才發現，比起我一個人待著，在辛苦的時候透過和哥一起聊天、大笑、打鬧，反而能從中得到安慰」——玗進 </strong>
-        <br />
-        <strong>圖六</strong>連帽上衣&內搭襯衫&帽子都是VDR<br />
-      </div> 我想要有淺色/深色的版面 淺色是以黃色系為主 文字靠左對齊 並且文字樣式要多樣
+</html>
