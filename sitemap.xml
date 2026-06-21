@@ -3,7 +3,7 @@
 
   <url>
     <loc>https://flareu-tw-trans.github.io/</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-06-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -142,6 +142,12 @@
   <url>
     <loc>https://flareu-tw-trans.github.io/Media/20260610_WhosfanCafe/</loc>
     <lastmod>2026-06-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://flareu-tw-trans.github.io/Media/20260619_FOX_13_Seattle/</loc>
+    <lastmod>2026-06-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
