@@ -5594,7 +5594,8 @@
 
 1357
 01:22:12,175 --> 01:22:14,625
-玗進：「Can you sing Fly Me to the Moon?」（可以唱《Fly Me to the Moon》嗎？）
+玗進：「Can you sing Fly Me to the Moon?」
+（可以唱《Fly Me to the Moon》嗎？）
 
 1358
 01:22:14,625 --> 01:22:19,228
