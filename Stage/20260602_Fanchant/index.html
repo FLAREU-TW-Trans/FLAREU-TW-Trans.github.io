@@ -858,534 +858,184 @@
       });
     });
 
+//======================================================
+    // 動態歌詞與互動設定核心邏輯
     //======================================================
-// 動態歌詞設定
-//======================================================
 
-let lyricsEnabled = true;
+    let lyricsEnabled = true;
+    const lyricsStates = {};
 
-// 每個歌詞容器各自管理自己的狀態
-const lyricsStates = {};
+    function toggleLyricsMode(){
+        lyricsEnabled = !lyricsEnabled;
+        const btn = document.getElementById("lyrics-toggle-btn");
+        btn.classList.toggle("active", lyricsEnabled);
+        btn.textContent = lyricsEnabled ? "🎵 動態歌詞：開" : "🎵 動態歌詞：關";
 
-//======================================================
-// 動態歌詞開關
-//======================================================
-
-function toggleLyricsMode(){
-
-    lyricsEnabled = !lyricsEnabled;
-
-    const btn = document.getElementById("lyrics-toggle-btn");
-
-    btn.classList.toggle("active", lyricsEnabled);
-
-    btn.textContent = lyricsEnabled ?
-        "🎵 動態歌詞：開" :
-        "🎵 動態歌詞：關";
-
-}
-//======================================================
-// 使用者操作歌詞
-//======================================================
-
-function bindLyricsInteraction(player, lyricsContainerId){
-
-    const container = document.getElementById(lyricsContainerId);
-
-    if(!container) return;
-
-    // 避免重複綁定
-    if(container.dataset.binded==="1") return;
-
-    container.dataset.binded="1";
-
-    const paragraphs =
-        container.querySelectorAll("p[data-start]");
-
-    lyricsStates[lyricsContainerId]={
-
-        player,
-
-        isUserScrolling:false,
-
-        scrollTimer:null,
-
-        targetLyric:null,
-
-        animationId:null
-
-    };
-
-    const state = lyricsStates[lyricsContainerId];
-
-    //----------------------------------
-    // 開始拖曳
-    //----------------------------------
-
-    function beginUserScroll(){
-
-        state.isUserScrolling = true;
-
-        clearTimeout(state.scrollTimer);
-
+        // 如果動態歌詞關閉，把所有歌詞恢復成普通清爽的文字顯示
+        if (!lyricsEnabled) {
+            Object.keys(lyricsStates).forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if(container) {
+                    container.querySelectorAll("p").forEach(p => {
+                        p.classList.remove("current-lyric");
+                        p.style.opacity = "1";
+                        p.style.transform = "scale(1)";
+                    });
+                }
+                lyricsStates[containerId].currentIndex = -1;
+            });
+        }
     }
 
-    //----------------------------------
-    // 放開
-    //----------------------------------
+    function bindLyricsInteraction(player, lyricsContainerId){
+        const container = document.getElementById(lyricsContainerId);
+        if(!container) return;
+        if(container.dataset.binded === "1") return;
+        container.dataset.binded = "1";
 
-    function endUserScroll(){
+        const paragraphs = container.querySelectorAll("p[data-start]");
 
-        clearTimeout(state.scrollTimer);
+        if(!lyricsStates[lyricsContainerId]) {
+            lyricsStates[lyricsContainerId] = { currentIndex: -1 };
+        }
+        
+        const state = lyricsStates[lyricsContainerId];
+        state.player = player;
+        state.isUserScrolling = false;
+        state.scrollTimer = null;
 
-        state.scrollTimer = setTimeout(function(){
+        // 當使用者自己滑動歌詞時，暫停自動捲動，避免跟使用者的手指搶控制權
+        function pauseAutoScroll() {
+            if(!lyricsEnabled) return;
+            state.isUserScrolling = true;
+            clearTimeout(state.scrollTimer);
+        }
 
-            state.isUserScrolling = false;
+        // 當使用者停止滑動 1.5 秒後，自動恢復跟隨影片
+        function resumeAutoScroll() {
+            if(!lyricsEnabled) return;
+            clearTimeout(state.scrollTimer);
+            state.scrollTimer = setTimeout(() => {
+                state.isUserScrolling = false;
+            }, 1500);
+        }
 
-            if(state.targetLyric){
+        container.addEventListener("wheel", pauseAutoScroll, {passive: true});
+        container.addEventListener("touchstart", pauseAutoScroll, {passive: true});
+        container.addEventListener("touchend", resumeAutoScroll, {passive: true});
 
-                player.seekTo(
-
-                    parseFloat(state.targetLyric.dataset.start),
-
-                    true
-
-                );
-
-            }
-
-        },250);
-
-    }
-
-    //----------------------------------
-    // 找目前中央歌詞
-    //----------------------------------
-
-    function updateTargetLyric(){
-
-        const center =
-
-            container.getBoundingClientRect().top +
-
-            container.clientHeight / 2;
-
-        let min = Infinity;
-
-        let target = null;
-
-        paragraphs.forEach(function(p){
-
-            const rect = p.getBoundingClientRect();
-
-            const distance = Math.abs(
-
-                (rect.top + rect.height / 2)
-
-                - center
-
-            );
-
-            if(distance < min){
-
-                min = distance;
-
-                target = p;
-
-            }
-
+        // 核心：點擊任意一行歌詞，立刻切換影片進度與高亮
+        paragraphs.forEach(p => {
+            p.addEventListener("click", () => {
+                const startTime = parseFloat(p.dataset.start);
+                if (!isNaN(startTime)) {
+                    player.seekTo(startTime, true);
+                    
+                    // 點擊後立刻終止「暫停自動滾動」的狀態，強制畫面追上該行
+                    state.isUserScrolling = false;
+                    clearTimeout(state.scrollTimer);
+                }
+            });
         });
-
-        if(!target) return;
-
-        state.targetLyric = target;
-
-        paragraphs.forEach(function(p){
-
-            p.classList.remove("current-lyric");
-
-            p.style.opacity = ".3";
-
-        });
-
-        target.classList.add("current-lyric");
-
-        target.style.opacity = "1";
-
     }
 
-    //----------------------------------
-    // Scroll
-    //----------------------------------
+    function syncLyricsWithVideo(player, lyricsContainerId){
+        const container = document.getElementById(lyricsContainerId);
+        if(!container) return;
+        const paragraphs = container.querySelectorAll("p[data-start]");
+        
+        if(!lyricsStates[lyricsContainerId]) {
+            lyricsStates[lyricsContainerId] = { currentIndex: -1 };
+        }
+        const state = lyricsStates[lyricsContainerId];
 
-    container.addEventListener("scroll",function(){
-
-        if(!state.isUserScrolling) return;
-
-        updateTargetLyric();
-
-        endUserScroll();
-
-    });
-
-    //----------------------------------
-    // 滑鼠滾輪
-    //----------------------------------
-
-    container.addEventListener(
-
-        "wheel",
-
-        beginUserScroll,
-
-        {passive:true}
-
-    );
-
-    //----------------------------------
-    // 滑鼠拖曳
-    //----------------------------------
-
-    container.addEventListener(
-
-        "mousedown",
-
-        beginUserScroll
-
-    );
-
-    document.addEventListener(
-
-        "mouseup",
-
-        function(){
-
-            if(state.isUserScrolling){
-
-                endUserScroll();
-
-            }
-
+        if(state.animationId) {
+            cancelAnimationFrame(state.animationId);
         }
 
-    );
+        function animate(){
+            // 保持迴圈持續運作
+            state.animationId = requestAnimationFrame(animate);
 
-    //----------------------------------
-    // 手機
-    //----------------------------------
+            // 若關閉，直接跳過處理
+            if(!lyricsEnabled) return;
+            // 如果影片沒在播放，也跳過處理（但動畫迴圈仍在，以備馬上播放）
+            if(!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
 
-    container.addEventListener(
+            const currentTime = player.getCurrentTime();
+            let newIndex = -1;
 
-        "touchstart",
+            // 尋找目前時間落在哪一行
+            for(let i = 0; i < paragraphs.length; i++){
+                const start = parseFloat(paragraphs[i].dataset.start);
+                const end = parseFloat(paragraphs[i].dataset.end);
+                if(currentTime >= start && currentTime <= end){
+                    newIndex = i;
+                    break;
+                }
+            }
 
-        beginUserScroll,
+            // Fallback：如果時間處於兩句歌詞的空白區間，維持顯示上一句
+            if(newIndex === -1 && currentTime > 0) {
+                for (let i = paragraphs.length - 1; i >= 0; i--) {
+                     const start = parseFloat(paragraphs[i].dataset.start);
+                     if (currentTime >= start) {
+                         newIndex = i;
+                         break;
+                     }
+                }
+            }
 
-        {passive:true}
+            // 更新樣式 (只有在換行的時候才觸發更新 DOM 降低效能消耗)
+            if (newIndex !== -1 && newIndex !== state.currentIndex) {
+                state.currentIndex = newIndex;
+                const currentP = paragraphs[state.currentIndex];
 
-    );
+                paragraphs.forEach((p, index) => {
+                    p.classList.remove("current-lyric");
+                    const distance = Math.abs(index - state.currentIndex);
+                    if(distance === 0){
+                        p.style.opacity = "1";
+                        p.style.transform = "scale(1.08)";
+                    } else if(distance === 1){
+                        p.style.opacity = "0.75";
+                        p.style.transform = "scale(1.02)";
+                    } else if(distance === 2){
+                        p.style.opacity = "0.55";
+                        p.style.transform = "scale(1)";
+                    } else {
+                        p.style.opacity = "0.3";
+                        p.style.transform = "scale(0.96)";
+                    }
+                });
 
-    container.addEventListener(
+                currentP.classList.add("current-lyric");
+            }
 
-        "touchend",
+            // 平滑滾動處理 (放在條件外，才能確保每次 Request Animation Frame 都在平滑推動捲軸)
+            if (!state.isUserScrolling && state.currentIndex !== -1) {
+                const currentP = paragraphs[state.currentIndex];
+                const targetScroll = currentP.offsetTop - container.clientHeight / 2 + currentP.clientHeight / 2;
+                const currentScroll = container.scrollTop;
 
-        endUserScroll,
-
-        {passive:true}
-
-    );
-
-    //----------------------------------
-    // 點歌詞
-    //----------------------------------
-
-    paragraphs.forEach(function(p){
-
-        p.addEventListener("click",function(){
-
-            player.seekTo(
-
-                parseFloat(p.dataset.start),
-
-                true
-
-            );
-
-        });
-
-    });
-
-}
-
-    //======================================================
-// requestAnimationFrame 動態歌詞同步
-//======================================================
-
-function syncLyricsWithVideo(player, lyricsContainerId){
-
-    const container =
-        document.getElementById(lyricsContainerId);
-
-    if(!container) return;
-
-    const paragraphs =
-        container.querySelectorAll("p[data-start]");
-
-    const state = lyricsStates[lyricsContainerId];
-
-    if(!state) return;
-
-    //----------------------------------
-    // 已經有 AnimationFrame 就先停止
-    //----------------------------------
-
-    if(state.animationId){
-
-        cancelAnimationFrame(
-            state.animationId
-        );
-
-        state.animationId = null;
-
+                // 只有差距大於 1px 才進行滾動，避免抖動
+                const diff = targetScroll - currentScroll;
+                if (Math.abs(diff) > 1) {
+                    container.scrollTop = currentScroll + (diff * 0.12);
+                }
+            }
+        }
+        animate();
     }
-
-    //----------------------------------
-    // 記錄目前高亮歌詞
-    //----------------------------------
-
-    let currentIndex = -1;
-
-    //----------------------------------
-    // 動畫主循環
-    //----------------------------------
-
-    function animate(){
-
-        state.animationId =
-            requestAnimationFrame(animate);
-
-        //----------------------------------
-        // 動態歌詞關閉
-        //----------------------------------
-
-        if(!lyricsEnabled){
-
-            return;
-
-        }
-
-        //----------------------------------
-        // 使用者正在拖曳
-        //----------------------------------
-
-        if(state.isUserScrolling){
-
-            return;
-
-        }
-
-        //----------------------------------
-        // 播放器不存在
-        //----------------------------------
-
-        if(!player){
-
-            return;
-
-        }
-
-        //----------------------------------
-        // 影片沒有播放
-        //----------------------------------
-
-        if(
-
-            player.getPlayerState() !==
-            YT.PlayerState.PLAYING
-
-        ){
-
-            return;
-
-        }
-
-        //----------------------------------
-        // 目前播放時間
-        //----------------------------------
-
-        const currentTime =
-            player.getCurrentTime();
-
-        //----------------------------------
-        // 找目前是哪一句
-        //----------------------------------
-
-        let newIndex = -1;
-
-        for(
-
-            let i=0;
-
-            i<paragraphs.length;
-
-            i++
-
-        ){
-
-            const start =
-                parseFloat(
-                    paragraphs[i].dataset.start
-                );
-
-            const end =
-                parseFloat(
-                    paragraphs[i].dataset.end
-                );
-
-            if(
-
-                currentTime>=start &&
-
-                currentTime<=end
-
-            ){
-
-                newIndex=i;
-
-                break;
-
-            }
-
-        }
-
-        //----------------------------------
-        // 沒變就不用更新 DOM
-        //----------------------------------
-
-        if(
-
-            newIndex===currentIndex ||
-
-            newIndex===-1
-
-        ){
-
-            return;
-
-        }
-
-        currentIndex = newIndex;
-
-        const currentP =
-            paragraphs[currentIndex];
-
-              //----------------------------------
-        // 更新歌詞樣式
-        //----------------------------------
-
-        paragraphs.forEach(function(p,index){
-
-            p.classList.remove("current-lyric");
-
-            // 距離目前歌詞越遠越淡
-            const distance =
-                Math.abs(index-currentIndex);
-
-            if(distance===0){
-
-                p.style.opacity="1";
-
-                p.style.transform="scale(1.08)";
-
-            }
-            else if(distance===1){
-
-                p.style.opacity=".75";
-
-                p.style.transform="scale(1.02)";
-
-            }
-            else if(distance===2){
-
-                p.style.opacity=".55";
-
-                p.style.transform="scale(1)";
-
-            }
-            else{
-
-                p.style.opacity=".3";
-
-                p.style.transform="scale(.96)";
-
-            }
-
-        });
-
-        currentP.classList.add(
-            "current-lyric"
-        );
-
-        //----------------------------------
-        // 計算應該捲到哪
-        //----------------------------------
-
-        const targetScroll =
-
-            currentP.offsetTop
-
-            - container.clientHeight/2
-
-            + currentP.clientHeight/2;
-
-              //----------------------------------
-        // 平滑追蹤目標位置（Lerp）
-        //----------------------------------
-
-        const currentScroll =
-            container.scrollTop;
-
-        const nextScroll =
-
-            currentScroll +
-
-            (
-
-                targetScroll -
-
-                currentScroll
-
-            ) * 0.18;
-
-        container.scrollTop = nextScroll;
-
-    }
-
-    //----------------------------------
-    // 啟動動畫
-    //----------------------------------
-
-    animate();
-
-}
 
     function stopLyricsAnimation(lyricsContainerId){
-
-    const state = lyricsStates[lyricsContainerId];
-
-    if(!state) return;
-
-    if(state.animationId){
-
-        cancelAnimationFrame(state.animationId);
-
-        state.animationId = null;
-
+        const state = lyricsStates[lyricsContainerId];
+        if(!state) return;
+        if(state.animationId){
+            cancelAnimationFrame(state.animationId);
+            state.animationId = null;
+        }
     }
-
-}
-
-    
-    
   </script>
 </body>
 </html>
