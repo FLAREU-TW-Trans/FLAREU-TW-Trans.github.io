@@ -532,11 +532,20 @@
             height: '100%',
             host: 'https://www.youtube-nocookie.com',
             playerVars: { 'autoplay': 0, 'rel': 0, 'playsinline': 1 }, // 絕對不偷播
-            events: {
-                'onReady': function(event) {
-                    loadSRT(vData.srt, vData.subEl, event.target);
-                }
-            }
+            events:{
+              onReady:function(event){
+
+                  loadSRT(vData.srt,vData.subEl,event.target);
+
+                  if(tabId==="tab-video1"){
+                      syncLyricsWithVideo(event.target,"way2u-lyrics");
+                  }
+
+                  if(tabId==="tab-video2"){
+                      syncLyricsWithVideo(event.target,"hyper-lyrics");
+                  }
+              }
+          }
         });
     }
 
@@ -726,58 +735,53 @@
 
     // 動態動態滾動歌詞核心邏輯
     function syncLyricsWithVideo(player, lyricsContainerId) {
+
       if (!player || typeof player.getCurrentTime !== 'function') return;
 
       var container = document.getElementById(lyricsContainerId);
       if (!container) return;
 
-      var paragraphs = container.querySelectorAll('p[data-start]');
-  
-      // 每 100 毫秒 (0.1秒) 監聽一次進度，確保極致流暢
-      setInterval(function() {
-        // 取得當前播放秒數
+      var paragraphs = container.querySelectorAll("p[data-start]");
+
+      // 避免重複建立 interval
+      if (container.lyricsTimer) {
+        clearInterval(container.lyricsTimer);
+      }
+
+      container.lyricsTimer = setInterval(function () {
+
+        if (player.getPlayerState() !== YT.PlayerState.PLAYING) return;
+
         var currentTime = player.getCurrentTime();
-    
-        paragraphs.forEach(function(p) {
-          var start = parseFloat(p.getAttribute('data-start'));
-          var end = parseFloat(p.getAttribute('data-end'));
 
-          if (currentTime >= start && currentTime <= end) {
-            // 如果當前時間落在這句歌詞內且它還沒有高亮
-            if (!p.classList.contains('current-lyric')) {
-              // 清除其他句子的亮起狀態
-              paragraphs.forEach(el => {
-                el.classList.remove('current-lyric');
-                el.style.opacity = '0.3'; // 未唱到變暗
-              });
-          
-              // 高亮當前歌詞
-              p.classList.add('current-lyric');
-              p.style.opacity = '1'; // 正在唱的變亮
-          
-              // 讓歌詞自動平滑滾動到容器正中央
-              var containerHeight = container.clientHeight;
-              var pOffsetTop = p.offsetTop;
-              var pHeight = p.clientHeight;
-              container.scrollTop = pOffsetTop - (containerHeight / 2) + (pHeight / 2);
+        paragraphs.forEach(function (p) {
+
+            var start = parseFloat(p.dataset.start);
+            var end = parseFloat(p.dataset.end);
+
+            if (currentTime >= start && currentTime <= end) {
+
+                if (!p.classList.contains("current-lyric")) {
+
+                    paragraphs.forEach(function (el) {
+                        el.classList.remove("current-lyric");
+                        el.style.opacity = "0.3";
+                    });
+
+                    p.classList.add("current-lyric");
+                    p.style.opacity = "1";
+
+                    p.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+                }
             }
-          }
-        });
-      }, 100);
-    }
 
-    // 整合你原有的 YouTube Player 載入邏輯
-    // 假設你的第一個播放器變數名稱叫做 videoData['tab-video1'].player
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        // 取得你的播放器實例 (請根據你實際的播放器變數名稱進行對接，例如 player1 或 ytPlayer)
-        var way2uPlayer = (window.videoData && window.videoData['tab-video1']) ? window.videoData['tab-video1'].player : null;
-    
-        if (way2uPlayer) {
-          syncLyricsWithVideo(way2uPlayer, 'way2u-lyrics');
-        }
-      }, 1000); // 延遲一秒確保 YouTube 播放器載入完畢
-    });
+        });
+
+      }, 100);
+  }
   </script>
 </body>
 </html>
