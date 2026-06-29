@@ -321,8 +321,10 @@
         <a href="../../index.html" class="home-btn">🏠 首頁</a> <div class="theme-toggle-group">
           <button class="theme-btn" id="btn-light" onclick="switchTheme('light')">☀️ 淺色</button>
           <button class="theme-btn" id="btn-dark" onclick="switchTheme('dark')">🌙 深色</button>
-          <button class="theme-btn active" id="lyrics-toggle-btn" onclick="toggleLyricsMode()">🎵 動態歌詞：開</button>
         </div>
+      </div>
+      <div class="controls-wrapper">
+        <button class="theme-btn active" id="lyrics-toggle-btn" onclick="toggleLyricsMode()">🎵 動態歌詞：開</button>
       </div>
 
       <div class="tabs-container">
@@ -924,14 +926,11 @@
         container.addEventListener("touchstart", pauseAutoScroll, {passive: true});
         container.addEventListener("touchend", resumeAutoScroll, {passive: true});
 
-        // 核心：點擊任意一行歌詞，立刻切換影片進度與高亮
         paragraphs.forEach(p => {
             p.addEventListener("click", () => {
                 const startTime = parseFloat(p.dataset.start);
                 if (!isNaN(startTime)) {
                     player.seekTo(startTime, true);
-                    
-                    // 點擊後立刻終止「暫停自動滾動」的狀態，強制畫面追上該行
                     state.isUserScrolling = false;
                     clearTimeout(state.scrollTimer);
                 }
@@ -954,18 +953,19 @@
         }
 
         function animate(){
-            // 保持迴圈持續運作
             state.animationId = requestAnimationFrame(animate);
 
-            // 若關閉，直接跳過處理
             if(!lyricsEnabled) return;
-            // 如果影片沒在播放，也跳過處理（但動畫迴圈仍在，以備馬上播放）
-            if(!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
+            
+            // 取得播放器狀態，只要不是空值，且處於播放(1)、暫停(2)、或緩衝(3)，都允許更新歌詞
+            const pState = player ? player.getPlayerState() : -1;
+            if(!player || (pState !== YT.PlayerState.PLAYING && pState !== YT.PlayerState.PAUSED && pState !== YT.PlayerState.BUFFERING)) {
+                return;
+            }
 
             const currentTime = player.getCurrentTime();
             let newIndex = -1;
 
-            // 尋找目前時間落在哪一行
             for(let i = 0; i < paragraphs.length; i++){
                 const start = parseFloat(paragraphs[i].dataset.start);
                 const end = parseFloat(paragraphs[i].dataset.end);
@@ -975,7 +975,6 @@
                 }
             }
 
-            // Fallback：如果時間處於兩句歌詞的空白區間，維持顯示上一句
             if(newIndex === -1 && currentTime > 0) {
                 for (let i = paragraphs.length - 1; i >= 0; i--) {
                      const start = parseFloat(paragraphs[i].dataset.start);
@@ -986,7 +985,6 @@
                 }
             }
 
-            // 更新樣式 (只有在換行的時候才觸發更新 DOM 降低效能消耗)
             if (newIndex !== -1 && newIndex !== state.currentIndex) {
                 state.currentIndex = newIndex;
                 const currentP = paragraphs[state.currentIndex];
@@ -1012,15 +1010,16 @@
                 currentP.classList.add("current-lyric");
             }
 
-            // 平滑滾動處理 (放在條件外，才能確保每次 Request Animation Frame 都在平滑推動捲軸)
             if (!state.isUserScrolling && state.currentIndex !== -1) {
                 const currentP = paragraphs[state.currentIndex];
                 const targetScroll = currentP.offsetTop - container.clientHeight / 2 + currentP.clientHeight / 2;
                 const currentScroll = container.scrollTop;
-
-                // 只有差距大於 1px 才進行滾動，避免抖動
                 const diff = targetScroll - currentScroll;
-                if (Math.abs(diff) > 1) {
+
+                // 加入距離判斷。如果差距太大（代表點擊進度條跳躍），直接瞬間跳轉；如果是正常播放，維持平滑推動。
+                if (Math.abs(diff) > 250) {
+                    container.scrollTop = targetScroll;
+                } else if (Math.abs(diff) > 1) {
                     container.scrollTop = currentScroll + (diff * 0.12);
                 }
             }
