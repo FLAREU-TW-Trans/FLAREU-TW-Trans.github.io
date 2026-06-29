@@ -366,7 +366,7 @@
         </div>
   
         <!-- 內層設定 id，並將粗體字 <b> 的顏色統一指定為高級藍綠色 (#008071) -->
-        <div id="way2u-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease; max-height: 400px; overflow-y: auto; scroll-behavior: smooth; padding: 10px 0;">
+        <div id="way2u-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease; max-height: 400px; overflow-y: auto; padding: 10px 0; position: relative;">
           <style>
             #way2u-lyrics b { color: #008071; font-weight: 700; transition: color 0.3s; }
             #way2u-lyrics p.current-lyric { background: rgba(0, 128, 113, 0.15); border-radius: 8px; transform: scale(1.05); font-weight: bold; transition: all 0.3s ease; color: #000000; }
@@ -488,7 +488,7 @@
           </div>
         </div>
         <!-- 內層設定 id 為 hyper-lyrics，設定平滑滾動與 max-height -->
-<div id="hyper-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease; max-height: 400px; overflow-y: auto; scroll-behavior: smooth; padding: 10px 0;">
+<div id="hyper-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease; max-height: 400px; overflow-y: auto; padding: 10px 0; position: relative;">
   <style>
     #hyper-lyrics b { color: #ff4d5a; font-weight: 700; transition: color 0.3s; }
     #hyper-lyrics p.current-lyric { background: rgba(255, 255, 255, 0.15); border-radius: 8px; transform: scale(1.05); font-weight: bold; transition: all 0.3s ease; }
@@ -945,6 +945,11 @@
     function syncLyricsWithVideo(player, lyricsContainerId){
         const container = document.getElementById(lyricsContainerId);
         if(!container) return;
+
+        // 確保 JS 控制的滾動不受干擾
+        container.style.position = "relative";
+        container.style.scrollBehavior = "auto";
+      
         const paragraphs = container.querySelectorAll("p[data-start]");
         
         if(!lyricsStates[lyricsContainerId]) {
@@ -997,10 +1002,11 @@
                 }
             }
 
-            if (newIndex !== -1 && newIndex !== state.currentIndex) {
+            if (newIndex !== -1 && (newIndex !== state.currentIndex || (isVideoSeeking && !state.isUserScrolling))) {
                 state.currentIndex = newIndex;
                 const currentP = paragraphs[state.currentIndex];
 
+                // 更新歌詞淡出淡入樣式
                 paragraphs.forEach((p, index) => {
                     p.classList.remove("current-lyric");
                     const distance = Math.abs(index - state.currentIndex);
@@ -1020,28 +1026,23 @@
                 });
 
                 currentP.classList.add("current-lyric");
-            }
 
-            if (!state.isUserScrolling && state.currentIndex !== -1) {
-                const currentP = paragraphs[state.currentIndex];
-                
-                // 使用 getBoundingClientRect 取得絕對精準的相對座標，無視排版與標題高度干擾
-                const pRect = currentP.getBoundingClientRect();
-                const cRect = container.getBoundingClientRect();
-                const relativeTop = pRect.top - cRect.top + container.scrollTop;
-                
-                // 計算目標位置 (讓該行歌詞保持在視窗正中間)
-                const targetScroll = relativeTop - (container.clientHeight / 2) + (currentP.clientHeight / 2);
-                
-                const currentScroll = container.scrollTop;
-                const diff = targetScroll - currentScroll;
-
-                // 只要是點擊進度條造成的時間跳躍 (isVideoSeeking)，直接瞬間切換
-                if (isVideoSeeking || Math.abs(diff) > 250) {
-                    container.scrollTop = targetScroll;
-                } else if (Math.abs(diff) > 1) {
-                    // 稍微調高平滑滾動的速度，從 0.12 改為 0.18，讓正常跟隨時更俐落
-                    container.scrollTop = currentScroll + (diff * 0.18);
+                // 執行滾動
+                if (!state.isUserScrolling) {
+                    // 使用 offsetTop 取得絕對精準的位置，解決手機版對不準的問題
+                    const targetScroll = currentP.offsetTop - (container.clientHeight / 2) + (currentP.clientHeight / 2);
+                    
+                    if (isVideoSeeking) {
+                        // 如果是點擊影片時間軸：取消平滑，要求「瞬間切換」
+                        container.scrollTop = targetScroll;
+                    } else {
+                        // 如果是正常播放換句：呼叫瀏覽器原生高順暢度的「平滑滾動」
+                        if (container.scrollTo) {
+                            container.scrollTo({ top: targetScroll, behavior: 'smooth' });
+                        } else {
+                            container.scrollTop = targetScroll;
+                        }
+                    }
                 }
             }
         }
