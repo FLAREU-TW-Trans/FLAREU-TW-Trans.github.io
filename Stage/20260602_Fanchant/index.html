@@ -864,7 +864,7 @@
       });
     });
 
-//======================================================
+    //======================================================
     // 動態歌詞與互動設定核心邏輯
     //======================================================
 
@@ -1016,7 +1016,15 @@
 
             if (!state.isUserScrolling && state.currentIndex !== -1) {
                 const currentP = paragraphs[state.currentIndex];
-                const targetScroll = currentP.offsetTop - container.clientHeight / 2 + currentP.clientHeight / 2;
+                
+                // 使用 getBoundingClientRect 取得絕對精準的相對座標，無視排版與標題高度干擾
+                const pRect = currentP.getBoundingClientRect();
+                const cRect = container.getBoundingClientRect();
+                const relativeTop = pRect.top - cRect.top + container.scrollTop;
+                
+                // 計算目標位置 (讓該行歌詞保持在視窗正中間)
+                const targetScroll = relativeTop - (container.clientHeight / 2) + (currentP.clientHeight / 2);
+                
                 const currentScroll = container.scrollTop;
                 const diff = targetScroll - currentScroll;
 
