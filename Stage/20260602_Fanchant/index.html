@@ -333,9 +333,18 @@
       </div>
       
       <!-- WAY 2 U 應援歌詞 -->
-      <div class="lyrics-container lyrics-cute" style="background: linear-gradient(135deg, #e0f7fa 0%, #b2dfdb 100%); color: #004d40; padding: 25px; margin-top: 20px; border-radius: 16px; border: 3px solid #4db6ac; font-family: sans-serif; line-height: 1.8; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-        <h3 style="text-align: center; margin-top: 0; color: #00796b; font-size: 20px;">🎵 WAY 2 U 應援歌詞完整版</h3>
-        <div style="text-align: center; font-size: 15px;">
+      <div class="lyrics-container lyrics-cute" id="way2u-container" style="background: linear-gradient(135deg, #edf7f6 0%, #d1e8e5 100%); color: #2c4a44; padding: 25px; margin-top: 20px; border-radius: 16px; border: 1px solid #b2dbd5; font-family: sans-serif; line-height: 1.8; box-shadow: 0 4px 20px rgba(0,0,0,0.03); position: relative;">
+        <!-- 字體大小控制按鈕 -->
+        <div style="position: absolute; top: 15px; right: 15px; display: flex; gap: 5px;">
+          <button onclick="adjustFontSize('way2u-lyrics', -1)" style="padding: 4px 8px; border: 1px solid #99c2bc; background: #ffffff; color: #3b665e; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;">A-</button>
+          <button onclick="adjustFontSize('way2u-lyrics', 1)" style="padding: 4px 8px; border: 1px solid #99c2bc; background: #ffffff; color: #3b665e; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;">A+</button>
+        </div>
+
+        <h3 style="text-align: center; margin-top: 0; color: #235249; font-size: 20px; font-weight: 700; letter-spacing: 0.5px;">🎵 WAY 2 U 應援歌詞完整版</h3>
+  
+        <!-- 內層設定 id，並將粗體字 <b> 的顏色統一指定為高級藍綠色 (#008071) -->
+        <div id="way2u-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease;">
+          <style> #way2u-lyrics b { color: #008071; font-weight: 700; } </style>
           <p><b>崔立于、姜玗進</b><br><b>FLARE U、WAY 2 U</b></p>
           <p>It’s you (you)<br>진동이 울린 순간<br>Change up (up up)<br>평소와 다른걸</p>
           <p>So fast (fast)<br>나 기분 별로야<br>네 한마디에 뛰어나갔어</p>
@@ -366,7 +375,6 @@
           <p>친구는 이제 오늘까지만<br>그만둘 거야<br>So soon<br>I’m on my <b>WAY 2 U (歡呼)</b></p>
         </div>
       </div>
-    </div>
 
     <!-- Hyper 分頁 -->
     <div id="tab-video2" class="tab-content">
@@ -388,9 +396,18 @@
       </div>
       
       <!-- Hyper 應援歌詞 -->
-      <div class="lyrics-container lyrics-cool" style="background: #121212; color: #e0e0e0; padding: 25px; margin-top: 20px; border-radius: 12px; border: 2px solid #ff1744; font-family: sans-serif; line-height: 1.8; box-shadow: 0 0 15px rgba(255, 23, 68, 0.3);">
-        <h3 style="text-align: center; margin-top: 0; color: #ff1744; font-size: 20px; letter-spacing: 1px; text-shadow: 0 0 8px rgba(255,23,68,0.5);">⚡ Hyper 應援歌詞完整版</h3>
-        <div style="text-align: center; font-size: 15px;">
+      <div class="lyrics-container lyrics-cool" id="hyper-container" style="background: linear-gradient(135deg, #1a1515 0%, #121010 100%); color: #e5dbdb; padding: 25px; margin-top: 20px; border-radius: 12px; border: 1px solid #4a282b; font-family: sans-serif; line-height: 1.8; box-shadow: 0 4px 25px rgba(229, 57, 53, 0.08); position: relative;">
+        <!-- 字體大小控制按鈕 -->
+        <div style="position: absolute; top: 15px; right: 15px; display: flex; gap: 5px;">
+          <button onclick="adjustFontSize('hyper-lyrics', -1)" style="padding: 4px 8px; border: 1px solid #5c3538; background: #261c1d; color: #e5999d; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;">A-</button>
+          <button onclick="adjustFontSize('hyper-lyrics', 1)" style="padding: 4px 8px; border: 1px solid #5c3538; background: #261c1d; color: #e5999d; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;">A+</button>
+        </div>
+
+        <h3 style="text-align: center; margin-top: 0; color: #e53935; font-size: 20px; letter-spacing: 1.5px; text-shadow: 0 0 10px rgba(229,57,53,0.2); font-weight: 700;">⚡ Hyper 應援歌詞完整版</h3>
+  
+        <!-- 內層設定 id，並將粗體字 <b> 的顏色統一指定為復古高級紅 (#ff4d5a) -->
+        <div id="hyper-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease;">
+          <style> #hyper-lyrics b { color: #ff4d5a; font-weight: 700; } </style>
           <p><b>崔立于、姜玗進</b><br><b>FLARE U、Hyper</b></p>
           <p>Ha</p>
           <p><b>噓（쉿）</b> 다 비켜 <b>比kyo（비켜）</b><br>그냥 다 즐겨<br><b>薩（싹）</b> 다 지워 <b>基窩（지워）</b><br>확 <b>米秋 波柳（미쳐 버려）</b></p>
@@ -659,6 +676,21 @@
       const firstTabBtn = document.querySelector('.tab-btn');
       openTab('tab-video1', firstTabBtn);
     });
+
+    //歌詞字體大小調整
+    function adjustFontSize(containerId, change) {
+      var container = document.getElementById(containerId);
+      if (!container) return;
+  
+      // 取得當前的字體大小（若無設定則預設為 15px）
+      var currentSize = parseFloat(window.getComputedStyle(container).fontSize) || 15;
+      var newSize = currentSize + change;
+  
+      // 設定字體大小限制，避免過大或過小（範圍：12px ~ 24px）
+      if (newSize >= 12 && newSize <= 24) {
+        container.style.fontSize = newSize + 'px';
+      }
+    }
   </script>
 </body>
 </html>
