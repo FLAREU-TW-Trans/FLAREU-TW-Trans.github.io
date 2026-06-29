@@ -27,6 +27,9 @@
       --emoji-btn-default-bg: #f1f3f5; --emoji-btn-default-border: #e1e8ed; --emoji-btn-default-text: #8e8e8e; --subtitle-size: 22px; 
     }
 
+    #lyrics-toggle-btn{ min-width:110px; }
+    #lyrics-toggle-btn:not(.active){ opacity:.45; }
+
     [data-theme="dark"] {
       --bg-body: #1a1c1a; --bg-content: #242624; --reaction-box-bg: #2f3136; --text-main: #e0e2e0; --text-sub: #a0a8a0; --border-line: #3d403d;
       --btn-bg: #52796f; --btn-hover: #84a98c; --btn-text: #ffffff; --intro-bg: #2d342d; --intro-border: #3d403d; --intro-text: #e0e2e0; 
@@ -291,6 +294,20 @@
         margin-bottom: 20px !important; 
         text-shadow: var(--reaction-text-shadow) !important; 
     }
+
+    /* ==================== 
+       6. 動態歌詞
+       ==================== */
+    #way2u-lyrics,
+#hyper-lyrics{
+
+    -webkit-overflow-scrolling:touch;
+
+    scroll-behavior:smooth;
+
+    overscroll-behavior:contain;
+
+}
   </style>
 </head>
 <body>
@@ -304,7 +321,7 @@
         <a href="../../index.html" class="home-btn">🏠 首頁</a> <div class="theme-toggle-group">
           <button class="theme-btn" id="btn-light" onclick="switchTheme('light')">☀️ 淺色</button>
           <button class="theme-btn" id="btn-dark" onclick="switchTheme('dark')">🌙 深色</button>
-          <button id="lyrics-toggle-btn" onclick="toggleLyricsMode()">🎵 動態歌詞：開</button>
+          <button class="theme-btn active" id="lyrics-toggle-btn" onclick="toggleLyricsMode()">🎵 動態歌詞：開</button>
         </div>
       </div>
 
@@ -607,6 +624,9 @@
           }
       });
 
+      stopLyricsAnimation("way2u-lyrics");
+      stopLyricsAnimation("hyper-lyrics");
+
       document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
@@ -838,145 +858,534 @@
       });
     });
 
-    // 動態歌詞是否顯示
-    let lyricsEnabled = true;
-    let isUserScrolling = false;
-    let scrollTimer = null;
+    //======================================================
+// 動態歌詞設定
+//======================================================
 
-    function toggleLyricsMode(){
+let lyricsEnabled = true;
 
-      lyricsEnabled = !lyricsEnabled;
+// 每個歌詞容器各自管理自己的狀態
+const lyricsStates = {};
 
-      const btn = document.getElementById("lyrics-toggle-btn");
+//======================================================
+// 動態歌詞開關
+//======================================================
 
-      btn.textContent = lyricsEnabled ?
+function toggleLyricsMode(){
+
+    lyricsEnabled = !lyricsEnabled;
+
+    const btn = document.getElementById("lyrics-toggle-btn");
+
+    btn.classList.toggle("active", lyricsEnabled);
+
+    btn.textContent = lyricsEnabled ?
         "🎵 動態歌詞：開" :
         "🎵 動態歌詞：關";
-    }
 
-    // 手動滑動同步
-    function bindLyricsInteraction(player, lyricsContainerId){
+}
+//======================================================
+// 使用者操作歌詞
+//======================================================
 
-      const container = document.getElementById(lyricsContainerId);
-
-      if(!container) return;
-
-      const paragraphs = container.querySelectorAll("p[data-start]");
-
-      function userScrolling(){
-
-        isUserScrolling = true;
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(function(){
-            isUserScrolling = false;
-        },2000);
-      }
-
-    // 手機
-    container.addEventListener("touchstart",userScrolling,{passive:true});
-    // 電腦
-    container.addEventListener("mousedown",userScrolling);
-    // 滾輪
-    container.addEventListener("wheel",userScrolling,{passive:true});
-
-    container.addEventListener("scroll",function(){
-        if(!isUserScrolling) return;
-        let center = container.getBoundingClientRect().top +
-                     container.clientHeight/2;
-        let target = null;
-        let min = Infinity;
-        paragraphs.forEach(function(p){
-            let rect = p.getBoundingClientRect();
-            let distance = Math.abs(
-                rect.top + rect.height/2 - center
-            );
-          
-            if(distance < min){
-                min = distance;
-                target = p;
-            }
-        });
-
-        if(target){
-            player.seekTo(
-                parseFloat(target.dataset.start),
-                true
-            );
-        }
-      });
-
-      paragraphs.forEach(function(p){
-
-        p.addEventListener("click",function(){
-          player.seekTo(
-            parseFloat(p.dataset.start),
-            true
-          );
-        });
-      });
-    }
-
-    // 動態動態滾動歌詞核心邏輯
-    function syncLyricsWithVideo(player, lyricsContainerId){
-
-    if(!player) return;
+function bindLyricsInteraction(player, lyricsContainerId){
 
     const container = document.getElementById(lyricsContainerId);
+
+    if(!container) return;
+
+    // 避免重複綁定
+    if(container.dataset.binded==="1") return;
+
+    container.dataset.binded="1";
+
+    const paragraphs =
+        container.querySelectorAll("p[data-start]");
+
+    lyricsStates[lyricsContainerId]={
+
+        player,
+
+        isUserScrolling:false,
+
+        scrollTimer:null,
+
+        targetLyric:null,
+
+        animationId:null
+
+    };
+
+    const state = lyricsStates[lyricsContainerId];
+
+    //----------------------------------
+    // 開始拖曳
+    //----------------------------------
+
+    function beginUserScroll(){
+
+        state.isUserScrolling = true;
+
+        clearTimeout(state.scrollTimer);
+
+    }
+
+    //----------------------------------
+    // 放開
+    //----------------------------------
+
+    function endUserScroll(){
+
+        clearTimeout(state.scrollTimer);
+
+        state.scrollTimer = setTimeout(function(){
+
+            state.isUserScrolling = false;
+
+            if(state.targetLyric){
+
+                player.seekTo(
+
+                    parseFloat(state.targetLyric.dataset.start),
+
+                    true
+
+                );
+
+            }
+
+        },250);
+
+    }
+
+    //----------------------------------
+    // 找目前中央歌詞
+    //----------------------------------
+
+    function updateTargetLyric(){
+
+        const center =
+
+            container.getBoundingClientRect().top +
+
+            container.clientHeight / 2;
+
+        let min = Infinity;
+
+        let target = null;
+
+        paragraphs.forEach(function(p){
+
+            const rect = p.getBoundingClientRect();
+
+            const distance = Math.abs(
+
+                (rect.top + rect.height / 2)
+
+                - center
+
+            );
+
+            if(distance < min){
+
+                min = distance;
+
+                target = p;
+
+            }
+
+        });
+
+        if(!target) return;
+
+        state.targetLyric = target;
+
+        paragraphs.forEach(function(p){
+
+            p.classList.remove("current-lyric");
+
+            p.style.opacity = ".3";
+
+        });
+
+        target.classList.add("current-lyric");
+
+        target.style.opacity = "1";
+
+    }
+
+    //----------------------------------
+    // Scroll
+    //----------------------------------
+
+    container.addEventListener("scroll",function(){
+
+        if(!state.isUserScrolling) return;
+
+        updateTargetLyric();
+
+        endUserScroll();
+
+    });
+
+    //----------------------------------
+    // 滑鼠滾輪
+    //----------------------------------
+
+    container.addEventListener(
+
+        "wheel",
+
+        beginUserScroll,
+
+        {passive:true}
+
+    );
+
+    //----------------------------------
+    // 滑鼠拖曳
+    //----------------------------------
+
+    container.addEventListener(
+
+        "mousedown",
+
+        beginUserScroll
+
+    );
+
+    document.addEventListener(
+
+        "mouseup",
+
+        function(){
+
+            if(state.isUserScrolling){
+
+                endUserScroll();
+
+            }
+
+        }
+
+    );
+
+    //----------------------------------
+    // 手機
+    //----------------------------------
+
+    container.addEventListener(
+
+        "touchstart",
+
+        beginUserScroll,
+
+        {passive:true}
+
+    );
+
+    container.addEventListener(
+
+        "touchend",
+
+        endUserScroll,
+
+        {passive:true}
+
+    );
+
+    //----------------------------------
+    // 點歌詞
+    //----------------------------------
+
+    paragraphs.forEach(function(p){
+
+        p.addEventListener("click",function(){
+
+            player.seekTo(
+
+                parseFloat(p.dataset.start),
+
+                true
+
+            );
+
+        });
+
+    });
+
+}
+
+    //======================================================
+// requestAnimationFrame 動態歌詞同步
+//======================================================
+
+function syncLyricsWithVideo(player, lyricsContainerId){
+
+    const container =
+        document.getElementById(lyricsContainerId);
 
     if(!container) return;
 
     const paragraphs =
         container.querySelectorAll("p[data-start]");
 
-    if(container.lyricsTimer){
+    const state = lyricsStates[lyricsContainerId];
 
-        clearInterval(container.lyricsTimer);
+    if(!state) return;
+
+    //----------------------------------
+    // 已經有 AnimationFrame 就先停止
+    //----------------------------------
+
+    if(state.animationId){
+
+        cancelAnimationFrame(
+            state.animationId
+        );
+
+        state.animationId = null;
 
     }
 
-    container.lyricsTimer = setInterval(function(){
+    //----------------------------------
+    // 記錄目前高亮歌詞
+    //----------------------------------
 
-        if(!lyricsEnabled) return;
-        if(isUserScrolling) return;
-        if(player.getPlayerState()!=YT.PlayerState.PLAYING) return;
+    let currentIndex = -1;
 
-        const current = player.getCurrentTime();
+    //----------------------------------
+    // 動畫主循環
+    //----------------------------------
 
-        let currentP = null;
+    function animate(){
 
-        paragraphs.forEach(function(p){
+        state.animationId =
+            requestAnimationFrame(animate);
 
-            const start=parseFloat(p.dataset.start);
-            const end=parseFloat(p.dataset.end);
+        //----------------------------------
+        // 動態歌詞關閉
+        //----------------------------------
 
-            if(current>=start && current<=end){
-                currentP=p;
+        if(!lyricsEnabled){
+
+            return;
+
+        }
+
+        //----------------------------------
+        // 使用者正在拖曳
+        //----------------------------------
+
+        if(state.isUserScrolling){
+
+            return;
+
+        }
+
+        //----------------------------------
+        // 播放器不存在
+        //----------------------------------
+
+        if(!player){
+
+            return;
+
+        }
+
+        //----------------------------------
+        // 影片沒有播放
+        //----------------------------------
+
+        if(
+
+            player.getPlayerState() !==
+            YT.PlayerState.PLAYING
+
+        ){
+
+            return;
+
+        }
+
+        //----------------------------------
+        // 目前播放時間
+        //----------------------------------
+
+        const currentTime =
+            player.getCurrentTime();
+
+        //----------------------------------
+        // 找目前是哪一句
+        //----------------------------------
+
+        let newIndex = -1;
+
+        for(
+
+            let i=0;
+
+            i<paragraphs.length;
+
+            i++
+
+        ){
+
+            const start =
+                parseFloat(
+                    paragraphs[i].dataset.start
+                );
+
+            const end =
+                parseFloat(
+                    paragraphs[i].dataset.end
+                );
+
+            if(
+
+                currentTime>=start &&
+
+                currentTime<=end
+
+            ){
+
+                newIndex=i;
+
+                break;
+
             }
-        });
 
-        if(!currentP) return;
-        if(currentP.classList.contains("current-lyric")) return;
+        }
 
-        paragraphs.forEach(function(p){
+        //----------------------------------
+        // 沒變就不用更新 DOM
+        //----------------------------------
+
+        if(
+
+            newIndex===currentIndex ||
+
+            newIndex===-1
+
+        ){
+
+            return;
+
+        }
+
+        currentIndex = newIndex;
+
+        const currentP =
+            paragraphs[currentIndex];
+
+              //----------------------------------
+        // 更新歌詞樣式
+        //----------------------------------
+
+        paragraphs.forEach(function(p,index){
+
             p.classList.remove("current-lyric");
-            p.style.opacity="0.3";
+
+            // 距離目前歌詞越遠越淡
+            const distance =
+                Math.abs(index-currentIndex);
+
+            if(distance===0){
+
+                p.style.opacity="1";
+
+                p.style.transform="scale(1.08)";
+
+            }
+            else if(distance===1){
+
+                p.style.opacity=".75";
+
+                p.style.transform="scale(1.02)";
+
+            }
+            else if(distance===2){
+
+                p.style.opacity=".55";
+
+                p.style.transform="scale(1)";
+
+            }
+            else{
+
+                p.style.opacity=".3";
+
+                p.style.transform="scale(.96)";
+
+            }
 
         });
 
-        currentP.classList.add("current-lyric");
-        currentP.style.opacity="1";
+        currentP.classList.add(
+            "current-lyric"
+        );
 
-        const target =
-            currentP.offsetTop -
-            container.clientHeight/2 +
-            currentP.clientHeight/2;
+        //----------------------------------
+        // 計算應該捲到哪
+        //----------------------------------
 
-        container.scrollTo({
-            top:target,
-            behavior:"smooth"
-        });
-    },100);
-  }
+        const targetScroll =
+
+            currentP.offsetTop
+
+            - container.clientHeight/2
+
+            + currentP.clientHeight/2;
+
+              //----------------------------------
+        // 平滑追蹤目標位置（Lerp）
+        //----------------------------------
+
+        const currentScroll =
+            container.scrollTop;
+
+        const nextScroll =
+
+            currentScroll +
+
+            (
+
+                targetScroll -
+
+                currentScroll
+
+            ) * 0.18;
+
+        container.scrollTop = nextScroll;
+
+    }
+
+    //----------------------------------
+    // 啟動動畫
+    //----------------------------------
+
+    animate();
+
+}
+
+    function stopLyricsAnimation(lyricsContainerId){
+
+    const state = lyricsStates[lyricsContainerId];
+
+    if(!state) return;
+
+    if(state.animationId){
+
+        cancelAnimationFrame(state.animationId);
+
+        state.animationId = null;
+
+    }
+
+}
+
+    
+    
   </script>
 </body>
 </html>
