@@ -422,37 +422,69 @@
         <h3 style="text-align: center; margin-top: 0; color: #e53935; font-size: 20px; letter-spacing: 1.5px; text-shadow: 0 0 10px rgba(229,57,53,0.2); font-weight: 700;">⚡ Hyper 應援歌詞完整版</h3>
   
         <!-- 內層設定 id，並將粗體字 <b> 的顏色統一指定為復古高級紅 (#ff4d5a) -->
-        <div id="hyper-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease;">
-          <style> #hyper-lyrics b { color: #ff4d5a; font-weight: 700; } </style>
-          <p><b>崔立于、姜玗進</b><br><b>FLARE U、Hyper</b></p>
-          <p>Ha</p>
-          <p><b>噓（쉿）</b> 다 비켜 <b>比kyo（비켜）</b><br>그냥 다 즐겨<br><b>薩（싹）</b> 다 지워 <b>基窩（지워）</b><br>확 <b>米秋 波柳（미쳐 버려）</b></p>
-          <p>복잡한 생각 하지 <b>馬兒狗（말고）</b><br>본능에 지금 너를 <b>懂啾（던져）</b></p>
-          <p>Up 널 맡겨 Fly up</p>
-          <p>뭘 그렇게 겁을 내<br>너는 충분해<br>Don’t let the moments<br>All pass you by</p>
-          <p>Tension을 올려 숨을 골라<br>네 안의 너를 깨워</p>
-          <p>Now don’t look down<br>우주로 Run</p>
-          <p>자 바닥을 차고 올라</p>
-          <p>So we go<br><b>Hyper</b><br>밟아 더 높이 올라가<br><b>Wiper</b><br>나쁜 기억은 버리고</p>
-          <p><b>Viper</b><br>분위기를 찢어 Sniper<br><b>We Hyper</b><br><b>Go higher</b></p>
-          <p>Faster faster<br>Igniting</p>
-          <p>우린 더 Higher<br>달려 이 순간을 태워<br><b>We Hyper</b><br><b>Go higher</b></p>
-          <p><b>Go</b> 불태워 Fire<br>네 가면을 던지고<br><b>Cut</b> 끊어 내 Wire</p>
-          <p>더 만들어 봐 너만의 <b>Empire</b><br>방해하는 말은 전부 <b>Expire</b></p>
-          <p>Limit은 없어<br>다시 <b>Run it up</b><br><b>Burn it up</b></p>
-          <p>뭘 그렇게 겁을 내<br>너는 충분해<br>Don’t let the moments<br>All pass you by</p>
-          <p>Tension을 올려 숨을 골라<br>네 안의 너를 깨워</p>
-          <p>Now don’t look down<br>우주로 Run</p>
-          <p>자 바닥을 차고 올라</p>
-          <p>So we go<br><b>Hyper</b><br>밟아 더 높이 올라가<br><b>Wiper</b><br>나쁜 기억은 버리고</p>
-          <p><b>Viper</b><br>분위기를 찢어 Sniper<br><b>We Hyper</b><br><b>Go higher</b></p>
-          <p>Faster faster<br>Igniting</p>
-          <p>우린 더 Higher<br>달려 이 순간을 태워<br><b>We Hyper</b><br><b>Go higher</b></p>
-          <p>We Hyper<br>Go higher</p>
-          <p><b>崔立于、姜玗進</b></p>
-          <p>We Hyper<br>Go higher</p>
-          <p><b>FLARE U、Hyper（歡呼）</b></p>
-        </div>
+        <!-- 內層設定 id 為 hyper-lyrics，設定平滑滾動與 max-height -->
+<div id="hyper-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease; max-height: 400px; overflow-y: auto; scroll-behavior: smooth; padding: 10px 0;">
+  <style>
+    #hyper-lyrics b { color: #008071; font-weight: 700; transition: color 0.3s; }
+    #hyper-lyrics p.current-lyric { background: rgba(0, 128, 113, 0.15); border-radius: 8px; transform: scale(1.05); font-weight: bold; transition: all 0.3s ease; }
+    #hyper-lyrics p { padding: 6px 10px; margin: 4px 0; transition: all 0.3s ease; opacity: 0.5; }
+    #hyper-lyrics p.current-lyric b { color: #ff4d5a; }
+  </style>
+
+  <p data-start="6.2" data-end="7.2">（準備）</p>
+  <p data-start="7.2" data-end="9.8"><b>崔立于、姜玗進</b></p>
+  <p data-start="9.8" data-end="12.4"><b>FLARE U、Hyper</b></p>
+  <p data-start="12.4" data-end="13.4"><b>噓（쉿）</b></p>
+  <p data-start="14.0" data-end="15.0">（準備）</p>
+  <p data-start="15.0" data-end="16.5"><b>比kyo（비켜）</b></p>
+  <p data-start="18.0" data-end="19.0"><b>薩（싹）</b></p>
+  <p data-start="19.0" data-end="20.3">（準備）</p>
+  <p data-start="20.3" data-end="22.0"><b>基窩（지워）</b></p>
+  <p data-start="22.2" data-end="23.8"><b>米秋 波柳（미쳐 버려）</b></p>
+  <p data-start="24.8" data-end="25.7">（準備）</p>
+  <p data-start="25.7" data-end="26.7"><b>馬兒狗（말고）</b></p>
+  <p data-start="27.5" data-end="28.5">（準備）</p>
+  <p data-start="28.5" data-end="29.4"><b>懂啾（던져）</b></p>
+  <p data-start="56.1" data-end="56.7">（準備）</p>
+  <p data-start="56.7" data-end="57.9"><b>Hyper</b></p>
+  <p data-start="58.4" data-end="59.4">（準備）</p>
+  <p data-start="59.4" data-end="100.6"><b>Wiper</b></p>
+  <p data-start="101.6" data-end="102.2">（準備）</p>
+  <p data-start="102.2" data-end="103.4"><b>Viper</b></p>
+  <p data-start="104.5" data-end="105.4">（準備）</p>
+  <p data-start="105.4" data-end="106.4"><b>We Hyper</b></p>
+  <p data-start="106.4" data-end="108.3"><b>Go higher</b></p>
+  <p data-start="115.0" data-end="116.3">（準備）</p>
+  <p data-start="116.3" data-end="117.5"><b>We Hyper</b></p>
+  <p data-start="117.5" data-end="119.4"><b>Go higher</b></p>
+  <p data-start="120.7" data-end="121.6">（準備）</p>
+  <p data-start="121.6" data-end="122.4"><b>Go</b></p>
+  <p data-start="126.4" data-end="127.0">（準備）</p>
+  <p data-start="127.0" data-end="128.1"><b>Cut</b></p>
+  <p data-start="132.4" data-end="133.3">（準備）</p>
+  <p data-start="133.3" data-end="134.6"><b>Empire</b></p>
+  <p data-start="135.5" data-end="136.4">（準備）</p>
+  <p data-start="136.4" data-end="137.5"><b>Expire</b></p>
+  <p data-start="140.1" data-end="140.8">（準備）</p>
+  <p data-start="140.8" data-end="141.9"><b>Run it up</b></p>
+  <p data-start="141.9" data-end="143.1"><b>Burn it up</b></p>
+  <p data-start="204.7" data-end="205.6">（準備）</p>
+  <p data-start="205.6" data-end="206.8"><b>Hyper</b></p>
+  <p data-start="207.6" data-end="208.5">（準備）</p>
+  <p data-start="208.5" data-end="209.7"><b>Wiper</b></p>
+  <p data-start="210.3" data-end="211.1">（準備）</p>
+  <p data-start="211.1" data-end="212.4"><b>Viper</b></p>
+  <p data-start="213.4" data-end="214.3">（準備）</p>
+  <p data-start="214.3" data-end="215.5"><b>We Hyper</b></p>
+  <p data-start="215.5" data-end="217.2"><b>Go higher</b></p>
+  <p data-start="224.4" data-end="225.4">（準備）</p>
+  <p data-start="225.4" data-end="226.5"><b>We Hyper</b></p>
+  <p data-start="226.5" data-end="228.2"><b>Go higher</b></p>
+  <p data-start="229.5" data-end="230.6">（準備）</p>
+  <p data-start="230.6" data-end="233.4"><b>崔立于、姜玗進</b></p>
+  <p data-start="235.2" data-end="236.1">（準備）</p>
+  <p data-start="236.1" data-end="247.4"><b>FLARE U、Hyper（歡呼）</b></p>
+</div>
       </div>
     </div>
 
