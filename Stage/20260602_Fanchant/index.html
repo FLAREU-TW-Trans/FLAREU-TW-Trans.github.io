@@ -304,6 +304,7 @@
         <a href="../../index.html" class="home-btn">🏠 首頁</a> <div class="theme-toggle-group">
           <button class="theme-btn" id="btn-light" onclick="switchTheme('light')">☀️ 淺色</button>
           <button class="theme-btn" id="btn-dark" onclick="switchTheme('dark')">🌙 深色</button>
+          <button id="lyrics-toggle-btn" onclick="toggleLyricsMode()">🎵 動態歌詞：開</button>
         </div>
       </div>
 
@@ -641,10 +642,12 @@
 
                   if(tabId==="tab-video1"){
                       syncLyricsWithVideo(event.target,"way2u-lyrics");
+                      bindLyricsInteraction(event.target,"way2u-lyrics");
                   }
 
                   if(tabId==="tab-video2"){
                       syncLyricsWithVideo(event.target,"hyper-lyrics");
+                      bindLyricsInteraction(event.target,"hyper-lyrics");
                   }
               }
           }
@@ -835,54 +838,144 @@
       });
     });
 
-    // 動態動態滾動歌詞核心邏輯
-    function syncLyricsWithVideo(player, lyricsContainerId) {
+    // 動態歌詞是否顯示
+    let lyricsEnabled = true;
+    let isUserScrolling = false;
+    let scrollTimer = null;
 
-      if (!player || typeof player.getCurrentTime !== 'function') return;
+    function toggleLyricsMode(){
 
-      var container = document.getElementById(lyricsContainerId);
-      if (!container) return;
+      lyricsEnabled = !lyricsEnabled;
 
-      var paragraphs = container.querySelectorAll("p[data-start]");
+      const btn = document.getElementById("lyrics-toggle-btn");
 
-      // 避免重複建立 interval
-      if (container.lyricsTimer) {
-        clearInterval(container.lyricsTimer);
+      btn.textContent = lyricsEnabled ?
+        "🎵 動態歌詞：開" :
+        "🎵 動態歌詞：關";
+    }
+
+    // 手動滑動同步
+    function bindLyricsInteraction(player, lyricsContainerId){
+
+      const container = document.getElementById(lyricsContainerId);
+
+      if(!container) return;
+
+      const paragraphs = container.querySelectorAll("p[data-start]");
+
+      function userScrolling(){
+
+        isUserScrolling = true;
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(function(){
+            isUserScrolling = false;
+        },2000);
       }
 
-      container.lyricsTimer = setInterval(function () {
+    // 手機
+    container.addEventListener("touchstart",userScrolling,{passive:true});
+    // 電腦
+    container.addEventListener("mousedown",userScrolling);
+    // 滾輪
+    container.addEventListener("wheel",userScrolling,{passive:true});
 
-        if (player.getPlayerState() !== YT.PlayerState.PLAYING) return;
-
-        var currentTime = player.getCurrentTime();
-
-        paragraphs.forEach(function (p) {
-
-            var start = parseFloat(p.dataset.start);
-            var end = parseFloat(p.dataset.end);
-
-            if (currentTime >= start && currentTime <= end) {
-
-                if (!p.classList.contains("current-lyric")) {
-
-                    paragraphs.forEach(function (el) {
-                        el.classList.remove("current-lyric");
-                        el.style.opacity = "0.3";
-                    });
-
-                    p.classList.add("current-lyric");
-                    p.style.opacity = "1";
-
-                    p.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center"
-                    });
-                }
+    container.addEventListener("scroll",function(){
+        if(!isUserScrolling) return;
+        let center = container.getBoundingClientRect().top +
+                     container.clientHeight/2;
+        let target = null;
+        let min = Infinity;
+        paragraphs.forEach(function(p){
+            let rect = p.getBoundingClientRect();
+            let distance = Math.abs(
+                rect.top + rect.height/2 - center
+            );
+          
+            if(distance < min){
+                min = distance;
+                target = p;
             }
+        });
+
+        if(target){
+            player.seekTo(
+                parseFloat(target.dataset.start),
+                true
+            );
+        }
+      });
+
+      paragraphs.forEach(function(p){
+
+        p.addEventListener("click",function(){
+          player.seekTo(
+            parseFloat(p.dataset.start),
+            true
+          );
+        });
+      });
+    }
+
+    // 動態動態滾動歌詞核心邏輯
+    function syncLyricsWithVideo(player, lyricsContainerId){
+
+    if(!player) return;
+
+    const container = document.getElementById(lyricsContainerId);
+
+    if(!container) return;
+
+    const paragraphs =
+        container.querySelectorAll("p[data-start]");
+
+    if(container.lyricsTimer){
+
+        clearInterval(container.lyricsTimer);
+
+    }
+
+    container.lyricsTimer = setInterval(function(){
+
+        if(!lyricsEnabled) return;
+        if(isUserScrolling) return;
+        if(player.getPlayerState()!=YT.PlayerState.PLAYING) return;
+
+        const current = player.getCurrentTime();
+
+        let currentP = null;
+
+        paragraphs.forEach(function(p){
+
+            const start=parseFloat(p.dataset.start);
+            const end=parseFloat(p.dataset.end);
+
+            if(current>=start && current<=end){
+                currentP=p;
+            }
+        });
+
+        if(!currentP) return;
+        if(currentP.classList.contains("current-lyric")) return;
+
+        paragraphs.forEach(function(p){
+            p.classList.remove("current-lyric");
+            p.style.opacity="0.3";
 
         });
 
-      }, 100);
+        currentP.classList.add("current-lyric");
+        currentP.style.opacity="1";
+
+        const target =
+            currentP.offsetTop -
+            container.clientHeight/2 +
+            currentP.clientHeight/2;
+
+        container.scrollTo({
+            top:target,
+            behavior:"smooth"
+        });
+    },100);
   }
   </script>
 </body>
