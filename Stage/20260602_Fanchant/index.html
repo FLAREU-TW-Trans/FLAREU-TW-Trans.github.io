@@ -948,7 +948,7 @@
         const paragraphs = container.querySelectorAll("p[data-start]");
         
         if(!lyricsStates[lyricsContainerId]) {
-            lyricsStates[lyricsContainerId] = { currentIndex: -1 };
+            lyricsStates[lyricsContainerId] = { currentIndex: -1, lastTime: 0 };
         }
         const state = lyricsStates[lyricsContainerId];
 
@@ -968,6 +968,14 @@
             }
 
             const currentTime = player.getCurrentTime();
+
+            // 偵測影片時間是否發生「跳躍」(差距大於 0.5 秒)
+            // 如果 state.lastTime 是 0，代表剛初始化，先將其同步為目前時間
+            if (state.lastTime === 0) state.lastTime = currentTime;
+            const timeDiff = Math.abs(currentTime - state.lastTime);
+            const isVideoSeeking = timeDiff > 0.5; // 判斷使用者是否點擊了進度條
+            state.lastTime = currentTime; // 更新為最新時間
+          
             let newIndex = -1;
 
             for(let i = 0; i < paragraphs.length; i++){
@@ -1028,11 +1036,12 @@
                 const currentScroll = container.scrollTop;
                 const diff = targetScroll - currentScroll;
 
-                // 加入距離判斷。如果差距太大（代表點擊進度條跳躍），直接瞬間跳轉；如果是正常播放，維持平滑推動。
-                if (Math.abs(diff) > 250) {
+                // 只要是點擊進度條造成的時間跳躍 (isVideoSeeking)，直接瞬間切換
+                if (isVideoSeeking || Math.abs(diff) > 250) {
                     container.scrollTop = targetScroll;
                 } else if (Math.abs(diff) > 1) {
-                    container.scrollTop = currentScroll + (diff * 0.12);
+                    // 稍微調高平滑滾動的速度，從 0.12 改為 0.18，讓正常跟隨時更俐落
+                    container.scrollTop = currentScroll + (diff * 0.18);
                 }
             }
         }
