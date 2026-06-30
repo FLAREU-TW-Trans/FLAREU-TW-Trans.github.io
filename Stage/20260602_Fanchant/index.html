@@ -141,8 +141,9 @@
        ========================================= */
     /* [A] 電腦版 (滑鼠操作) 全螢幕：字幕保持在底部，避免擋臉 */
     @media (pointer: fine) {
-        :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay {
-            bottom: 8% !important; width: 90vw !important; 
+        :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay,
+        .pseudo-fullscreen .subtitle-overlay {
+            bottom: 8% !important; width: 90vw !important; z-index: 2147483647 !important;
             max-width: calc(
               100vw
               - env(safe-area-inset-left)
@@ -150,8 +151,17 @@
               - 16px
             ) !important;
         }
+        #video-wrapper-1:fullscreen, #video-wrapper-2:fullscreen, #video-wrapper-1:-webkit-full-screen, #video-wrapper-2:-webkit-full-screen {
+          width: 100vw !important;
+          height: 100vh !important;
+          background-color: #000000 !important;
+          z-index: 2147483646 !important; /* 迫使作業系統隱藏工作列 */
+        }
         :fullscreen .video-responsive-wrapper, :-webkit-full-screen .video-responsive-wrapper {
             width: 100vw; height: 100vh; max-width: none; margin: 0; padding-bottom: 0;
+        }
+        :fullscreen .exit-fs-btn-global, :-webkit-full-screen .exit-fs-btn-global, .pseudo-fullscreen .exit-fs-btn-global {
+          z-index: 2147483647 !important;
         }
     }
 
@@ -471,7 +481,7 @@
       <div class="video-controls-bar" style="display: flex; flex-direction: column; gap: 16px; padding: 20px 10px 10px 10px;">
         <!-- 🔝 上排：應援連結 -->
         <div style="display: flex; align-items: center; gap: 8px;">
-            <a href="javascript:void(0);" class="official-link-btn" style="background: #757d8a; color: #ffffff; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40; opacity: 0.6; cursor: not-allowed;">⭐ 應援團隊連結待更新</a>
+            <a href="https://www.threads.com/@meteoru_tw/post/DaNOKatEzMB?xmt=AQG07UvglBRM3GWknsNgsfRJBFk2FJC9D0mYLm7LVwmO4w" target="_blank" class="official-link-btn" style="background: #757d8a; color: #ffffff; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40;">⭐ 應援團隊連結</a>
             <a href="https://artist.mnetplus.world/main/stg/flareu/contents/6a0435dbeb909b37b790a5a6" target="_blank" class="official-link-btn" style="background: #ff4d4d; color: #ffffff; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40;">📢 官方應援連結</a>
         </div>
     
