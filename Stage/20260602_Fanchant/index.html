@@ -5,7 +5,7 @@
   <link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>《WAY 2 U》《Hyper》應援合輯</title>
+  <title>《WAY 2 U》 《Hyper》歌詞應援合輯</title>
   <link rel="stylesheet" href="../../css/reaction.css">
 
   <script>
@@ -318,7 +318,7 @@
   <div class="content-wrapper">
 
     <header class="header">
-      <h1>《WAY 2 U》《Hyper》應援合輯</h1>
+      <h1>《WAY 2 U》《Hyper》歌詞應援合輯</h1>
 
       <div class="controls-wrapper">
         <a href="../../index.html" class="home-btn">🏠 首頁</a> <div class="theme-toggle-group">
@@ -328,6 +328,7 @@
       </div>
       <div class="controls-wrapper">
         <button class="theme-btn active" id="lyrics-toggle-btn" onclick="toggleLyricsMode()">🎵 動態歌詞：開</button>
+        <button class="theme-btn" id="instruction-btn" onclick="showInstruction()">📔 說明</button>
       </div>
 
       <div class="tabs-container">
@@ -339,9 +340,10 @@
     <!-- WAY 2 U 分頁 -->
     <div id="tab-video1" class="tab-content">
       <div class="video-controls-bar">
-          <p>《WAY 2 U》應援空耳歌詞</p>
-          <!-- 新增官方文章連結按鈕 -->
-          <a href="https://artist.mnetplus.world/main/stg/flareu/contents/6a04339beb909b37b790a5a2" target="_blank" class="official-link-btn" style="background: #20b2aa; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 13px; margin-right: auto; margin-left: 10px; font-weight: bold; border: 1px solid #ffffff40;">📢 官方應援文章</a>
+          <!-- 新增應援團隊連結按鈕 -->
+          <a href="https://www.threads.com/@meteoru_tw/post/DaKsrKck6LQ?xmt=AQG0uouihD-oD4BNTJWxm2k7FDz_YxFBrs3DbMcxJmN0mw" target="_blank" class="official-link-btn" style="background: #f5eecd; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 13px; margin-right: auto; margin-left: 10px; font-weight: bold; border: 1px solid #ffffff40;">⭐ 應援團隊連結</a>
+          <!-- 新增官方應援連結按鈕 -->
+          <a href="https://artist.mnetplus.world/main/stg/flareu/contents/6a04339beb909b37b790a5a2" target="_blank" class="official-link-btn" style="background: #20b2aa; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 13px; margin-right: auto; margin-left: 10px; font-weight: bold; border: 1px solid #ffffff40;">📢 官方應援連結</a>
           <button onclick="changeSubtitleSize(-0.1, 'subtitle-video1')">A−</button>
           <span style="color:white; line-height:1;">字幕</span>
           <button onclick="changeSubtitleSize(0.1, 'subtitle-video1')">A＋</button>
@@ -462,8 +464,9 @@
     <!-- Hyper 分頁 -->
     <div id="tab-video2" class="tab-content">
       <div class="video-controls-bar">
-          <p>《Hyper》應援空耳歌詞</p>
-          <!-- 新增官方文章連結按鈕 -->
+          <!-- 新增應援團隊連結按鈕 -->
+          <a href="" target="_blank" class="official-link-btn" style="background: #c6dddf; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 13px; margin-right: auto; margin-left: 10px; font-weight: bold; border: 1px solid #ffffff40;">⭐ 應援團隊連結</a>
+          <!-- 新增官方應援連結按鈕 -->
           <a href="https://artist.mnetplus.world/main/stg/flareu/contents/6a0435dbeb909b37b790a5a6" target="_blank" class="official-link-btn" style="background: #ff4d4d; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 13px; margin-right: auto; margin-left: 10px; font-weight: bold; border: 1px solid #ffffff40;">📢 官方應援文章</a>
           <button onclick="changeSubtitleSize(-0.1, 'subtitle-video2')">A−</button>
           <span style="color:white; line-height:1;">字幕</span>
@@ -835,6 +838,13 @@
       const firstTabBtn = document.querySelector('.tab-btn');
       openTab('tab-video1', firstTabBtn);
     });
+
+    //======================================================
+    // 歌詞字體大小調整與說明
+    //======================================================
+    function showInstruction() {
+      alert("💡 應援小撇步：\n\n影片內嵌入的字幕是專門給已經熟練的人作「應援成果測驗」使用的哦！\n\n如果您對應援口號還不太熟練，可以先觀看影片下方的「動態歌詞字幕」來做練習 🎵");
+    }
 
     //歌詞字體大小調整
     function adjustFontSize(containerId, change) {
