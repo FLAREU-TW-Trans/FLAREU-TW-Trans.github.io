@@ -26,10 +26,10 @@
       overflow-x: hidden !important; height: auto !important; -webkit-text-size-adjust: 100%;
       display: flex; justify-content: center; transition: background-color 0.3s ease, color 0.3s ease; 
     }
-
+    
     .header { background-color: var(--bg-content); padding: 20px 20px 0 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
     .header h1 { font-size: 1.3rem; margin: 0; font-weight: 600; color: var(--text-main); line-height: 1.4; }
-    
+
     .content-wrapper { max-width: 800px; width: 100%; background: var(--bg-content); min-height: 100vh; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding-bottom: 20px; transition: all 0.3s ease; }
 
     .tabs-container { display: flex; width: 100%; border-bottom: 2px solid var(--tab-border); background-color: var(--tab-bg); }
@@ -329,6 +329,12 @@
         'tab-video2': { id: '19P4NehU2LU', srt: '', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null }
     };
 
+    function updateButtonUI(theme) {
+      document.getElementById('btn-light').classList.remove('active');
+      document.getElementById('btn-dark').classList.remove('active');
+      document.getElementById('btn-' + theme).classList.add('active');
+    }
+
     function openTab(tabId, btnElement) {
       Object.keys(videoData).forEach(key => {
           if (videoData[key].player && typeof videoData[key].player.pauseVideo === 'function') {
@@ -349,7 +355,7 @@
 
     // 安全載入 YouTube 播放器
     window.onYouTubeIframeAPIReady = function() {
-      
+        // API 準備好時，不做任何事，等到讀者點擊頁籤才觸發 initVideo
     };
 
     function initVideo(tabId) {
@@ -386,9 +392,165 @@
         });
     }
 
+    function loadSRT(filename, subtitleId, player) {
+        fetch(filename)
+            .then(response => response.text())
+            .then(text => {
+                const subs = parseSRT(text);
+                setInterval(() => {
+                  if (!player) return;
+                  const subtitleElement = document.getElementById(subtitleId);
+                  const time = player.getCurrentTime();
+                  const currentSub = subs.find(s => time >= s.start && time <= s.end);
+                  if (currentSub) {
+                    subtitleElement.innerHTML = `<span>${currentSub.text}</span>`;
+                  } else if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+                  subtitleElement.innerHTML = '';
+                }
+              }, 200);
+            }).catch(e => console.log("字幕載入失敗", e));
+    }
+
+    function parseSRT(srt) {
+        const regex = /(\d+)\n(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})\n([\s\S]*?)(?=\n{2}|\n*$)/g;
+        let match, subs = [];
+        while ((match = regex.exec(srt)) !== null) {
+            subs.push({
+                start: timeToSeconds(match[2]), end: timeToSeconds(match[3]), text: match[4].replace(/\n/g, '<br>')
+            });
+        }
+        return subs;
+    }
+
+    function timeToSeconds(timeStr) {
+        const parts = timeStr.split(/[:,]/);
+        return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]) + parseInt(parts[3]) / 1000;
+    }
+
+    function changeSubtitleSize(delta, subtitleId) {
+      // 取得目前的變數數值（如果沒有則預設 22）
+      const root = document.documentElement;
+      const currentSize = parseFloat(getComputedStyle(root).getPropertyValue('--subtitle-size')) || 22;
+    
+      // 計算新大小 (delta 0.1 * 20 = 2px)
+      let newSize = currentSize + (delta * 20);
+    
+      // 設定範圍限制 (最小 12px，最大 80px)
+      if (newSize < 12) newSize = 12;
+      if (newSize > 80) newSize = 80;
+
+      // 更新 CSS 變數，這會同時影響到全螢幕與非全螢幕的所有字幕
+      root.style.setProperty('--subtitle-size', newSize + 'px');
+  }
+
+    // =====================================
+    // 🌟 全螢幕與偽全螢幕邏輯 (完全移植)
+    // =====================================
+    function triggerFullscreen(wrapperId) {
+        const wrapper = document.getElementById(wrapperId);
+        const exitBtn = wrapper.querySelector('.exit-fs-btn-global');
+
+        const isFS = document.fullscreenElement || document.webkitFullscreenElement;
+        const isPseudo = wrapper.classList.contains("pseudo-fullscreen");
+
+        if (isFS || isPseudo) {
+            exitFullscreenMode(wrapperId);
+        } else {
+            const isIPhone = /iPhone|iPod/.test(navigator.userAgent);
+            const req = wrapper.requestFullscreen || wrapper.webkitRequestFullscreen;
+
+            if (req && !isIPhone) {
+                req.call(wrapper).then(() => {
+                    setTimeout(() => showExitBtn(exitBtn), 100);
+                }).catch(() => {
+                    enterPseudoFullscreen(wrapper, exitBtn);
+                });
+            } else {
+                enterPseudoFullscreen(wrapper, exitBtn);
+            }
+        }
+    }
+
+    function enterPseudoFullscreen(wrapper, exitBtn) {
+        wrapper.classList.add("pseudo-fullscreen");
+        document.body.classList.add("is-in-fullscreen");
+        window.scrollTo(0, 0); // 嘗試隱藏網址列
+        showExitBtn(exitBtn);
+    }
+
+    function exitFullscreenMode(wrapperId) {
+        const wrapper = document.getElementById(wrapperId);
+        const exitBtn = wrapper.querySelector('.exit-fs-btn-global');
+
+        const isFS = document.fullscreenElement || document.webkitFullscreenElement;
+        if (isFS) {
+            const exit = document.exitFullscreen || document.webkitExitFullscreen;
+            if (exit) exit.call(document);
+        }
+
+        wrapper.classList.remove("pseudo-fullscreen");
+        document.body.classList.remove("is-in-fullscreen");
+
+        if (exitBtn) {
+            exitBtn.style.opacity = "0";
+            exitBtn.style.display = "none";
+        }
+
+        if (/iPhone|iPod|iPad/.test(navigator.userAgent)) {
+             setTimeout(() => window.scrollTo(0, 0), 100);
+        }
+    }
+
+    function showExitBtn(btnElement) {
+        if (!btnElement) return;
+        btnElement.style.setProperty('display', 'flex', 'important');
+        requestAnimationFrame(() => {
+            btnElement.style.opacity = "1";
+        });
+    }
+
+    // 監聽原生 ESC 鍵或返回鍵退出
+    document.addEventListener('fullscreenchange', handleGlobalFsChange);
+    document.addEventListener('webkitfullscreenchange', handleGlobalFsChange);
+
+    function handleGlobalFsChange() {
+        const isFS = document.fullscreenElement || document.webkitFullscreenElement;
+        if (!isFS) {
+            document.body.classList.remove("is-in-fullscreen");
+            document.querySelectorAll('.exit-fs-btn-global').forEach(btn => {
+                btn.style.display = "none";
+                btn.style.opacity = "0";
+            });
+        }
+    }
+
+    // 螢幕轉向時顯示退出按鈕
+    window.addEventListener("orientationchange", () => {
+        document.querySelectorAll('.pseudo-fullscreen .exit-fs-btn-global').forEach(btn => showExitBtn(btn));
+    });
+
+    // 點擊螢幕喚醒退出按鈕
+    document.addEventListener('touchstart', (e) => { 
+        const activeWrapper = document.querySelector('.pseudo-fullscreen') || document.fullscreenElement;
+        if (activeWrapper && activeWrapper.contains(e.target)) {
+            const btn = activeWrapper.querySelector('.exit-fs-btn-global');
+            if(btn) showExitBtn(btn);
+        }
+    }, { passive: true, capture: true });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateButtonUI(localStorage.getItem('pageTheme') || 'light');
+
+      const firstTabBtn = document.querySelector('.tab-btn');
+      openTab('tab-video1', firstTabBtn);
+    });
+
     //======================================================
     // 歌詞字體大小調整與說明
     //======================================================
+    function showInstruction() {
+      alert("💡 應援小撇步：\n\n影片內嵌入的字幕是專門給已經熟練的人作「應援成果測驗」使用的哦！\n\n如果您對應援口號還不太熟練，可以先觀看影片下方的「動態歌詞字幕」來做練習 🎵 \n\n如果頻繁切換影片可能會導致動態歌詞字幕無法顯示，如有出現該狀況再麻煩重新整理！");
+    }
 
     //歌詞字體大小調整
     function adjustFontSize(containerId, change) {
