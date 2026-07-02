@@ -30,25 +30,6 @@
     #lyrics-toggle-btn{ min-width:110px; }
     #lyrics-toggle-btn:not(.active){ opacity:.45; }
 
-    [data-theme="dark"] {
-      --bg-body: #1a1c1a; --bg-content: #242624; --reaction-box-bg: #2f3136; --text-main: #e0e2e0; --text-sub: #a0a8a0; --border-line: #3d403d;
-      --btn-bg: #52796f; --btn-hover: #84a98c; --btn-text: #ffffff; --intro-bg: #2d342d; --intro-border: #3d403d; --intro-text: #e0e2e0; 
-      --section-bg: #353d35; --section-text: #a7c4a7; --outfit-bg: #2d342d; --outfit-border: #52796f;
-      --tab-bg: #242624; --tab-border: #3d403d; --tab-text: #888; --tab-active-text: #a7c4a7; --tab-active-border: #52796f;
-      --home-btn-bg: #3a3b3c; --home-btn-hover: #4a4b4c;
-      --theme-btn-bg: #333333; --theme-btn-text: #aaaaaa; --theme-btn-active: #1e1e1e;
-      /* 深色模式下，保留微弱的立體感 */
-      --reaction-text-shadow: 0px 1px 3px rgba(0,0,0,0.8);
-      /* 表情按鈕選中時的框線與數字顏色 (深色模式) */
-      --emoji-btn-active-border: #8ebfec; 
-      --emoji-btn-active-text: #e4e6eb;
-      --emoji-btn-bg-hover: rgba(255, 255, 255, 0.1); /* 深色模式下懸停時的微弱背景 */
-      /* 定義按鈕的「預設未選中」狀態 (深色) */
-      --emoji-btn-default-bg: #3a3b3;
-      --emoji-btn-default-border: #444;
-      --emoji-btn-default-text: #aaa;
-    }
-
     html, body { 
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
       background-color: var(--bg-body) !important; color: var(--text-main) !important; margin: 0 !important; padding: 0 !important; 
@@ -63,12 +44,6 @@
        ==================== */
     .header { background-color: var(--bg-content); padding: 20px 20px 0 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
     .header h1 { font-size: 1.3rem; margin: 0; font-weight: 600; color: var(--text-main); line-height: 1.4; }
-
-    .controls-wrapper { display: flex; gap: 12px; align-items: center; margin-top: 10px; margin-bottom: 16px; }
-    .home-btn { background-color: var(--home-btn-bg); color: var(--text-main); text-decoration: none; padding: 6px 16px; border-radius: 16px; font-size: 0.9rem; font-weight: bold; }
-    .theme-toggle-group { display: inline-flex; background-color: var(--theme-btn-bg); border-radius: 20px; padding: 4px; }
-    .theme-btn { background: none; border: none; padding: 6px 16px; border-radius: 16px; font-size: 0.9rem; color: var(--theme-btn-text); cursor: pointer; font-weight: bold; }
-    .theme-btn.active { background-color: var(--theme-btn-active); color: var(--text-main); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
     .tabs-container { display: flex; width: 100%; border-bottom: 2px solid var(--tab-border); background-color: var(--tab-bg); }
     .tab-btn { flex: 1; background: none; border: none; padding: 14px 10px; font-size: 1rem; font-weight: bold; color: var(--tab-text); cursor: pointer; border-bottom: 3px solid transparent; }
@@ -330,17 +305,6 @@
     <header class="header">
       <h1>《WAY 2 U》《Hyper》歌詞應援合輯</h1>
 
-      <div class="controls-wrapper">
-        <a href="../../index.html" class="home-btn">🏠 首頁</a> <div class="theme-toggle-group">
-          <button class="theme-btn" id="btn-light" onclick="switchTheme('light')">☀️ 淺色</button>
-          <button class="theme-btn" id="btn-dark" onclick="switchTheme('dark')">🌙 深色</button>
-        </div>
-      </div>
-      <div class="controls-wrapper" style="margin-top: 4px; margin-bottom: 8px;">
-        <button class="theme-btn active" id="lyrics-toggle-btn" onclick="toggleLyricsMode()">🎵 動態歌詞：開</button>
-        <button class="theme-btn" id="instruction-btn" onclick="showInstruction()">✏️ 說明</button>
-      </div>
-
       <div class="tabs-container">
         <button class="tab-btn" onclick="openTab('tab-video1', this)">WAY 2 U</button>
         <button class="tab-btn" onclick="openTab('tab-video2', this)">Hyper</button>
@@ -350,13 +314,6 @@
     <!-- WAY 2 U 分頁 -->
     <div id="tab-video1" class="tab-content">
       <div class="video-controls-bar" style="display: flex; flex-direction: column; gap: 16px; padding: 20px 10px 10px 10px;">
-        <!-- 🔝 上排：應援連結 -->
-        <div style="display: flex; align-items: center; gap: 8px;">
-            <a href="https://www.threads.com/@meteoru_tw/post/DaKsrKck6LQ?xmt=AQG0uouihD-oD4BNTJWxm2k7FDz_YxFBrs3DbMcxJmN0mw" target="_blank" class="official-link-btn" style="background: #4ba3e3; color: #ffffff; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40;">⭐ 應援團隊連結</a>
-            <a href="https://artist.mnetplus.world/main/stg/flareu/contents/6a04339beb909b37b790a5a2" target="_blank" class="official-link-btn" style="background: #20b2aa; color: #ffffff; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40;">📢 官方應援連結</a>
-        </div>
-    
-        <!-- 🔙 下排：字幕調整與全螢幕 -->
         <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
             <button onclick="changeSubtitleSize(-0.1, 'subtitle-video1')">A−</button>
             <span style="color:white; line-height:1; font-size: 13px;">字幕</span>
