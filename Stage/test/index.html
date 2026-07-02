@@ -8,6 +8,25 @@
   <title>《WAY 2 U》 《Hyper》歌詞應援合輯</title>
 
   <style>
+    :root { --bg-body: #f8f9f7; --bg-content: #ffffff; --reaction-box-bg: #f1f3f5; --text-main: #2d3436; --text-sub: #7b8a7e; --border-line: #e0e6e0;
+      --btn-bg: #84a98c; --btn-hover: #52796f; --btn-text: #ffffff; --intro-bg: #f1f7f1; --intro-border: #dce4dc; --intro-text: #354f52; 
+      --section-bg: #e9f5e9; --section-text: #354f52; --outfit-bg: #f8faf8; --outfit-border: #84a98c;
+      --tab-bg: #ffffff; --tab-border: #e0e6e0; --tab-text: #7b8a7e; --tab-active-text: #52796f; --tab-active-border: #84a98c;
+      --home-btn-bg: #e5e7EB; --home-btn-hover: #d5d7dc; --theme-btn-bg: #f0f0f0; --theme-btn-text: #666; --theme-btn-active: #ffffff;
+      --reaction-text-shadow: none; --emoji-btn-active-border: #84a98c; --emoji-btn-active-text: #2d3436; --emoji-btn-bg-hover: rgba(132, 169, 140, 0.1); 
+      --emoji-btn-default-bg: #f1f3f5; --emoji-btn-default-border: #e1e8ed; --emoji-btn-default-text: #8e8e8e; --subtitle-size: 22px; 
+    }
+
+    #lyrics-toggle-btn{ min-width:110px; }
+    #lyrics-toggle-btn:not(.active){ opacity:.45; }
+
+    html, body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+      background-color: var(--bg-body) !important; color: var(--text-main) !important; margin: 0 !important; padding: 0 !important; 
+      overflow-x: hidden !important; height: auto !important; -webkit-text-size-adjust: 100%;
+      display: flex; justify-content: center; transition: background-color 0.3s ease, color 0.3s ease; 
+    }
+    
     .content-wrapper { max-width: 800px; width: 100%; background: var(--bg-content); min-height: 100vh; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding-bottom: 20px; transition: all 0.3s ease; }
 
     .tabs-container { display: flex; width: 100%; border-bottom: 2px solid var(--tab-border); background-color: var(--tab-bg); }
