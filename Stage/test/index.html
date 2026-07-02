@@ -2,8 +2,17 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>《WAY 2 U》 《Hyper》歌詞應援合輯</title>
+  <link rel="stylesheet" href="../../css/reaction.css">
+
+  <script>
+    const savedTheme = localStorage.getItem('pageTheme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    window.MY_VIDEO_ID = "20260602_Fanchant";
+  </script>
 
   <style>
     /* ==================== 
@@ -20,6 +29,25 @@
 
     #lyrics-toggle-btn{ min-width:110px; }
     #lyrics-toggle-btn:not(.active){ opacity:.45; }
+
+    [data-theme="dark"] {
+      --bg-body: #1a1c1a; --bg-content: #242624; --reaction-box-bg: #2f3136; --text-main: #e0e2e0; --text-sub: #a0a8a0; --border-line: #3d403d;
+      --btn-bg: #52796f; --btn-hover: #84a98c; --btn-text: #ffffff; --intro-bg: #2d342d; --intro-border: #3d403d; --intro-text: #e0e2e0; 
+      --section-bg: #353d35; --section-text: #a7c4a7; --outfit-bg: #2d342d; --outfit-border: #52796f;
+      --tab-bg: #242624; --tab-border: #3d403d; --tab-text: #888; --tab-active-text: #a7c4a7; --tab-active-border: #52796f;
+      --home-btn-bg: #3a3b3c; --home-btn-hover: #4a4b4c;
+      --theme-btn-bg: #333333; --theme-btn-text: #aaaaaa; --theme-btn-active: #1e1e1e;
+      /* 深色模式下，保留微弱的立體感 */
+      --reaction-text-shadow: 0px 1px 3px rgba(0,0,0,0.8);
+      /* 表情按鈕選中時的框線與數字顏色 (深色模式) */
+      --emoji-btn-active-border: #8ebfec; 
+      --emoji-btn-active-text: #e4e6eb;
+      --emoji-btn-bg-hover: rgba(255, 255, 255, 0.1); /* 深色模式下懸停時的微弱背景 */
+      /* 定義按鈕的「預設未選中」狀態 (深色) */
+      --emoji-btn-default-bg: #3a3b3;
+      --emoji-btn-default-border: #444;
+      --emoji-btn-default-text: #aaa;
+    }
 
     html, body { 
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
@@ -302,6 +330,17 @@
     <header class="header">
       <h1>《WAY 2 U》《Hyper》歌詞應援合輯</h1>
 
+      <div class="controls-wrapper">
+        <a href="../../index.html" class="home-btn">🏠 首頁</a> <div class="theme-toggle-group">
+          <button class="theme-btn" id="btn-light" onclick="switchTheme('light')">☀️ 淺色</button>
+          <button class="theme-btn" id="btn-dark" onclick="switchTheme('dark')">🌙 深色</button>
+        </div>
+      </div>
+      <div class="controls-wrapper" style="margin-top: 4px; margin-bottom: 8px;">
+        <button class="theme-btn active" id="lyrics-toggle-btn" onclick="toggleLyricsMode()">🎵 動態歌詞：開</button>
+        <button class="theme-btn" id="instruction-btn" onclick="showInstruction()">✏️ 說明</button>
+      </div>
+
       <div class="tabs-container">
         <button class="tab-btn" onclick="openTab('tab-video1', this)">WAY 2 U</button>
         <button class="tab-btn" onclick="openTab('tab-video2', this)">Hyper</button>
@@ -568,22 +607,46 @@
 </div>
       </div>
     </div>
+
+    <div class="unified-reaction-box">
+      <div class="reaction-section">
+          <p id="reaction-title">覺得這次的作品如何？點個表情吧！</p>
+          <div class="reaction-wall"></div>
+      </div>
+    </div>
   </div>
 
+  <script async src="//www.instagram.com/embed.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    const firebaseConfig = { apiKey: "AIzaSyAs9R785IE_kBsduUdEng3Vfqz1Ljl11f4", authDomain: "flareu-tw-translation.firebaseapp.com", databaseURL: "https://flareu-tw-translation-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "flareu-tw-translation", storageBucket: "flareu-tw-translation.firebasestorage.app", messagingSenderId: "753531558153", appId: "1:753531558153:web:7106f9c2d253cae62fdbd8" };
+    const app = initializeApp(firebaseConfig);
+    window.db = getDatabase(app); window.fb_ref = ref; window.fb_onValue = onValue; window.fb_runTransaction = runTransaction; 
+  </script>
+
   <script src="../../js/reaction-core.js"></script>
+
   <script>
     
     // 影片資料 - 🌟 ID 必須跟上面的 HTML 一模一樣，影片才生得出來！
     const videoData = {
-        'tab-video1': { id: 'DVNPHdMuk4k', srt: '', player: null, subEl: 'subtitle-video1', container: 'player-container-video1' },
-        'tab-video2': { id: '19P4NehU2LU', srt: '', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null }
+        'tab-video1': { id: 'DVNPHdMuk4k', srt: './20260602_WAY_2_U.srt', player: null, subEl: 'subtitle-video1', container: 'player-container-video1' },
+        'tab-video2': { id: '19P4NehU2LU', srt: './20260602_Hyper.srt', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null }
     };
 
     function updateButtonUI(theme) {
       document.getElementById('btn-light').classList.remove('active');
       document.getElementById('btn-dark').classList.remove('active');
       document.getElementById('btn-' + theme).classList.add('active');
+    }
+
+    function switchTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('pageTheme', theme);
+      updateButtonUI(theme);
     }
 
     function openTab(tabId, btnElement) {
