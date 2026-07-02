@@ -2,56 +2,45 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
-  <link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>《WAY 2 U》 《Hyper》歌詞應援合輯</title>
 
   <style>
-    :root { --bg-body: #f8f9f7; --bg-content: #ffffff; --reaction-box-bg: #f1f3f5; --text-main: #2d3436; --text-sub: #7b8a7e; --border-line: #e0e6e0;
-      --btn-bg: #84a98c; --btn-hover: #52796f; --btn-text: #ffffff; --intro-bg: #f1f7f1; --intro-border: #dce4dc; --intro-text: #354f52; 
-      --section-bg: #e9f5e9; --section-text: #354f52; --outfit-bg: #f8faf8; --outfit-border: #84a98c;
-      --tab-bg: #ffffff; --tab-border: #e0e6e0; --tab-text: #7b8a7e; --tab-active-text: #52796f; --tab-active-border: #84a98c;
-      --home-btn-bg: #e5e7EB; --home-btn-hover: #d5d7dc; --theme-btn-bg: #f0f0f0; --theme-btn-text: #666; --theme-btn-active: #ffffff;
-      --reaction-text-shadow: none; --emoji-btn-active-border: #84a98c; --emoji-btn-active-text: #2d3436; --emoji-btn-bg-hover: rgba(132, 169, 140, 0.1); 
-      --emoji-btn-default-bg: #f1f3f5; --emoji-btn-default-border: #e1e8ed; --emoji-btn-default-text: #8e8e8e; --subtitle-size: 22px; 
+    :root { 
+      --bg-body: #f8f9f7; 
+      --bg-content: #ffffff; 
+      --text-main: #2d3436; 
+      --tab-border: #e0e6e0; 
+      --tab-bg: #ffffff; 
+      --tab-text: #7b8a7e; 
+      --tab-active-text: #52796f; 
+      --tab-active-border: #84a98c;
     }
-
-    #lyrics-toggle-btn{ min-width:110px; }
-    #lyrics-toggle-btn:not(.active){ opacity:.45; }
 
     html, body { 
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
       background-color: var(--bg-body) !important; color: var(--text-main) !important; margin: 0 !important; padding: 0 !important; 
       overflow-x: hidden !important; height: auto !important; -webkit-text-size-adjust: 100%;
-      display: flex; justify-content: center; transition: background-color 0.3s ease, color 0.3s ease; 
+      display: flex; justify-content: center;
     }
     
     .header { background-color: var(--bg-content); padding: 20px 20px 0 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
-    .header h1 { font-size: 1.3rem; margin: 0; font-weight: 600; color: var(--text-main); line-height: 1.4; }
+    .header h1 { font-size: 1.3rem; margin: 0 0 15px 0; font-weight: 600; color: var(--text-main); line-height: 1.4; }
 
-    .content-wrapper { max-width: 800px; width: 100%; background: var(--bg-content); min-height: 100vh; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding-bottom: 20px; transition: all 0.3s ease; }
+    .content-wrapper { max-width: 800px; width: 100%; background: var(--bg-content); min-height: 100vh; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding-bottom: 20px; }
 
     .tabs-container { display: flex; width: 100%; border-bottom: 2px solid var(--tab-border); background-color: var(--tab-bg); }
     .tab-btn { flex: 1; background: none; border: none; padding: 14px 10px; font-size: 1rem; font-weight: bold; color: var(--tab-text); cursor: pointer; border-bottom: 3px solid transparent; }
     .tab-btn.active { color: var(--tab-active-text); border-bottom: 3px solid var(--tab-active-border); }
 
-    .tab-content { display: none; animation: fadeIn 0.3s ease; }
+    .tab-content { display: none; }
     .tab-content.active { display: block; }
-
-    /* ==================== 
-       影片區塊與字幕樣式
-       ==================== */
-    .video-controls-bar {
-        background: #111; padding: 10px; display: flex; justify-content: center; align-items: center; gap: 15px; border-bottom: 1px solid #333; flex-wrap: wrap;
-    }
 
     .video-responsive-wrapper {
         position: relative;
         width: 100%;
         padding-bottom: 56.25%;
         background: #000;
-        transition: all 0.3s ease;
     }
     
     .video-responsive-wrapper iframe {
@@ -59,9 +48,6 @@
         top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; display: block;
     }
 
-    /* ==================== 
-       動態歌詞
-       ==================== */
     #way2u-lyrics, #hyper-lyrics{
       -webkit-overflow-scrolling: touch;
       overflow-x: hidden !important; 
@@ -83,12 +69,6 @@
 
     <header class="header">
       <h1>《WAY 2 U》《Hyper》歌詞應援合輯</h1>
-       <div class="controls-wrapper">
-        <a href="../../index.html" class="home-btn">🏠 首頁</a> <div class="theme-toggle-group">
-          <button class="theme-btn" id="btn-light" onclick="">☀️ 淺色</button>
-          <button class="theme-btn" id="btn-dark" onclick="">🌙 深色</button>
-        </div>
-      </div>
 
       <div class="tabs-container">
         <button class="tab-btn" onclick="openTab('tab-video1', this)">WAY 2 U</button>
@@ -105,17 +85,14 @@
       <!-- WAY 2 U 應援歌詞 -->
       <div class="lyrics-container lyrics-cute" id="way2u-container" style="background: linear-gradient(135deg, #edf7f6 0%, #d1e8e5 100%); color: #2c4a44; padding: 25px; margin-top: 20px; border-radius: 16px; border: 1px solid #b2dbd5; font-family: sans-serif; line-height: 1.8; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
         
-        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; gap: 12px;">
-          
-          <h3 style="text-align: center; margin: 0; color: #235249; font-size: 20px; font-weight: 700; letter-spacing: 0.5px;">🎵 WAY 2 U 應援歌詞完整版</h3>
-          
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; gap: 12px;">       
+          <h3 style="text-align: center; margin: 0; color: #235249; font-size: 20px; font-weight: 700; letter-spacing: 0.5px;">🎵 WAY 2 U 應援歌詞完整版</h3>         
           <div style="display: flex; gap: 8px;">
             <button onclick="adjustFontSize('way2u-lyrics', -2)" style="padding: 6px 14px; border: 1px solid #99c2bc; background: #ffffff; color: #3b665e; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: all 0.2s;">A -</button>
             <button onclick="adjustFontSize('way2u-lyrics', 2)" style="padding: 6px 14px; border: 1px solid #99c2bc; background: #ffffff; color: #3b665e; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: all 0.2s;">A +</button>
           </div>
         </div>
   
-        <!-- 內層設定 id，並將粗體字 <b> 的顏色統一指定為高級藍綠色 (#008071) -->
         <div id="way2u-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease; max-height: 400px; overflow-y: auto; padding: 10px 0; position: relative;">
           <style>
             #way2u-lyrics b { color: #008071; font-weight: 700; transition: color 0.3s; }
@@ -213,26 +190,21 @@
       </div>
       
       <!-- Hyper 應援歌詞 -->
-      <div class="lyrics-container lyrics-cool" id="hyper-container" style="background: linear-gradient(135deg, #1a1515 0%, #121010 100%); color: #e5dbdb; padding: 25px; margin-top: 20px; border-radius: 12px; border: 1px solid #4a282b; font-family: sans-serif; line-height: 1.8; box-shadow: 0 4px 25px rgba(229, 57, 53, 0.08);">
-        
-        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; gap: 12px;">
-          
-          <h3 style="text-align: center; margin: 0; color: #e53935; font-size: 20px; letter-spacing: 1.5px; text-shadow: 0 0 10px rgba(229,57,53,0.2); font-weight: 700;">⚡ Hyper 應援歌詞完整版</h3>
-          
+      <div class="lyrics-container lyrics-cool" id="hyper-container" style="background: linear-gradient(135deg, #1a1515 0%, #121010 100%); color: #e5dbdb; padding: 25px; margin-top: 20px; border-radius: 12px; border: 1px solid #4a282b; font-family: sans-serif; line-height: 1.8; box-shadow: 0 4px 25px rgba(229, 57, 53, 0.08);">       
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; gap: 12px;">          
+          <h3 style="text-align: center; margin: 0; color: #e53935; font-size: 20px; letter-spacing: 1.5px; text-shadow: 0 0 10px rgba(229,57,53,0.2); font-weight: 700;">⚡ Hyper 應援歌詞完整版</h3>         
           <div style="display: flex; gap: 8px;">
             <button onclick="adjustFontSize('hyper-lyrics', -2)" style="padding: 6px 14px; border: 1px solid #5c3538; background: #261c1d; color: #e5999d; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.2s;">A -</button>
             <button onclick="adjustFontSize('hyper-lyrics', 2)" style="padding: 6px 14px; border: 1px solid #5c3538; background: #261c1d; color: #e5999d; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.2s;">A +</button>
           </div>
         </div>
-        <!-- 內層設定 id 為 hyper-lyrics，設定平滑滾動與 max-height -->
-<div id="hyper-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease; max-height: 400px; overflow-y: auto; padding: 10px 0; position: relative;">
-  <style>
-    #hyper-lyrics b { color: #ff4d5a; font-weight: 700; transition: color 0.3s; }
-    #hyper-lyrics p.current-lyric { background: rgba(255, 255, 255, 0.15); border-radius: 8px; transform: scale(1.05); font-weight: bold; transition: all 0.3s ease; }
-    #hyper-lyrics p { padding: 6px 10px; margin: 4px 0; transition: all 0.3s ease; opacity: 0.5; }
-    #hyper-lyrics p.current-lyric b { color: #ff4d5a; }
-  </style>
-
+        <div id="hyper-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease; max-height: 400px; overflow-y: auto; padding: 10px 0; position: relative;">
+          <style>
+            #hyper-lyrics b { color: #ff4d5a; font-weight: 700; transition: color 0.3s; }
+            #hyper-lyrics p.current-lyric { background: rgba(255, 255, 255, 0.15); border-radius: 8px; transform: scale(1.05); font-weight: bold; transition: all 0.3s ease; }
+            #hyper-lyrics p { padding: 6px 10px; margin: 4px 0; transition: all 0.3s ease; opacity: 0.5; }
+            #hyper-lyrics p.current-lyric b { color: #ff4d5a; }
+          </style>
   <p data-start="0.0" data-end="7.2">（準備）</p>
   <p data-start="7.2" data-end="9.8"><b>崔里布、康嗚進</b></p>
   <p data-start="9.8" data-end="12.4"><b>撲勒ㄛU、Hyper</b></p>
@@ -315,52 +287,51 @@
   <p data-start="153.4" data-end="155.0">We Hyper</p>
   <p data-start="155.0" data-end="156.1">Go higher</p>
   <p data-start="156.1" data-end="186.9"><b>撲勒ㄛU、Hyper（歡呼）</b></p>
-</div>
+        </div>
       </div>
     </div>
   </div>
 
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
-    
-    // 影片資料 - 🌟 ID 必須跟上面的 HTML 一模一樣，影片才生得出來！
+    // 影片核心資料
     const videoData = {
-        'tab-video1': { id: 'DVNPHdMuk4k', srt: '', player: null, subEl: 'subtitle-video1', container: 'player-container-video1' },
-        'tab-video2': { id: '19P4NehU2LU', srt: '', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null }
+        'tab-video1': { id: 'DVNPHdMuk4k', player: null, subContainerId: 'way2u-lyrics', container: 'player-container-video1', interval: null },
+        'tab-video2': { id: '19P4NehU2LU', player: null, subContainerId: 'hyper-lyrics', container: 'player-container-video2', interval: null }
     };
 
-    function updateButtonUI(theme) {
-      document.getElementById('btn-light').classList.remove('active');
-      document.getElementById('btn-dark').classList.remove('active');
-      document.getElementById('btn-' + theme).classList.add('active');
-    }
-
+    // 切換頁籤邏輯
     function openTab(tabId, btnElement) {
+      // 暫停所有正在播放的影片，並清除計時器
       Object.keys(videoData).forEach(key => {
           if (videoData[key].player && typeof videoData[key].player.pauseVideo === 'function') {
               videoData[key].player.pauseVideo();
           }
+          if (videoData[key].interval) {
+              clearInterval(videoData[key].interval);
+              videoData[key].interval = null;
+          }
       });
-
-      stopLyricsAnimation("way2u-lyrics");
-      stopLyricsAnimation("hyper-lyrics");
 
       document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      
       document.getElementById(tabId).classList.add('active');
       btnElement.classList.add('active');
 
       initVideo(tabId);
     }
 
-    // 安全載入 YouTube 播放器
-    window.onYouTubeIframeAPIReady = function() {
-        // API 準備好時，不做任何事，等到讀者點擊頁籤才觸發 initVideo
-    };
+    window.onYouTubeIframeAPIReady = function() {};
 
+    // 初始化播放器
     function initVideo(tabId) {
         const vData = videoData[tabId];
-        if (vData.player) return;
+        if (vData.player) {
+            // 如果播放器已存在，重新啟動當前分頁的歌詞滾動監聽
+            startLyricsSync(tabId);
+            return;
+        }
 
         if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
             setTimeout(() => initVideo(tabId), 100);
@@ -372,410 +343,103 @@
             width: '100%',
             height: '100%',
             host: 'https://www.youtube-nocookie.com',
-            playerVars: { 'autoplay': 0, 'rel': 0, 'playsinline': 1 }, // 絕對不偷播
-            events:{
-              onReady:function(event){
-
-                  loadSRT(vData.srt,vData.subEl,event.target);
-
-                  if(tabId==="tab-video1"){
-                      syncLyricsWithVideo(event.target,"way2u-lyrics");
-                      bindLyricsInteraction(event.target,"way2u-lyrics");
-                  }
-
-                  if(tabId==="tab-video2"){
-                      syncLyricsWithVideo(event.target,"hyper-lyrics");
-                      bindLyricsInteraction(event.target,"hyper-lyrics");
-                  }
+            playerVars: { 'autoplay': 0, 'rel': 0, 'playsinline': 1 },
+            events: {
+              onReady: function(event) {
+                  startLyricsSync(tabId);
+                  bindLyricsClickSeek(event.target, vData.subContainerId);
               }
-          }
-        });
-    }
-
-    function loadSRT(filename, subtitleId, player) {
-        fetch(filename)
-            .then(response => response.text())
-            .then(text => {
-                const subs = parseSRT(text);
-                setInterval(() => {
-                  if (!player) return;
-                  const subtitleElement = document.getElementById(subtitleId);
-                  const time = player.getCurrentTime();
-                  const currentSub = subs.find(s => time >= s.start && time <= s.end);
-                  if (currentSub) {
-                    subtitleElement.innerHTML = `<span>${currentSub.text}</span>`;
-                  } else if (player.getPlayerState() === YT.PlayerState.PLAYING) {
-                  subtitleElement.innerHTML = '';
-                }
-              }, 200);
-            }).catch(e => console.log("字幕載入失敗", e));
-    }
-
-    function parseSRT(srt) {
-        const regex = /(\d+)\n(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})\n([\s\S]*?)(?=\n{2}|\n*$)/g;
-        let match, subs = [];
-        while ((match = regex.exec(srt)) !== null) {
-            subs.push({
-                start: timeToSeconds(match[2]), end: timeToSeconds(match[3]), text: match[4].replace(/\n/g, '<br>')
-            });
-        }
-        return subs;
-    }
-
-    function timeToSeconds(timeStr) {
-        const parts = timeStr.split(/[:,]/);
-        return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]) + parseInt(parts[3]) / 1000;
-    }
-
-    function changeSubtitleSize(delta, subtitleId) {
-      // 取得目前的變數數值（如果沒有則預設 22）
-      const root = document.documentElement;
-      const currentSize = parseFloat(getComputedStyle(root).getPropertyValue('--subtitle-size')) || 22;
-    
-      // 計算新大小 (delta 0.1 * 20 = 2px)
-      let newSize = currentSize + (delta * 20);
-    
-      // 設定範圍限制 (最小 12px，最大 80px)
-      if (newSize < 12) newSize = 12;
-      if (newSize > 80) newSize = 80;
-
-      // 更新 CSS 變數，這會同時影響到全螢幕與非全螢幕的所有字幕
-      root.style.setProperty('--subtitle-size', newSize + 'px');
-  }
-
-    // =====================================
-    // 🌟 全螢幕與偽全螢幕邏輯 (完全移植)
-    // =====================================
-    function triggerFullscreen(wrapperId) {
-        const wrapper = document.getElementById(wrapperId);
-        const exitBtn = wrapper.querySelector('.exit-fs-btn-global');
-
-        const isFS = document.fullscreenElement || document.webkitFullscreenElement;
-        const isPseudo = wrapper.classList.contains("pseudo-fullscreen");
-
-        if (isFS || isPseudo) {
-            exitFullscreenMode(wrapperId);
-        } else {
-            const isIPhone = /iPhone|iPod/.test(navigator.userAgent);
-            const req = wrapper.requestFullscreen || wrapper.webkitRequestFullscreen;
-
-            if (req && !isIPhone) {
-                req.call(wrapper).then(() => {
-                    setTimeout(() => showExitBtn(exitBtn), 100);
-                }).catch(() => {
-                    enterPseudoFullscreen(wrapper, exitBtn);
-                });
-            } else {
-                enterPseudoFullscreen(wrapper, exitBtn);
             }
-        }
-    }
-
-    function enterPseudoFullscreen(wrapper, exitBtn) {
-        wrapper.classList.add("pseudo-fullscreen");
-        document.body.classList.add("is-in-fullscreen");
-        window.scrollTo(0, 0); // 嘗試隱藏網址列
-        showExitBtn(exitBtn);
-    }
-
-    function exitFullscreenMode(wrapperId) {
-        const wrapper = document.getElementById(wrapperId);
-        const exitBtn = wrapper.querySelector('.exit-fs-btn-global');
-
-        const isFS = document.fullscreenElement || document.webkitFullscreenElement;
-        if (isFS) {
-            const exit = document.exitFullscreen || document.webkitExitFullscreen;
-            if (exit) exit.call(document);
-        }
-
-        wrapper.classList.remove("pseudo-fullscreen");
-        document.body.classList.remove("is-in-fullscreen");
-
-        if (exitBtn) {
-            exitBtn.style.opacity = "0";
-            exitBtn.style.display = "none";
-        }
-
-        if (/iPhone|iPod|iPad/.test(navigator.userAgent)) {
-             setTimeout(() => window.scrollTo(0, 0), 100);
-        }
-    }
-
-    function showExitBtn(btnElement) {
-        if (!btnElement) return;
-        btnElement.style.setProperty('display', 'flex', 'important');
-        requestAnimationFrame(() => {
-            btnElement.style.opacity = "1";
         });
     }
 
-    // 監聽原生 ESC 鍵或返回鍵退出
-    document.addEventListener('fullscreenchange', handleGlobalFsChange);
-    document.addEventListener('webkitfullscreenchange', handleGlobalFsChange);
+    // 動態歌詞高亮與同步滾動核心邏輯
+    function startLyricsSync(tabId) {
+        const vData = videoData[tabId];
+        const player = vData.player;
+        const container = document.getElementById(vData.subContainerId);
+        if (!container || !player) return;
 
-    function handleGlobalFsChange() {
-        const isFS = document.fullscreenElement || document.webkitFullscreenElement;
-        if (!isFS) {
-            document.body.classList.remove("is-in-fullscreen");
-            document.querySelectorAll('.exit-fs-btn-global').forEach(btn => {
-                btn.style.display = "none";
-                btn.style.opacity = "0";
+        const paragraphs = container.querySelectorAll('p');
+
+        if (vData.interval) clearInterval(vData.interval);
+
+        vData.interval = setInterval(() => {
+            if (typeof player.getCurrentTime !== 'function') return;
+            const currentTime = player.getCurrentTime();
+
+            let currentIdx = -1;
+
+            // 尋找當前時間對應的歌詞
+            paragraphs.forEach((p, idx) => {
+                const start = parseFloat(p.getAttribute('data-start'));
+                const end = parseFloat(p.getAttribute('data-end'));
+                if (currentTime >= start && currentTime < end) {
+                    currentIdx = idx;
+                }
             });
-        }
+
+            // 更新高亮與自動滾動
+            paragraphs.forEach((p, idx) => {
+                if (idx === currentIdx) {
+                    if (!p.classList.contains('current-lyric')) {
+                        p.classList.add('current-lyric');
+                        // 平滑滾動置中
+                        p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                } else {
+                    p.classList.remove('current-lyric');
+                }
+            });
+        }, 200);
     }
 
-    // 螢幕轉向時顯示退出按鈕
-    window.addEventListener("orientationchange", () => {
-        document.querySelectorAll('.pseudo-fullscreen .exit-fs-btn-global').forEach(btn => showExitBtn(btn));
-    });
+    // 點擊歌詞跳轉到對應時間點
+    function bindLyricsClickSeek(player, lyricsContainerId) {
+        const container = document.getElementById(lyricsContainerId);
+        if (!container) return;
 
-    // 點擊螢幕喚醒退出按鈕
-    document.addEventListener('touchstart', (e) => { 
-        const activeWrapper = document.querySelector('.pseudo-fullscreen') || document.fullscreenElement;
-        if (activeWrapper && activeWrapper.contains(e.target)) {
-            const btn = activeWrapper.querySelector('.exit-fs-btn-global');
-            if(btn) showExitBtn(btn);
-        }
-    }, { passive: true, capture: true });
-
-    document.addEventListener('DOMContentLoaded', () => {
-      updateButtonUI(localStorage.getItem('pageTheme') || 'light');
-
-      const firstTabBtn = document.querySelector('.tab-btn');
-      openTab('tab-video1', firstTabBtn);
-    });
-
-    //======================================================
-    // 歌詞字體大小調整與說明
-    //======================================================
-    function showInstruction() {
-      alert("💡 應援小撇步：\n\n影片內嵌入的字幕是專門給已經熟練的人作「應援成果測驗」使用的哦！\n\n如果您對應援口號還不太熟練，可以先觀看影片下方的「動態歌詞字幕」來做練習 🎵 \n\n如果頻繁切換影片可能會導致動態歌詞字幕無法顯示，如有出現該狀況再麻煩重新整理！");
+        container.addEventListener('click', function(e) {
+            const p = e.target.closest('p');
+            if (p && p.hasAttribute('data-start')) {
+                const startTime = parseFloat(p.getAttribute('data-start'));
+                player.seekTo(startTime, true);
+                if (player.getPlayerState() !== YT.PlayerState.PLAYING) {
+                    player.playVideo();
+                }
+            }
+        });
     }
 
-    //歌詞字體大小調整
+    // 歌詞字體大小調整功能
     function adjustFontSize(containerId, change) {
-      var container = document.getElementById(containerId);
+      const container = document.getElementById(containerId);
       if (!container) return;
   
-      // 取得目前字體大小，若無設定則預設為 15px
-      var currentSize = parseFloat(window.getComputedStyle(container).fontSize) || 15;
-      var newSize = currentSize + change;
+      const currentSize = parseFloat(window.getComputedStyle(container).fontSize) || 15;
+      const newSize = currentSize + change;
   
-      // 設定安全範圍：11px ~ 25px
       if (newSize >= 11 && newSize <= 25) {
         container.style.fontSize = newSize + 'px';
-        // 儲存到本機紀錄中
         localStorage.setItem('lyrics_fontsize_' + containerId, newSize);
       }
     }
 
-    // 當網頁載入時，自動讀取上次儲存的字體大小紀錄
-    window.addEventListener("DOMContentLoaded", () => {
-      const containers = ['way2u-lyrics', 'hyper-lyrics'];
-  
-      containers.forEach(id => {
-        var savedSize = localStorage.getItem('lyrics_fontsize_' + id);
-        var container = document.getElementById(id);
-    
+    // 初始載入
+    document.addEventListener('DOMContentLoaded', () => {
+      // 恢復儲存的字體大小
+      ['way2u-lyrics', 'hyper-lyrics'].forEach(id => {
+        const savedSize = localStorage.getItem('lyrics_fontsize_' + id);
+        const container = document.getElementById(id);
         if (savedSize && container) {
           container.style.fontSize = savedSize + 'px';
         }
       });
+
+      // 預設開啟第一個分頁
+      const firstTabBtn = document.querySelector('.tab-btn');
+      openTab('tab-video1', firstTabBtn);
     });
-
-    //======================================================
-    // 動態歌詞與互動設定核心邏輯
-    //======================================================
-
-    let lyricsEnabled = true;
-    const lyricsStates = {};
-
-    function toggleLyricsMode(){
-        lyricsEnabled = !lyricsEnabled;
-        const btn = document.getElementById("lyrics-toggle-btn");
-        btn.classList.toggle("active", lyricsEnabled);
-        btn.textContent = lyricsEnabled ? "🎵 動態歌詞：開" : "🎵 動態歌詞：關";
-
-        // 如果動態歌詞關閉，把所有歌詞恢復成普通清爽的文字顯示
-        if (!lyricsEnabled) {
-            Object.keys(lyricsStates).forEach(containerId => {
-                const container = document.getElementById(containerId);
-                if(container) {
-                    container.querySelectorAll("p").forEach(p => {
-                        p.classList.remove("current-lyric");
-                        p.style.opacity = "1";
-                        p.style.transform = "scale(1)";
-                    });
-                }
-                lyricsStates[containerId].currentIndex = -1;
-            });
-        }
-    }
-
-    function bindLyricsInteraction(player, lyricsContainerId){
-        const container = document.getElementById(lyricsContainerId);
-        if(!container) return;
-        if(container.dataset.binded === "1") return;
-        container.dataset.binded = "1";
-
-        const paragraphs = container.querySelectorAll("p[data-start]");
-
-        if(!lyricsStates[lyricsContainerId]) {
-            lyricsStates[lyricsContainerId] = { currentIndex: -1 };
-        }
-        
-        const state = lyricsStates[lyricsContainerId];
-        state.player = player;
-        state.isUserScrolling = false;
-        state.scrollTimer = null;
-
-        // 當使用者自己滑動歌詞時，暫停自動捲動，避免跟使用者的手指搶控制權
-        function pauseAutoScroll() {
-            if(!lyricsEnabled) return;
-            state.isUserScrolling = true;
-            clearTimeout(state.scrollTimer);
-        }
-
-        // 當使用者停止滑動 1.5 秒後，自動恢復跟隨影片
-        function resumeAutoScroll() {
-            if(!lyricsEnabled) return;
-            clearTimeout(state.scrollTimer);
-            state.scrollTimer = setTimeout(() => {
-                state.isUserScrolling = false;
-            }, 1500);
-        }
-
-        container.addEventListener("wheel", pauseAutoScroll, {passive: true});
-        container.addEventListener("touchstart", pauseAutoScroll, {passive: true});
-        container.addEventListener("touchend", resumeAutoScroll, {passive: true});
-
-        paragraphs.forEach(p => {
-            p.addEventListener("click", () => {
-                const startTime = parseFloat(p.dataset.start);
-                if (!isNaN(startTime)) {
-                    player.seekTo(startTime, true);
-                    state.isUserScrolling = false;
-                    clearTimeout(state.scrollTimer);
-                }
-            });
-        });
-    }
-
-    function syncLyricsWithVideo(player, lyricsContainerId){
-        const container = document.getElementById(lyricsContainerId);
-        if(!container) return;
-
-        // 確保 JS 控制的滾動不受干擾
-        container.style.position = "relative";
-        container.style.scrollBehavior = "auto";
-      
-        const paragraphs = container.querySelectorAll("p[data-start]");
-        
-        if(!lyricsStates[lyricsContainerId]) {
-            lyricsStates[lyricsContainerId] = { currentIndex: -1, lastTime: 0 };
-        }
-        const state = lyricsStates[lyricsContainerId];
-
-        if(state.animationId) {
-            cancelAnimationFrame(state.animationId);
-        }
-
-        function animate(){
-            state.animationId = requestAnimationFrame(animate);
-
-            if(!lyricsEnabled) return;
-            
-            // 取得播放器狀態，只要不是空值，且處於播放(1)、暫停(2)、或緩衝(3)，都允許更新歌詞
-            const pState = player ? player.getPlayerState() : -1;
-            if(!player || (pState !== YT.PlayerState.PLAYING && pState !== YT.PlayerState.PAUSED && pState !== YT.PlayerState.BUFFERING)) {
-                return;
-            }
-
-            const currentTime = player.getCurrentTime();
-
-            // 偵測影片時間是否發生「跳躍」(差距大於 0.5 秒)
-            // 如果 state.lastTime 是 0，代表剛初始化，先將其同步為目前時間
-            if (state.lastTime === 0) state.lastTime = currentTime;
-            const timeDiff = Math.abs(currentTime - state.lastTime);
-            const isVideoSeeking = timeDiff > 0.5; // 判斷使用者是否點擊了進度條
-            state.lastTime = currentTime; // 更新為最新時間
-          
-            let newIndex = -1;
-
-            for(let i = 0; i < paragraphs.length; i++){
-                const start = parseFloat(paragraphs[i].dataset.start);
-                const end = parseFloat(paragraphs[i].dataset.end);
-                if(currentTime >= start && currentTime <= end){
-                    newIndex = i;
-                    break;
-                }
-            }
-
-            if(newIndex === -1 && currentTime > 0) {
-                for (let i = paragraphs.length - 1; i >= 0; i--) {
-                     const start = parseFloat(paragraphs[i].dataset.start);
-                     if (currentTime >= start) {
-                         newIndex = i;
-                         break;
-                     }
-                }
-            }
-
-            if (newIndex !== -1 && (newIndex !== state.currentIndex || (isVideoSeeking && !state.isUserScrolling))) {
-                state.currentIndex = newIndex;
-                const currentP = paragraphs[state.currentIndex];
-
-                // 更新歌詞淡出淡入樣式
-                paragraphs.forEach((p, index) => {
-                    p.classList.remove("current-lyric");
-                    const distance = Math.abs(index - state.currentIndex);
-                    if(distance === 0){
-                        p.style.opacity = "1";
-                        p.style.transform = "scale(1.08)";
-                    } else if(distance === 1){
-                        p.style.opacity = "0.75";
-                        p.style.transform = "scale(1.02)";
-                    } else if(distance === 2){
-                        p.style.opacity = "0.55";
-                        p.style.transform = "scale(1)";
-                    } else {
-                        p.style.opacity = "0.3";
-                        p.style.transform = "scale(0.96)";
-                    }
-                });
-
-                currentP.classList.add("current-lyric");
-
-                // 執行滾動
-                if (!state.isUserScrolling) {
-                    // 使用 offsetTop 取得絕對精準的位置，解決手機版對不準的問題
-                    const targetScroll = currentP.offsetTop - (container.clientHeight / 2) + (currentP.clientHeight / 2);
-                    
-                    if (isVideoSeeking) {
-                        // 如果是點擊影片時間軸：取消平滑，要求「瞬間切換」
-                        container.scrollTop = targetScroll;
-                    } else {
-                        // 如果是正常播放換句：呼叫瀏覽器原生高順暢度的「平滑滾動」
-                        if (container.scrollTo) {
-                            container.scrollTo({ top: targetScroll, behavior: 'smooth' });
-                        } else {
-                            container.scrollTop = targetScroll;
-                        }
-                    }
-                }
-            }
-        }
-        animate();
-    }
-
-    function stopLyricsAnimation(lyricsContainerId){
-        const state = lyricsStates[lyricsContainerId];
-        if(!state) return;
-        if(state.animationId){
-            cancelAnimationFrame(state.animationId);
-            state.animationId = null;
-        }
-    }
   </script>
 </body>
 </html>
