@@ -186,100 +186,6 @@
         background: #000 !important; touch-action: none; overscroll-behavior: none;
     }
 
-    /* 退出按鈕 */
-    .exit-fs-btn-global {
-        display: none; opacity: 0; position: fixed !important; 
-        top: calc(20px + env(safe-area-inset-top)) !important; right: 20px !important; 
-        width: 50px !important; height: 50px !important;
-        background: rgba(0, 0, 0, 0.6) !important; border: 1px solid rgba(255, 255, 255, 0.3) !important; border-radius: 50%;
-        color: white !important; z-index: 2147483647 !important; cursor: pointer; align-items: center; justify-content: center; padding: 0;
-    }
-    .exit-fs-btn-global svg { width: 28px; height: 28px; stroke: currentColor; stroke-width: 2.5; fill: none; }
-    .exit-fs-btn-global:hover { background: rgba(50, 50, 50, 0.9) !important; transform: scale(1.1); }
-    @media screen and (orientation: landscape) { .exit-fs-btn-global { right: calc(45px + env(safe-area-inset-right)) !important; top: 15px !important; } }
-
-    /* ==================== 
-       5. 完美修復表情牆
-       ==================== */
-    /* 隱藏彈幕工具 */
-    #barrage-toggle-btn, .barrage-control, #barrage-container, #emoji-trigger-btn, #emoji-drawer { display: none !important; }
-
-    .unified-reaction-box { 
-        background-color: var(--reaction-box-bg) !important;
-        border-radius: 12px; 
-        margin: 20px; /* 完美對齊畫報寬度 */
-        padding: 20px; 
-        text-align: center; 
-        border: 1px solid var(--intro-border);
-        box-sizing: border-box; 
-        display: flex; 
-        flex-direction: column;
-        align-items: center; /* 確保按鈕置中 */
-    }
-
-    .reaction-section { text-align: center !important; width: 100%; }
-    .reaction-wall { display: flex; justify-content: center; /* 確保按鈕排隊置中 */ flex-wrap: wrap; gap: 10px; margin-top: 15px; }
-
-    /* 打敗 reaction.css 裡的黑底 */
-    .reaction-section, .reaction-wall, .reaction-container {
-        background: transparent !important; background-color: transparent !important;
-        height: auto !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important;
-    }
-
-    /* 強制規範沒有active的預設按鈕狀態 */
-    .unified-reaction-box .emoji-btn:not(.active) {
-        background-color: var(--emoji-btn-default-bg) !important; 
-        border: 1px solid var(--emoji-btn-default-border) !important; 
-        transition: all 0.2s ease;
-        transform: scale(1) translateY(0) !important;
-        box-shadow: none !important;
-    }
-
-    /* 根據主題切換陰影，淺色清晰、深色立體 */
-    .unified-reaction-box p, 
-    .unified-reaction-box span, 
-    .reaction-section { 
-        color: var(--text-main) !important; 
-        font-size: 1.05rem !important; 
-        text-shadow: var(--reaction-text-shadow) !important; 
-        box-shadow: none !important;
-    }
-    /* 重新定義表情按鈕的外觀，避免背景變純黑/純白 */
-    .unified-reaction-box .emoji-btn {
-        background-color: transparent !important; /* 預設透明 */
-        border: 1px solid var(--border-line) !important; /* 預設細框 */
-        transition: all 0.2s ease;
-    }
-
-    .unified-reaction-box .emoji-btn span {
-        color: var(--text-sub) !important; /* 預設數字顏色稍淺 */
-        text-shadow: none !important;
-    }
-
-    .unified-reaction-box .emoji-btn:hover {
-        background-color: var(--emoji-btn-bg-hover) !important; /* 懸停時微亮/微暗 */
-    }
-
-    /* 按下(選中)時的狀態：不改背景色，只凸顯框線和數字！ */
-    .unified-reaction-box .emoji-btn.active {
-        background-color: transparent !important; /* 保持透明！ */
-        border: 2px solid var(--emoji-btn-active-border) !important; /* 凸顯框線 */
-        transform: scale(1.05) translateY(-2px);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important; /* 輕微陰影 */
-    }
-
-    .unified-reaction-box .emoji-btn.active span {
-        color: var(--emoji-btn-active-text) !important; /* 數字顏色變深/變亮 */
-        font-weight: bold !important; /* 加粗數字 */
-    }
-
-    #reaction-title { 
-        color: var(--text-main) !important; 
-        font-weight: bold !important;  
-        margin-bottom: 20px !important; 
-        text-shadow: var(--reaction-text-shadow) !important; 
-    }
-
     /* ==================== 
        6. 動態歌詞
        ==================== */
@@ -304,13 +210,7 @@
 
     <header class="header">
       <h1>《WAY 2 U》《Hyper》歌詞應援合輯</h1>
-      <div class="controls-wrapper">
-        <a href="../../index.html" class="home-btn">🏠 首頁</a> 
-        <div class="theme-toggle-group">
-          <button class="theme-btn" id="btn-light" onclick="switchTheme('light')">☀️ 淺色</button>
-          <button class="theme-btn" id="btn-dark" onclick="switchTheme('dark')">🌙 深色</button>
-        </div>
-      </div>
+      <div class="controls-wrapper"></div>
 
       <div class="tabs-container">
         <button class="tab-btn" onclick="openTab('tab-video1', this)">WAY 2 U</button>
@@ -571,16 +471,8 @@
 </div>
       </div>
     </div>
-
-    <div class="unified-reaction-box">
-      <div class="reaction-section">
-          <p id="reaction-title">覺得這次的作品如何？點個表情吧！</p>
-          <div class="reaction-wall"></div>
-      </div>
-    </div>
   </div>
 
-  <script async src="//www.instagram.com/embed.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
   
   <script type="module">
