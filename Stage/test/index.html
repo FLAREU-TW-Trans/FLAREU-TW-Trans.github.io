@@ -6,42 +6,141 @@
   <title>動態歌詞應援合輯</title>
 
   <style>
-    :root { --bg-body: #f8f9f7; --bg-content: #ffffff; --text-main: #2d3436; --tab-border: #e0e6e0; --tab-bg: #ffffff; --tab-text: #7b8a7e; --tab-active-text: #52796f; --tab-active-border: #84a98c; }
+    /* 定義全域 CSS 變數，方便統一管理全站的顏色主題 */
+    :root { 
+      --bg-body: #f8f9f7;          /* 網頁最底層的背景顏色 */
+      --bg-content: #ffffff;       /* 主要內容區塊的背景顏色 */
+      --text-main: #2d3436;        /* 主要文字的顏色 */
+      --tab-border: #e0e6e0;       /* 分頁標籤底部的邊框顏色 */
+      --tab-bg: #ffffff;           /* 分頁標籤列的背景顏色 */
+      --tab-text: #7b8a7e;         /* 未選中分頁標籤的文字顏色 */
+      --tab-active-text: #52796f;  /* 已選中分頁標籤的文字顏色 */
+      --tab-active-border: #84a98c;/* 已選中分頁標籤下方的粗邊框顏色 */
+    }
 
+    /* 設定網頁最外層（html 與 body）的樣式 */
     html, body { 
+      /* 設定預設字型族群，優先使用 Apple 與 Windows 系統的預設無襯線字型 */
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
-      background-color: var(--bg-body) !important; color: var(--text-main) !important; margin: 0 !important; padding: 0 !important; 
-      overflow-x: hidden !important; height: auto !important; -webkit-text-size-adjust: 100%;
-      display: flex; justify-content: center;
+      /* 使用前面定義的變數作為背景色，並強制覆寫 */
+      background-color: var(--bg-body) !important; 
+      /* 使用主要文字顏色變數，並強制覆寫 */
+      color: var(--text-main) !important; 
+      /* 清除外距，防止四周出現預設白邊 */
+      margin: 0 !important; 
+      /* 清除內距 */
+      padding: 0 !important; 
+      /* 禁止水平方向出現捲軸，防止畫面左右晃動 */
+      overflow-x: hidden !important; 
+      /* 高度根據內容自動調整 */
+      height: auto !important; 
+      /* 防止 iOS 裝置在橫螢幕時自動放大字體，維持 100% 比例 */
+      -webkit-text-size-adjust: 100%;
+      /* 啟用彈性佈局，讓內部的主容器能夠在畫面上置中顯示 */
+      display: flex; 
+      /* 水平置中 */
+      justify-content: center;
     }
     
-    .header { background-color: var(--bg-content); padding: 20px 20px 0 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
-    .header h1 { font-size: 1.3rem; margin: 0 0 15px 0; font-weight: 600; color: var(--text-main); line-height: 1.4; }
-
-    .content-wrapper { max-width: 800px; width: 100%; background: var(--bg-content); min-height: 100vh; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding-bottom: 20px; }
-
-    .tabs-container { display: flex; width: 100%; border-bottom: 2px solid var(--tab-border); background-color: var(--tab-bg); }
-    .tab-btn { flex: 1; background: none; border: none; padding: 14px 10px; font-size: 1rem; font-weight: bold; color: var(--tab-text); cursor: pointer; border-bottom: 3px solid transparent; }
-    .tab-btn.active { color: var(--tab-active-text); border-bottom: 3px solid var(--tab-active-border); }
-
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
-    .video-responsive-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; }  
-    .video-responsive-wrapper iframe { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; display: block; }
-
-    #way2u-lyrics, #hyper-lyrics{
-      -webkit-overflow-scrolling: touch;
-      overflow-x: hidden !important; 
-      overscroll-behavior-x: none;
-      width: 100%;
-      box-sizing: border-box;
+    /* 網頁頂部標頭區塊的樣式 */
+    .header { 
+      background-color: var(--bg-content); /* 使用內容區背景色 */
+      padding: 20px 20px 0 20px;          /* 設定內距（上、右、下、左） */
+      text-align: center;                  /* 文字置中 */
+      display: flex;                       /* 啟用彈性佈局 */
+      flex-direction: column;              /* 讓內部的元素由上至下垂直排列 */
+      align-items: center;                 /* 垂直方向置中對齊 */
+    }
+    
+    /* 標頭內主標題 H1 的樣式 */
+    .header h1 { 
+      font-size: 1.3rem;           /* 設定字體大小 */
+      margin: 0 0 15px 0;          /* 設定外距（下邊留 15px 空白） */
+      font-weight: 600;            /* 字體半粗 */
+      color: var(--text-main);     /* 套用主文字顏色 */
+      line-height: 1.4;            /* 設定行高 */
     }
 
+    /* 限制整體內容最大寬度的主容器樣式（仿手機/平板一條龍視覺） */
+    .content-wrapper { 
+      max-width: 800px;            /* 限制最大寬度為 800px */
+      width: 100%;                 /* 寬度預設 100% 滿版 */
+      background: var(--bg-content);/* 背景為白色 */
+      min-height: 100vh;           /* 最小高度為整個螢幕的 100% */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* 四周加上柔和的陰影 */
+      padding-bottom: 20px;        /* 底部留出 20px 空間 */
+    }
+
+    /* 分頁按鈕列的容器樣式 */
+    .tabs-container { 
+      display: flex;               /* 啟用彈性佈局，讓按鈕均分寬度 */
+      width: 100%;                 /* 寬度 100% 滿版 */
+      border-bottom: 2px solid var(--tab-border); /* 底部加上淡淡的裝飾分割線 */
+      background-color: var(--tab-bg); /* 背景色 */
+    }
+    
+    /* 單個分頁按鈕的樣式 */
+    .tab-btn { 
+      flex: 1;                     /* 每個按鈕平分所有剩餘空間 */
+      background: none;            /* 清除預設按鈕背景 */
+      border: none;                /* 清除預設邊框 */
+      padding: 14px 10px;          /* 設定上下內距 14px，左右 10px */
+      font-size: 1rem;             /* 字體大小 */
+      font-weight: bold;           /* 字體加粗 */
+      color: var(--tab-text);      /* 未選中的字體顏色 */
+      cursor: pointer;             /* 滑鼠移上去時顯示手指游標 */
+      border-bottom: 3px solid transparent; /* 預設底邊框為透明，防止切換時畫面閃動 */
+    }
+    
+    /* 分頁按鈕被選中（活動中）時的樣式 */
+    .tab-btn.active { 
+      color: var(--tab-active-text); /* 變更為選中狀態的文字顏色 */
+      border-bottom: 3px solid var(--tab-active-border); /* 底部顯示對應主題顏色的粗底線 */
+    }
+
+    /* 分頁內容容器的預設狀態 */
+    .tab-content { 
+      display: none;               /* 預設全部隱藏 */
+    }
+    
+    /* 分頁內容被選中（活動中）時的狀態 */
+    .tab-content.active { 
+      display: block;              /* 顯示該分頁內容 */
+    }
+
+    /* 響應式影片容器樣式（維持 16:9 比例） */
+    .video-responsive-wrapper { 
+      position: relative;          /* 設定為相對定位，作為內部 iframe 的定位基準 */
+      width: 100%;                 /* 寬度 100% */
+      padding-bottom: 56.25%;      /* 利用 padding 特性製作 16:9 (9/16 = 0.5625) 的預留高度 */
+      background: #000;            /* 影片未載入前預設背景為黑色 */
+    }  
+    
+    /* 影片容器內實際的 YouTube iframe 播放器樣式 */
+    .video-responsive-wrapper iframe { 
+      position: absolute;          /* 設定為絕對定位，填滿父容器 */
+      top: 0;                      /* 靠頂部對齊 */
+      left: 0;                     /* 靠左側對齊 */
+      width: 100% !important;      /* 寬度 100% 強制滿版 */
+      height: 100% !important;     /* 高度 100% 強制滿版 */
+      border: none;                /* 移除外框線 */
+      display: block;              /* 設定為區塊元素 */
+    }
+
+    /* 兩個歌詞滾動區塊的共通基本設定 */
+    #way2u-lyrics, #hyper-lyrics{
+      -webkit-overflow-scrolling: touch; /* 讓 iOS 行動裝置在滾動歌詞時有平滑的回彈流暢感 */
+      overflow-x: hidden !important;   /* 強制隱藏水平滾動條 */
+      overscroll-behavior-x: none;     /* 防止在滑動歌詞時觸發瀏覽器的上/下一頁手勢機制 */
+      width: 100%;                     /* 寬度 100% */
+      box-sizing: border-box;          /* 計算寬度時包含 padding 與 border */
+    }
+
+    /* 歌詞內部每一行段落 (p 標籤) 的基本換行設定 */
     #way2u-lyrics p, #hyper-lyrics p {
-      white-space: normal;
-      word-wrap: break-word;
-      max-width: 100%;
+      white-space: normal;         /* 允許文字正常換行 */
+      word-wrap: break-word;       /* 當單字過長時強制中斷換行，防止撐破版面 */
+      max-width: 100%;             /* 限制最大寬度為 100% */
     }
   </style>
 </head>
@@ -276,116 +375,135 @@
 
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
-    // 影片核心資料
+    // 儲存所有影片及對應歌詞組態的核心資料物件，更改id即可，例完整yt網址為:https://www.youtube.com/watch?v=DVNPHdMuk4k，取v=後面的字母數字即可
     const videoData = {
         'tab-video1': { id: 'DVNPHdMuk4k', player: null, subContainerId: 'way2u-lyrics', container: 'player-container-video1', interval: null },
         'tab-video2': { id: '19P4NehU2LU', player: null, subContainerId: 'hyper-lyrics', container: 'player-container-video2', interval: null }
     };
 
-    // 切換頁籤邏輯
+    // 切換頁籤與影片控制的主要邏輯函式
     function openTab(tabId, btnElement) {
-      // 暫停所有正在播放的影片，並清除計時器
+      // 使用迴圈走訪所有分頁資料，將非目前分頁的影片全部暫停，並清除滾動計時器
       Object.keys(videoData).forEach(key => {
+          // 檢查播放器是否存在且擁有暫停功能，若有則執行暫停
           if (videoData[key].player && typeof videoData[key].player.pauseVideo === 'function') {
               videoData[key].player.pauseVideo();
           }
+          // 如果該分頁有正在執行的計時器，則予以清除並重設為 null
           if (videoData[key].interval) {
               clearInterval(videoData[key].interval);
               videoData[key].interval = null;
           }
       });
 
+      // 移除所有分頁內容與按鈕的 'active' 樣式（即隱藏全部）
       document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       
+      // 為目前被點擊的分頁內容容器與按鈕加上 'active' 樣式，使其顯示
       document.getElementById(tabId).classList.add('active');
       btnElement.classList.add('active');
 
+      // 呼叫初始化或啟動該分頁的 YouTube 影片與歌詞同步監聽
       initVideo(tabId);
     }
 
+    // 當 YouTube 官方 API 準備就緒時會自動觸發此全域名稱函式（此處留空作為安全確保，不影響自訂初始化）
     window.onYouTubeIframeAPIReady = function() {};
 
-    // 初始化播放器
+    // 用於初始化特定分頁 YouTube 播放器的函式
     function initVideo(tabId) {
-        const vData = videoData[tabId];
+        const vData = videoData[tabId]; // 取得指定分頁的組態資料
+        
+        // 如果該分頁的播放器執行個體已經被建立過了
         if (vData.player) {
-            // 如果播放器已存在，重新啟動當前分頁的歌詞滾動監聽
+            // 直接啟動當前分頁的歌詞即時滾動同步監聽，不重疊建立播放器
             startLyricsSync(tabId);
             return;
         }
 
+        // 檢查 YouTube 官方 API 元件是否已經成功載入完畢，若未完成則延遲 100 毫秒後重新嘗試
         if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
             setTimeout(() => initVideo(tabId), 100);
             return;
         }
 
+        // 實例化 YouTube 播放器並附加到對應的 HTML 容器中
         vData.player = new YT.Player(vData.container, {
-            videoId: vData.id,
-            width: '100%',
-            height: '100%',
-            host: 'https://www.youtube-nocookie.com',
-            playerVars: { 'autoplay': 0, 'rel': 0, 'playsinline': 1 },
+            videoId: vData.id,        /* 影片的 YouTube ID */
+            width: '100%',            /* 寬度設定 */
+            height: '100%',           /* 高度設定 */
+            host: 'https://www.youtube-nocookie.com', /* 使用無 Cookie 隱私安全網域，防止被部分瀏覽器阻擋 */
+            playerVars: { 'autoplay': 0, 'rel': 0, 'playsinline': 1 }, /* 參數設定：不自動播放、不顯示相關影片、在行動裝置上行內播放不彈出全螢幕 */
             events: {
+              // 當播放器完全載入並準備就緒時觸發的事件
               onReady: function(event) {
-                  startLyricsSync(tabId);
-                  bindLyricsClickSeek(event.target, vData.subContainerId);
+                  startLyricsSync(tabId); /* 啟動歌詞高亮同步功能 */
+                  bindLyricsClickSeek(event.target, vData.subContainerId); /* 綁定點擊歌詞跳轉影片時間的功能 */
               }
             }
         });
     }
 
-    // 動態歌詞高亮與同步滾動核心邏輯
+    // 每 200 毫秒執行一次，用來偵測影片時間、即時高亮當前歌詞並自動滾動置中的核心邏輯
     function startLyricsSync(tabId) {
-        const vData = videoData[tabId];
-        const player = vData.player;
-        const container = document.getElementById(vData.subContainerId);
-        if (!container || !player) return;
+        const vData = videoData[tabId];               // 取得當前分頁資料
+        const player = vData.player;                 // 取得當前分頁播放器
+        const container = document.getElementById(vData.subContainerId); // 取得當前歌詞容器
+        if (!container || !player) return;            // 防呆：若找不到容器或播放器則直接結束
 
-        const paragraphs = container.querySelectorAll('p');
+        const paragraphs = container.querySelectorAll('p'); // 抓取容器內所有的歌詞行 (p 標籤)
 
-        if (vData.interval) clearInterval(vData.interval);
+        if (vData.interval) clearInterval(vData.interval); // 若原本已有計時器在跑，先清除它防止速度疊加
 
+        // 建立周期性定時器，每 200 毫秒檢查一次進度
         vData.interval = setInterval(() => {
-            if (typeof player.getCurrentTime !== 'function') return;
-            const currentTime = player.getCurrentTime();
+            if (typeof player.getCurrentTime !== 'function') return; // 如果播放器尚未準備好取得時間功能則暫跳過
+            const currentTime = player.getCurrentTime(); // 取得影片當前播放的秒數（包含小數點）
 
-            let currentIdx = -1;
+            let currentIdx = -1; // 預設目前沒有符合任何時間範圍的歌詞索引
 
-            // 尋找當前時間對應的歌詞
+            // 尋找當前時間究竟落在哪一行歌詞的時間範圍內
             paragraphs.forEach((p, idx) => {
-                const start = parseFloat(p.getAttribute('data-start'));
-                const end = parseFloat(p.getAttribute('data-end'));
+                const start = parseFloat(p.getAttribute('data-start')); // 解析這行歌詞的開始時間
+                const end = parseFloat(p.getAttribute('data-end'));     // 解析這行歌詞的結束時間
+                // 若當前影片時間大於等於開始時間，且小於結束時間
                 if (currentTime >= start && currentTime < end) {
-                    currentIdx = idx;
+                    currentIdx = idx; // 紀錄此時應該高亮的歌詞索引
                 }
             });
 
-            // 更新高亮與自動滾動
+            // 更新所有歌詞段落的樣式與自動平滑滾動
             paragraphs.forEach((p, idx) => {
+                // 如果目前巡檢到的行數恰好是正在播放的這一行
                 if (idx === currentIdx) {
+                    // 若該行還沒有 current-lyric 這個高亮 class 名稱
                     if (!p.classList.contains('current-lyric')) {
-                        p.classList.add('current-lyric');
-                        // 平滑滾動置中
+                        p.classList.add('current-lyric'); // 為它加上高亮樣式
+                        // 讓該行歌詞平滑地滾動到歌詞視窗的「正中央」位置
                         p.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
                 } else {
+                    // 如果不是目前播放行，則移除高亮樣式（恢復 50% 半透明預設值）
                     p.classList.remove('current-lyric');
                 }
             });
         }, 200);
     }
 
-    // 點擊歌詞跳轉到對應時間點
+    // 實現點擊某一句歌詞，影片就能自動跳轉到該句對應開始時間點的函式
     function bindLyricsClickSeek(player, lyricsContainerId) {
-        const container = document.getElementById(lyricsContainerId);
-        if (!container) return;
+        const container = document.getElementById(lyricsContainerId); // 取得對應歌詞容器
+        if (!container) return; // 防呆
 
+        // 在歌詞容器上綁定點擊監聽器（利用事件代理提升效能）
         container.addEventListener('click', function(e) {
-            const p = e.target.closest('p');
+            const p = e.target.closest('p'); // 尋找被點擊到的元素最鄰近的 p 標籤段落
+            // 如果確實點到了 p 標籤，而且該標籤含有 data-start 屬性
             if (p && p.hasAttribute('data-start')) {
-                const startTime = parseFloat(p.getAttribute('data-start'));
-                player.seekTo(startTime, true);
+                const startTime = parseFloat(p.getAttribute('data-start')); // 取出開始時間秒數
+                player.seekTo(startTime, true); // 命令 YouTube 播放器精準跳轉到該秒數
+                // 如果跳轉時影片處於非播放狀態（如暫停中），則主動讓影片開始播放
                 if (player.getPlayerState() !== YT.PlayerState.PLAYING) {
                     player.playVideo();
                 }
@@ -393,32 +511,35 @@
         });
     }
 
-    // 歌詞字體大小調整功能
+    // 供界面上「A +」與「A -」按鈕點擊時調整歌詞大小，並將喜好儲存到瀏覽器快取的函式
     function adjustFontSize(containerId, change) {
-      const container = document.getElementById(containerId);
-      if (!container) return;
+      const container = document.getElementById(containerId); // 取得指定的歌詞容器
+      if (!container) return; // 防呆
   
+      // 取得當前容器計算後的實際字體大小，若抓不到則預設為 15px
       const currentSize = parseFloat(window.getComputedStyle(container).fontSize) || 15;
-      const newSize = currentSize + change;
+      const newSize = currentSize + change; // 計算增減後的新大小
   
+      // 限制字體級距只能介於最小 11px 到 最大 25px 之間，防止版面崩壞
       if (newSize >= 11 && newSize <= 25) {
-        container.style.fontSize = newSize + 'px';
-        localStorage.setItem('lyrics_fontsize_' + containerId, newSize);
+        container.style.fontSize = newSize + 'px'; // 即時套用新字體大小到網頁上
+        localStorage.setItem('lyrics_fontsize_' + containerId, newSize); // 將此字體大小儲存至瀏覽器本地快取，下次開啟時免重新調整
       }
     }
 
-    // 初始載入
+    // 當網頁整體的 HTML 結構全部載入解析完成後，自動執行的初始化設定
     document.addEventListener('DOMContentLoaded', () => {
-      // 恢復儲存的字體大小
+      // 自動檢查並恢復使用者先前在瀏覽器中儲存過的歌詞字體大小設定
       ['way2u-lyrics', 'hyper-lyrics'].forEach(id => {
-        const savedSize = localStorage.getItem('lyrics_fontsize_' + id);
-        const container = document.getElementById(id);
+        const savedSize = localStorage.getItem('lyrics_fontsize_' + id); // 嘗試讀取快取值
+        const container = document.getElementById(id); // 取得容器
+        // 如果先前有儲存過紀錄且容器確實存在
         if (savedSize && container) {
-          container.style.fontSize = savedSize + 'px';
+          container.style.fontSize = savedSize + 'px'; // 自動幫使用者恢復該字體大小
         }
       });
 
-      // 預設開啟第一個分頁
+      // 網頁初次載入時，預設自動選取並開啟第一個分頁按鈕以及加載 WAY 2 U 影片
       const firstTabBtn = document.querySelector('.tab-btn');
       openTab('tab-video1', firstTabBtn);
     });
