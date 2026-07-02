@@ -6,16 +6,7 @@
   <title>《WAY 2 U》 《Hyper》歌詞應援合輯</title>
 
   <style>
-    :root { 
-      --bg-body: #f8f9f7; 
-      --bg-content: #ffffff; 
-      --text-main: #2d3436; 
-      --tab-border: #e0e6e0; 
-      --tab-bg: #ffffff; 
-      --tab-text: #7b8a7e; 
-      --tab-active-text: #52796f; 
-      --tab-active-border: #84a98c;
-    }
+    :root { --bg-body: #f8f9f7; --bg-content: #ffffff; --text-main: #2d3436; --tab-border: #e0e6e0; --tab-bg: #ffffff; --tab-text: #7b8a7e; --tab-active-text: #52796f; --tab-active-border: #84a98c; }
 
     html, body { 
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
@@ -36,17 +27,8 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    .video-responsive-wrapper {
-        position: relative;
-        width: 100%;
-        padding-bottom: 56.25%;
-        background: #000;
-    }
-    
-    .video-responsive-wrapper iframe {
-        position: absolute;
-        top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; display: block;
-    }
+    .video-responsive-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; }  
+    .video-responsive-wrapper iframe { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; display: block; }
 
     #way2u-lyrics, #hyper-lyrics{
       -webkit-overflow-scrolling: touch;
@@ -61,6 +43,32 @@
       word-wrap: break-word;
       max-width: 100%;
     }
+
+    #way2u-lyrics p.current-lyric { 
+    opacity: 1 !important;
+    transform: scale(1.12) !important; 
+    font-weight: 800 !important; 
+    color: #113831 !important;
+    background: rgba(255, 255, 255, 0.75); 
+    border-radius: 12px; 
+    box-shadow: 0 4px 15px rgba(0, 128, 113, 0.15);
+    text-shadow: 0 0 1px rgba(0, 128, 113, 0.2);
+    }
+    
+    #way2u-lyrics p.current-lyric b { color: #00665a !important;
+
+    #hyper-lyrics p.current-lyric { 
+    opacity: 1 !important;
+    transform: scale(1.12) !important; 
+    font-weight: 800 !important; 
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.08); 
+    border-radius: 12px; 
+    box-shadow: 0 4px 20px rgba(255, 77, 90, 0.15);
+    text-shadow: 0 0 8px rgba(255, 77, 90, 0.6), 0 0 2px rgba(255, 77, 90, 0.8);
+  }
+
+    #hyper-lyrics p.current-lyric b { color: #ff3344 !important; text-shadow: 0 0 10px rgba(255, 51, 68, 0.8); }
   </style>
 </head>
 <body>
