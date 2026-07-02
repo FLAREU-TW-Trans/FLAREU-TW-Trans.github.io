@@ -12,7 +12,10 @@
   </script>
 
   <style>
-
+    .tabs-container { display: flex; width: 100%; border-bottom: 2px solid var(--tab-border); background-color: var(--tab-bg); }
+    .tab-btn { flex: 1; background: none; border: none; padding: 14px 10px; font-size: 1rem; font-weight: bold; color: var(--tab-text); cursor: pointer; border-bottom: 3px solid transparent; }
+    .tab-btn.active { color: var(--tab-active-text); border-bottom: 3px solid var(--tab-active-border); }
+    
     /* ==================== 
        6. 動態歌詞
        ==================== */
@@ -46,8 +49,27 @@
 
     <!-- WAY 2 U 分頁 -->
     <div id="tab-video1" class="tab-content">
+      <div class="video-controls-bar" style="display: flex; flex-direction: column; gap: 16px; padding: 20px 10px 10px 10px;">
+        <!-- 🔝 上排：應援連結 -->
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <a href="https://www.threads.com/@meteoru_tw/post/DaKsrKck6LQ?xmt=AQG0uouihD-oD4BNTJWxm2k7FDz_YxFBrs3DbMcxJmN0mw" target="_blank" class="official-link-btn" style="background: #4ba3e3; color: #ffffff; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40;">⭐ 應援團隊連結</a>
+            <a href="https://artist.mnetplus.world/main/stg/flareu/contents/6a04339beb909b37b790a5a2" target="_blank" class="official-link-btn" style="background: #20b2aa; color: #ffffff; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40;">📢 官方應援連結</a>
+        </div>
+    
+        <!-- 🔙 下排：字幕調整與全螢幕 -->
+        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
+            <button onclick="changeSubtitleSize(-0.1, 'subtitle-video1')">A−</button>
+            <span style="color:white; line-height:1; font-size: 13px;">字幕</span>
+            <button onclick="changeSubtitleSize(0.1, 'subtitle-video1')">A＋</button>
+            <button onclick="triggerFullscreen('video-wrapper-1')">全螢幕</button>
+        </div>
+      </div>
       <div id="video-wrapper-1" class="video-responsive-wrapper">
           <div id="player-container-video1"></div> 
+          <div id="subtitle-video1" class="subtitle-overlay"></div>
+          <button id="exit-fs-btn-1" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-1')">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
       </div>
       
       <!-- WAY 2 U 應援歌詞 -->
@@ -156,8 +178,27 @@
     
     <!-- Hyper 分頁 -->
     <div id="tab-video2" class="tab-content">
+      <div class="video-controls-bar" style="display: flex; flex-direction: column; gap: 16px; padding: 20px 10px 10px 10px;">
+        <!-- 🔝 上排：應援連結 -->
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <a href="https://www.threads.com/@meteoru_tw/post/DaNOKatEzMB?xmt=AQG07UvglBRM3GWknsNgsfRJBFk2FJC9D0mYLm7LVwmO4w" target="_blank" class="official-link-btn" style="background: #757d8a; color: #ffffff; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40;">⭐ 應援團隊連結</a>
+            <a href="https://artist.mnetplus.world/main/stg/flareu/contents/6a0435dbeb909b37b790a5a6" target="_blank" class="official-link-btn" style="background: #ff4d4d; color: #ffffff; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40;">📢 官方應援連結</a>
+        </div>
+    
+        <!-- 🔙 下排：字幕調整與全螢幕 -->
+        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
+            <button onclick="changeSubtitleSize(-0.1, 'subtitle-video2')">A−</button>
+            <span style="color:white; line-height:1; font-size: 13px;">字幕</span>
+            <button onclick="changeSubtitleSize(0.1, 'subtitle-video2')">A＋</button>
+            <button onclick="triggerFullscreen('video-wrapper-2')">全螢幕</button>
+        </div>
+      </div>
       <div id="video-wrapper-2" class="video-responsive-wrapper">
           <div id="player-container-video2"></div>
+          <div id="subtitle-video2" class="subtitle-overlay"></div>
+          <button id="exit-fs-btn-2" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-2')">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
       </div>
       
       <!-- Hyper 應援歌詞 -->
