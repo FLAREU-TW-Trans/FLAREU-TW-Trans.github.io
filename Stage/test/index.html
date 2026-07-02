@@ -8,24 +8,7 @@
   <title>《WAY 2 U》 《Hyper》歌詞應援合輯</title>
 
   <style>
-    /* ==================== 
-       1. 色彩變數與基礎設定
-       ==================== */
-    #lyrics-toggle-btn{ min-width:110px; }
-    #lyrics-toggle-btn:not(.active){ opacity:.45; }
-
-    html, body { 
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
-      background-color: var(--bg-body) !important; color: var(--text-main) !important; margin: 0 !important; padding: 0 !important; 
-      overflow-x: hidden !important; height: auto !important; -webkit-text-size-adjust: 100%;
-      display: flex; justify-content: center; transition: background-color 0.3s ease, color 0.3s ease; 
-    }
-
-    /* ==================== 
-       2. 版面與畫報排版
-       ==================== */
-    .header { background-color: var(--bg-content); padding: 20px 20px 0 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
-    .header h1 { font-size: 1.3rem; margin: 0; font-weight: 600; color: var(--text-main); line-height: 1.4; }
+    .content-wrapper { max-width: 800px; width: 100%; background: var(--bg-content); min-height: 100vh; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding-bottom: 20px; transition: all 0.3s ease; }
 
     .tabs-container { display: flex; width: 100%; border-bottom: 2px solid var(--tab-border); background-color: var(--tab-bg); }
     .tab-btn { flex: 1; background: none; border: none; padding: 14px 10px; font-size: 1rem; font-weight: bold; color: var(--tab-text); cursor: pointer; border-bottom: 3px solid transparent; }
@@ -33,10 +16,9 @@
 
     .tab-content { display: none; animation: fadeIn 0.3s ease; }
     .tab-content.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ==================== 
-       3. 影片區塊與字幕樣式
+       影片區塊與字幕樣式
        ==================== */
     .video-controls-bar {
         background: #111; padding: 10px; display: flex; justify-content: center; align-items: center; gap: 15px; border-bottom: 1px solid #333; flex-wrap: wrap;
@@ -56,7 +38,7 @@
     }
 
     /* ==================== 
-       6. 動態歌詞
+       動態歌詞
        ==================== */
     #way2u-lyrics, #hyper-lyrics{
       -webkit-overflow-scrolling: touch;
