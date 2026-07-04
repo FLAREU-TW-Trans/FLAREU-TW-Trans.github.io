@@ -28,6 +28,7 @@ html, body {
 /* 跳轉時間按鈕 */
 .title-container {
     display: flex;
+    flex-direction: column; /* 關鍵：改為縱向排列，讓標題在上下排 */
     justify-content: center; /* 水平置中 */
     align-items: center;   /* 垂直置中 */
     gap: 15px;          
@@ -42,7 +43,7 @@ html, body {
 .time-jump-group {
     display: flex;
     flex-wrap: wrap;    /* 按鈕太長時也支援自動換行 */
-    gap: 8px;           
+    gap: 10px;           
 }
 
 .time-btn {
