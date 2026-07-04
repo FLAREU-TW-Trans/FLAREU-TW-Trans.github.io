@@ -28,36 +28,40 @@ html, body {
 /* 跳轉時間按鈕 */
 .title-container {
     display: flex;
-    align-items: center; /* 垂直居中對齊 */
-    gap: 15px;          /* 標題與按鈕群組的間距 */
+    justify-content: center; /* 水平置中 */
+    align-items: center;   /* 垂直置中 */
+    gap: 15px;          
     margin-top: 20px;
     margin-bottom: 10px;
 }
 
 .title-container h2 {
-    margin: 0;          /* 清除標題預設的外邊距 */
+    margin: 0;         
 }
 
 .time-jump-group {
     display: flex;
-    gap: 8px;           /* 按鈕與按鈕之間的間距 */
+    flex-wrap: wrap;    /* 按鈕太長時也支援自動換行 */
+    gap: 8px;           
 }
 
 .time-btn {
-    background-color: #f0f0f0;
-    color: #333;
-    border: 1px solid #ccc;
-    padding: 6px 12px;
-    border-radius: 4px;
+    background-color: #f5f5f5; 
+    color: #555;              
+    border: 1px solid #e0e0e0; 
+    padding: 6px 14px;
+    border-radius: 6px;       
     cursor: pointer;
     font-size: 14px;
-    transition: all 0.2s ease;
+    font-weight: 500;
+    transition: all 0.25s ease-in-out; 
 }
 
 .time-btn:hover {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
+    background-color: #e2e2e2; 
+    color: #222;              
+    border-color: #d0d0d0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); 
 }
 
 </style>
