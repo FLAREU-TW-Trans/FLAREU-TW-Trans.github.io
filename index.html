@@ -109,9 +109,7 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 /* 月份搜尋 */
 .month-toggle-wrapper { margin-top: 8px; width: fit-content; min-width: 100px; }
 .month-expand-btn {
-    width: fit-content; /* 寬度隨字數縮小 */
-    white-space: nowrap; /* 避免換行 */
-    background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255, 255, 255, 0.3); padding: 6px 14px;
+    width: fit-content; white-space: nowrap; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255, 255, 255, 0.3); padding: 6px 14px;
     border-radius: 999px; font-size: 13px; cursor: pointer; transition: all 0.3s; text-align: left; display: flex; align-items: center; justify-content: space-between;
 }
 .month-expand-btn:hover { background: rgba(255, 255, 255, 0.3); }
@@ -136,18 +134,18 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 }
 .header-theme button:hover { background: rgba(255,255,255,0.9); color: #333; }
 
-/* ===== 靜態公告板 (Static News Board) ===== */
+/* ===== 公佈欄 ===== */
 .news-board {
     width: 100%; height: auto; min-height: 40px; background: #f0f4f8; border-bottom: 1px solid rgba(0, 100, 200, 0.05);
     display: flex; justify-content: center; align-items: center; white-space: normal; word-break: break-all; flex-wrap: wrap; 
-    padding: 8px 16px; box-sizing: border-box; font-size: 13px; color: #444; gap: 16px; transition: all 0.3s ease; /* 讓切換模式時顏色平滑過渡 */
+    padding: 8px 16px; box-sizing: border-box; font-size: 13px; color: #444; gap: 16px; transition: all 0.3s ease; 
 }
 
 /* 每一則公告的樣式 */
 .news-item {
     display: flex; align-items: center; white-space: nowrap; padding: 6px 14px 6px 8px; background: #ffffff; border: 1px solid rgba(180, 200, 220, 0.3);
     border-radius: 8px; box-shadow: 0 2px 6px rgba(0, 50, 100, 0.04); transition: transform 0.2s ease, box-shadow 0.2s ease;
-    color: #445566; cursor: pointer; box-sizing: border-box; font-size: clamp(14px, 1.2vw, 16px); line-height: 1.5; text-decoration: none; /* 移除超連結底線 */
+    color: #445566; cursor: pointer; box-sizing: border-box; font-size: clamp(14px, 1.2vw, 16px); line-height: 1.5; text-decoration: none; 
 }
 .news-item:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); background-color: #ffffff; color: #2a5a8a; }
 
@@ -254,7 +252,7 @@ footer {
 #backToTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
     
 body.modal-open #backToTop { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
-body.modal-open { overflow: hidden; /* 防止背景滾動 */ }
+body.modal-open { overflow: hidden; 
 
 /* =========================================
    🎨 THEME SYSTEMS
