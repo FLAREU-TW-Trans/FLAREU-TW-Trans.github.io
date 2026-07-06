@@ -301,36 +301,44 @@ body.theme-fancy .search-input-wrap input::placeholder { color: rgba(255, 255, 2
 body.theme-fancy .month-expand-btn { background: rgba(0, 0, 0, 0.4); border-color: rgba(255, 255, 255, 0.4); color: #fff; }
     
 /* 2. 🤍 白色模式 (Light) */
-body.theme-light { background: #f8f7f4; color: #374151; }
-body.theme-light header { height: 200px; background-image: none; background-color: #efede8; }
-body.theme-light .header-text { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255,255,255,0.8); }
-body.theme-light header h1 { color: #1f2937; text-shadow: none; }
-body.theme-light header p { color: #4b5563; }
-body.theme-light .about-btn { background: #faf9f6; color: #5a5a5a; border: 1px solid #dcdad5; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03); }
-body.theme-light .about-btn:hover { background: #ffffff; border-color: #c2c0ba; color: #2d3748; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); }
+body.theme-light { background: #ffffff; color: rgb(44, 49, 56); }
+body.theme-light header { height: 200px; background-image: none; background-color: #fcfcfc; border-bottom: 1px solid rgba(44, 49, 56, 0.15); box-shadow: none; }
+body.theme-light .header-text { background: #ffffff; border: 1px solid rgb(44, 49, 56); box-shadow: 0 8px 24px rgba(44, 49, 56, 0.06); }
+body.theme-light header h1 { color: rgb(44, 49, 56); font-weight: 500; text-shadow: none; }
+body.theme-light header p { color: rgba(44, 49, 56, 0.8); }
+/* 關於本站按鈕 */
+body.theme-light .about-btn { background: #ffffff; color: rgb(44, 49, 56); border: 1px solid rgb(44, 49, 56); font-weight: 500; }
+body.theme-light .about-btn:hover { background: rgb(44, 49, 56); color: #ffffff; }
 body.theme-light .about-content { background: #ffffff; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
 body.theme-light .qa-item { background: #faf9f6; border-left: 3px solid #dcdad5; }
 /* 搜尋模式 */
-body.theme-light .search-input-wrap input { background: #ffffff; color: #1f2937; border: 1px solid #cbd5e1; }
-body.theme-light .search-input-wrap input::placeholder { color: #94a3b8; }
+body.theme-light .search-input-wrap input { background: rgba(255, 255, 255, 0.7); color: rgb(44, 49, 56); border: 1px solid rgba(44, 49, 56, 0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+body.theme-light .search-input-wrap input::placeholder { color: rgba(44, 49, 56, 0.45); }
 /* 月份按鈕 */
-body.theme-light .month-expand-btn { background: #faf9f6; color: #4b5563; border: 1px solid #dcdad5; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03); transition: all 0.3s ease; }
-body.theme-light .month-expand-btn:hover { background: #ffffff; color: #1f2937; border-color: #c2c0ba; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+body.theme-light .month-expand-btn { background: rgba(255, 255, 255, 0.7); color: rgb(44, 49, 56); border: 1px solid rgba(44, 49, 56, 0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+body.theme-light .month-expand-btn:hover { background: rgb(44, 49, 56); color: #ffffff; border-color: rgb(44, 49, 56); }
+/* 月份彈窗 */
+body.theme-light .month-modal-content { background: #ffffff; border: 2px solid rgb(44, 49, 56); }
+body.theme-light .month-grid .time-btn { background: #ffffff; color: rgb(44, 49, 56); border: 1px solid rgba(44, 49, 56, 0.3); }
+body.theme-light .month-grid .time-btn.active { background: rgb(44, 49, 56); color: #ffffff !important; }
 /* 側邊欄位 */
-body.theme-light .content { background-color: #f8f7f4; background-image: none; }
-body.theme-light .sidebar { background-color: #f1efeb; background-image: none; border-right: 1px solid #e5e3de; }
-body.theme-light .sidebar button { background: transparent; color: #7f7f7f; box-shadow: none; }
+body.theme-light .content { background-color: #ffffff; background-image: none; }
+body.theme-light .sidebar { background-color: #fafafa; background-image: none; border-right: 1px solid rgba(44, 49, 56, 0.15) !important; }
+body.theme-light .sidebar button { background: transparent; color: rgba(44, 49, 56, 0.85); font-weight: 500; box-shadow: none; }
 body.theme-light .sidebar button:hover { background: rgba(255, 255, 255, 0.6); color: #1f2937; }
-body.theme-light .sidebar button.active { background: #ffffff; color: #2d3748; font-weight: 600; border: 1px solid #d1cfc9; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+body.theme-light .sidebar button.active { background: rgb(44, 49, 56); color: #ffffff; font-weight: 600; border: 1px solid #d1cfc9; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
 /* 卡片 */
-body.theme-light .card { background: #faf9f6; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04); border: 1px solid #e2e0d9;}
-body.theme-light .card:hover { background: #ffffff; border-color: var(--primary-color); }
-body.theme-light .card-credit { border-top-color: #f1efeb; color: #94a3b8;}
+body.theme-light .card { background: #ffffff; border: 1px solid rgba(44, 49, 56, 0.15); box-shadow: none; transition: all 0.2s ease-in-out; }
+body.theme-light .card:hover { border-color: rgb(44, 49, 56); box-shadow: 0 6px 20px rgba(44, 49, 56, 0.08); transform: translateY(-2px); }
+body.theme-light .card-credit { border-top: 1px solid rgba(44, 49, 56, 0.1); color: rgba(44, 49, 56, 0.5); }
 body.theme-light .search-highlight { box-shadow: 0 0 0 4px var(--primary-color); }
 /* 公告欄 */
-body.theme-light .news-board { background: #f1efeb; border-bottom: 1px solid #e5e3de; }
-body.theme-light .news-item { background: #faf9f6; border: 1px solid #e2e0d9; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02); color: #374151; }
-body.theme-light .news-item:hover { background: #fafafa; border-color: var(--primary-color); }
+body.theme-light .news-board { background: #f5f5f5; border-bottom: 1px solid rgba(44, 49, 56, 0.15) !important; }
+body.theme-light .news-item { background: #ffffff; border: 1px solid rgba(44, 49, 56, 0.2); color: rgb(44, 49, 56); }
+body.theme-light .news-item:hover { background: #ffffff; border-color: rgb(44, 49, 56); }
+/* 篩選人員按鈕 */
+body.theme-light .filter-btn { background: rgba(255, 255, 255, 0.8); color: rgb(44, 49, 56); border: 1px solid rgba(44, 49, 56, 0.2); font-weight: 500; }
+body.theme-light .filter-btn.active { background: rgb(44, 49, 56) !important; color: #ffffff !important; border-color: rgb(44, 49, 56) !important; box-shadow: 0 4px 10px rgba(44, 49, 56, 0.15); }
 
 /* 3. 🌙 深色模式 (Dark) */
 body.theme-dark { background: #0f172a; color: #f1f5f9; }
@@ -399,7 +407,6 @@ body.theme-dark .sns-divider { color: #334155; }
         background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(3px); border: 1px solid rgba(255,255,255,0.15);
     }
     header h1 { font-size: 24px; }
-    body.theme-light .header-text { background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255,255,255,0.4); }
     /* 關於本站 */
     .about-btn { width: 100%; /* 手機版撐滿 header-text 寬度 */ font-size: 13px; padding: 10px; }
     /* 側邊欄位 */
@@ -408,8 +415,6 @@ body.theme-dark .sns-divider { color: #334155; }
         width: 100%; padding: 10px 8px; flex-direction: row; border-right: none; gap: 6px;
         border-bottom: 1px solid rgba(0,0,0,0.1); overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; 
     }
-    body.theme-light .sidebar { border-bottom: 1px solid #e5e7eb; }
-    body.theme-dark .sidebar { border-bottom: 1px solid #334155; }
     .sidebar button { flex: 0 0 auto; width: auto; margin-bottom: 0; margin-right: 8px; padding: 8px 16px; font-size: 14px; justify-content: center; }
     .sidebar::-webkit-scrollbar { display: none; } /* 隱藏捲動條 (Chrome/Safari/Webkit) */
     .sidebar { scrollbar-width: none; } /* 隱藏捲動條 (Firefox) */
@@ -421,8 +426,12 @@ body.theme-dark .sns-divider { color: #334155; }
     #backToTop { bottom: 20px; right: 16px; width: 44px; height: 44px; }
     /* 公告欄 */
     .news-board { padding: 8px 12px; gap: 8px; justify-content: flex-start; position: relative; z-index: 5; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
-    body.theme-fancy .news-board { border-bottom: 1px solid rgba(255, 255, 255, 0.35); }
     .news-item { width: 100%; font-size: 14px; white-space: normal; }
+
+    body.theme-fancy .news-board { border-bottom: 1px solid rgba(255, 255, 255, 0.35); }
+    body.theme-light .header-text { background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255,255,255,0.4); }
+    body.theme-light .sidebar { border-bottom: 1px solid #e5e7eb; }
+    body.theme-dark .sidebar { border-bottom: 1px solid #334155; }
 }
 </style>
 </head>
