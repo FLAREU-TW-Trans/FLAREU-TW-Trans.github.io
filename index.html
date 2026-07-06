@@ -987,7 +987,7 @@ window.onload = function() {
     if (typeof videoData !== 'undefined') {
         renderAllCards(videoData);
         // 初始化篩選器
-        ['live', 'program', 'radio', 'media'].forEach(cat => {
+        ['live', 'program', 'radio', 'media', 'stage'].forEach(cat => {
             generateFilters(cat);
         });
     }
