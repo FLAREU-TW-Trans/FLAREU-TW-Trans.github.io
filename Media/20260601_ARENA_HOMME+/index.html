@@ -615,6 +615,9 @@
         document.getElementById('btn-dark').classList.remove('active');
         document.getElementById('btn-' + theme).classList.add('active');
     }
+
+    /* 紀錄即時表情範圍 */
+    document.getElementById('barrage-container').style.height = document.getElementById('barrage-height-slider').value + '%';
 </script>
     
 <script type="module">
