@@ -21,11 +21,9 @@
 <meta property="og:image" content="https://flareu-tw-trans.github.io/images/header.jpg"> 
 
 <style>
-html,
-body{
-
-    height:100%;
-
+html, body {
+    height: 100%;
+    margin: 0;
 }
 :root {
     --header-box-width: 320px; --primary-color: #60a5fa; --premium-yellow: #f59e0b; --gold-highlight: #fbbf24; 
@@ -166,48 +164,27 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 .tag-note { background: #f59e0b; color: #fff; }
 
 /* ===== Layout ===== */
-.container{
-    position:relative;
-    display:flex;
-    align-items:stretch;
-    height:calc(100vh - 320px);
-    overflow:hidden;
+.container {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    height: calc(100vh - 320px); 
+    overflow: hidden; 
 }
 
-.sidebar{
-
-    flex:0 0 260px;
-
-    width:260px;
-
-    padding:24px;
-
-    box-sizing:border-box;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:8px;
-
-    height:100%;
-
-    position:relative;
-
-    z-index:2;
-
-    overflow-y:auto;
-
-    align-self:flex-start;
-
-    background-image:url("images/sidebar.webp");
-
-    background-size:cover;
-
-    background-position:center;
-
-    border-right:1px solid rgba(255,255,255,.35);
-
+.sidebar {
+    flex: 0 0 260px;
+    width: 260px;
+    padding: 24px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+    overflow-y: auto;
+    align-self: flex-start;
 }
     
 .sidebar button {
@@ -217,56 +194,27 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 .sidebar button:hover { background: rgba(0,0,0,0.05); }
 .sidebar button.active { font-weight: 700; }
 
-.content{
-
-    flex:1;
-
-    min-width:0;
-
-    height:100%;
-
-    overflow-y:auto;
-
-    overflow-x:hidden;
-
-    padding:32px;
-
-    scroll-behavior:smooth;
-
-    box-sizing:border-box;
-
-    position:relative;
-
-    z-index:1;
-
-    background:transparent;
-
-    background-image:url("images/content.webp");
-
-    background-size:cover;
-
-    background-position:center top;
-
-    background-repeat:no-repeat;
-
+.content {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    overflow-y: auto; 
+    overflow-x: hidden;
+    padding: 32px;
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
 }
 
-.content-bg{
-
-    position:absolute;
-
-    top:0;
-
-    right:0;
-
-    bottom:0;
-
-    left:260px;
-
-    z-index:0;
-
-    pointer-events:none;
-
+.content-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 260px;
+    z-index: 0;
+    pointer-events: none; 
 }
 
 .section { display: none; }
@@ -353,32 +301,20 @@ body.modal-open { overflow: hidden; }
    ========================================= */
 
 /* 1. 🌸 花俏模式 (Fancy) */
-body.theme-fancy{
-
-    background:#ffffff;
-
+body.theme-fancy {
+    background: #ffffff;
 }
-body.theme-fancy .content-bg{
-
-    background-image:url("images/content.webp");
-
-    background-repeat:no-repeat;
-
-    background-size:cover;
-
-    background-position:center top;
-
+body.theme-fancy .content-bg {
+    background-image: url("images/content.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center top;
 }
-body.theme-fancy .sidebar{
-
-    background-image:url("images/sidebar.webp");
-
-    background-size:cover;
-
-    background-position:center;
-
-    border-right:1px solid rgba(255,255,255,.35);
-
+body.theme-fancy .sidebar {
+    background-image: url("images/sidebar.webp");
+    background-size: cover;
+    background-position: center;
+    border-right: 1px solid rgba(255,255,255,.35);
 }
 body.theme-fancy .sidebar button { background: rgba(255, 255, 255, 0.8); color: #333; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 body.theme-fancy .sidebar button:hover { background: #fff; transform: translateX(4px); }
@@ -535,19 +471,47 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     }
     header h1 { font-size: 24px; }
     /* 關於本站 */
-    .about-btn { width: 100%; /* 手機版撐滿 header-text 寬度 */ font-size: 13px; padding: 10px; }
+    .about-btn { width: 100%; font-size: 13px; padding: 10px; }
     /* 側邊欄位 */
-    .container { flex-direction: column; }    
-    .sidebar { 
-        width: 100%; padding: 10px 8px; flex-direction: row; border-right: none; gap: 6px;
-        border-bottom: 1px solid rgba(0,0,0,0.1); overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; 
+    .container {
+        display: flex;
+        flex-direction: column; 
+        height: auto;           
+        overflow: visible;      
     }
-    .sidebar button { flex: 0 0 auto; width: auto; margin-bottom: 0; margin-right: 8px; padding: 8px 16px; font-size: 14px; justify-content: center; }
+
+    .sidebar {
+        flex: auto;
+        width: 100%;           
+        height: auto;          
+        flex-direction: row;   
+        overflow-x: auto;       
+        overflow-y: hidden;
+        padding: 12px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,.35);
+        position: sticky;      
+        top: 0;
+        z-index: 10;
+    }
+    .sidebar button { flex: 0 0 auto; width: auto; margin-bottom: 0; margin-right: 8px; padding: 8px 16px; font-size: 14px; justify-content: center; white-space: nowrap; }
     .sidebar::-webkit-scrollbar { display: none; } /* 隱藏捲動條 (Chrome/Safari/Webkit) */
     .sidebar { scrollbar-width: none; } /* 隱藏捲動條 (Firefox) */
     .sidebar button { flex: 0 0 auto; width: auto; margin: 0; padding: 6px 10px; font-size: 13px; justify-content: center; }
     /* 內容 */
-    .content { padding: 20px; }
+    .content {
+        height: auto;           
+        overflow: visible;      
+        padding: 20px;          
+    }
+
+    .content-bg {
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: fixed;        
+        top: 0;
+    }
     .card-grid { grid-template-columns: 1fr; }
     /* 回到頂端 */
     #backToTop { bottom: 20px; right: 16px; width: 44px; height: 44px; }
@@ -555,36 +519,10 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     .news-board { padding: 8px 12px; gap: 8px; justify-content: flex-start; position: relative; z-index: 5; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
     .news-item { width: 100%; font-size: 14px; white-space: normal; }
 
-    body.theme-fancy .sidebar{
-
-    background-size:cover;
-
-    background-position:center;
-
-}
-
-body.theme-fancy .content{
-
-    background-size:contain;
-
-    background-position:top center;
-
-    background-repeat:no-repeat;
-
-}
-
-    .content-bg{
-
-        left:0;
-
-    }
-
-    body.theme-fancy .content-bg{
-
-        background-size:contain;
-
-        background-position:top center;
-
+    body.theme-fancy .content-bg {
+        background-size: 100% auto; 
+        background-position: top center;
+        background-repeat: no-repeat;
     }
     
     body.theme-fancy .news-board { border-bottom: 1px solid rgba(255, 255, 255, 0.35); }
