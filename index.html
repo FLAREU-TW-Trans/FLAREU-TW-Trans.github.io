@@ -155,9 +155,9 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 }
 
 /* 不同類型的標籤顏色 */
-.tag-new { background: var(--primary-color); color: #fff; }
-.tag-live { background: #ef4444; color: #fff; }
-.tag-note { background: #f59e0b; color: #fff; }
+.tag-new { background: rgba(70, 110, 155, 0.85) !important; color: #ffffff !important; border: none !important; }
+.tag-live { background: rgba(215, 95, 95, 0.85) !important; color: #ffffff !important; border: none !important; }
+.tag-note { background: rgba(235, 160, 50, 0.9) !important; color: #ffffff !important; border: none !important; }
 
 /* ===== Layout ===== */
 .container { display: flex; min-height: calc(100vh - 260px); }
@@ -270,11 +270,7 @@ body.theme-fancy .filter-btn { background: rgba(255, 255, 255, 0.55); color: #33
 body.theme-fancy .filter-btn.active { background: rgba(145, 160, 185, 0.9); color: #fff; box-shadow: 0 4px 12px rgba(6, 36, 32, 0.12); }
 body.theme-fancy .card { box-shadow: var(--shadow-md); }
 body.theme-fancy .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
-body.theme-fancy .search-highlight { 
-    box-shadow: 0 0 0 5px rgb(168, 198, 182) !important; 
-    border-radius: 6px; 
-    opacity: 1 !important; 
-}
+body.theme-fancy .search-highlight { box-shadow: 0 0 0 5px rgb(118, 158, 132) !important; border-radius: 6px; opacity: 1 !important; }
 /* 公布欄 */
 body.theme-fancy .news-board {
     background: 
@@ -312,7 +308,7 @@ body.theme-fancy .tag-live {
     border: none !important; 
 }
 body.theme-fancy .tag-note { 
-    background: rgba(210, 145, 60, 0.85) !important; 
+    background: rgba(235, 160, 50, 0.9) !important;
     color: #ffffff !important; 
     border: none !important; 
 }
@@ -467,17 +463,17 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     header h1 { font-size: 24px; }
     /* 關於本站 */
     .about-btn { width: 100%; font-size: 13px; padding: 10px; }
+    /* 公告欄 */
+    .news-board { padding: 8px 12px; gap: 8px; justify-content: flex-start; position: relative; z-index: 5; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+    .news-board .news-tag { font-size: 13px !important; padding: 2px 6px; }
+    .news-item { width: 100%; font-size: 15px; white-space: normal; }
     /* 側邊欄位 */
     .container { flex-direction: column; }    
     .sidebar { 
         width: 100%; padding: 10px 8px; flex-direction: row; border-right: none; gap: 6px;
         border-bottom: 1px solid rgba(0,0,0,0.1); overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none;
     }
-    .sidebar button {
-        margin: 0 !important;
-        padding: 6px 10px;
-        flex: 0 0 auto !important;
-    }
+    .sidebar button { margin: 0 !important; padding: 6px 10px; flex: 0 0 auto !important; }
     .sidebar::-webkit-scrollbar { display: none; } /* 隱藏捲動條 (Chrome/Safari/Webkit) */
     .sidebar button { flex: 0 0 auto; width: auto; margin: 0; padding: 6px 10px; font-size: 13px; justify-content: center; }
     /* 內容 */
@@ -485,10 +481,6 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     .card-grid { grid-template-columns: 1fr; }
     /* 回到頂端 */
     #backToTop { bottom: 20px; right: 16px; width: 44px; height: 44px; }
-    /* 公告欄 */
-    .news-board { padding: 8px 12px; gap: 8px; justify-content: flex-start; position: relative; z-index: 5; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
-    .news-board .news-tag { font-size: 14px !important; padding: 2px 6px; }
-    .news-item { width: 100%; font-size: 15px; white-space: normal; }
 
     body.theme-fancy .content { background-image: url("images/content.webp"); background-attachment: scroll; background-size: 100% auto; background-position: center 0px; background-repeat: repeat-y; background-origin: padding-box; }
     body.theme-fancy .news-board { border-bottom: 1px solid rgba(255, 255, 255, 0.35); }
