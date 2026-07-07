@@ -21,10 +21,6 @@
 <meta property="og:image" content="https://flareu-tw-trans.github.io/images/header.jpg"> 
 
 <style>
-html, body {
-    height: 100%;
-    margin: 0;
-}
 :root {
     --header-box-width: 320px; --primary-color: #60a5fa; --premium-yellow: #f59e0b; --gold-highlight: #fbbf24; 
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -34,7 +30,7 @@ html, body {
 
 body {
     margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-    background: #ffffff; color: #333; transition: background-color 0.3s, color 0.3s; overflow:hidden;
+    background: #ffffff; color: #333; transition: background-color 0.3s, color 0.3s;
 }
 
 /* ===== Header ===== */
@@ -164,40 +160,12 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 .tag-note { background: #f59e0b; color: #fff; }
 
 /* ===== Layout ===== */
-.container{
+.container { display: flex; min-height: calc(100vh - 260px); }
 
-    display:flex;
-
-    align-items:stretch;
-
-    position:relative;
-
-    z-index:2;
-
+.sidebar {
+    width: 260px; padding: 24px; background-size: cover; background-position: center; box-sizing: border-box;
+    position: relative; z-index: 2; border-right: none; display: flex; flex-direction: column; gap: 8px;
 }
-
-.sidebar{
-
-    flex:0 0 260px;
-
-    width:260px;
-
-    padding:24px;
-
-    box-sizing:border-box;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:8px;
-
-    position:relative;
-
-    z-index:5;
-
-}
-    
 .sidebar button {
     width: 100%; padding: 14px 16px; margin-bottom: 0; border: none; background: transparent; cursor: pointer; font-size: 16px;
     font-weight: 500; border-radius: 12px; transition: all 0.2s ease; text-align: left; color: inherit; display: flex; align-items: center;
@@ -205,41 +173,7 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 .sidebar button:hover { background: rgba(0,0,0,0.05); }
 .sidebar button.active { font-weight: 700; }
 
-.content{
-
-    flex:1;
-
-    min-width:0;
-
-    padding:32px;
-
-    box-sizing:border-box;
-
-    position:relative;
-
-    z-index:3;
-
-    background:transparent;
-
-}
-
-.content-background{
-
-    position:absolute;
-
-    top:0;
-
-    right:0;
-
-    bottom:0;
-
-    left:260px;
-
-    z-index:1;
-
-    pointer-events:none;
-
-}
+.content { flex: 1; padding: 32px; background-size: cover; background-position: center; }
 
 .section { display: none; }
 .section.active { display: block; animation: fadeIn 0.3s ease; }
@@ -325,31 +259,8 @@ body.modal-open { overflow: hidden; }
    ========================================= */
 
 /* 1. 🌸 花俏模式 (Fancy) */
-body.theme-fancy {
-    background: #ffffff;
-}
-body.theme-fancy .content-background{
-
-    background-image:url("images/content.webp");
-
-    background-repeat:no-repeat;
-
-    background-position:center top;
-
-    background-size:cover;
-
-}
-body.theme-fancy .sidebar{
-
-    background-image:url("images/sidebar.webp");
-
-    background-size:cover;
-
-    background-position:center;
-
-    border-right:1px solid rgba(255,255,255,.35);
-
-}
+body.theme-fancy .sidebar { background-image: url("images/sidebar.webp"); border-right: 1px solid rgba(255,255,255,0.4); }
+body.theme-fancy .content { background-image: url("images/content.webp"); }
 body.theme-fancy .sidebar button { background: rgba(255, 255, 255, 0.8); color: #333; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 body.theme-fancy .sidebar button:hover { background: #fff; transform: translateX(4px); }
 body.theme-fancy .sidebar button.active { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); color: var(--premium-yellow); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
@@ -505,83 +416,19 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     }
     header h1 { font-size: 24px; }
     /* 關於本站 */
-    .about-btn { width: 100%; font-size: 13px; padding: 10px; }
+    .about-btn { width: 100%; /* 手機版撐滿 header-text 寬度 */ font-size: 13px; padding: 10px; }
     /* 側邊欄位 */
-    .container{
-
-        display:flex;
-
-        flex-direction:column;
-
+    .container { flex-direction: column; }    
+    .sidebar { 
+        width: 100%; padding: 10px 8px; flex-direction: row; border-right: none; gap: 6px;
+        border-bottom: 1px solid rgba(0,0,0,0.1); overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; 
     }
-
-    .sidebar{
-
-    width:100%;
-
-    flex:none;
-
-    display:flex;
-
-    flex-direction:row;
-
-    gap:8px;
-
-    padding:10px;
-
-    overflow-x:auto;
-
-    overflow-y:hidden;
-
-    white-space:nowrap;
-
-    position:sticky;
-
-    top:0;
-
-    z-index:20;
-
-    box-sizing:border-box;
-
-    }
-    .sidebar button { flex: 0 0 auto; width: auto; margin-bottom: 0; margin-right: 8px; padding: 8px 16px; font-size: 14px; justify-content: center; white-space: nowrap; }
+    .sidebar button { flex: 0 0 auto; width: auto; margin-bottom: 0; margin-right: 8px; padding: 8px 16px; font-size: 14px; justify-content: center; }
     .sidebar::-webkit-scrollbar { display: none; } /* 隱藏捲動條 (Chrome/Safari/Webkit) */
     .sidebar { scrollbar-width: none; } /* 隱藏捲動條 (Firefox) */
     .sidebar button { flex: 0 0 auto; width: auto; margin: 0; padding: 6px 10px; font-size: 13px; justify-content: center; }
     /* 內容 */
-    .content{
-
-    flex:none;
-
-    width:100%;
-
-    min-height:100vh;
-
-    padding:20px;
-
-    box-sizing:border-box;
-
-    }
-
-    .content-background{
-
-    position:absolute;
-
-    left:0;
-
-    top:0;
-
-    right:0;
-
-    bottom:0;
-
-    min-height:100%;
-
-    z-index:1;
-
-    pointer-events:none;
-
-    }
+    .content { padding: 20px; }
     .card-grid { grid-template-columns: 1fr; }
     /* 回到頂端 */
     #backToTop { bottom: 20px; right: 16px; width: 44px; height: 44px; }
@@ -589,18 +436,6 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     .news-board { padding: 8px 12px; gap: 8px; justify-content: flex-start; position: relative; z-index: 5; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
     .news-item { width: 100%; font-size: 14px; white-space: normal; }
 
-    body.theme-fancy .content-background{
-
-    background-image:url("images/content.webp");
-
-    background-size:contain;
-
-    background-position:top center;
-
-    background-repeat:no-repeat;
-
-    }
-    
     body.theme-fancy .news-board { border-bottom: 1px solid rgba(255, 255, 255, 0.35); }
     body.theme-light .header-text { background: #ffffff !important; border: 1px solid rgb(44, 49, 56) !important;  }
     body.theme-light .sidebar { border-bottom: 1px solid #e5e7eb; }
@@ -669,57 +504,51 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     </a>
 </div>
 
-<div class="main-layout">
+<div class="container">
+    <nav class="sidebar">
+        <button class="active" onclick="switchTab('live', this)">📺 直播</button>
+        <button onclick="switchTab('program', this)">🎬 節目</button>
+        <button onclick="switchTab('radio', this)">📻 電台</button>
+        <button onclick="switchTab('media', this)">🎤 媒體</button>
+        <button onclick="switchTab('stage', this)">🎶 舞台</button>
+        <button onclick="switchTab('favorites', this)" id="fav-nav-btn">❤️ 收藏</button>
+    </nav>
 
-    <div class="content-background"></div>
+    <main class="content">
+        <div id="live" class="section active">
+            <div id="live-filters" class="filter-bar"></div>
+            <div class="card-grid" id="live-grid"></div>
+        </div>
 
-    <div class="container">
+        <div id="program" class="section">
+            <div id="program-filters" class="filter-bar"></div>
+            <div class="card-grid" id="program-grid"></div>
+        </div>
 
-        <nav class="sidebar">
-            <button class="active" onclick="switchTab('live', this)">📺 直播</button>
-            <button onclick="switchTab('program', this)">🎬 節目</button>
-            <button onclick="switchTab('radio', this)">📻 電台</button>
-            <button onclick="switchTab('media', this)">🎤 媒體</button>
-            <button onclick="switchTab('stage', this)">🎶 舞台</button>
-            <button onclick="switchTab('favorites', this)" id="fav-nav-btn">❤️ 收藏</button>
-        </nav>
+        <div id="radio" class="section">
+            <div id="radio-filters" class="filter-bar"></div>
+            <div class="card-grid" id="radio-grid"></div>
+        </div>
 
-        <main class="content">
-            <div id="live" class="section active">
-                <div id="live-filters" class="filter-bar"></div>
-                <div class="card-grid" id="live-grid"></div>
+        <div id="media" class="section">
+            <div id="media-filters" class="filter-bar"></div>
+            <div class="card-grid" id="media-grid"></div>
+        </div>
+
+        <div id="stage" class="section">
+            <div id="stage-filters" class="filter-bar"></div>
+            <div class="card-grid" id="stage-grid"></div>
+        </div>
+
+        <div id="favorites" class="section">
+            <div class="filter-bar">
+                <h3 class="section-title">我的收藏清單</h3>
             </div>
-
-            <div id="program" class="section">
-                <div id="program-filters" class="filter-bar"></div>
-                <div class="card-grid" id="program-grid"></div>
+            <div class="card-grid" id="favorites-grid">
+                <!-- 收藏的卡片會渲染在這裡 -->
             </div>
-
-            <div id="radio" class="section">
-                <div id="radio-filters" class="filter-bar"></div>
-                <div class="card-grid" id="radio-grid"></div>
-            </div>
-
-            <div id="media" class="section">
-                <div id="media-filters" class="filter-bar"></div>
-                <div class="card-grid" id="media-grid"></div>
-            </div>
-
-            <div id="stage" class="section">
-                <div id="stage-filters" class="filter-bar"></div>
-                <div class="card-grid" id="stage-grid"></div>
-            </div>
-
-            <div id="favorites" class="section">
-                <div class="filter-bar">
-                    <h3 class="section-title">我的收藏清單</h3>
-                </div>
-                <div class="card-grid" id="favorites-grid">
-                    <!-- 收藏的卡片會渲染在這裡 -->
-                </div>
-            </div>
-        </main>
-    </div>
+        </div>
+    </main>
 </div>
 
 <footer>
