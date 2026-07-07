@@ -263,12 +263,14 @@ body.theme-fancy .sidebar { background-image: url("images/sidebar.webp"); border
 body.theme-fancy .content { background-image: url("images/content.webp"); }
 body.theme-fancy .sidebar button { background: rgba(255, 255, 255, 0.8); color: #333; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 body.theme-fancy .sidebar button:hover { background: #fff; transform: translateX(4px); }
-body.theme-fancy .sidebar button.active { background: rgba(186, 202, 229, 0.75); backdrop-filter: blur(4px); color: rgb(6, 36, 32); box-shadow: 0 4px 12px rgba(6, 36, 32, 0.1); }
+body.theme-fancy .sidebar button.active { 
+    background: rgba(235, 240, 250, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: rgb(6, 36, 32); 
+    font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 4px 14px rgba(6, 36, 32, 0.15); }
 body.theme-fancy .filter-btn { background: rgba(255, 255, 255, 0.55); color: #333; }
 body.theme-fancy .filter-btn.active { background: rgba(145, 160, 185, 0.9); color: #fff; box-shadow: 0 4px 12px rgba(6, 36, 32, 0.12); }
 body.theme-fancy .card { box-shadow: var(--shadow-md); }
 body.theme-fancy .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
-body.theme-fancy .search-highlight { box-shadow: 0 0 0 4px rgba(186, 202, 229, 0.6); background-color: rgba(186, 202, 229, 0.3); border-radius: 4px; }
+body.theme-fancy .search-highlight { box-shadow: 0 0 0 4px rgb(135, 155, 185) !important; border-radius: 6px; opacity: 1 !important; }
 /* 公布欄 */
 body.theme-fancy .news-board {
     background: 
@@ -287,10 +289,10 @@ body.theme-fancy .news-board {
         inset 0 1px 1px rgba(255, 255, 255, 0.2),
         0 4px 20px rgba(6, 36, 32, 0.06); 
         
-    color: #ffffff; 
-    font-weight: 500;
+    color: rgb(6, 36, 32);
+    font-weight: 600;
     letter-spacing: 0.5px;
-    text-shadow: 0 1px 3px rgba(6, 36, 32, 0.2); 
+    text-shadow: none;
 }
 body.theme-fancy .news-tag { background: rgba(255, 255, 255, 0.2); color: #f3f4f6; border: 1px solid rgba(255,255,255,0.25); }
 /* 標籤顏色 */
