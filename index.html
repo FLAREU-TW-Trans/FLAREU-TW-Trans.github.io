@@ -270,7 +270,7 @@ body.theme-fancy .filter-btn { background: rgba(255, 255, 255, 0.55); color: #33
 body.theme-fancy .filter-btn.active { background: rgba(145, 160, 185, 0.9); color: #fff; box-shadow: 0 4px 12px rgba(6, 36, 32, 0.12); }
 body.theme-fancy .card { box-shadow: var(--shadow-md); }
 body.theme-fancy .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
-body.theme-fancy .search-highlight { box-shadow: 0 0 0 5px rgb(118, 158, 132) !important; border-radius: 6px; opacity: 1 !important; }
+body.theme-fancy .search-highlight { box-shadow: 0 0 0 5px rgb(81, 98, 122) !important; border-radius: 6px; opacity: 1 !important; }
 /* 公布欄 */
 body.theme-fancy .news-board {
     background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.3) 0%, transparent 50%), linear-gradient(135deg, rgba(210, 220, 235, 0.65), rgba(185, 198, 218, 0.7));
@@ -289,6 +289,13 @@ body.theme-fancy .news-item:hover { background: rgba(255, 255, 255, 0.7) !import
 /* 搜尋模式 */
 body.theme-fancy .search-input-wrap input { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.5); color: #fff; }
 body.theme-fancy .search-input-wrap input::placeholder { color: rgba(255, 255, 255, 0.9); }
+body.theme-fancy .search-results button {
+    background: rgb(244, 242, 250) !important; color: rgb(121, 136, 159) !important; border: 1px solid rgba(121, 136, 159, 0.4) !important;
+    box-shadow: 0 2px 4px rgba(121, 136, 159, 0.1); transition: all 0.2s ease;
+}
+body.theme-fancy .search-results button:hover {
+    background: rgb(121, 136, 159) !important; color: #ffffff !important; border-color: rgb(121, 136, 159) !important; box-shadow: 0 4px 8px rgba(121, 136, 159, 0.2);
+}
 /* 月份按鈕 */
 body.theme-fancy .month-expand-btn { background: rgba(0, 0, 0, 0.4); border-color: rgba(255, 255, 255, 0.4); color: #fff; }
 /* footer */
@@ -456,9 +463,8 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
         width: 100%; padding: 10px 8px; flex-direction: row; border-right: none; gap: 6px;
         border-bottom: 1px solid rgba(0,0,0,0.1); overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none;
     }
-    .sidebar button { margin: 0 !important; padding: 6px 10px; flex: 0 0 auto !important; }
-    .sidebar::-webkit-scrollbar { display: none; } /* 隱藏捲動條 (Chrome/Safari/Webkit) */
     .sidebar button { flex: 0 0 auto; width: auto; margin: 0; padding: 6px 10px; font-size: 13px; justify-content: center; }
+    .sidebar::-webkit-scrollbar { display: none; } /* 隱藏捲動條 (Chrome/Safari/Webkit) */
     /* 內容 */
     .content { padding: 20px; }
     .card-grid { grid-template-columns: 1fr; }
