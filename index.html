@@ -260,11 +260,8 @@ body.modal-open { overflow: hidden; }
 
 /* 1. 🌸 花俏模式 (Fancy) */
 body.theme-fancy .sidebar { background-image: url("images/sidebar.webp"); border-right: 1px solid rgba(255,255,255,0.4); }
-body.theme-fancy .content { background-image: none; position: relative; clip-path: inset(0 0 0 0); }
-body.theme-fancy .content::before {
-    content: ""; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background-image: url("images/content.webp"); background-attachment: fixed;
-    background-size: cover; background-position: center; z-index: -1; pointer-events: none; 
-}
+body.theme-fancy .content { background-image: none; position: relative; }
+body.theme-fancy { background-image: url("images/content.webp"); background-attachment: fixed; background-size: cover; background-position: center; }
 body.theme-fancy .sidebar button { background: rgba(255, 255, 255, 0.8); color: #333; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 body.theme-fancy .sidebar button:hover { background: #fff; transform: translateX(4px); }
 body.theme-fancy .sidebar button.active { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); color: var(--premium-yellow); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
@@ -440,7 +437,7 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     .news-board { padding: 8px 12px; gap: 8px; justify-content: flex-start; position: relative; z-index: 5; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
     .news-item { width: 100%; font-size: 14px; white-space: normal; }
 
-    body.theme-fancy .content::before { background-size: 100% auto; background-repeat: no-repeat; background-position: top center; }
+    body.theme-fancy { background-size: 100% auto; background-repeat: no-repeat; background-position: top center; }
     body.theme-fancy .news-board { border-bottom: 1px solid rgba(255, 255, 255, 0.35); }
     body.theme-light .header-text { background: #ffffff !important; border: 1px solid rgb(44, 49, 56) !important;  }
     body.theme-light .sidebar { border-bottom: 1px solid #e5e7eb; }
