@@ -294,15 +294,19 @@ body.theme-fancy .month-expand-btn { background: rgba(0, 0, 0, 0.4); border-colo
 /* footer */
 body.theme-fancy footer {
     background: rgba(240, 244, 248, 0.65); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 -4px 24px rgba(100, 115, 135, 0.04); color: rgba(45, 58, 75, 0.8); padding: 24px 20px 32px 20px; display: flex; flex-direction: column; align-items: center;
+    box-shadow: 0 -4px 24px rgba(100, 115, 135, 0.04); color: rgb(119, 135, 157); padding: 24px 20px 32px 20px; display: flex; flex-direction: column; align-items: center;
 }
-body.theme-fancy .footer-sns { color: rgb(45, 58, 75); display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 12px; }
-body.theme-fancy .footer-sns .sns-btn { color: rgb(45, 58, 75) !important; text-decoration: none; transition: color 0.2s ease, border-color 0.2s ease; }
+body.theme-fancy .footer-sns { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 12px; }
+body.theme-fancy .footer-sns .sns-btn { 
+    color: rgb(119, 135, 157) !important; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(119, 135, 157, 0.3) !important;
+    text-decoration: none !important; transition: all 0.25s ease; 
+}
 body.theme-fancy .footer-sns .sns-btn:hover { 
-    color: #ffffff !important; background: rgb(24, 38, 58) !important; border-color: rgb(24, 38, 58) !important; text-decoration: none !important; 
-    transform: translateY(-2px); box-shadow: 0 4px 10px rgba(24, 38, 58, 0.15); }
+    color: #ffffff !important; background: rgb(119, 135, 157) !important; border-color: rgb(119, 135, 157) !important; text-decoration: none !important; 
+    transform: translateY(-2px); box-shadow: 0 4px 12px rgba(119, 135, 157, 0.2); 
+}
 body.theme-fancy .sns-divider { display: none !important; }
-body.theme-fancy .footer-info { color: rgba(45, 58, 75, 0.55); margin-top: 16px; font-size: 14px; text-align: center; }
+body.theme-fancy .footer-info { color: rgba(119, 135, 157, 0.7); margin-top: 20px; font-size: 14px; text-align: center; }
     
 /* 2. 🤍 白色模式 (Light) */
 body.theme-light { background: #ffffff; color: rgb(44, 49, 56); }
@@ -448,11 +452,12 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     body.theme-fancy .news-board { border-bottom: 1px solid rgba(255, 255, 255, 0.35); }
     body.theme-fancy .sidebar button.active { 
         margin: 0 !important; padding: 6px 10px !important; flex: 0 0 auto !important; display: inline-flex !important; justify-content: center !important;
-        transform: none !important; letter-spacing: normal !important; }
+        transform: none !important; letter-spacing: normal !important; 
+    }
     body.theme-fancy .sidebar button.active::before, body.theme-fancy .sidebar button.active::after { display: none !important; content: "" !important; margin: 0 !important; }
-    body.theme-fancy .sns-divider.pc-only { display: none !important; }
+    body.theme-fancy .footer-sns .responsive-break { display: block !important; flex-basis: 100%; height: 0; }
     body.theme-fancy .footer-sns { row-gap: 10px; }
-    body.theme-fancy .footer-sns .chueiliyu-btn { flex-basis: 100%; width: max-content !important; margin: 4px auto 0 auto !important; text-align: center; }
+    body.theme-fancy .footer-sns .chueiliyu-btn { flex-basis: auto !important; width: max-content !important; display: inline-block !important; margin: 4px 0 0 0 !important; }
     body.theme-fancy .footer-info { margin-top: 14px; }
     body.theme-light .header-text { background: #ffffff !important; border: 1px solid rgb(44, 49, 56) !important;  }
     body.theme-light .sidebar { border-bottom: 1px solid #e5e7eb; }
@@ -461,6 +466,10 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     body.theme-dark .header-text { background: rgba(31, 34, 38, 0.95) !important; border: 1px solid rgb(68, 75, 84) !important; border-radius: 20px; margin-top: 8px !important; }
     body.theme-dark .sidebar { border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; border-right: none !important; }
     body.theme-dark .news-board { border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; }
+}
+/* 電腦版 */
+@media (min-width: 769px) {
+    .responsive-break { display: none !important; }
 }
 </style>
 </head>
@@ -584,7 +593,7 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
             Youtube
         </a>
         
-        <span class="sns-divider pc-only">/</span>
+        <div class="responsive-break"></div>
         
         <a href="https://chueiliyutwtrans.github.io/chueiliyu-tw-translation/" target="_blank" class="sns-btn text-link chueiliyu-btn" aria-label="ChueiLiYu">
             崔立于台灣翻譯站
