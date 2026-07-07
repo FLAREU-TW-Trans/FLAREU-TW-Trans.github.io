@@ -273,58 +273,19 @@ body.theme-fancy .card:hover { transform: translateY(-5px); box-shadow: var(--sh
 body.theme-fancy .search-highlight { box-shadow: 0 0 0 5px rgb(118, 158, 132) !important; border-radius: 6px; opacity: 1 !important; }
 /* 公布欄 */
 body.theme-fancy .news-board {
-    background: 
-        radial-gradient(circle at top left, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
-        linear-gradient(135deg, rgba(210, 220, 235, 0.65), rgba(185, 198, 218, 0.7));
-    
-    backdrop-filter: blur(20px); 
-    -webkit-backdrop-filter: blur(20px);
-    
-    border-top: 1px solid rgba(255, 255, 255, 0.45);
-    border-bottom: 1px solid rgba(100, 115, 135, 0.2); 
-    
-    box-shadow: 
-        inset 0 1px 2px rgba(255, 255, 255, 0.3),
-        0 6px 24px rgba(100, 115, 135, 0.08); 
-        
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    text-shadow: none;
+    background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.3) 0%, transparent 50%), linear-gradient(135deg, rgba(210, 220, 235, 0.65), rgba(185, 198, 218, 0.7));
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.45); border-bottom: 1px solid rgba(100, 115, 135, 0.2); 
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3), 0 6px 24px rgba(100, 115, 135, 0.08); 
+    font-weight: 500; letter-spacing: 0.5px; text-shadow: none;
 }
-body.theme-fancy .news-tag { 
-    background: rgba(255, 255, 255, 0.3); 
-    color: rgb(28, 45, 70); 
-    border: 1px solid rgba(255,255,255,0.4); 
-}
-/* 標籤顏色 */
-body.theme-fancy .tag-new { 
-    background: rgba(70, 110, 155, 0.85) !important; 
-    color: #ffffff !important; 
-    border: none !important; 
-}
-body.theme-fancy .tag-live { 
-    background: rgba(215, 95, 95, 0.85) !important; 
-    color: #ffffff !important; 
-    border: none !important; 
-}
-body.theme-fancy .tag-note { 
-    background: rgba(235, 160, 50, 0.9) !important;
-    color: #ffffff !important; 
-    border: none !important; 
-}
+body.theme-fancy .news-tag { background: rgba(255, 255, 255, 0.3); color: rgb(28, 45, 70); border: 1px solid rgba(255,255,255,0.4); }
 /* 公告小卡片 */
 body.theme-fancy .news-item { 
-    background: rgba(255, 255, 255, 0.45) !important; 
-    border: 1px solid rgba(255, 255, 255, 0.5) !important; 
-    box-shadow: 0 4px 12px rgba(100, 115, 135, 0.06) !important; 
-    color: rgb(28, 45, 70) !important; 
-    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.45) !important; border: 1px solid rgba(255, 255, 255, 0.5) !important; box-shadow: 0 4px 12px rgba(100, 115, 135, 0.06) !important; 
+    color: rgb(28, 45, 70) !important; transition: all 0.2s ease;
 }
-
-body.theme-fancy .news-item:hover { 
-    background: rgba(255, 255, 255, 0.7) !important; 
-    box-shadow: 0 4px 16px rgba(100, 115, 135, 0.12) !important; 
-}
+body.theme-fancy .news-item:hover { background: rgba(255, 255, 255, 0.7) !important; box-shadow: 0 4px 16px rgba(100, 115, 135, 0.12) !important; }
 /* 搜尋模式 */
 body.theme-fancy .search-input-wrap input { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.5); color: #fff; }
 body.theme-fancy .search-input-wrap input::placeholder { color: rgba(255, 255, 255, 0.9); }
@@ -332,11 +293,11 @@ body.theme-fancy .search-input-wrap input::placeholder { color: rgba(255, 255, 2
 body.theme-fancy .month-expand-btn { background: rgba(0, 0, 0, 0.4); border-color: rgba(255, 255, 255, 0.4); color: #fff; }
 /* footer */
 body.theme-fancy footer {
-    background: rgba(247, 241, 250, 0.65); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid rgba(186, 202, 229, 0.3); 
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03); color: rgba(6, 36, 32, 0.7); padding: 24px 20px 32px 20px; 
+    background: rgba(240, 244, 248, 0.65); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); 
+    border-top: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 -4px 24px rgba(100, 115, 135, 0.04); color: rgba(45, 58, 75, 0.8); padding: 24px 20px 32px 20px; 
 }
-body.theme-fancy .footer-info { color: rgba(6, 36, 32, 0.65); }
-body.theme-fancy .footer-sns { color: rgb(6, 36, 32); }
+body.theme-fancy .footer-info { color: rgba(45, 58, 75, 0.55); }
+body.theme-fancy .footer-sns { color: rgb(45, 58, 75); }
     
 /* 2. 🤍 白色模式 (Light) */
 body.theme-light { background: #ffffff; color: rgb(44, 49, 56); }
