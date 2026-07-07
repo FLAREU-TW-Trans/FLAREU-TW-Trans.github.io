@@ -293,11 +293,14 @@ body.theme-fancy .search-input-wrap input::placeholder { color: rgba(255, 255, 2
 body.theme-fancy .month-expand-btn { background: rgba(0, 0, 0, 0.4); border-color: rgba(255, 255, 255, 0.4); color: #fff; }
 /* footer */
 body.theme-fancy footer {
-    background: rgba(240, 244, 248, 0.65); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); 
-    border-top: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 -4px 24px rgba(100, 115, 135, 0.04); color: rgba(45, 58, 75, 0.8); padding: 24px 20px 32px 20px; 
+    background: rgba(240, 244, 248, 0.65); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 -4px 24px rgba(100, 115, 135, 0.04); color: rgba(45, 58, 75, 0.8); padding: 24px 20px 32px 20px; display: flex; flex-direction: column; align-items: center;
 }
-body.theme-fancy .footer-info { color: rgba(45, 58, 75, 0.55); }
-body.theme-fancy .footer-sns { color: rgb(45, 58, 75); }
+body.theme-fancy .footer-sns { color: rgb(45, 58, 75); display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0px; }
+body.theme-fancy .footer-sns .sns-btn { color: rgb(45, 58, 75) !important; text-decoration: none; transition: color 0.2s ease, border-color 0.2s ease; }
+body.theme-fancy .footer-sns .sns-btn:hover { color: rgb(24, 38, 58) !important; text-decoration: underline; }
+body.theme-fancy .sns-divider { margin: 0 12px; color: rgba(45, 58, 75, 0.4); }
+body.theme-fancy .footer-info { color: rgba(45, 58, 75, 0.55); margin-top: 16px; font-size: 14px; text-align: center; }
     
 /* 2. 🤍 白色模式 (Light) */
 body.theme-light { background: #ffffff; color: rgb(44, 49, 56); }
@@ -442,20 +445,12 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     body.theme-fancy .content { background-image: url("images/content.webp"); background-attachment: scroll; background-size: 100% auto; background-position: center 0px; background-repeat: repeat-y; background-origin: padding-box; }
     body.theme-fancy .news-board { border-bottom: 1px solid rgba(255, 255, 255, 0.35); }
     body.theme-fancy .sidebar button.active { 
-        margin: 0 !important; 
-        padding: 6px 10px !important;
-        flex: 0 0 auto !important;
-        display: inline-flex !important;
-        justify-content: center !important;
-        transform: none !important; 
-        letter-spacing: normal !important; 
-    }
-    body.theme-fancy .sidebar button.active::before,
-    body.theme-fancy .sidebar button.active::after {
-        display: none !important;
-        content: "" !important;
-        margin: 0 !important;
-    }
+        margin: 0 !important; padding: 6px 10px !important; flex: 0 0 auto !important; display: inline-flex !important; justify-content: center !important;
+        transform: none !important; letter-spacing: normal !important; }
+    body.theme-fancy .sidebar button.active::before, body.theme-fancy .sidebar button.active::after { display: none !important; content: "" !important; margin: 0 !important; }
+    body.theme-fancy .sns-divider.pc-only { display: none !important; }
+    body.theme-fancy .footer-sns .chueiliyu-btn { flex: 0 0 100%; text-align: center; margin-top: 10px; }
+    body.theme-fancy .footer-info { margin-top: 14px; }
     body.theme-light .header-text { background: #ffffff !important; border: 1px solid rgb(44, 49, 56) !important;  }
     body.theme-light .sidebar { border-bottom: 1px solid #e5e7eb; }
     body.theme-dark { max-width: 100vw !important; overflow-x: hidden !important; }
@@ -576,16 +571,19 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
             Instagram
         </a>
         <span class="sns-divider">/</span>
+        
         <a href="https://www.threads.com/@flareu_tw_trans" target="_blank" class="sns-btn text-link" aria-label="Threads">
             Threads
         </a>
         <span class="sns-divider">/</span>
+        
         <a href="https://youtube.com/channel/UC0dLVYvnFcF8d7XR8LYN_xQ?si=Vv1ANZNkdHG23kiC" target="_blank" class="sns-btn text-link" aria-label="Youtube">
             Youtube
         </a>
-    </div>
-    <div class="footer-sns" style="margin-top: 10px;">
-        <a href="https://chueiliyutwtrans.github.io/chueiliyu-tw-translation/" target="_blank" class="sns-btn text-link" aria-label="ChueiLiYu">
+        
+        <span class="sns-divider pc-only">/</span>
+        
+        <a href="https://chueiliyutwtrans.github.io/chueiliyu-tw-translation/" target="_blank" class="sns-btn text-link chueiliyu-btn" aria-label="ChueiLiYu">
             崔立于台灣翻譯站
         </a>
     </div>
