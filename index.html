@@ -116,14 +116,14 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
     
 /* 彈出視窗遮罩層 */
 .month-modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px);
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(119, 135, 157, 0.4); backdrop-filter: blur(8px);
     display: none; justify-content: center; align-items: center; z-index: 100000;
 }
 .month-modal-overlay.active { display: flex !important; }
-.month-modal-content { background: #fff; padding: 24px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+.month-modal-content { background: rgb(231, 234, 244); padding: 24px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 15px 35px rgba(115, 128, 147, 0.25); }
 .month-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 20px 0; }
-.month-grid .time-btn { padding: 10px; background: #f1f5f9; color: #333; border: none; border-radius: 10px; }
-.month-grid .time-btn.active { background: var(--primary-color); color: white; }
+.month-grid .time-btn { padding: 10px; background: #ffffff; color: rgb(155, 168, 192); border: none; border-radius: 10px; }
+.month-grid .time-btn.active { background: rgb(119, 135, 157) !important; color: #ffffff !important; }
 .month-close-btn { margin-top: 10px; border: none; background: none; color: #999; cursor: pointer; text-decoration: underline; }
 
 /* ===== Header Theme Buttons ===== */
