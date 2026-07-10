@@ -1,1 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
+<link rel="stylesheet" href="../../../css/reaction.css">
+  
+<title>20260527 偶像電台EP.227</title>
 
+<style>
+body {
+    margin: 0;
+    background: #111;
+    color: #fff;
+    font-family: Arial, "Noto Sans TC", sans-serif;
+    text-align: center;
+}
+
+html, body {
+    background: #000 !important; /* 強制全黑 */
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+/* 跳轉時間按鈕 */
+.title-container {
+    display: flex;
+    flex-direction: column; /* 改為縱向排列，讓標題在上下排 */
+    justify-content: center; /* 水平置中 */
+    align-items: center;   /* 垂直置中 */
+    gap: 15px;          
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.title-container h2 {
+    margin: 0;         
+}
+
+.time-jump-group {
+    display: flex;
+    flex-wrap: wrap;    /* 按鈕太長時也支援自動換行 */
+    gap: 10px;           
+}
+
+.time-btn {
+    background-color: #f5f5f5; 
+    color: #555;              
+    border: 1px solid #e0e0e0; 
+    padding: 6px 14px;
+    border-radius: 6px;       
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.25s ease-in-out; 
+}
+
+.time-btn:hover {
+    background-color: #e2e2e2; 
+    color: #222;              
+    border-color: #d0d0d0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); 
+}
+
+</style>
+</head>
+
+<body>
+<div id="controls">
+    <div class="control-row">
+        <button onclick="toggleBarrageDisplay()" id="barrage-toggle-btn">即時表情：開</button>
+
+        <div class="control-group barrage-control">
+            <span>大小</span>
+            <input type="range" id="barrage-size-slider" min="16" max="60" value="24" oninput="updateBarrageSize(this.value)">
+        </div>
+
+        <div class="control-group barrage-control">
+            <span>範圍</span>
+            <input type="range" id="barrage-height-slider" min="10" max="100" value="40" oninput="updateBarrageHeight(this.value)">
+            <span id="height-val">40%</span>
+        </div>
+
+        <div class="control-group barrage-control">
+            <span>速度</span>
+            <input type="range" id="barrage-speed-slider" min="3" max="10" step="1" value="5" oninput="updateBarrageSpeed(this.value)">
+        </div>
+
+        <div class="control-group">
+            <button class="sub-btn" onclick="changeSubtitleSize(-0.1)">A−</button>
+            <span>字幕</span>
+            <button class="sub-btn" onclick="changeSubtitleSize(0.1)">A＋</button>
+        </div>
+        <button id="home-btn" onclick="window.location.href='/'">首頁</button>
+        <button id="fs-btn">進入全螢幕</button>
+    </div>
+</div>
+
+<div class="title-container">
+    <h2>20260527 偶像電台EP.227</h2>
+    <div class="time-jump-group">
+        <button class="time-btn" onclick="jumpToTime(120)">跳轉一</button>
+        <button class="time-btn" onclick="jumpToTime(1100)">跳轉二</button>
+        <button class="time-btn" onclick="jumpToTime(3964)">跳轉三</button>
+    </div>
+</div>
+
+<div id="video-wrapper">
+    <div id="player"></div>
+    <div id="subtitle">字幕載入中...</div>
+    <div id="barrage-container"></div>
+
+    <button id="emoji-trigger-btn" onclick="toggleEmojiDrawer(event)">😊</button>
+
+    <div id="emoji-drawer"></div>
+    
+    <button id="exit-fs-btn" title="退出全螢幕" style="display: none; opacity: 0;">
+        <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+    </button>
+</div>
+
+<div class="reaction-section">
+    <p id="reaction-title">覺得這部翻譯影片如何？點個表情吧！</p>
+    <div class="reaction-wall"></div>
+    <br>
+</div>
+
+<script>
+/* 影片ID和SRT文件 */
+const MY_VIDEO_ID = "-EKO_uoaU-c"; 
+const MY_SRT_FILE = "20260527_idol_radio_EP.227.srt";
+const MY_VIDEO_START = 120; // 從 2:00 開始
+
+/* ===== 字幕大小設定 ===== */
+function changeSubtitleSize(delta) {
+        if (typeof coreChangeSubtitleSize === "function") coreChangeSubtitleSize(delta);
+}
+
+/* 跳轉時間 */
+function jumpToTime(seconds) {
+    // 檢查 player 物件是否存在，且是否有 seekTo 這個方法
+    if (typeof player !== 'undefined' && player.seekTo) {
+        player.seekTo(seconds, true);
+        
+        // 跳轉後自動播放影片
+        player.playVideo(); 
+    } else {
+        console.error("YouTube 播放器尚未準備就緒或未正確定義。");
+    }
+}
+</script>
+    
+<script type="module">
+  // 1. 載入 Firebase 核心功能與 Analytics
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+  // 加上這行來載入分析模組
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+    
+  // 2. Firebase 設定
+  const firebaseConfig = { apiKey: "AIzaSyAs9R785IE_kBsduUdEng3Vfqz1Ljl11f4", authDomain: "flareu-tw-translation.firebaseapp.com", databaseURL: "https://flareu-tw-translation-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "flareu-tw-translation", storageBucket: "flareu-tw-translation.firebasestorage.app", messagingSenderId: "753531558153", appId: "1:753531558153:web:7106f9c2d253cae62fdbd8" };
+
+  // 3. 啟動連線
+  const app = initializeApp(firebaseConfig);
+  
+  // 啟動 Analytics
+  const analytics = getAnalytics(app);
+
+  // 借給外部 JS 使用
+  window.db = getDatabase(app);
+  window.fb_ref = ref;            
+  window.fb_onValue = onValue;    
+  window.fb_runTransaction = runTransaction; 
+</script>
+
+<script src="../../../js/core-player.js"></script>
+<script src="../../../js/reaction-core.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+
+</body>
+</html>
