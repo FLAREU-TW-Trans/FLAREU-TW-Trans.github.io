@@ -36,7 +36,7 @@
       --subtitle-size: 22px; --video-controls-bg: #eff4ef; --video-controls-border: #d2e1d2; --video-submenu-bg: #f7fbf7;
       
       /* 表情牆專屬設定 (淺灰透明) */
-      --reaction-box-bg: transparent; --reaction-box-border: transparent; --reaction-section-bg: #f0f2f0; --reaction-text-shadow: none; 
+      --reaction-box-bg: transparent; --reaction-box-border: transparent; --reaction-section-bg: #f6f8fa; --reaction-text-shadow: none; 
       --emoji-btn-default-bg: #f0f3f0; --emoji-btn-default-border: #dbe7db; --emoji-btn-default-text: #788c79; 
       --emoji-btn-bg-hover: rgba(126, 194, 141, 0.1); --emoji-btn-active-border: #7ec28d; --emoji-btn-active-text: #232d24; 
     }
@@ -81,7 +81,7 @@
        ========================================= */
     .header { background-color: var(--bg-content); padding: 30px 20px 0 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
     .header h1 { font-size: 1.4rem; margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Arial", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
-                font-weight: 900; line-height: 1.5; letter-spacing: 1.2px; }
+                font-weight: 1000; line-height: 1.5; letter-spacing: 1.2px; }
 
     .controls-wrapper { display: flex; gap: 12px; align-items: center; margin-top: 15px; margin-bottom: 20px; }
     .home-btn { background-color: var(--home-btn-bg); color: var(--text-main); text-decoration: none; padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; transition: background 0.2s; }
@@ -206,7 +206,7 @@
     }
     
     .reaction-section { width: 100%; background-color: var(--reaction-section-bg); border-radius: 16px; padding: 25px; box-sizing: border-box; }
-    #reaction-title { font-weight: bold; margin: 0 0 20px 0; text-shadow: var(--reaction-text-shadow); }
+    #reaction-title { color: var(--text-main) !important; font-weight: bold; margin: 0 0 20px 0; text-shadow: var(--reaction-text-shadow); }
     .reaction-wall { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
 
     .unified-reaction-box .emoji-btn:not(.active) { 
