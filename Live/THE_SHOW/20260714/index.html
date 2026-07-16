@@ -36,7 +36,7 @@
       --subtitle-size: 22px; --video-controls-bg: #eff4ef; --video-controls-border: #d2e1d2; --video-submenu-bg: #f7fbf7;
       
       /* 表情牆專屬設定 (淺灰透明) */
-      --reaction-box-bg: rgba(0, 0, 0, 0.04); --reaction-box-border: rgba(0, 0, 0, 0.08); --reaction-text-shadow: none; 
+      --reaction-box-bg: transparent; --reaction-box-border: transparent; --reaction-section-bg: #f0f2f0; --reaction-text-shadow: none; 
       --emoji-btn-default-bg: #f0f3f0; --emoji-btn-default-border: #dbe7db; --emoji-btn-default-text: #788c79; 
       --emoji-btn-bg-hover: rgba(126, 194, 141, 0.1); --emoji-btn-active-border: #7ec28d; --emoji-btn-active-text: #232d24; 
     }
@@ -57,8 +57,8 @@
       /* 影片控制區與字幕 */
       --video-controls-bg: #2b2d31; --video-controls-border: #3d403d; --video-submenu-bg: #242624;
       
-      /* 表情牆專屬設定 (黑灰透明) */
-      --reaction-box-bg: rgba(0, 0, 0, 0.4); --reaction-box-border: rgba(255, 255, 255, 0.05); --reaction-text-shadow: 0px 1px 3px rgba(0,0,0,0.8);
+      /* 表情牆專屬設定 */
+      --reaction-box-bg: transparent; --reaction-box-border: transparent; --reaction-section-bg: #3a3b3c; --reaction-text-shadow: 0px 1px 3px rgba(0,0,0,0.8);
       --emoji-btn-default-bg: #3a3b3c; --emoji-btn-default-border: #444; --emoji-btn-default-text: #aaa;
       --emoji-btn-bg-hover: rgba(255, 255, 255, 0.1); --emoji-btn-active-border: #8ebfec; --emoji-btn-active-text: #e4e6eb;
     }
@@ -80,7 +80,7 @@
        3. 標頭、導覽列與分頁標籤
        ========================================= */
     .header { background-color: var(--bg-content); padding: 30px 20px 0 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
-    .header h1 { font-size: 1.4rem; margin: 0; font-family: "Quicksand", "Comic Sans MS", "PingFang TC", "Microsoft JhengHei", "微軟正黑體", sans-serif; 
+    .header h1 { font-size: 1.4rem; margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Arial", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
                 font-weight: 900; line-height: 1.5; letter-spacing: 1.2px; }
 
     .controls-wrapper { display: flex; gap: 12px; align-items: center; margin-top: 15px; margin-bottom: 20px; }
@@ -126,7 +126,7 @@
     .video-responsive-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; transition: all 0.3s ease; }
     .video-responsive-wrapper iframe { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; display: block; }
 
-    .subtitle-overlay { position: absolute; left: 50%; transform: translateX(-50%); bottom: 8%; width: 90vw; max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px); padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); box-sizing: border-box; z-index: 100; pointer-events: none; display: flex; justify-content: center; text-align: center; }
+    .subtitle-overlay { position: absolute; left: 50%; transform: translateX(-50%); bottom: 8%; width: 90%;; padding: 0 10px; box-sizing: border-box; z-index: 100; pointer-events: none; display: flex; justify-content: center; text-align: center; }
     .subtitle-overlay span { display: block; width: 100%; max-width: 100%; padding: 0.25em 0.7em; background: rgba(0,0,0,0.72); border-radius: 8px; color: rgba(255,255,255,0.96); font-size: var(--subtitle-size); line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; text-shadow: 0 2px 4px rgba(0,0,0,.5); backdrop-filter: blur(2px); box-sizing: border-box; }
     
     @media (min-width: 1024px) { .subtitle-overlay { font-size: 28px; line-height: 1.7; } }
@@ -201,14 +201,11 @@
        6. 表情牆
        ========================================= */
     .unified-reaction-box { 
-      background-color: var(--reaction-box-bg) !important; 
-      border: 1px solid var(--reaction-box-border) !important; 
-      border-radius: 16px; margin: 30px 20px; padding: 25px; 
-      text-align: center; box-sizing: border-box; 
-      display: flex; flex-direction: column; align-items: center; 
+      background-color: transparent !important; border: none !important; margin: 30px 20px; padding: 0; 
+      text-align: center; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; 
     }
     
-    .reaction-section { width: 100%; }
+    .reaction-section { width: 100%; background-color: var(--reaction-section-bg); border-radius: 16px; padding: 25px; box-sizing: border-box; }
     #reaction-title { font-weight: bold; margin: 0 0 20px 0; text-shadow: var(--reaction-text-shadow); }
     .reaction-wall { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
 
