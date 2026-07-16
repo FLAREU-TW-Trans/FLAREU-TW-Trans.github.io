@@ -471,6 +471,29 @@
         },
     };
 
+    //修改舞台名稱
+    function formatVideoTitle(originalTitle, dbId) {
+        if (!originalTitle) return '未命名舞台';
+        
+        // 偵測特定舞台名稱
+        if (originalTitle.includes('7/14')) {
+            return originalTitle;
+        }
+
+        // 針對特定影片 ID 進行強制前綴修飾
+        if (dbId === 'video_20260714_THE_SHOW') {
+            return '7/14 THE SHOW MC特別舞台 播出版本';
+        }
+        if (dbId === 'video_20260714_THE_SHOW_fullcam') {
+            return '7/14 THE SHOW MC特別舞台 舞台全景';
+        }
+        if (dbId === 'video_20260714_THE_SHOW_liyu') {
+            return '7/14 THE SHOW MC特別舞台 立于直拍';
+        }
+
+        return originalTitle;
+    }
+
     //說明欄
     window.openInstructionModal = function() {
         const modal = document.getElementById("instruction-modal");
