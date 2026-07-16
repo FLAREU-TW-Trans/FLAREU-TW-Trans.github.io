@@ -724,6 +724,37 @@
 
     // 網頁載入時強制初始化推薦按鈕狀態
     document.addEventListener("DOMContentLoaded", () => {
+
+      //從舞台收藏排行榜頁面切換到相對頁面
+      const urlParams = new URLSearchParams(window.location.search);
+      const videoParam = urlParams.get('video');
+    
+      let targetTabId = 'tab-video1'; // 預設第一分頁
+
+      if (videoParam) {
+        // 比對傳進來的參數，找到對應的 Tab
+        for (const [tabId, info] of Object.entries(window.currentSelectedVideo)) {
+            if (info.videoDbId === videoParam) {
+                targetTabId = tabId;
+                break;
+            }
+        }
+      }
+
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      let targetButton = tabButtons[0];
+
+      if (targetTabId === 'tab-video2') {
+        targetButton = tabButtons[1];
+      } else if (targetTabId === 'tab-video3') {
+        targetButton = tabButtons[2];
+      }
+
+      // 觸發點擊，切換至對應分頁
+      if (targetButton && typeof openTab === 'function') {
+        openTab(targetTabId, targetButton);
+      }
+      
       Object.keys(window.currentSelectedVideo).forEach(tabId => {
         const videoDbId = window.currentSelectedVideo[tabId].videoDbId;
         const likeBtn = getLikeButton(tabId);
