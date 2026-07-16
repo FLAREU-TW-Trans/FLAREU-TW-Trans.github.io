@@ -329,21 +329,6 @@
     .video-controls-bar .fullscreen-btn { background: #5c6bc0 !important; color: #ffffff !important; border: none !important; padding: 8px 16px; border-radius: 20px; 
       cursor: pointer; font-size: 13px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.08); transition: all 0.2s ease; }
     .video-controls-bar .fullscreen-btn:hover { background: #475399 !important; color: #ffffff !important; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-
-    /* 有字幕的影片變成兩排 */
-    @media (max-width:768px){
-      .video-controls-first{ flex-direction: column; gap: 10px; }
-
-      .video-controls-first .top-actions,
-      .video-controls-first .bottom-actions{ display:flex; justify-content:center; align-items:center; gap:10px; }
-
-      .video-controls-first .bottom-actions{ flex-wrap: nowrap; white-space: nowrap; }
-
-      #subtitle-controls{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
-
-      .fullscreen-btn{ flex-shrink:0; }
-    }
-  }
   </style>
 </head>
 <body>
