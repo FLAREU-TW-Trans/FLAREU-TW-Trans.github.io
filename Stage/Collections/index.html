@@ -541,6 +541,11 @@
 
     // 渲染排行榜主邏輯
     window.renderRankings = function() {
+        // 在這行下面：
+const dbId = video.videoDbId;
+
+// 加上這行調試代碼，打開瀏覽器 F12 Console 看看它到底印出什麼！
+console.log("實際讀取到的影片 ID 是:", dbId);
         const podiumArea = document.getElementById('podium-area');
         const categoryData = window.rawRankingData[window.currentCategory];
 
@@ -682,6 +687,11 @@
     }
     
     function renderFavorites(){
+        // 在這行下面：
+const dbId = video.videoDbId;
+
+// 加上這行調試代碼，打開瀏覽器 F12 Console 看看它到底印出什麼！
+console.log("實際讀取到的影片 ID 是:", dbId);
 
         const container = document.getElementById('favorites-container');
 
