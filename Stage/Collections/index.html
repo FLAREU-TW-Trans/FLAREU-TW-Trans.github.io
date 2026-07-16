@@ -591,6 +591,8 @@
             // 2. 判斷連結：如果有自訂連結就用自訂的，沒有的話預設回首頁
             const targetLink = customConfig.link || 'https://flareu-tw-trans.github.io/';
 
+            const finalTitle = formatVideoTitle(video.title, dbId);
+
             // 3. 判斷縮圖：優先使用手動添加的圖片網址。如果沒有，再自動抓 YouTube 縮圖
             let thumbUrl = '';
             if (customConfig.customThumb && customConfig.customThumb.trim() !== '') {
@@ -608,19 +610,13 @@
                         <img src="${thumbUrl}" alt="舞台縮圖" onerror="this.src='https://flareu-tw-trans.github.io/images/favicon.png';">
                     </a>
                     <div class="video-info">
-                        <h3 class="video-title">${video.title}</h3>
+                        <h3 class="video-title">${finalTitle}</h3>
                         <span class="count-badge">❤️ ${video.clickCount} 次推薦</span>
                     </div>
                 </div>
             `;
             podiumArea.innerHTML += cardHtml;
         });
-
-        // 在這行下面：
-const dbId = video.videoDbId;
-
-// 加上這行調試代碼，打開瀏覽器 F12 Console 看看它到底印出什麼！
-console.log("實際讀取到的影片 ID 是:", dbId);
     };
 
     // 切換分類
@@ -711,12 +707,13 @@ console.log("實際讀取到的影片 ID 是:", dbId);
         container.innerHTML='';
 
         favorites.forEach(video=>{
+            const dbId = video.videoDbId;
+            
+            let config = customVideoMapping[dbId] || {};
 
-            const config = customVideoMapping[video.videoDbId] || {};
+            const pageUrl = config.link || 'https://flareu-tw-trans.github.io/';
 
-            const pageUrl =
-                config.link ||
-                'https://flareu-tw-trans.github.io/';
+            const finalTitle = formatVideoTitle(video.title, dbId);
 
             const thumbUrl =
                 config.customThumb ||
@@ -728,17 +725,17 @@ console.log("實際讀取到的影片 ID 是:", dbId);
                target="_blank"
                class="thumb-wrapper">
                 <img src="${thumbUrl}"
-                     alt="${video.title}"
+                     alt="${finalTitle}"
                      onerror="this.src='https://flareu-tw-trans.github.io/images/favicon.png';">
             </a>
 
             <div class="video-info">
                 <h3 class="video-title">
-                    ${video.title}
+                    ${finalTitle}
                 </h3>
                 
                 <button class="count-badge remove-fav-btn" 
-                        onclick="removeFavorite('${video.videoDbId}')" 
+                        onclick="removeFavorite('${dbId}')"
                         style="cursor: pointer; border: none; transition: background 0.2s;">
                     ⭐ 已收藏
                 </button>
