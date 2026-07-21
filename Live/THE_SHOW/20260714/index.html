@@ -19,88 +19,40 @@ body {
 }
 
 html, body {
-    background: #000 !important; /* 強制全黑 */
+    background: #000 !important; 
     height: 100%;
     width: 100%;
     margin: 0;
 }
 
 /* 章節按鈕容器 */
-.chapter-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 12px 0 18px 0;
-    overflow-x: auto;
-    padding: 6px 4px;
-    scrollbar-width: thin; 
-}
-
-.chapter-row::-webkit-scrollbar {
-    height: 4px;
-}
-.chapter-row::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-}
+.chapter-row { display: flex; align-items: center; gap: 8px; margin: 12px 0 18px 0; overflow-x: auto; padding: 6px 4px; scrollbar-width: thin; }
+.chapter-row::-webkit-scrollbar { height: 4px; }
+.chapter-row::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
 
 /* 按鈕基本樣式 */
 .chapter-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: var(--text-main, #fff);
-    font-size: 0.82rem;
-    font-weight: 500;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    flex-shrink: 0;
+    display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.12); color: var(--text-main, #fff);
+    font-size: 1.00rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); flex-shrink: 0;
 }
 
 /* 時間標籤 */
 .chapter-time {
-    background: rgba(255, 255, 255, 0.12);
-    padding: 2px 6px;
-    border-radius: 10px;
-    font-size: 0.75rem;
-    font-family: monospace;
-    opacity: 0.9;
-    letter-spacing: 0.5px;
+    background: rgba(255, 255, 255, 0.12); padding: 2px 6px; border-radius: 10px; font-size: 0.85rem; font-family: monospace;
+    opacity: 0.9; letter-spacing: 0.5px;
 }
 
 /* 章節標題 */
 .chapter-title {
-    max-width: 75px; /* 平常預設顯示寬度，字太長會顯示 ... */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    transition: max-width 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
-    opacity: 0.85;
+    max-width: 75px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: max-width 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease; opacity: 0.85;
 }
-
 .chapter-btn:hover {
-    background: rgba(255, 255, 255, 0.18);
-    border-color: rgba(255, 255, 255, 0.35);
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
-    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.18); border-color: rgba(255, 255, 255, 0.35); box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15); transform: translateY(-1px);
 }
-
-.chapter-btn:hover .chapter-title {
-    max-width: 250px; 
-    opacity: 1;
-}
-
-.chapter-btn:active {
-    transform: translateY(0) scale(0.97);
-}
+.chapter-btn:hover .chapter-title { max-width: 250px; opacity: 1; }
+.chapter-btn:active { transform: translateY(0) scale(0.97); }
 
 </style>
 </head>
@@ -139,8 +91,8 @@ html, body {
 <h2>20260714 THE SHOW 固定MC 玟縡 x 立于 主持片段</h2>
 
 <div class="chapter-row">
-    <button class="chapter-btn" onclick="seekToTime(31)">
-        <span class="chapter-time">00:31</span>
+    <button class="chapter-btn" onclick="seekToTime(32)">
+        <span class="chapter-time">00:32</span>
         <span class="chapter-title">主持part1</span>
     </button>
     <button class="chapter-btn" onclick="seekToTime(124)">
