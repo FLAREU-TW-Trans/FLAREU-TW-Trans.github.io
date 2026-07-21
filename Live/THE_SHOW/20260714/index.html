@@ -25,6 +25,83 @@ html, body {
     margin: 0;
 }
 
+/* 章節按鈕容器 */
+.chapter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0 18px 0;
+    overflow-x: auto;
+    padding: 6px 4px;
+    scrollbar-width: thin; 
+}
+
+.chapter-row::-webkit-scrollbar {
+    height: 4px;
+}
+.chapter-row::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+/* 按鈕基本樣式 */
+.chapter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-main, #fff);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+}
+
+/* 時間標籤 */
+.chapter-time {
+    background: rgba(255, 255, 255, 0.12);
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-family: monospace;
+    opacity: 0.9;
+    letter-spacing: 0.5px;
+}
+
+/* 章節標題 */
+.chapter-title {
+    max-width: 75px; /* 平常預設顯示寬度，字太長會顯示 ... */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: max-width 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+    opacity: 0.85;
+}
+
+.chapter-btn:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.chapter-btn:hover .chapter-title {
+    max-width: 250px; 
+    opacity: 1;
+}
+
+.chapter-btn:active {
+    transform: translateY(0) scale(0.97);
+}
+
 </style>
 </head>
 
@@ -61,6 +138,45 @@ html, body {
 
 <h2>20260714 THE SHOW 固定MC 玟縡 x 立于 主持片段</h2>
 
+<div class="chapter-row">
+    <button class="chapter-btn" onclick="seekToTime(31)">
+        <span class="chapter-time">00:31</span>
+        <span class="chapter-title">主持part1</span>
+    </button>
+    <button class="chapter-btn" onclick="seekToTime(124)">
+        <span class="chapter-time">02:04</span>
+        <span class="chapter-title">主持part2 訪問團體:VAYONN</span>
+    </button>
+    <button class="chapter-btn" onclick="seekToTime(260)">
+        <span class="chapter-time">04:20</span>
+        <span class="chapter-title">SHORTS</span>
+    </button>
+    <button class="chapter-btn" onclick="seekToTime(318)">
+        <span class="chapter-time">05:18</span>
+        <span class="chapter-title">主持part3 magneticTALK</span>
+    </button>
+    <button class="chapter-btn" onclick="seekToTime(431)">
+        <span class="chapter-time">07:11</span>
+        <span class="chapter-title">主持part4 訪問團體:RESCENE</span>
+    </button>
+    <button class="chapter-btn" onclick="seekToTime(677)">
+        <span class="chapter-time">11:17</span>
+        <span class="chapter-title">主持part5</span>
+    </button>
+    <button class="chapter-btn" onclick="seekToTime(725)">
+        <span class="chapter-time">12:05</span>
+        <span class="chapter-title">特別舞台</span>
+    </button>
+    <button class="chapter-btn" onclick="seekToTime(948)">
+        <span class="chapter-time">15:48</span>
+        <span class="chapter-title">主持part6</span>
+    </button>
+    <button class="chapter-btn" onclick="seekToTime(966)">
+        <span class="chapter-time">16:06</span>
+        <span class="chapter-title">結尾頒獎</span>
+    </button>
+</div>
+
 <div id="video-wrapper">
     <div id="player"></div>
     <div id="subtitle">字幕載入中...</div>
@@ -92,9 +208,19 @@ const MY_SRT_FILE = "20260714_THESHOW_MC_TALK.srt";
 /* 自訂 Firebase 資料庫儲存名稱 */
 const DATA_SOURCE_ID = "20260714_THE_SHOW_interview";
 
-/* ===== 字幕大小設定 ===== */
+/* 字幕大小設定 */
 function changeSubtitleSize(delta) {
         if (typeof coreChangeSubtitleSize === "function") coreChangeSubtitleSize(delta);
+}
+
+/* 按鈕跳轉 */
+function seekToTime(seconds) {
+    if (window.player && typeof window.player.seekTo === 'function') {
+        window.player.seekTo(seconds, true);
+        window.player.playVideo(); // 跳轉後自動播放
+    } else {
+        console.warn("YouTube Player 尚未準備就緒");
+    }
 }
 </script>
     
