@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
-<link rel="stylesheet" href="../../css/reaction.css">
+<link rel="stylesheet" href="../../../css/reaction.css">
   
 <title>20260714 THE SHOW 固定MC 玟縡 x 立于 主持片段</title>
 
@@ -89,6 +89,9 @@ html, body {
 const MY_VIDEO_ID = "RxLKLVFiNt4"; 
 const MY_SRT_FILE = "20260714_THESHOW_MC_TALK.srt";
 
+/* 自訂 Firebase 資料庫儲存名稱 */
+const DATA_SOURCE_ID = "20260714_THE_SHOW_interview";
+
 /* ===== 字幕大小設定 ===== */
 function changeSubtitleSize(delta) {
         if (typeof coreChangeSubtitleSize === "function") coreChangeSubtitleSize(delta);
@@ -118,8 +121,8 @@ function changeSubtitleSize(delta) {
   window.fb_runTransaction = runTransaction; 
 </script>
 
-<script src="../../js/core-player.js"></script>
-<script src="../../js/reaction-core.js"></script>
+<script src="../../../js/core-player.js"></script>
+<script src="../../../js/reaction-core.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 
 </body>
