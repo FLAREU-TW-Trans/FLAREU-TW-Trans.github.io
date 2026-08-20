@@ -2,179 +2,146 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>偶像韓語</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
-<link rel="stylesheet" href="../../../css/reaction.css">
-  
-<title>20260528 偶像韓語 EP.828</title>
+  <link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
 
 <style>
 body {
     margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    background: #f5f5f5;
+    color: #333;
+}
+
+/* ===== Header ===== */
+header {
+    padding: 40px 20px;
+    text-align: center;
     background: #111;
     color: #fff;
-    font-family: Arial, "Noto Sans TC", sans-serif;
-    text-align: center;
 }
 
-html, body {
-    background: #000 !important; /* 強制全黑 */
-    height: 100%;
-    width: 100%;
+header h1 {
     margin: 0;
+    font-size: 28px;
+    letter-spacing: 2px;
 }
 
-/* 跳轉時間按鈕 */
-.title-container {
-    display: flex;
-    flex-direction: column; /* 改為縱向排列，讓標題在上下排 */
-    justify-content: center; /* 水平置中 */
-    align-items: center;   /* 垂直置中 */
-    gap: 0px;          
-}
-
-.title-container h2 {
-    margin: 0;         
-}
-
-.time-jump-group {
-    display: flex;
-    flex-wrap: wrap;    /* 按鈕太長時也支援自動換行 */
-    gap: 10px;           
-}
-
-.time-btn {
-    background-color: #f5f5f5; 
-    color: #555;              
-    border: 1px solid #e0e0e0; 
-    padding: 6px 14px;
-    border-radius: 6px;       
-    cursor: pointer;
+header p {
+    margin-top: 10px;
     font-size: 14px;
-    font-weight: 500;
-    transition: all 0.25s ease-in-out; 
+    color: #ccc;
 }
 
-.time-btn:hover {
-    background-color: #e2e2e2; 
-    color: #222;              
-    border-color: #d0d0d0;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); 
+/* ===== Content ===== */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px;
 }
 
+/* ===== Grid ===== */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+/* ===== Card ===== */
+.card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    background: #ddd;
+}
+
+.card-body {
+    padding: 12px;
+}
+
+.card-title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.card-desc {
+    font-size: 13px;
+    color: #666;
+    margin-top: 6px;
+}
+
+.card-credit {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #777;
+    line-height: 1.5;
+}
+
+/* ===== Back Link ===== */
+.back {
+    display: inline-block;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #555;
+    text-decoration: none;
+}
+
+.back:hover {
+    text-decoration: underline;
+}
 </style>
 </head>
 
 <body>
-<div id="controls">
-    <div class="control-row">
-        <button onclick="toggleBarrageDisplay()" id="barrage-toggle-btn">即時表情：開</button>
 
-        <div class="control-group barrage-control">
-            <span>大小</span>
-            <input type="range" id="barrage-size-slider" min="16" max="60" value="24" oninput="updateBarrageSize(this.value)">
-        </div>
+<header>
+    <h1>偶像韓語</h1>
+    <p>節目系列整理</p>
+</header>
 
-        <div class="control-group barrage-control">
-            <span>範圍</span>
-            <input type="range" id="barrage-height-slider" min="10" max="100" value="40" oninput="updateBarrageHeight(this.value)">
-            <span id="height-val">40%</span>
-        </div>
+<div class="container">
 
-        <div class="control-group barrage-control">
-            <span>速度</span>
-            <input type="range" id="barrage-speed-slider" min="3" max="10" step="1" value="5" oninput="updateBarrageSpeed(this.value)">
-        </div>
+    <a class="back" href="../../index.html">← 回到首頁</a>
 
-        <div class="control-group">
-            <button class="sub-btn" onclick="changeSubtitleSize(-0.1)">A−</button>
-            <span>字幕</span>
-            <button class="sub-btn" onclick="changeSubtitleSize(0.1)">A＋</button>
+    <div class="grid">
+    <!-- EP.828 -->
+    <a class="card" href="20260528/" target="_blank">
+        <img src="../../images/20260528_IDOL_KOREAN_ep.828.webp" alt="">
+        <div class="card-body">
+            <div class="card-title">
+            20260528 EP.828
+            </div>
+            <div class="card-desc">
+            完整電台｜中文翻譯
+            </div>
+            <div class="card-credit">
+            翻譯：Lepus<br>
+            字幕製作：西卡<br>
+            校對：西卡
+            </div>
         </div>
-        <button id="home-btn" onclick="window.location.href='/'">首頁</button>
-        <button id="fs-btn">進入全螢幕</button>
+    </a>
+    
     </div>
+
 </div>
-
-<div class="title-container">
-    <h2>20260528 偶像韓語 EP.828</h2>
-</div>
-
-<div id="video-wrapper">
-    <div id="player"></div>
-    <div id="subtitle">字幕載入中...</div>
-    <div id="barrage-container"></div>
-
-    <button id="emoji-trigger-btn" onclick="toggleEmojiDrawer(event)">😊</button>
-
-    <div id="emoji-drawer"></div>
-    
-    <button id="exit-fs-btn" title="退出全螢幕" style="display: none; opacity: 0;">
-        <svg viewBox="0 0 24 24">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-    </button>
-</div>
-
-<div class="reaction-section">
-    <p id="reaction-title">覺得這部翻譯影片如何？點個表情吧！</p>
-    <div class="reaction-wall"></div>
-    <br>
-</div>
-
-<script>
-/* 影片ID和SRT文件 */
-const MY_VIDEO_ID = "fvevUTG-zkU"; 
-const MY_SRT_FILE = "20260528_IDOL_KOREAN_ep.828.srt";
-const MY_VIDEO_START = 25; // 從 0:25 開始
-
-/* ===== 字幕大小設定 ===== */
-function changeSubtitleSize(delta) {
-        if (typeof coreChangeSubtitleSize === "function") coreChangeSubtitleSize(delta);
-}
-
-/* 跳轉時間 */
-function jumpToTime(seconds) {
-    // 檢查 player 物件是否存在，且是否有 seekTo 這個方法
-    if (typeof player !== 'undefined' && player.seekTo) {
-        player.seekTo(seconds, true);
-        
-        // 跳轉後自動播放影片
-        player.playVideo(); 
-    } else {
-        console.error("YouTube 播放器尚未準備就緒或未正確定義。");
-    }
-}
-</script>
-    
-<script type="module">
-  // 1. 載入 Firebase 核心功能與 Analytics
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-  // 加上這行來載入分析模組
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-    
-  // 2. Firebase 設定
-  const firebaseConfig = { apiKey: "AIzaSyAs9R785IE_kBsduUdEng3Vfqz1Ljl11f4", authDomain: "flareu-tw-translation.firebaseapp.com", databaseURL: "https://flareu-tw-translation-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "flareu-tw-translation", storageBucket: "flareu-tw-translation.firebasestorage.app", messagingSenderId: "753531558153", appId: "1:753531558153:web:7106f9c2d253cae62fdbd8" };
-
-  // 3. 啟動連線
-  const app = initializeApp(firebaseConfig);
-  
-  // 啟動 Analytics
-  const analytics = getAnalytics(app);
-
-  // 借給外部 JS 使用
-  window.db = getDatabase(app);
-  window.fb_ref = ref;            
-  window.fb_onValue = onValue;    
-  window.fb_runTransaction = runTransaction; 
-</script>
-
-<script src="../../../js/core-player.js"></script>
-<script src="../../../js/reaction-core.js"></script>
-<script src="https://www.youtube.com/iframe_api"></script>
 
 </body>
 </html>
