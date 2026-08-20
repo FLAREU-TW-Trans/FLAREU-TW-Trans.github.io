@@ -99,6 +99,10 @@ html, body {
 
 <div class="title-container">
     <h2>20260528 偶像韓語 EP.828</h2>
+    <p>欲跳到FLARE U出場時間請點擊跳轉按鈕</p>
+    <div class="time-jump-group">
+        <button class="time-btn" onclick="jumpToTime(24)">跳轉一</button>
+    </div>
 </div>
 
 <div id="video-wrapper">
@@ -128,7 +132,6 @@ html, body {
 /* 影片ID和SRT文件 */
 const MY_VIDEO_ID = "fvevUTG-zkU"; 
 const MY_SRT_FILE = "20260528_IDOL_KOREAN_ep.828.srt";
-const MY_VIDEO_START = 25; // 從 0:25 開始
 
 /* ===== 字幕大小設定 ===== */
 function changeSubtitleSize(delta) {
