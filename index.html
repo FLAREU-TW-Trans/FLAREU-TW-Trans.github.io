@@ -21,6 +21,8 @@
 <meta property="og:image" content="https://flareu-tw-trans.github.io/images/header.jpg"> 
 
 <style>
+html, body { max-width: 100vw; overflow-x: hidden; }
+    
 :root {
     --header-box-width: 320px; --primary-color: #60a5fa; --premium-yellow: #f59e0b; --gold-highlight: #fbbf24; 
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -159,21 +161,40 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 .tag-live { background: rgba(215, 95, 95, 0.85) !important; color: #ffffff !important; border: none !important; }
 .tag-note { background: rgba(235, 160, 50, 0.9) !important; color: #ffffff !important; border: none !important; }
 
+/* ===== 排序 ===== */
+.sort-dropdown-container { position: relative; width: 100%; margin-bottom: 4px; z-index: 101; }
+
+.sort-btn { 
+    width: 100%; padding: 14px 16px; border-radius: 12px; font-size: 16px; font-weight: 600;
+    cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease; 
+}
+
+.sort-menu {
+    display: none; position: absolute; top: calc(100% + 6px); left: 0; width: 100%; border-radius: 12px; overflow: hidden;
+    z-index: 9999 !important; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); backdrop-filter: blur(8px);
+}
+
+.sort-menu.show { display: block; animation: fadeIn 0.2s ease; }
+
+.sort-item { padding: 12px 14px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s ease; }
+    
+#stage-grid .reaction-badge { display: none !important; }
+
 /* ===== Layout ===== */
-.container { display: flex; min-height: calc(100vh - 260px); }
+.container { display: flex; min-height: calc(100vh - 260px); width: 100%; max-width: 100vw; box-sizing: border-box; }
 
 .sidebar {
-    width: 260px; padding: 24px; background-size: cover; background-position: center; box-sizing: border-box;
-    position: relative; z-index: 2; border-right: none; display: flex; flex-direction: column; gap: 8px;
+    width: 260px; padding: 24px; background-size: cover; background-position: center; box-sizing: border-box; position: relative; z-index: 10;
+    border-right: none; display: flex; flex-direction: column;gap: 8px;
 }
 .sidebar button {
-    width: 100%; padding: 14px 16px; margin-bottom: 0; border: none; background: transparent; cursor: pointer; font-size: 16px;
-    font-weight: 500; border-radius: 12px; transition: all 0.2s ease; text-align: left; color: inherit; display: flex; align-items: center;
+    width: 100%; padding: 14px 16px; margin-bottom: 0; border: none; background: transparent; cursor: pointer; font-size: 16px;  font-weight: 500;
+    border-radius: 12px; transition: all 0.2s ease; text-align: left; color: inherit; display: flex; align-items: center;
 }
 .sidebar button:hover { background: rgba(0,0,0,0.05); }
 .sidebar button.active { font-weight: 700; }
 
-.content { flex: 1; padding: 32px; background-size: cover; background-position: center; }
+.content { flex: 1; padding: 32px; background-size: cover; background-position: center; z-index: 1; }
 
 .section { display: none; }
 .section.active { display: block; animation: fadeIn 0.3s ease; }
@@ -198,7 +219,7 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 /* ===== Card ===== */
 .card {
     background: #ffffff; border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit;
-    transition: all 0.3s ease; position: relative; display: block; border: none; position: relative;
+    transition: all 0.3s ease; position: relative; display: block; border: none; 
 }
 .card-img-wrap { width: 100%; height: 160px; overflow: hidden; position: relative; background: #e5e7eb; }
 .card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
@@ -266,6 +287,14 @@ body.theme-fancy .sidebar button:hover { background: #fff; transform: translateX
 body.theme-fancy .sidebar button.active { 
     background: rgba(110, 128, 152, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #ffffff; 
     font-weight: 600; border: 1px solid rgba(186, 202, 229, 0.4); box-shadow: 0 4px 14px rgba(6, 36, 32, 0.2); }
+/* 排序 */
+body.theme-fancy .sort-btn { background: rgba(255, 255, 255, 0.85); color: #333; border: 1.5px solid rgba(110, 128, 152, 0.85); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+body.theme-fancy .sort-btn:hover { background: #ffffff; }
+body.theme-fancy .sort-menu { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(110, 128, 152, 0.85); }
+body.theme-fancy .sort-item { color: #4A403A; }
+body.theme-fancy .sort-item:hover,
+body.theme-fancy .sort-item.active { background: rgba(154, 167, 190, 0.85); color: rgba(110, 128, 152, 0.85); font-weight: 700; }
+    
 body.theme-fancy .filter-btn { background: rgba(255, 255, 255, 0.55); color: #333; }
 body.theme-fancy .filter-btn.active { background: rgba(145, 160, 185, 0.9); color: #fff; box-shadow: 0 4px 12px rgba(6, 36, 32, 0.12); }
 body.theme-fancy .card { box-shadow: var(--shadow-md); }
@@ -344,7 +373,14 @@ body.theme-light .month-expand-btn:hover { background: rgb(44, 49, 56); color: #
 body.theme-light .month-modal-content { background: #ffffff; border: 2px solid rgb(44, 49, 56); }
 body.theme-light .month-grid .time-btn { background: #ffffff; color: rgb(44, 49, 56); border: 1px solid rgba(44, 49, 56, 0.3); border-radius: 10px; }
 body.theme-light .month-grid .time-btn.active { background: rgb(44, 49, 56) !important; color: #ffffff !important; }
-/* 側邊欄位 */
+/* 排序 */
+body.theme-light .sort-btn {background: #ffffff; color: rgb(85, 93, 102); border: 1.5px solid rgb(68, 75, 84); }
+body.theme-light .sort-btn:hover { background: #f0f0f0; }
+body.theme-light .sort-menu { background: #ffffff; border: 1px solid rgba(68, 75, 84, 0.2); }
+body.theme-light .sort-item { color: rgb(68, 75, 84); }
+body.theme-light .sort-item:hover,
+body.theme-light .sort-item.active { background: rgb(68, 75, 84); color: #ffffff; }
+/* 主內容與側邊欄 */
 body.theme-light .content { background-color: #ffffff; background-image: none; }
 body.theme-light .sidebar { background-color: #fafafa; background-image: none; border-right: 1px solid rgba(44, 49, 56, 0.15) !important; }
 body.theme-light .sidebar button { background: transparent; color: rgb(85, 93, 102); font-weight: 500; box-shadow: none; }
@@ -388,6 +424,13 @@ body.theme-dark .search-results button:hover {
     background: rgb(68, 75, 84) !important; color: #ffffff !important; border-color: rgb(68, 75, 84) !important; box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 body.theme-dark .search-highlight { box-shadow: 0 0 0 4px rgb(141, 155, 173), 0 0 12px rgba(141, 155, 173, 0.4) !important; transition: box-shadow 0.3s ease; }
+/* 排序 */
+body.theme-dark .sort-btn { background: rgba(255, 255, 255, 0.05); color: #e2e8f0; border: 1.5px solid rgba(255, 255, 255, 0.3); }
+body.theme-dark .sort-btn:hover { background: rgba(255, 255, 255, 0.1); }
+body.theme-dark .sort-menu { background: #1e242c; border: 1px solid rgba(255, 255, 255, 0.15); }
+body.theme-dark .sort-item { color: #a6abb3; }
+body.theme-dark .sort-item:hover,
+body.theme-dark .sort-item.active { background: rgb(68, 75, 84); color: #ffffff; }
 /* 主內容與側邊欄 */
 body.theme-dark .content { background-color: #141619; }
 body.theme-dark .sidebar { background-color: #1a1d21; border-right: 1px solid rgba(255, 255, 255, 0.05); }
@@ -461,12 +504,24 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     .news-item { width: 100%; font-size: 15px; white-space: normal; }
     /* 側邊欄位 */
     .container { flex-direction: column; }    
+    /* 排序 */
     .sidebar { 
-        width: 100%; padding: 10px 8px; flex-direction: row; border-right: none; gap: 6px;
-        border-bottom: 1px solid rgba(0,0,0,0.1); overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        width: 100% !important; max-width: 100vw !important; padding: 10px 12px; display: flex !important; flex-direction: row !important; align-items: center;
+        border-right: none; gap: 8px; border-bottom: 1px solid rgba(0,0,0,0.1); overflow-x: auto !important; overflow-y: visible !important; 
+        white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none;
     }
-    .sidebar button { flex: 0 0 auto; width: auto; margin: 0; padding: 6px 10px; font-size: 13px; justify-content: center; }
-    .sidebar::-webkit-scrollbar { display: none; } /* 隱藏捲動條 (Chrome/Safari/Webkit) */
+    .sidebar::-webkit-scrollbar { display: none; }
+    .sidebar > * { flex-shrink: 0; /* 確保內容不被擠壓 */ }
+    .sidebar button { flex: 0 0 auto; width: auto; margin: 0; padding: 6px 12px; font-size: 13px; justify-content: center; }
+
+    .sort-dropdown-container { width: auto !important; flex-shrink: 0; margin-bottom: 0; }
+    .sort-btn { width: auto !important; padding: 6px 12px; font-size: 13px; }
+    .sort-menu {
+        position: fixed !important; width: 170px !important; background-color: #ffffff; z-index: 999999 !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); border-radius: 12px;
+    }
+    .sort-menu.show { display: block; }
+    .sort-item { white-space: nowrap; padding: 12px 16px; }
     /* 內容 */
     .content { padding: 20px; }
     .card-grid { grid-template-columns: 1fr; }
@@ -560,6 +615,20 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
 
 <div class="container">
     <nav class="sidebar">
+        <!-- 排序按鈕與選單容器 -->
+        <div class="sort-dropdown-container">
+            <button type="button" class="sort-btn" onclick="toggleSortMenu(event)">
+                <span>🔃 排序</span>
+                <span class="arrow">▾</span>
+            </button>
+            <div class="sort-menu" id="sort-menu">
+                <div class="sort-item" onclick="selectSort('popular', '🔥 熱門排序（高至低）', this)">🔥 熱門排序（高至低）</div>
+                <div class="sort-item active" onclick="selectSort('updated_desc', '✨ 翻譯更新（新至舊）', this)">✨ 翻譯更新（新至舊）</div>
+                <div class="sort-item" onclick="selectSort('pub_desc', '📅 影片發布（新至舊）', this)">📅 影片發布（新至舊）</div>
+                <div class="sort-item" onclick="selectSort('pub_asc', '⏳ 影片發布（舊至新）', this)">⏳ 影片發布（舊至新）</div>
+            </div>
+        </div>
+        <!-- 作品分類按鈕 -->
         <button class="active" onclick="switchTab('live', this)">📺 直播</button>
         <button onclick="switchTab('program', this)">🎬 節目</button>
         <button onclick="switchTab('radio', this)">📻 電台</button>
@@ -703,8 +772,10 @@ const videoData = [
     // --- LIVE ---    
     {
         id: 'l1',
+        dbId: 'O6ATwduINPg',
         category: 'live',
-        date: '2026-05',
+        date: '2026-05-09',
+        updatedAt: '2026-05-14',
         title: '20260509 FLARE U IG直播',
         link: 'https://flareu-tw-trans.github.io/Live/20260509_FLARE_U_IG_LIVE/',
         img: 'images/20260509_FLARE_U_IG_LIVE.webp',
@@ -715,8 +786,10 @@ const videoData = [
     },
     {
         id: 'l2',
+        dbId: 'LA-hJsCtSlU',
         category: 'live',
-        date: '2026-05',
+        date: '2026-05-20',
+        updatedAt: '2026-05-26',
         title: '20260520 FLARE U 直播<br> ⊹₊ ✰ 𝗔𝗟𝗕𝗨𝗠 𝗨𝗡𝗕𝗢𝗫𝗜𝗡𝗚 𝘄𝗶𝘁𝗵 𝗨 ⊹₊ ✰',
         link: 'https://flareu-tw-trans.github.io/Live/20260520_ALBUM_UNBOXING_with_U/',
         img: 'images/20260520_ALBUM_UNBOXING_with_U.webp',
@@ -727,8 +800,10 @@ const videoData = [
     },
     {
         id: 'l3',
+        dbId: 'unNukiuFVvo',
         category: 'live',
-        date: '2026-06',
+        date: '2026-06-02',
+        updatedAt: '2026-06-06',
         title: '20260602 THE SHOW - MC TALK<br> （特別MC：立于、xikers－玟縡）',
         link: 'https://flareu-tw-trans.github.io/Live/20260602_THESHOW_MC_TALK/',
         img: 'images/20260602_THESHOW_MC_TALK.webp',
@@ -739,8 +814,10 @@ const videoData = [
     },
     {
         id: 'l4',
+        dbId: 'c_xmqd7mrzQ',
         category: 'live',
-        date: '2026-06',
+        date: '2026-06-07',
+        updatedAt: '2026-06-24',
         title: '20260607 FLARE U 直播<br> ⋆ ꙳ₓ 𝗛𝗔𝗣𝗣𝗬 𝗪𝗢𝗢𝗝𝗜𝗡 𝗗𝗔𝗬 ⋆ ꙳ₓ',
         link: 'https://flareu-tw-trans.github.io/Live/20260607_HAPPY_WOOJIN_DAY/',
         img: 'images/20260607_HAPPY_WOOJIN_DAY.webp',
@@ -751,8 +828,10 @@ const videoData = [
     },
     {
         id: 'l5',
+        dbId: 'RltEbIzUuCA',
         category: 'live',
-        date: '2026-06',
+        date: '2026-06-21',
+        updatedAt: '2026-06-25',
         title: '20260621 fredr1ck._choi 立于IG直播<br>  出道200日',
         link: 'https://flareu-tw-trans.github.io/Live/20260621_fredrick._choi_IG_LIVE/',
         img: 'images/20260621_fredrick._choi_IG_LIVE.jpg',
@@ -763,8 +842,10 @@ const videoData = [
     },
     {
         id: 'l6',
+        dbId: '5BJIw2fmB1U',
         category: 'live',
-        date: '2026-06',
+        date: '2026-06-24',
+        updatedAt: '2026-07-01',
         title: '20260624 FLARE U 玗進 IG直播',
         link: 'https://flareu-tw-trans.github.io/Live/20260624_FLARE_U_IG_LIVE/',
         img: 'images/20260624_FLARE_U_IG_LIVE.jpg',
@@ -775,8 +856,10 @@ const videoData = [
     },
     {
         id: 'l7',
+        dbId: 'FHetsWUCn3A',
         category: 'live',
-        date: '2026-07',
+        date: '2026-07-14',
+        updatedAt: '2026-07-18',
         title: '20260714 FLARE U IG直播',
         link: 'https://flareu-tw-trans.github.io/Live/20260714_FLARE_U_IG_LIVE/',
         img: 'images/20260714_FLARE_U_IG_LIVE.jpg',
@@ -787,8 +870,10 @@ const videoData = [
     },
     {
         id: 'l8',
+        dbId: '20260714_THE_SHOW_interview',
         category: 'live',
-        date: '2026-07',
+        date: '2026-07-14',
+        updatedAt: '2026-07-21',
         title: '20260714 THE SHOW 玟縡 x 立于 主持合輯',
         link: 'https://flareu-tw-trans.github.io/Live/THE_SHOW/20260714/',
         img: 'images/20260714_THE_SHOW_interview.webp',
@@ -799,8 +884,10 @@ const videoData = [
     },
     {
         id: 'l9',
+        dbId: 'jx0fHH7feXU',
         category: 'live',
-        date: '2026-07',
+        date: '2026-07-20',
+        updatedAt: '2026-07-21',
         title: '20260720 FLARE U IG直播',
         link: 'https://flareu-tw-trans.github.io/Live/20260720_FLARE_U_IG_LIVE/',
         img: 'images/20260720_FLARE_U_IG_LIVE.jpg',
@@ -811,8 +898,10 @@ const videoData = [
     },
     {
         id: 'l10',
+        dbId: 'QiI7jo19XJM',
         category: 'live',
-        date: '2026-07',
+        date: '2026-07-25',
+        updatedAt: '2026-07-27',
         title: '20260725 FLARE U IG直播',
         link: 'https://flareu-tw-trans.github.io/Live/20260725_FLARE_U_IG_LIVE/',
         img: 'images/20260725_FLARE_U_IG_LIVE.jpg',
@@ -823,8 +912,10 @@ const videoData = [
     },
     {
         id: 'l11',
+        dbId: 'ZQqvqZtiaI4',
         category: 'live',
-        date: '2026-07',
+        date: '2026-07-28',
+        updatedAt: '2026-07-30',
         title: '20260728 THE SHOW MC TALK<br> (特別MC:VAYONN-Masato、MANO)',
         link: 'https://flareu-tw-trans.github.io/Live/THE_SHOW/20260728/',
         img: 'images/20260728_THESHOW_MC_TALK.webp',
@@ -835,8 +926,10 @@ const videoData = [
     },
     {
         id: 'l12',
+        dbId: 'qKaBmnZrDWU',
         category: 'live',
-        date: '2026-07',
+        date: '2026-07-26',
+        updatedAt: '2026-08-03',
         title: '20260726 FLARE U 玗進 IG直播',
         link: 'https://flareu-tw-trans.github.io/Live/20260726_FLARE_U_IG_LIVE/',
         img: 'images/20260726_FLARE_U_IG_LIVE.jpg',
@@ -847,8 +940,10 @@ const videoData = [
     },
     {
         id: 'l13',
+        dbId: 'GG_5wO9OZaw',
         category: 'live',
-        date: '2026-07',
+        date: '2026-07-28',
+        updatedAt: '2026-08-11',
         title: '20260728 FLARE U IG直播',
         link: 'https://flareu-tw-trans.github.io/Live/20260728_FLARE_U_IG_LIVE/',
         img: 'images/20260728_FLARE_U_IG_LIVE.webp',
@@ -859,8 +954,10 @@ const videoData = [
     },
     {
         id: 'l14',
+        dbId: '8HsdDBPgC18',
         category: 'live',
-        date: '2026-08',
+        date: '2026-08-01',
+        updatedAt: '2026-08-13',
         title: '20260801 FLARE U 玗進 IG直播',
         link: 'https://flareu-tw-trans.github.io/Live/20260801_FLARE_U_IG_LIVE/',
         img: 'images/20260801_FLARE_U_IG_LIVE.webp',
@@ -871,8 +968,10 @@ const videoData = [
     },
     {
         id: 'l15',
+        dbId: 'TnriUBSrlR8',
         category: 'live',
-        date: '2026-08',
+        date: '2026-08-02',
+        updatedAt: '2026-08-14',
         title: '20260802 FLARE U 立于 IG直播',
         link: 'https://flareu-tw-trans.github.io/Live/20260802_FLARE_U_IG_LIVE/',
         img: 'images/20260802_FLARE_U_IG_LIVE.webp',
@@ -884,8 +983,10 @@ const videoData = [
     // --- PROGRAM --- 
     {
         id: 'p1',
+        dbId: '',
         category: 'program',
         date: '2026-05',
+        updatedAt: '2026--',
         title: '偶像跳舞機之王(IDOL PUMP KING EP.4-2)',
         link: 'https://flareu-tw-trans.github.io/Program/20260515_IDOL_PUMP_KING_EP.4-2/',
         img: 'images/20260515_IDOL_PUMP_KING_EP.4-2.webp',
@@ -896,8 +997,10 @@ const videoData = [
     },   
     {
         id: 'p2',
+        dbId: '',
         category: 'program',
         date: '2026-05',
+        updatedAt: '2026--',
         title: '要聊天還是跳舞！',
         link: 'https://flareu-tw-trans.github.io/Program/20260514_TALK_OR_DANCE/',
         img: 'images/20260514_TALK_OR_DANCE.webp',
@@ -908,8 +1011,10 @@ const videoData = [
     },
     {
         id: 'p3',
+        dbId: '',
         category: 'program',
         date: '2026-05',
+        updatedAt: '2026--',
         title: '《耀燮的時下潮流》EP.6 <br> 來賓：HIGHLIGHT斗俊',
         link: "https://flareu-tw-trans.github.io/Program/20260521_YOSEOP's_Trendy_Things_EP.6/",
         img: "images/20260521_YOSEOP's_Trendy_Things_EP.6.webp",
@@ -920,8 +1025,10 @@ const videoData = [
     },
     {
         id: 'p4',
+        dbId: '',
         category: 'program',
         date: '2026-05',
+        updatedAt: '2026--',
         title: '金珉志與超帥年下男相親',
         link: "https://flareu-tw-trans.github.io/Program/20260521_KIMMINGEE/",
         img: "images/20260521_KIMMINGEE.webp",
@@ -932,8 +1039,10 @@ const videoData = [
     },
     {
         id: 'p5',
+        dbId: '',
         category: 'program',
         date: '2026-06',
+        updatedAt: '2026--',
         title: '《雙向家教》EP.2',
         link: "https://flareu-tw-trans.github.io/Program/20260608_Horang/",
         img: "images/20260608_Horang.webp",
@@ -944,8 +1053,10 @@ const videoData = [
     },
     {
         id: 'p6',
+        dbId: '',
         category: 'program',
         date: '2026-06',
+        updatedAt: '2026--',
         title: 'OFF Air☕ Ep.16<br>（MC：idntt-度勳、喜主）',
         link: "https://flareu-tw-trans.github.io/Program/20260617_OFF_Air_EP.16/",
         img: "images/20260617_OFF_Air_EP.16.webp",
@@ -956,8 +1067,10 @@ const videoData = [
     },
     {
         id: 'p7',
+        dbId: '',
         category: 'program',
         date: '2026-07',
+        updatedAt: '2026--',
         title: 'Another Class 2026 EP.3<br>（MC：Haha）',
         link: "https://flareu-tw-trans.github.io/Program/20260717_Another_Class_2026/",
         img: "images/20260717_Another_Class_2026.webp",
@@ -968,8 +1081,10 @@ const videoData = [
     },
     {
         id: 'p8',
+        dbId: '',
         category: 'program',
         date: '2026-08',
+        updatedAt: '2026--',
         title: '我的首爾朋友EP.9',
         link: "https://flareu-tw-trans.github.io/Program/SeoulMyFriend/EP9/",
         img: "images/20260814_SeoulMyFriend_EP9.webp",
@@ -981,8 +1096,10 @@ const videoData = [
     // --- RADIO ---
     {
         id: 'r1',
+        dbId: '',
         category: 'radio',
         date: '2026-05',
+        updatedAt: '2026--',
         title: '20260519 親密朋友廣播部<br> (DJ：P1Harmony太洋、起昊)',
         link: 'https://flareu-tw-trans.github.io/Radio/mbc_chinchinbang/20260519/',
         img: 'images/20260519_mbc_chinchinbang.webp',
@@ -993,8 +1110,10 @@ const videoData = [
     },
     {
         id: 'r2',
+        dbId: '',
         category: 'radio',
         date: '2026-05',
+        updatedAt: '2026--',
         title: '20260527 正午的希望曲金信英<br> (來賓:FLARE U、hrtz.wav-Riaan、Dane)',
         link: 'https://flareu-tw-trans.github.io/Radio/MBCRADIO/20260527/',
         img: 'images/20260527_MBC_RADIO.webp',
@@ -1005,8 +1124,10 @@ const videoData = [
     },
     {
         id: 'r3',
+        dbId: '',
         category: 'radio',
         date: '2026-06',
+        updatedAt: '2026--',
         title: '20260607 朴素賢的Love Game',
         link: 'https://flareu-tw-trans.github.io/Radio/lovegame/20260607/',
         img: 'images/20260607_lovegame.webp',
@@ -1017,8 +1138,10 @@ const videoData = [
     },
     {
         id: 'r4',
+        dbId: '',
         category: 'radio',
         date: '2026-06',
+        updatedAt: '2026--',
         title: '20260609 傾聽電台',
         link: 'https://flareu-tw-trans.github.io/Radio/ebsfmlisten/20260609/',
         img: 'images/20260609_ebsfmlisten.webp',
@@ -1029,8 +1152,10 @@ const videoData = [
     },
     {
         id: 'r5',
+        dbId: '',
         category: 'radio',
         date: '2026-05',
+        updatedAt: '2026--',
         title: '20260527 偶像電台 EP.227',
         link: 'https://flareu-tw-trans.github.io/Radio/IDOL_RADIO/20260527/',
         img: 'images/20260527_idol_radio_EP.227.webp',
@@ -1041,8 +1166,10 @@ const videoData = [
     },
     {
         id: 'r6',
+        dbId: '',
         category: 'radio',
         date: '2026-05',
+        updatedAt: '2026--',
         title: '20260528 偶像韓語 EP.828',
         link: 'https://flareu-tw-trans.github.io/Radio/IDOL_KOREAN/20260528/',
         img: 'images/20260528_IDOL_KOREAN_ep.828.webp',
@@ -1054,8 +1181,10 @@ const videoData = [
     // --- MEDIA ---
     {
         id: 'm1',
+        dbId: '',
         category: 'media',
         date: ['2026-04', '2026-05'],
+        updatedAt: '2026--',
         title: 'KCON JAPAN 2026合輯',
         link: 'https://flareu-tw-trans.github.io/Media/20260428_KCONJAPAN2026/',
         img: 'images/20260428_KCONJAPAN2026.webp',
@@ -1066,8 +1195,10 @@ const videoData = [
     },
     {
         id: 'm2',
+        dbId: '',
         category: 'media',
         date: '2026-05',
+        updatedAt: '2026--',
         title: 'MIC& 友情Challenge',
         link: 'https://flareu-tw-trans.github.io/Media/20260527_MIC&/',
         img: 'images/20260527_MIC&.webp',
@@ -1078,8 +1209,10 @@ const videoData = [
     },
     {
         id: 'm3',
+        dbId: '',
         category: 'media',
         date: '2026-06',
+        updatedAt: '2026--',
         title: '我們FLARE U都不會哭，反而很會說話呢',
         link: 'https://flareu-tw-trans.github.io/Media/20260601_ARENA_HOMME+/',
         img: 'images/20260601_ARENA_HOMME+.webp',
@@ -1090,8 +1223,10 @@ const videoData = [
     },
     {
         id: 'm4',
+        dbId: '',
         category: 'media',
         date: '2026-06',
+        updatedAt: '2026--',
         title: '花美男2人組FLARE U為了U’RE們的Whosfan Cafe探訪記錄',
         link: 'https://flareu-tw-trans.github.io/Media/20260610_WhosfanCafe/',
         img: 'images/20260610_WhosfanCafe.webp',
@@ -1102,8 +1237,10 @@ const videoData = [
     },
     {
         id: 'm5',
+        dbId: '',
         category: 'media',
         date: '2026-06',
+        updatedAt: '2026--',
         title: '新品攤位 麵包部長 鹽味麻花捲篇',
         link: 'https://flareu-tw-trans.github.io/Media/20260612_THE_K-POP/',
         img: 'images/20260612_THE_K-POP.webp',
@@ -1114,8 +1251,10 @@ const videoData = [
     },
     {
         id: 'm6',
+        dbId: '',
         category: 'media',
         date: '2026-06',
+        updatedAt: '2026--',
         title: 'FLARE U繼《Boys Ⅱ Planet》後攜迷你專輯《YOUTH ERROR》開啟全新篇章！',
         link: 'https://flareu-tw-trans.github.io/Media/20260619_FOX_13_Seattle/',
         img: 'images/20260619_FOX_13_Seattle.webp',
@@ -1126,8 +1265,10 @@ const videoData = [
     },
     {
         id: 'm7',
+        dbId: '',
         category: 'media',
         date: '2026-07',
+        updatedAt: '2026--',
         title: '如果有能在FLARE U面前還維持撲克臉的組長請出列！',
         link: 'https://flareu-tw-trans.github.io/Media/20260707_veige_inbox/',
         img: 'images/20260707_veige_inbox.webp',
@@ -1138,8 +1279,10 @@ const videoData = [
     },
     {
         id: 'm8',
+        dbId: '',
         category: 'media',
-        date: '2026-07',
+        date: '2026-07-',
+        updatedAt: '2026--',
         title: 'THE SHOW SHORTS 七月份合輯',
         link: 'https://flareu-tw-trans.github.io/Media/20260714_THE_SHOW_Shorts/',
         img: 'images/20260714_THE_SHOW_Shorts.webp',
@@ -1254,10 +1397,12 @@ let currentMonth = 'all'; // 預設顯示全部月份
     
 window.onload = function() {
     // 1. 渲染卡片
-    if (typeof videoData !== 'undefined') {
+    if (typeof videoData !== 'undefined') {  
+        console.log("window.onload");
         renderAllCards(videoData);
+        initReactionsCount();
         // 初始化篩選器
-        ['live', 'program', 'radio', 'media', 'stage'].forEach(cat => {
+        ['live', 'program', 'radio', 'media'].forEach(cat => {
             generateFilters(cat);
         });
     }
@@ -1317,6 +1462,9 @@ function createCardHTML(item) {
         
         <a href="${item.link}" target="_blank" style="text-decoration:none; color:inherit; display:block;">
             <div class="card-img-wrap">
+                <div class="reaction-badge" title="表情互動總數">
+                    ☺️ ${item.totalReactions || 0}
+                </div>
                 <img src="${item.img}" alt="${item.title.replace(/<br>/g, ' ')}" loading="lazy">
                 ${badge}
             </div>
@@ -1340,17 +1488,14 @@ function getSortedData(data) {
 }
 
 function renderAllCards(data) {
-    // 1. 先呼叫 getSortedData 取得排序後的資料副本
-    const sortedData = getSortedData(data);
-
-    // 2. 執行月份過濾 (整合 currentMonth)
-    const monthFilteredData = sortedData.filter(i => {
+    // 1. 執行月份過濾
+    const monthFilteredData = data.filter(i => {
         if (currentMonth === 'all') return true;
-        // 判斷日期是否匹配 (支援字串或陣列格式)
+        // 判斷日期是否匹配 
         return Array.isArray(i.date) ? i.date.includes(currentMonth) : i.date === currentMonth;
     });
 
-    // 3. 取得各分類的容器
+    // 2. 取得各分類的容器
     const containers = {
         'live': document.getElementById('live-grid'),
         'program': document.getElementById('program-grid'),
@@ -1359,17 +1504,12 @@ function renderAllCards(data) {
         'stage': document.getElementById('stage-grid')
     };
 
-    // 4. 根據過濾後的資料進行各分類渲染
+    // 3. 根據過濾後的資料進行各分類渲染
     Object.keys(containers).forEach(cat => {
         const grid = containers[cat];
         if (grid) {
             const catData = monthFilteredData.filter(i => i.category === cat);
             grid.innerHTML = catData.map(createCardHTML).join('');
-            
-            // 如果該月份沒有資料，可以選擇顯示提示文字 (選用)
-            if (catData.length === 0 && currentMonth !== 'all') {
-                // grid.innerHTML = '<div class="no-data">此月份暫無內容</div>';
-            }
         }
     });
 }
@@ -1602,7 +1742,189 @@ function setTheme(theme) {
 }
 
 /* =========================================
-   收藏功能
+   ⭐ 5. 排序功能
+   ========================================= */
+// 1. 資料庫變數與當前狀態
+let currentSortMode = 'updated_desc';
+// 2. 頁面標籤切換（Sidebar）
+function switchTab(tabId, btnElement) {
+    // 切換按鈕與 Section 的 active 狀態
+    document.querySelectorAll('.sidebar button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    
+    if (btnElement) btnElement.classList.add('active');
+    const targetSection = document.getElementById(tabId);
+    if (targetSection) targetSection.classList.add('active');
+
+    // 舞台（stage）與收藏（favorites）隱藏排序選單，其餘顯示
+    const sortWrapper = document.querySelector('.sort-wrapper');
+    if (sortWrapper) {
+        if (tabId === 'stage' || tabId === 'favorites') {
+            sortWrapper.style.display = 'none';
+        } else {
+            sortWrapper.style.display = 'flex';
+        }
+    }
+}
+
+function handleSortChange(sortType) {
+    currentSortMode = sortType;
+    
+    if (sortType === 'popular') {
+        fetchReactionsAndSort();
+    } else {
+        applySortingAndRender();
+    }
+}
+
+function fetchReactionsAndSort() {
+    if (!window.db || !window.fb_ref) {
+        console.warn("Firebase 尚未就緒");
+        applySortingAndRender();
+        return;
+    }
+
+    const reactionsRef = window.fb_ref(window.db, 'video_reactions');
+    window.fb_onValue(reactionsRef, (snapshot) => {
+        const reactionsData = snapshot.val() || {};
+
+        videoData.forEach(video => {
+            video.totalReactions = calcTotalReactions(video, reactionsData);
+        });
+
+        applySortingAndRender();
+    }, { onlyOnce: true });
+}
+
+// 修正排序套用邏輯 (確定能針對不同 Mode 正確排序)
+function applySortingAndRender() {
+    videoData.sort((a, b) => {
+        switch (currentSortMode) {
+            case 'popular':
+                return (b.totalReactions || 0) - (a.totalReactions || 0);
+            case 'updated_desc':
+                // 優先比對 updatedAt，沒有的話比對 date
+                const dateA1 = new Date(a.updatedAt || a.date).getTime() || 0;
+                const dateB1 = new Date(b.updatedAt || b.date).getTime() || 0;
+                return dateB1 - dateA1;
+            case 'pub_desc':
+                const dateA2 = new Date(a.date).getTime() || 0;
+                const dateB2 = new Date(b.date).getTime() || 0;
+                return dateB2 - dateA2;
+            case 'pub_asc':
+                const dateA3 = new Date(a.date).getTime() || 0;
+                const dateB3 = new Date(b.date).getTime() || 0;
+                return dateA3 - dateB3;
+            default:
+                return 0;
+        }
+    });
+
+    renderAllCards(videoData);
+}
+
+// 初始化連線與表情數同步
+function initReactionsCount() {
+    console.log("initReactionsCount 被呼叫");
+
+    if (!window.db || !window.fb_ref) {
+        setTimeout(initReactionsCount, 200);
+        return;
+    }
+
+    console.log("Firebase 已就緒，開始監聽資料...");
+
+    const reactionsRef = window.fb_ref(window.db, 'video_reactions');
+    
+    // 加上第三個參數 (error) 來捕捉 Firebase 拒絕存取的錯誤
+    window.fb_onValue(reactionsRef, (snapshot) => {
+        const reactionsData = snapshot.val() || {};
+
+        console.log("【Firebase video_reactions Data】:", reactionsData);
+
+        if (typeof videoData !== 'undefined' && videoData.length > 0) {
+            videoData.forEach(video => {
+                video.totalReactions = calcTotalReactions(video, reactionsData);
+            });
+            applySortingAndRender();
+        }
+    }, (error) => {
+        console.error("【Firebase 讀取失敗錯誤】:", error);
+    });
+}
+
+function calcTotalReactions(video, reactionsData) {
+    if (!reactionsData) return 0;
+
+    let targetKeys = [];
+    if (Array.isArray(video.dbIds) && video.dbIds.length > 0) {
+        targetKeys = video.dbIds;
+    } else if (video.dbId) {
+        targetKeys = [video.dbId];
+    } else if (video.id) {
+        targetKeys = [video.id];
+    }
+
+    let sum = 0;
+    targetKeys.forEach(key => {
+        const itemReactions = reactionsData[key];
+        if (!itemReactions) return;
+
+        // console.log(`比對成功: ${key}`, itemReactions);
+
+        Object.values(itemReactions).forEach(val => {
+            if (typeof val === 'number') {
+                sum += val;
+            } else if (typeof val === 'object' && val !== null) {
+                // 如果是按讚的使用者清單結構 { uid1: true, uid2: true }
+                sum += Object.keys(val).length;
+            }
+        });
+    });
+
+    return sum;
+}
+
+// 開啟 / 關閉選單
+function toggleSortMenu(event) {
+    event.stopPropagation();
+    const menu = document.getElementById("sort-menu");
+    const btn = event.currentTarget;
+
+    // 手機版動態計算按鈕位置（解決 fixed 定位偏差）
+    if (window.innerWidth <= 768) {
+        const rect = btn.getBoundingClientRect();
+        menu.style.top = `${rect.bottom + 6}px`;
+        menu.style.left = `${rect.left}px`;
+    } else {
+        menu.style.top = '';
+        menu.style.left = '';
+    }
+
+    menu.classList.toggle("show");
+}
+
+// 點擊選項後的處理
+function selectSort(sortType, labelText, element) {
+    // 1. 更新選項目 UI 高亮
+    document.querySelectorAll('.sort-item').forEach(el => el.classList.remove('active'));
+    element.classList.add('active');
+
+    // 2. 關閉選單
+    document.getElementById("sort-menu").classList.remove("show");
+
+    // 3. 呼叫排序與渲染邏輯
+    handleSortChange(sortType);
+}
+
+// 點擊頁面其他空白處時自動收起選單
+document.addEventListener('click', function() {
+    const menu = document.getElementById("sort-menu");
+    if (menu) menu.classList.remove("show");
+});
+
+/* =========================================
+   ⭐ 6. 收藏功能
    ========================================= */
 function toggleFavorite(id, event) {
     event.preventDefault();
@@ -1661,7 +1983,7 @@ function renderFavorites() {
 }
 
 /* =========================================
-   ⭐ 回到頂端功能 (Back to Top Logic)
+   ⭐ 7. 回到頂端功能 (Back to Top Logic)
    ========================================= */
 function initBackToTop() {
     const backToTopBtn = document.getElementById('backToTop');
@@ -1689,7 +2011,7 @@ function initBackToTop() {
 }
 
 /* =========================================
-   ⭐ 5. 全域點擊偵測 (處理彈窗外部關閉)
+   ⭐ 8. 全域點擊偵測 (處理彈窗外部關閉)
    ========================================= */
 window.addEventListener('click', function(event) {
     const aboutModal = document.getElementById('aboutModal');
