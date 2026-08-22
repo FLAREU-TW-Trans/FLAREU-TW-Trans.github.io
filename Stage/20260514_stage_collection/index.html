@@ -926,87 +926,50 @@
     }
 
     function likeCurrentVideo(tabId) {
+      const currentVideo = window.currentSelectedVideo[tabId];
+      if (!currentVideo) return;
 
-    const currentVideo = window.currentSelectedVideo[tabId];
-    if (!currentVideo) return;
+      const { category, videoDbId, displayTitle } = currentVideo;
+      const videoId = videoData[tabId] ? videoData[tabId].id : '';
+      const likeBtn = getLikeButton(tabId); // 使用修復後的抓取機制
 
-    if (!window.userUID) {
-        console.warn("UID 尚未就緒");
-        return;
-    }
+      const hasLiked = localStorage.getItem(`liked_${videoDbId}`) === 'true';
+      const changeValue = hasLiked ? -1 : 1;
 
-    const { category, videoDbId, displayTitle } = currentVideo;
-    const videoId = videoData[tabId] ? videoData[tabId].id : "";
-    const likeBtn = getLikeButton(tabId);
+      const targetRef = window.fb_ref(window.db, `stage_rankings/${category}/${videoDbId}`);
 
-    const storageKey = `liked_${videoDbId}`;
-    const hasLiked = localStorage.getItem(storageKey) === "true";
-
-    const countRef = window.fb_ref(
-        window.db,
-        `stage_rankings/${category}/${videoDbId}/clickCount`
-    );
-
-    const userRef = window.fb_ref(
-        window.db,
-        `stage_rankings/${category}/${videoDbId}/users/${window.userUID}`
-    );
-
-    const titleRef = window.fb_ref(
-        window.db,
-        `stage_rankings/${category}/${videoDbId}/title`
-    );
-
-    const ytRef = window.fb_ref(
-        window.db,
-        `stage_rankings/${category}/${videoDbId}/ytId`
-    );
-
-    Promise.all([
-        window.fb_set(titleRef, displayTitle),
-        window.fb_set(ytRef, videoId)
-    ]).then(() => {
-
-        return window.fb_runTransaction(countRef, current => {
-
-            const val = current || 0;
-
-            return hasLiked
-                ? Math.max(0, val - 1)
-                : val + 1;
-
-        });
-
-    }).then((result) => {
-
-        if (!result.committed) return;
-
-        if (hasLiked) {
-
-            localStorage.removeItem(storageKey);
-            window.fb_remove(userRef);
-
-            if (likeBtn) {
-                likeBtn.innerHTML = "❤️ 推薦";
-                likeBtn.classList.remove("liked");
-            }
-
+      window.fb_runTransaction(targetRef, (currentData) => {
+        if (currentData) {
+          const newCount = (currentData.clickCount || 0) + changeValue;
+          currentData.clickCount = newCount < 0 ? 0 : newCount;
+          currentData.title = displayTitle;
+          currentData.ytId = videoId;
         } else {
-
-            localStorage.setItem(storageKey, "true");
-            window.fb_set(userRef, true);
-
-            if (likeBtn) {
-                likeBtn.innerHTML = "✨ 已推薦";
-                likeBtn.classList.add("liked");
-            }
-
+          currentData = {
+            title: displayTitle,
+            clickCount: changeValue < 0 ? 0 : 1,
+            ytId: videoId
+          };
         }
-
-    }).catch(error => {
+        return currentData;
+      }).then(() => {
+        if (hasLiked) {
+          localStorage.setItem(`liked_${videoDbId}`, 'false');
+          if (likeBtn) {
+            likeBtn.innerHTML = "❤️ 推薦";
+            likeBtn.classList.remove('liked');
+          }
+        } else {
+          localStorage.setItem(`liked_${videoDbId}`, 'true');
+          if (likeBtn) {
+            likeBtn.innerHTML = "✨ 已推薦";
+            likeBtn.classList.add('liked');
+          }
+        }
+      }).catch(error => {
         console.error("推薦操作失敗:", error);
-    });
-}
+      });
+    }
 
     // =====================================
     // 從排行榜點擊連結
