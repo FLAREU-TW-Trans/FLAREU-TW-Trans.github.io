@@ -2037,44 +2037,6 @@ window.addEventListener('click', function(event) {
 });
 </script>
     
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-  import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAs9R785IE_kBsduUdEng3Vfqz1Ljl11f4",
-    authDomain: "flareu-tw-translation.firebaseapp.com",
-    databaseURL: "https://flareu-tw-translation-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "flareu-tw-translation",
-    storageBucket: "flareu-tw-translation.firebasestorage.app",
-    messagingSenderId: "753531558153",
-    appId: "1:753531558153:web:7106f9c2d253cae62fdbd8",
-    measurementId: "G-SLWB8QJJ3J"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  window.db = getDatabase(app);
-  window.fb_ref = ref;            
-  window.fb_onValue = onValue;      
-  window.fb_runTransaction = runTransaction; 
-
-  //初始化 Anonymous Auth
-  const auth = getAuth(app);
-  window.fb_auth = auth;
-
-  // 自動匿名登入
-  signInAnonymously(auth).catch(console.error);
-
-  // 等待登入完成
-  onAuthStateChanged(auth, (user) => {
-    if(user){
-        window.userUID = user.uid;
-        console.log("匿名登入成功：", user.uid);
-    }
-  });
-</script>
+<script type="module" src="./js/firebase-init.js"></script>
 </body>
 </html>
