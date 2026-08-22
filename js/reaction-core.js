@@ -175,9 +175,26 @@ window.sendInstantBarrage = function(type, event) {
         // 檢查 Firebase 是否連接成功
         if (window.db && window.fb_ref && window.fb_runTransaction) {
             const pathId = (typeof DATA_SOURCE_ID !== 'undefined') ? DATA_SOURCE_ID : MY_VIDEO_ID;
+            const uid = window.userUID;
+
+            const lastClickRef = window.fb_ref(window.db, `barrage_users/${uid}`);
             const barrageRef = window.fb_ref(window.db, `barrages/${pathId}/${currentTime}/${type}`);
-            window.fb_runTransaction(barrageRef, (count) => (count || 0) + 1)
-                .catch(err => console.error("Firebase 寫入失敗:", err));
+
+            window.fb_runTransaction(lastClickRef, (lastTime) => {
+                const now = Date.now();
+
+                if (lastTime && now - lastTime < 1000) {
+                    return; // 一秒內不能再送
+                }
+
+                return now;
+            }).then((result) => {
+
+                if (!result.committed) return;
+
+                return window.fb_runTransaction(barrageRef, (count) => (count || 0) + 1);
+
+            }).catch(console.error);
         } else {
             console.error("Firebase 未初始化：請檢查 index.html 是否有掛載 window.db / window.fb_ref");
         }
