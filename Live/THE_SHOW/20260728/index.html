@@ -154,7 +154,7 @@ function changeSubtitleSize(delta) {
 function seekToTime(seconds) {
     if (window.player && typeof window.player.seekTo === 'function') {
         window.player.seekTo(seconds, true);
-        window.player.playVideo(); // 跳轉後自動播放
+        window.player.playVideo(); 
     } else {
         console.warn("YouTube Player 尚未準備就緒");
     }
