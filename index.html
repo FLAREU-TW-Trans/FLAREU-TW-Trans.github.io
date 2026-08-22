@@ -1791,7 +1791,7 @@ function fetchReactionsAndSort() {
         return;
     }
 
-    const reactionsRef = window.fb_ref(window.db, 'video_reactions/counts');
+    const reactionsRef = window.fb_ref(window.db, 'video_reactions');
     window.fb_onValue(reactionsRef, (snapshot) => {
         const reactionsData = snapshot.val() || {};
 
@@ -1841,13 +1841,13 @@ function initReactionsCount() {
 
     console.log("Firebase 已就緒，開始監聽資料...");
 
-    const reactionsRef = window.fb_ref(window.db, 'video_reactions/counts');
+    const reactionsRef = window.fb_ref(window.db, 'video_reactions');
     
     // 加上第三個參數 (error) 來捕捉 Firebase 拒絕存取的錯誤
     window.fb_onValue(reactionsRef, (snapshot) => {
         const reactionsData = snapshot.val() || {};
 
-        console.log("【Firebase video_reactions/counts Data】:", reactionsData);
+        console.log("【Firebase video_reactions Data】:", reactionsData);
 
         if (typeof videoData !== 'undefined' && videoData.length > 0) {
             videoData.forEach(video => {
@@ -1874,17 +1874,18 @@ function calcTotalReactions(video, reactionsData) {
 
     let sum = 0;
     targetKeys.forEach(key => {
-        const itemReactions = reactionsData[key];
-        if (video.category !== 'live') {
-            console.log(`分類: ${video.category}, ID: ${key}, 找到資料:`, !!itemReactions);
-        }
-        if (!itemReactions) return;
+        const itemData = reactionsData[key];
+        if (!itemData) return;
 
-        Object.values(itemReactions).forEach(val => {
+        // 取得該影片裡面的 counts 物件
+        const counts = itemData.counts;
+        if (!counts) return;
+
+        // 加總 counts 底下的所有表情數量
+        Object.values(counts).forEach(val => {
             if (typeof val === 'number') {
                 sum += val;
             } else if (typeof val === 'object' && val !== null) {
-                // 如果是按讚的使用者清單結構 { uid1: true, uid2: true }
                 sum += Object.keys(val).length;
             }
         });
