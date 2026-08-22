@@ -95,54 +95,69 @@ function syncWallCounts() {
 // 3. 功能 A：表情牆邏輯 (Toggle 計數)
 // ==========================================
 
+import {
+  getDatabase,
+  ref,
+  onValue,
+  runTransaction,
+  set,
+  remove
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+window.fb_set = set;
+window.fb_remove = remove;
+
 window.toggleReaction = function(type, event) {
     if (event) event.stopPropagation();
-    
-    // 檢查 Firebase 是否就緒
-    if (!window.db || !window.fb_runTransaction) {
-        console.warn("Firebase not ready");
+
+    if (!window.db || !window.userUID) {
+        console.warn("Firebase 或 UID 尚未就緒");
         return;
     }
 
     const pathId = (typeof DATA_SOURCE_ID !== 'undefined') ? DATA_SOURCE_ID : MY_VIDEO_ID;
     const storageKey = `reacted-${pathId}-${type}`;
     const isReacted = localStorage.getItem(storageKey) === 'true';
+
     const btn = document.querySelector(`.reaction-wall button[data-type="${type}"]`);
-    
-    // 執行資料庫交易
+
     const countRef = window.fb_ref(window.db, `video_reactions/${pathId}/counts/${type}`);
+    const userRef = window.fb_ref(window.db, `video_reactions/${pathId}/users/${window.userUID}/${type}`);
+
     window.fb_runTransaction(countRef, (currentCount) => {
-        let val = (currentCount === null) ? 0 : currentCount;
+        const val = currentCount || 0;
+        return isReacted ? Math.max(0, val - 1) : val + 1;
+    }).then((result) => {
+
+        if (!result.committed) return;
+
         if (isReacted) {
-            return Math.max(0, val - 1); // 取消讚
-        } else {
-            return val + 1; // 按讚
-        }
-    }).then(() => {
-        // UI 更新
-        if (isReacted) {
+
             localStorage.removeItem(storageKey);
+            window.fb_remove(userRef);
+
             if (btn) {
-                btn.classList.remove('active');
+                btn.classList.remove("active");
                 btn.style.transform = "scale(1)";
             }
+
         } else {
-            localStorage.setItem(storageKey, 'true');
+
+            localStorage.setItem(storageKey, "true");
+            window.fb_set(userRef, true);
+
             if (btn) {
-                btn.classList.add('active');
-                // 點擊回饋動畫
+                btn.classList.add("active");
                 btn.style.transform = "scale(1.2)";
                 setTimeout(() => {
-                    // 如果還是 active，保持微大；否則歸零
-                    const stillActive = localStorage.getItem(storageKey) === 'true';
-                    btn.style.transform = stillActive ? "scale(1.05)" : "scale(1)";
+                    btn.style.transform = "scale(1.05)";
                 }, 150);
             }
-        }
-    });
-    // 注意：這裡完全不呼叫 createBarrageDom，所以牆上點擊不會飄彈幕
-};
 
+        }
+
+    }).catch(console.error);
+};
 
 // ==========================================
 // 4. 功能 B：即時彈幕邏輯 (發射不計數)
@@ -152,57 +167,59 @@ let lastSentSignal = { time: -1, type: '' };
 let lastClickTime = 0;
 
 window.sendInstantBarrage = function(type, event) {
+
     if (event) {
         event.stopPropagation();
-        // 讓按鈕有個點擊縮放效果
         const btn = event.currentTarget;
         btn.style.transform = "scale(0.8)";
         setTimeout(() => btn.style.transform = "scale(1)", 100);
     }
 
     const now = Date.now();
-    if (now - lastClickTime < 200) return; // 防連點
+    if (now - lastClickTime < 200) return;
     lastClickTime = now;
 
-    // 1. 本地立即顯示 (視覺回饋)
-    window.createBarrageDom(EMOJI_MAP[type]);
-
-    // 2. 寫入 Firebase (只為了同步給別的觀眾看，不計入 Wall)
-   if (window.player && typeof window.player.getCurrentTime === 'function') {
-        const currentTime = Math.floor(window.player.getCurrentTime());
-        lastSentSignal = { time: currentTime, type: type }; // 標記是自己發的
-
-        // 檢查 Firebase 是否連接成功
-        if (window.db && window.fb_ref && window.fb_runTransaction) {
-            const pathId = (typeof DATA_SOURCE_ID !== 'undefined') ? DATA_SOURCE_ID : MY_VIDEO_ID;
-            const uid = window.userUID;
-
-            const lastClickRef = window.fb_ref(window.db, `barrage_users/${uid}`);
-            const barrageRef = window.fb_ref(window.db, `barrages/${pathId}/${currentTime}/${type}`);
-
-            window.fb_runTransaction(lastClickRef, (lastTime) => {
-                const now = Date.now();
-
-                if (lastTime && now - lastTime < 1000) {
-                    return; // 一秒內不能再送
-                }
-
-                return now;
-            }).then((result) => {
-
-                if (!result.committed) return;
-
-                return window.fb_runTransaction(barrageRef, (count) => (count || 0) + 1);
-
-            }).catch(console.error);
-        } else {
-            console.error("Firebase 未初始化：請檢查 index.html 是否有掛載 window.db / window.fb_ref");
-        }
-    } else {
-        console.warn("找不到播放器 (window.player)：無法記錄時間，僅顯示本地動畫");
+    if (!window.player || typeof window.player.getCurrentTime !== 'function') {
+        console.warn("找不到播放器");
+        return;
     }
 
-    // 3. 發送後關閉抽屜
+    if (!window.userUID) {
+        console.warn("UID 尚未取得");
+        return;
+    }
+
+    const pathId = (typeof DATA_SOURCE_ID !== 'undefined') ? DATA_SOURCE_ID : MY_VIDEO_ID;
+    const currentTime = Math.floor(window.player.getCurrentTime());
+
+    const lastClickRef = window.fb_ref(window.db, `barrage_users/${window.userUID}`);
+    const barrageRef = window.fb_ref(window.db, `barrages/${pathId}/${currentTime}/${type}`);
+
+    window.fb_runTransaction(lastClickRef, (lastTime) => {
+
+        const now = Date.now();
+
+        if (lastTime && now - lastTime < 1000) {
+            return; // 取消交易
+        }
+
+        return now;
+
+    }).then(result => {
+
+        if (!result.committed) return;
+
+        lastSentSignal = {
+            time: currentTime,
+            type: type
+        };
+
+        window.createBarrageDom(EMOJI_MAP[type]);
+
+        return window.fb_runTransaction(barrageRef, count => (count || 0) + 1);
+
+    }).catch(console.error);
+
     closeEmojiDrawer();
 };
 
