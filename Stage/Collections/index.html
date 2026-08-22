@@ -210,13 +210,23 @@
         </div>
       </div>
     </div>
-<script type="module" src="../../js/firebase-init.js"></script>
 <script type="module">
-    // 1. 必須從 Firebase 模組匯入所需的工具
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-    
-    // 初始化 Realtime Database 實例
-    const db = getDatabase();
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // Firebase 配置 (與您主網頁相同)
+    const firebaseConfig = { 
+        apiKey: "AIzaSyAs9R785IE_kBsduUdEng3Vfqz1Ljl11f4", 
+        authDomain: "flareu-tw-translation.firebaseapp.com", 
+        databaseURL: "https://flareu-tw-translation-default-rtdb.asia-southeast1.firebasedatabase.app", 
+        projectId: "flareu-tw-translation", 
+        storageBucket: "flareu-tw-translation.firebasestorage.app", 
+        messagingSenderId: "753531558153", 
+        appId: "1:753531558153:web:7106f9c2d253cae62fdbd8" 
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
     
     // 全域變數，紀錄目前選擇的分類與從 Firebase 撈出來的原始資料
     window.currentCategory = 'group';
