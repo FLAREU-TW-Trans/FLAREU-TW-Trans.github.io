@@ -510,12 +510,12 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     .news-board .news-tag { font-size: 13px !important; padding: 2px 6px; }
     .news-item { width: 100%; font-size: 15px; white-space: normal; }
     /* 側邊欄位 */
-    .container { flex-direction: column; }    
+    .container { flex-direction: column; position: relative; }    
     /* 排序 */
     .sidebar { 
         width: 100% !important; max-width: 100vw !important; padding: 10px 12px; display: flex !important; flex-direction: row !important; align-items: center;
         border-right: none; gap: 8px; border-bottom: 1px solid rgba(0,0,0,0.1); overflow-x: auto !important; overflow-y: visible !important; 
-        white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; z-index: 100 !important;
     }
     .sidebar::-webkit-scrollbar { display: none; }
     .sidebar > * { flex-shrink: 0; /* 確保內容不被擠壓 */ }
@@ -530,7 +530,7 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     .sort-menu.show { display: block; }
     .sort-item { white-space: nowrap; padding: 12px 16px; }
     /* 內容 */
-    .content { padding: 20px; }
+    .content { padding: 20px; position: relative; z-index: 1;}
     .card-grid { grid-template-columns: 1fr; }
     /* 回到頂端 */
     #backToTop { bottom: 20px; right: 16px; width: 44px; height: 44px; }
@@ -1916,11 +1916,21 @@ function selectSort(sortType, labelText, element) {
     handleSortChange(sortType);
 }
 
-// 點擊頁面其他空白處時自動收起選單
-document.addEventListener('click', function() {
+// 點擊頁面空白處、滑動頁面或滑動側邊欄時，自動收起選單
+function closeSortMenu() {
     const menu = document.getElementById("sort-menu");
     if (menu) menu.classList.remove("show");
-});
+}
+
+document.addEventListener('click', closeSortMenu);
+
+// 監聽手機頁面滾動與 sidebar 滾動，滑動時立刻收起下拉選單
+window.addEventListener('scroll', closeSortMenu, true);
+
+const sidebar = document.querySelector('.sidebar');
+if (sidebar) {
+    sidebar.addEventListener('scroll', closeSortMenu);
+}
 
 /* =========================================
    ⭐ 6. 收藏功能
