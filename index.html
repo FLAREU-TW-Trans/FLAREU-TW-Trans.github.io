@@ -84,6 +84,75 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 .about-section h4 { color: #8c7851; border-bottom: 2px solid #efeee9; padding-bottom: 8px; margin-bottom: 18px; font-size: 1.2rem; }
 .about-body::-webkit-scrollbar { width: 6px; }
 .about-body::-webkit-scrollbar-thumb { background: #dcdad5; border-radius: 10px; }
+
+/* ===== 批次勾選已觀看影片 ===== */
+    
+/* 1. 影片清單按鈕 */
+.floating-gb-btn {
+    width: auto !important; height: auto !important; padding: 10px 18px !important; border-radius: 12px !important; font-size: 14px !important;     
+    font-weight: 600 !important; white-space: nowrap !important; box-shadow: 0 4px 14px rgba(168, 144, 128, 0.35) !important;
+    background: #a89080 !important; color: #ffffff !important; border: none !important; cursor: pointer !important; transition: all 0.2s ease !important;
+}
+.floating-gb-btn:hover { background: #967d6d !important; transform: translateY(-2px); }
+    
+/* 2. Modal 外框 */
+.watched-modal-content { max-width: 650px !important; width: 90%; max-height: 85vh; display: flex; flex-direction: column; }
+
+/* 3. 關閉按鈕 */
+#watched-modal .close-modal-btn {
+    padding: 6px 16px !important; font-size: 14px !important; font-weight: 600 !important; border-radius: 8px !important; cursor: pointer !important; margin-bottom:10px;
+    transition: all 0.2s ease !important; border: none !important; background: #e8dfd8 !important; color: #5c4f48 !important; display: inline-block !important;
+}
+#watched-modal .close-modal-btn:hover { background: #f0ebe8 !important; color: #8c7851 !important; }
+
+/* 4. 快捷操作列 */
+.watched-quick-actions {
+    display: flex; justify-content: space-between; align-items: center; padding: 0 4px 12px 4px; border-bottom: 1px solid #f0ebe8;
+    font-size: 14px; color: #8c7851;
+}
+
+.watched-count-info b {color: #c29d91; font-size: 16px; }
+
+.action-link-btn { background: none; border: none; color: #a89080; cursor: pointer; font-size: 14px; font-weight: 600; padding: 2px 6px; transition: color 0.2s; }
+.action-link-btn:hover { color: #8c7851; text-decoration: underline; }
+
+.watched-quick-actions .divider { color: #e0d8d3; }
+
+/* 5. 列表捲動區域 */
+.watched-list-container { flex: 1; overflow-y: auto; padding: 10px 4px; margin-bottom: 15px; -webkit-overflow-scrolling: touch; }
+
+/* 6. 分類標題 */
+.watched-category-group { margin-bottom: 20px; }
+.watched-category-title { 
+    font-size: 15px; font-weight: bold; color: #a89080; background: #fdfaf8; padding: 6px 12px; border-radius: 8px; border-left: 4px solid #c29d91; margin-bottom: 10px;
+}
+
+/* 7. 作品單項 */
+.watched-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 10px; transition: background 0.2s; gap: 12px; }
+.watched-item:hover { background: #fbf8f6; }
+.watched-item-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+
+/* 8. Checkbox */
+.watched-checkbox { width: 20px; height: 20px; accent-color: #c29d91; cursor: pointer; flex-shrink: 0; }
+
+/* 9. 作品標題 */
+.watched-item-title { font-size: 14.5px; color: #4a4a4a; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+.watched-item-date { font-size: 12px; color: #b5a8a0; margin-left: 6px; }
+
+/* 10. 前往觀看連結 */
+.watched-item-link {
+    font-size: 13px; color: #c29d91; text-decoration: none; font-weight: bold; padding: 4px 10px; border-radius: 6px;
+    background: #f8f3f1; white-space: nowrap; flex-shrink: 0; transition: all 0.2s;
+}
+.watched-item-link:hover { background: #c29d91; color: #ffffff; }
+
+/* 11. 僅顯示未觀看影片 */
+.unwatched-filter-btn {
+    padding: 8px 16px; border-radius: 10px; border: 1px solid #e5dcd8; background: #ffffff; color: #8c7851; font-size: 14px;
+    font-weight: 600; cursor: pointer; transition: all 0.2s; 
+}
+.unwatched-filter-btn:hover { background: #fdfaf8; border-color: #c29d91; }
+.unwatched-filter-btn.active { background: #c29d91; color: #ffffff; border-color: #c29d91; box-shadow: 0 4px 12px rgba(194, 157, 145, 0.3); }
     
 /* ===== Search ===== */
 .search-box { position: absolute; top: 14px; left: 16px; z-index: 3; }
@@ -387,6 +456,33 @@ body.theme-light .sort-menu { background: #ffffff; border: 1px solid rgba(68, 75
 body.theme-light .sort-item { color: rgb(68, 75, 84); }
 body.theme-light .sort-item:hover,
 body.theme-light .sort-item.active { background: rgb(68, 75, 84); color: #ffffff; }
+/* 影片清單 & 批次觀看 */
+body.theme-light #watched-modal .watched-modal-content { background-color: #ffffff !important; color: #2b2b2b !important; border: 1px solid #e2e8f0 !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important; }
+body.theme-light .floating-gb-btn, body.theme-light #open-watched-modal { background-color: rgb(68, 75, 84) !important; color: #ffffff !important;  border: none !important; box-shadow: 0 4px 12px rgba(68, 75, 84, 0.25) !important; }
+body.theme-light .floating-gb-btn:hover, body.theme-light #open-watched-modal:hover { background-color: rgb(88, 96, 107) !important; }
+body.theme-light #watched-modal .close-modal-btn { background-color: rgb(68, 75, 84) !important; color: #ffffff !important; border: none !important; padding: 8px 18px !important; border-radius: 8px !important; }
+body.theme-light #watched-modal .close-modal-btn:hover { background-color: rgb(88, 96, 107) !important; }
+body.theme-light #watched-modal .watched-quick-actions { border-bottom: 1px solid #e2e8f0 !important; color: #64748b !important; }
+body.theme-light #watched-modal .watched-count-info b { color: rgb(68, 75, 84) !important; }
+body.theme-light #watched-modal .watched-quick-actions .divider { color: #cbd5e1 !important; }
+body.theme-light #watched-modal .action-link-btn { color: rgb(68, 75, 84) !important; }
+body.theme-light #watched-modal .action-link-btn:hover { color: rgb(88, 96, 107) !important; }
+body.theme-light #watched-modal .watched-category-title { color: #1e293b !important; background: #f8fafc !important; border-left: 4px solid #64748b !important; border-bottom: 2px solid #e2e8f0 !important; border-radius: 8px !important; }
+body.theme-light #watched-modal .watched-item { background-color: #f8fafc !important; border: 1px solid #e2e8f0 !important; color: #334155 !important; }
+body.theme-light #watched-modal .watched-item:hover { background-color: #f1f5f9 !important; }
+body.theme-light #watched-modal .watched-item-title, body.theme-light #watched-modal .watched-title-text { color: #334155 !important; }
+body.theme-light #watched-modal .watched-item-date { color: #64748b !important; }
+body.theme-light #watched-modal .watched-item-link { color: #2563eb !important; background: #eff6ff !important; }
+body.theme-light #watched-modal .watched-item-link:hover { color: #ffffff !important; background: #2563eb !important; }
+body.theme-light #watched-modal .watched-checkbox { accent-color: #64748b !important; }
+body.theme-light #watched-modal .unwatched-filter-btn { background: #ffffff !important; color: #475569 !important; border: 1px solid #cbd5e1 !important; box-shadow: none !important; }
+body.theme-light #watched-modal .unwatched-filter-btn:hover { background: #f8fafc !important; border-color: #64748b !important; }
+body.theme-light #watched-modal .unwatched-filter-btn.active { background: rgb(68, 75, 84) !important; color: #ffffff !important; border-color: rgb(68, 75, 84) !important; box-shadow: 0 4px 12px rgba(68, 75, 84, 0.2) !important; }
+body.theme-light #watched-modal .random-btn {
+    background-color: rgb(68, 75, 84) !important; color: #ffffff !important; border: none !important; padding: 8px 18px !important; border-radius: 8px !important;
+    font-size: 14px !important; font-weight: 600 !important; cursor: pointer !important; transition: background-color 0.2s ease !important; box-shadow: none !important;
+}
+body.theme-light #watched-modal .random-btn:hover { background-color: rgb(88, 96, 107) !important; }
 /* 主內容與側邊欄 */
 body.theme-light .content { background-color: #ffffff; background-image: none; }
 body.theme-light .sidebar { background-color: #fafafa; background-image: none; border-right: 1px solid rgba(44, 49, 56, 0.15) !important; }
@@ -438,6 +534,40 @@ body.theme-dark .sort-menu { background: #1e242c; border: 1px solid rgba(255, 25
 body.theme-dark .sort-item { color: #a6abb3; }
 body.theme-dark .sort-item:hover,
 body.theme-dark .sort-item.active { background: rgb(68, 75, 84); color: #ffffff; }
+/* 影片清單 & 批次觀看 */
+body.theme-dark #watched-modal .watched-modal-content { background-color: rgb(27, 30, 34) !important; color: #e0e0e0 !important; border: 1px solid rgba(255, 255, 255, 0.12) !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important; }
+body.theme-dark .floating-gb-btn, body.theme-dark #open-watched-modal { background-color: rgb(68, 75, 84) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important; }
+body.theme-dark .floating-gb-btn:hover, body.theme-dark #open-watched-modal:hover { background-color: rgb(88, 96, 107) !important; }
+body.theme-dark #watched-modal .close-modal-btn {
+    background-color: rgb(68, 75, 84) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    padding: 8px 18px !important; border-radius: 8px !important;
+}
+body.theme-dark #watched-modal .close-modal-btn:hover { background-color: rgb(88, 96, 107) !important; }
+body.theme-dark #watched-modal .watched-quick-actions { border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important; color: #94a3b8 !important; }
+body.theme-dark #watched-modal .watched-count-info b { color: #38bdf8 !important; }
+body.theme-dark #watched-modal .watched-quick-actions .divider { color: #475569 !important; }
+body.theme-dark #watched-modal .action-link-btn { color: #cbd5e1 !important; }
+body.theme-dark #watched-modal .action-link-btn:hover { color: #ffffff !important; }
+body.theme-dark #watched-modal .watched-category-title {
+    color: #f1f5f9 !important; background: rgb(36, 40, 45) !important; border-left: 4px solid #60a5fa !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.12) !important; border-radius: 8px !important;
+}
+body.theme-dark #watched-modal .watched-item { background-color: rgb(36, 40, 45) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; color: #cbd5e1 !important; }
+body.theme-dark #watched-modal .watched-item:hover { background-color: rgb(45, 50, 56) !important; }
+body.theme-dark #watched-modal .watched-item-title, body.theme-dark #watched-modal .watched-title-text { color: #e2e8f0 !important; }
+body.theme-dark #watched-modal .watched-item-date { color: #94a3b8 !important; }
+body.theme-dark #watched-modal .watched-item-link { color: #60a5fa !important; background: rgba(96, 165, 250, 0.12) !important; }
+body.theme-dark #watched-modal .watched-item-link:hover { color: #ffffff !important; background: #2563eb !important; }
+body.theme-dark #watched-modal .watched-checkbox { accent-color: #60a5fa !important; }
+body.theme-dark #watched-modal .unwatched-filter-btn { background: rgb(36, 40, 45) !important; color: #cbd5e1 !important; border: 1px solid rgba(255, 255, 255, 0.15) !important; box-shadow: none !important; }
+body.theme-dark #watched-modal .unwatched-filter-btn:hover { background: rgb(45, 50, 56) !important; border-color: #60a5fa !important; }
+body.theme-dark #watched-modal .unwatched-filter-btn.active { background: #2563eb !important; color: #ffffff !important; border-color: #2563eb !important; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important; }
+body.theme-dark #watched-modal .random-btn {
+    background-color: rgb(68, 75, 84) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.15) !important; padding: 8px 18px !important;
+    border-radius: 8px !important; font-size: 14px !important; font-weight: 600 !important; cursor: pointer !important; transition: background-color 0.2s ease !important;
+    box-shadow: none !important;
+}
+body.theme-dark #watched-modal .random-btn:hover { background-color: rgb(88, 96, 107) !important; }
 /* 主內容與側邊欄 */
 body.theme-dark .content { background-color: #141619; }
 body.theme-dark .sidebar { background-color: #1a1d21; border-right: 1px solid rgba(255, 255, 255, 0.05); }
@@ -524,10 +654,10 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     .sort-dropdown-container { width: auto !important; flex-shrink: 0; margin-bottom: 0; }
     .sort-btn { width: auto !important; padding: 6px 12px; font-size: 13px; }
     .sort-menu {
-        position: fixed !important; width: 170px !important; background-color: #ffffff; z-index: 999999 !important;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); border-radius: 12px;
+        position: fixed !important; width: 170px !important; max-width: calc(100vw - 20px) !important; background-color: #ffffff; z-index: 2147483647 !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); border-radius: 12px; overflow: hidden;
     }
-    .sort-menu.show { display: block; }
+    .sort-menu.show { display: block !important; }
     .sort-item { white-space: nowrap; padding: 12px 16px; }
     /* 內容 */
     .content { padding: 20px; }
@@ -633,6 +763,7 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
                 <div class="sort-item active" onclick="selectSort('updated_desc', '✨ 翻譯更新（新至舊）', this)">✨ 翻譯更新（新至舊）</div>
                 <div class="sort-item" onclick="selectSort('pub_desc', '📅 影片發布（新至舊）', this)">📅 影片發布（新至舊）</div>
                 <div class="sort-item" onclick="selectSort('pub_asc', '⏳ 影片發布（舊至新）', this)">⏳ 影片發布（舊至新）</div>
+                <div class="sort-item" onclick="selectSort('unwatched', '📋 僅顯示未觀看影片', this)">▶️ 僅顯示未觀看影片</div>
             </div>
         </div>
         <!-- 作品分類按鈕 -->
@@ -714,6 +845,48 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     </svg>
 </button>
 
+<!-- 打開影片清單 -->
+<button class="floating-gb-btn" id="open-watched-modal" onclick="openWatchedModal()" title="影片清單">📋影片清單</button>
+
+<!-- 影片清單 Modal -->
+<div class="gb-modal" id="watched-modal" style="display: none;">
+    <div class="gb-modal-content watched-modal-content">
+        <!-- 頂部區塊 -->
+        <div class="gb-modal-header">
+            <div class="gb-modal-title">紀錄已觀看的翻譯作品</div>
+            <div class="header-controls">
+                <button class="close-modal-btn" onclick="closeWatchedModal()">關閉</button>
+            </div>
+        </div>
+        
+        <!-- 快捷操作列（全選 / 全部取消） -->
+        <div class="watched-quick-actions">
+            <span class="watched-count-info">已勾選 <b id="selected-count">0</b> / <span id="total-count">0</span> 部</span>
+            <div>
+                <button class="action-link-btn" onclick="toggleSelectAll(true)">全選</button>
+                <span class="divider">|</span>
+                <button class="action-link-btn" onclick="toggleSelectAll(false)">取消全選</button>
+            </div>
+        </div>
+
+        <!-- 中間：分類影視作品清單區 -->
+        <div id="watched-list-container" class="watched-list-container">
+            <!-- 由 JS 動態生成分類與清單 -->
+        </div>
+
+        <!-- 下方：保存按鈕 -->
+        <div class="modal-action-bar">
+            <button class="random-btn" onclick="saveWatchedVideos()">保存紀錄</button>
+        </div>
+    </div>
+</div>
+    
+<button id="backToTop" title="回到頂端">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 15l-6-6-6 6"/>
+    </svg>
+</button>
+
 <!-- 關於本站彈跳視窗 -->
 <div id="aboutModal" class="month-modal-overlay">
     <div class="modal-content about-content">
@@ -763,6 +936,7 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
                 <ul class="guide-list">
                     <li><strong>搜尋與版面：</strong>左上角可搜尋關鍵字/月份，右上角可切換三種版面主題。</li>
                     <li><strong>作品分類與排序：</strong>可投過排序按鈕依照個人喜好將影片作排序，共分成直播/節目/電台/媒體/舞台/收藏共六個類別。</li>
+                    <li><strong>影片清單：</strong>點擊左下角影片清單按鈕即可整理所有已觀看過的影片供紀錄與篩選。</li>
                     <li><strong>收藏功能：</strong>點擊卡片右下角「❤️」可儲存至「收藏」欄位（無痕模式無法保存）。</li>
                     <li><strong>文字/IG 作品：</strong>為尊重版權不轉載官方照片，請先前往官網再搭配本站翻譯閱讀。</li>
                     <li><strong>互動支持：</strong>若喜歡作品，歡迎點擊下方的表情按鈕表達支持！</li>
@@ -1510,14 +1684,22 @@ function getSortedData(data) {
 }
 
 function renderAllCards(data) {
-    // 1. 執行月份過濾
-    const monthFilteredData = data.filter(i => {
+    // 0. 取得已觀看的影片 ID 集合
+    const watchedIds = new Set( JSON.parse(localStorage.getItem('watched_videos') || '[]'));
+
+    // 1. 未觀看過濾
+    const watchedFilteredData = data.filter(i => {
+        if (!showOnlyUnwatched) return true;
+        return !watchedIds.has(i.id);
+    });
+    
+    // 2. 執行月份過濾
+    const finalFilteredData = watchedFilteredData.filter(i => {
         if (currentMonth === 'all') return true;
-        // 判斷日期是否匹配 
         return Array.isArray(i.date) ? i.date.includes(currentMonth) : i.date === currentMonth;
     });
 
-    // 2. 取得各分類的容器
+    // 3. 取得各分類的容器
     const containers = {
         'live': document.getElementById('live-grid'),
         'program': document.getElementById('program-grid'),
@@ -1526,12 +1708,17 @@ function renderAllCards(data) {
         'stage': document.getElementById('stage-grid')
     };
 
-    // 3. 根據過濾後的資料進行各分類渲染
+    // 4. 根據過濾後的資料進行各分類渲染
     Object.keys(containers).forEach(cat => {
         const grid = containers[cat];
         if (grid) {
-            const catData = monthFilteredData.filter(i => i.category === cat);
-            grid.innerHTML = catData.map(createCardHTML).join('');
+            const catData = finalFilteredData.filter(i => i.category === cat);
+
+            grid.innerHTML = '';
+            
+            if (catData.length > 0) {
+                grid.innerHTML = catData.map(createCardHTML).join('');
+            } 
         }
     });
 }
@@ -1791,12 +1978,20 @@ function switchTab(tabId, btnElement) {
 
 function handleSortChange(sortType) {
     currentSortMode = sortType;
+
+    // 如果切換到其他排序，自動關閉「僅顯示未觀看」狀態
+    if (sortType === 'unwatched') {
+        showOnlyUnwatched = true;
+        renderAllCards(videoData);
+        return;
+    } 
+    showOnlyUnwatched = false;
     
     if (sortType === 'popular') {
         fetchReactionsAndSort();
-    } else {
-        applySortingAndRender();
-    }
+        return;
+    } 
+    applySortingAndRender();
 }
 
 function fetchReactionsAndSort() {
@@ -1913,20 +2108,109 @@ function calcTotalReactions(video, reactionsData) {
 function toggleSortMenu(event) {
     event.stopPropagation();
     const menu = document.getElementById("sort-menu");
-    const btn = event.currentTarget;
+    const sortBtn = event.currentTarget;
 
-    // 手機版動態計算按鈕位置（解決 fixed 定位偏差）
-    if (window.innerWidth <= 768) {
-        const rect = btn.getBoundingClientRect();
-        menu.style.top = `${rect.bottom + 6}px`;
-        menu.style.left = `${rect.left}px`;
-    } else {
-        menu.style.top = '';
-        menu.style.left = '';
+   if (!menu || !sortBtn) { return; }
+
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+
+        // 如果 menu 還在原本的 sidebar 裡
+        if (menu.parentElement !== document.body) {
+            document.body.appendChild(menu);
+        }
+
+        const rect = sortBtn.getBoundingClientRect();
+
+        // 先顯示，才能取得實際高度
+        menu.classList.add('show');
+
+        /* 計算選單位置 */
+        const menuWidth = 170;
+
+        let top = rect.bottom + 6;
+        let left = rect.left;
+
+
+        // 不要超出右側螢幕
+        if (left + menuWidth > window.innerWidth - 10) {
+            left = window.innerWidth - menuWidth - 10;
+        }
+
+        // 不要超出左側螢幕
+        if (left < 10) {
+            left = 10;
+        }
+
+        /* 如果下方放不下，就顯示在按鈕上方 */
+        const menuHeight = menu.offsetHeight;
+
+        if (top + menuHeight > window.innerHeight - 10) {
+            top = rect.top - menuHeight - 6;
+        }
+
+
+        // 最後再保護一次上方位置
+        if (top < 10) {
+            top = 10;
+        }
+
+        menu.style.position = 'fixed';
+        menu.style.top = `${top}px`;
+        menu.style.left = `${left}px`;
+        menu.style.width = `${menuWidth}px`;
+        menu.style.zIndex = '2147483647';
+
+        return;
     }
 
     menu.classList.toggle("show");
 }
+
+// 視窗旋轉/滑動後重新定位
+window.addEventListener('resize', function () {
+
+    const menu = document.getElementById('sort-menu');
+    const sortBtn = document.querySelector('.sort-btn');
+
+    if (!menu || !sortBtn) return;
+
+    if (
+        window.innerWidth <= 768 &&
+        menu.classList.contains('show') &&
+        menu.parentElement === document.body
+    ) {
+
+        const rect = sortBtn.getBoundingClientRect();
+
+        let top = rect.bottom + 6;
+        let left = rect.left;
+
+        const menuWidth = 170;
+
+        if (left + menuWidth > window.innerWidth - 10) {
+            left = window.innerWidth - menuWidth - 10;
+        }
+
+        if (left < 10) {
+            left = 10;
+        }
+
+        const menuHeight = menu.offsetHeight;
+
+        if (top + menuHeight > window.innerHeight - 10) {
+            top = rect.top - menuHeight - 6;
+        }
+
+        if (top < 10) {
+            top = 10;
+        }
+
+        menu.style.top = `${top}px`;
+        menu.style.left = `${left}px`;
+    }
+});
 
 // 點擊選項後的處理
 function selectSort(sortType, labelText, element) {
@@ -1934,28 +2218,63 @@ function selectSort(sortType, labelText, element) {
     document.querySelectorAll('.sort-item').forEach(el => el.classList.remove('active'));
     element.classList.add('active');
 
-    // 2. 關閉選單
-    document.getElementById("sort-menu").classList.remove("show");
+    // 2. 更新排序按鈕上顯示的文字後關閉選單
+    const sortBtn = document.querySelector('.sort-btn span') || document.querySelector('.sort-btn');
+    if (sortBtn) {
+        // 如果 sort-btn 內有箭頭等圖示，建議只替換文字部分
+        sortBtn.childNodes[0].nodeValue = labelText + " ";
+    }
+
+    const menu = document.getElementById("sort-menu");
+    if (menu) menu.classList.remove("show");
 
     // 3. 呼叫排序與渲染邏輯
     handleSortChange(sortType);
 }
 
-// 點擊頁面空白處、滑動頁面或滑動側邊欄時，自動收起選單
+// 關閉排序選單
 function closeSortMenu() {
+
     const menu = document.getElementById("sort-menu");
-    if (menu) menu.classList.remove("show");
+
+    if (menu) {
+        menu.classList.remove("show");
+    }
 }
 
-document.addEventListener('click', closeSortMenu);
+// 點擊其他地方關閉選單
+document.addEventListener('click', function(event) {
 
-// 監聽手機頁面滾動與 sidebar 滾動，滑動時立刻收起下拉選單
-window.addEventListener('scroll', closeSortMenu, true);
+    const menu = document.getElementById("sort-menu");
+    const sortBtn = document.querySelector(".sort-btn");
 
-const sidebar = document.querySelector('.sidebar');
-if (sidebar) {
-    sidebar.addEventListener('scroll', closeSortMenu);
-}
+    if (!menu || !sortBtn) {
+        return;
+    }
+
+
+    // 如果點擊的是排序按鈕或選單本身，不關閉
+    if (
+        sortBtn.contains(event.target) ||
+        menu.contains(event.target)
+    ) {
+        return;
+    }
+
+
+    menu.classList.remove("show");
+});
+
+// 滑動關閉選單
+window.addEventListener( 'scroll', closeSortMenu, true );
+document.addEventListener('DOMContentLoaded', function() {
+
+    const sidebar = document.querySelector('.sidebar');
+
+    if (sidebar) {
+        sidebar.addEventListener( 'scroll', closeSortMenu );
+    }
+});
 
 /* =========================================
    ⭐ 6. 收藏功能
@@ -2061,6 +2380,156 @@ window.addEventListener('click', function(event) {
         toggleMonthModal(false);
     }
 });
+
+/* =========================================
+   ⭐ 9. 批次勾選已觀看影片&過濾顯示未觀看影片功能
+   ========================================= */
+// --- 1. 全域變數定義 ---
+let showOnlyUnwatched = false; // 是否開啟「僅顯示未觀看」過濾
+const CATEGORY_NAMES = {
+    'live': '🔴 直播 (LIVE)',
+    'program': '📺 節目 (Program)',
+    'radio': '📻 電台 (Radio)',
+    'media': '🎬 媒體影音 (Media)',
+    'stage': '🎤 舞台 (Stage)'
+};
+
+// --- 2. 開啟與關閉 Modal ---
+function openWatchedModal() {
+    const modal = document.getElementById('watched-modal');
+    if (modal) {
+        renderWatchedModalList();
+        modal.style.display = 'flex';
+    }
+}
+
+function closeWatchedModal() {
+    const modal = document.getElementById('watched-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// --- 3. 渲染 Modal 內的影視作品分類與清單 ---
+function renderWatchedModalList() {
+    const container = document.getElementById('watched-list-container');
+    if (!container || typeof videoData === 'undefined') return;
+
+    // 取得已存放在 LocalStorage 的已觀看 ID 陣列
+    const watchedIds = new Set(JSON.parse(localStorage.getItem('watched_videos') || '[]'));
+
+    // 依類別整理資料
+    const categorized = {};
+    videoData.forEach(video => {
+        const cat = video.category || 'other';
+        if (!categorized[cat]) categorized[cat] = [];
+        categorized[cat].push(video);
+    });
+
+    let html = '';
+    let totalCount = videoData.length;
+
+    // 依類別渲染
+    Object.keys(categorized).forEach(catKey => {
+        const catName = CATEGORY_NAMES[catKey] || catKey.toUpperCase();
+        const videos = categorized[catKey];
+
+        html += `
+            <div class="watched-category-group">
+                <div class="watched-category-title">${catName}</div>
+        `;
+
+        videos.forEach(v => {
+            const isChecked = watchedIds.has(v.id) ? 'checked' : '';
+            const displayDate = Array.isArray(v.date) ? v.date.join(', ') : v.date;
+            
+            html += `
+                <div class="watched-item">
+                    <div class="watched-item-left">
+                        <input type="checkbox" class="watched-checkbox" id="chk-${v.id}" value="${v.id}" ${isChecked} onchange="updateSelectedCount()">
+                        <label for="chk-${v.id}" class="watched-item-title" title="${v.title}">
+                            <span class="watched-title-text">${v.title}</span>
+                            <span class="watched-item-date">(${displayDate})</span>
+                        </label>
+                    </div>
+                    <a href="${v.link}" target="_blank" rel="noopener noreferrer" class="watched-item-link">連結 ↗</a>
+                </div>
+            `;
+        });
+
+        html += `</div>`;
+    });
+
+    container.innerHTML = html;
+    
+    // 更新計數與總數
+    document.getElementById('total-count').innerText = totalCount;
+    updateSelectedCount();
+}
+
+// 動態更新當前勾選數量
+function updateSelectedCount() {
+    const checkedBoxes = document.querySelectorAll('.watched-checkbox:checked');
+    const countEl = document.getElementById('selected-count');
+    if (countEl) countEl.innerText = checkedBoxes.length;
+}
+
+// 全選與取消全選
+function toggleSelectAll(selectAll) {
+    const checkboxes = document.querySelectorAll('.watched-checkbox');
+    checkboxes.forEach(chk => {
+        chk.checked = selectAll;
+    });
+    updateSelectedCount();
+}
+
+// --- 4. 保存勾選紀錄至 LocalStorage ---
+function saveWatchedVideos() {
+    const checkedBoxes = document.querySelectorAll('.watched-checkbox:checked');
+    const watchedIds = Array.from(checkedBoxes).map(chk => chk.value);
+
+    // 儲存至 LocalStorage
+    localStorage.setItem('watched_videos', JSON.stringify(watchedIds));
+
+    // 關閉視窗
+    closeWatchedModal();
+
+    // 重新渲染主頁面卡片
+    if (typeof videoData !== 'undefined') {
+        renderAllCards(videoData);
+    }
+
+    alert('已成功保存您的觀看紀錄！');
+}
+
+// --- 5. 過濾按鈕切換邏輯 ---
+function toggleUnwatchedFilter() {
+    showOnlyUnwatched = !showOnlyUnwatched;
+    const btn = document.getElementById('unwatched-filter-btn');
+
+    if (btn) {
+        if (showOnlyUnwatched) {
+            btn.classList.add('active');
+            btn.innerHTML = '正在顯示：未觀看影片';
+        } else {
+            btn.classList.remove('active');
+            btn.innerHTML = '僅顯示未觀看影片';
+        }
+    }
+
+    // 重新渲染卡片
+    if (typeof applySortingAndRender === 'function') {
+        applySortingAndRender();
+    }
+}
+
+// --- 6. 整合進原有的卡片渲染邏輯 ---
+function getFilteredVideoData(data) {
+    if (!showOnlyUnwatched) return data;
+
+    const watchedIds = new Set(JSON.parse(localStorage.getItem('watched_videos') || '[]'));
+    return data.filter(video => !watchedIds.has(video.id));
+}
 </script>
     
 <script type="module" src="./js/firebase-init.js"></script>
