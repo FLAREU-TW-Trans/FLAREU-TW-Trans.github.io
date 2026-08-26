@@ -89,7 +89,7 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
     
 /* 1. 影片清單按鈕 */
 .floating-gb-btn {
-    position: fixed !important; bottom: calc(24px + env(safe-area-inset-bottom)) !important; left: 24px !important; z-index: 99999 !important;                                   
+    position: fixed !important; bottom: calc(24px + env(safe-area-inset-bottom)) !important; left: 24px !important; z-index: 99999 !important; pointer-events: auto !important;                                  
     width: auto !important; height: 48px !important; padding: 0 18px !important; border-radius: 24px !important; font-size: 14px !important;      
     font-weight: 600 !important; white-space: nowrap !important; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important; background: rgb(120, 136, 189) !important; 
     color: #ffffff !important; border: none !important; cursor: pointer !important; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -2051,22 +2051,17 @@ function applySortingAndRender() {
 
 // 初始化連線與表情數同步
 function initReactionsCount() {
-    console.log("initReactionsCount 被呼叫");
 
     if (!window.db || !window.fb_ref) {
         setTimeout(initReactionsCount, 200);
         return;
     }
 
-    console.log("Firebase 已就緒，開始監聽資料...");
-
     const reactionsRef = window.fb_ref(window.db, 'video_reactions');
     
     // 加上第三個參數 (error) 來捕捉 Firebase 拒絕存取的錯誤
     window.fb_onValue(reactionsRef, (snapshot) => {
         const reactionsData = snapshot.val() || {};
-
-        console.log("【Firebase video_reactions Data】:", reactionsData);
 
         if (typeof videoData !== 'undefined' && videoData.length > 0) {
             videoData.forEach(video => {
@@ -2148,9 +2143,7 @@ function toggleSortMenu(event) {
         }
 
         // 不要超出左側螢幕
-        if (left < 10) {
-            left = 10;
-        }
+        if (left < 10) { left = 10; }
 
         /* 如果下方放不下，就顯示在按鈕上方 */
         const menuHeight = menu.offsetHeight;
@@ -2159,11 +2152,8 @@ function toggleSortMenu(event) {
             top = rect.top - menuHeight - 6;
         }
 
-
         // 最後再保護一次上方位置
-        if (top < 10) {
-            top = 10;
-        }
+        if (top < 10) { top = 10; }
 
         menu.style.position = 'fixed';
         menu.style.top = `${top}px`;
@@ -2202,9 +2192,7 @@ window.addEventListener('resize', function () {
             left = window.innerWidth - menuWidth - 10;
         }
 
-        if (left < 10) {
-            left = 10;
-        }
+        if (left < 10) { left = 10; }
 
         const menuHeight = menu.offsetHeight;
 
@@ -2212,9 +2200,7 @@ window.addEventListener('resize', function () {
             top = rect.top - menuHeight - 6;
         }
 
-        if (top < 10) {
-            top = 10;
-        }
+        if (top < 10) { top = 10; }
 
         menu.style.top = `${top}px`;
         menu.style.left = `${left}px`;
@@ -2257,18 +2243,13 @@ document.addEventListener('click', function(event) {
     const menu = document.getElementById("sort-menu");
     const sortBtn = document.querySelector(".sort-btn");
 
-    if (!menu || !sortBtn) {
-        return;
-    }
-
+    if (!menu || !sortBtn) { return; }
 
     // 如果點擊的是排序按鈕或選單本身，不關閉
     if (
         sortBtn.contains(event.target) ||
         menu.contains(event.target)
-    ) {
-        return;
-    }
+    ) { return; }
 
 
     menu.classList.remove("show");
