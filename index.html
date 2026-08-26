@@ -86,7 +86,6 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 .about-body::-webkit-scrollbar-thumb { background: #dcdad5; border-radius: 10px; }
 
 /* ===== 批次勾選已觀看影片 ===== */
-    
 /* 1. 影片清單按鈕 */
 .floating-gb-btn {
     position: fixed !important; bottom: calc(24px + env(safe-area-inset-bottom)) !important; left: 24px !important; z-index: 99999 !important; pointer-events: auto !important;                                  
@@ -695,6 +694,123 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
 /* 電腦版 */
 @media (min-width: 769px) {
     .responsive-break { display: none !important; }
+}
+/* =========================================================
+   WATCHED VIDEO MODAL
+   強制置於整個網站最上層
+   ========================================================= */
+
+#watched-modal {
+    position: fixed !important;
+
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+
+    width: 100vw !important;
+    height: 100vh !important;
+
+    margin: 0 !important;
+    padding: 20px !important;
+
+    box-sizing: border-box !important;
+
+    z-index: 2147483647 !important;
+
+    display: none;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    overflow: hidden !important;
+
+    background: rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Modal 開啟 */
+#watched-modal[style*="display: flex"] {
+    display: flex !important;
+}
+
+
+/* =========================================================
+   Modal 內容本體
+   ========================================================= */
+
+#watched-modal .watched-modal-content,
+#watched-modal .gb-modal-content,
+#watched-modal .modal-content,
+#watched-modal .modal-box {
+    position: relative !important;
+
+    z-index: 2147483647 !important;
+
+    width: 90% !important;
+    max-width: 650px !important;
+
+    max-height: 85vh !important;
+
+    box-sizing: border-box !important;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   iPhone / Safari
+   ========================================================= */
+
+@supports (-webkit-touch-callout: none) {
+
+    #watched-modal {
+        position: fixed !important;
+
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+
+        width: 100% !important;
+        height: 100% !important;
+
+        z-index: 2147483647 !important;
+
+        padding:
+            20px
+            20px
+            calc(20px + env(safe-area-inset-bottom))
+            20px !important;
+    }
+
+    #watched-modal .watched-modal-content,
+    #watched-modal .gb-modal-content,
+    #watched-modal .modal-content,
+    #watched-modal .modal-box {
+
+        max-height: calc(100vh - 40px) !important;
+        max-height: calc(100dvh - 40px) !important;
+    }
+}
+
+
+/* =========================================================
+   開啟 Modal 時禁止背景滾動
+   ========================================================= */
+
+body.modal-open {
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   Modal 開啟時隱藏影片清單浮動按鈕
+   ========================================================= */
+
+body.modal-open .floating-gb-btn {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
 }
 </style>
 </head>
@@ -2400,11 +2516,7 @@ const CATEGORY_NAMES = {
 // --- 2. 開啟與關閉 Modal ---
 function openWatchedModal() {
 
-    console.log('openWatchedModal 被點擊');
-
     const modal = document.getElementById('watched-modal');
-
-    console.log('watched-modal:', modal);
 
     if (!modal) {
         console.error('找不到 #watched-modal');
@@ -2415,7 +2527,6 @@ function openWatchedModal() {
 
     modal.style.display = 'flex';
 
-    // 如果你的 CSS / 其他 JS 有使用 modal-open
     document.body.classList.add('modal-open');
 }
 
