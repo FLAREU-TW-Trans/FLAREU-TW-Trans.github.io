@@ -157,7 +157,7 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 
 /* 10. 前往觀看連結 */
 .watched-item-link {
-    font-size: 13px; color: rgb(120, 136, 189); text-decoration: none; font-weight: bold; padding: 4px 10px; border-radius: 6px;
+    font-size: 14px; color: rgb(120, 136, 189); text-decoration: none; font-weight: bold; padding: 4px 10px; border-radius: 6px;
     background: rgba(170, 175, 195, 0.18); white-space: nowrap; flex-shrink: 0; transition: all 0.2s;
 }
 .watched-item-link:hover { background: rgb(120, 136, 189); color: #ffffff; }
@@ -2607,7 +2607,7 @@ function renderWatchedModalList() {
                             <span class="watched-item-date">(${displayDate})</span>
                         </label>
                     </div>
-                    <a href="${v.link}" target="_blank" rel="noopener noreferrer" class="watched-item-link">連結 ↗</a>
+                    <a href="${v.link}" target="_blank" rel="noopener noreferrer" class="watched-item-link">連結</a>
                 </div>
             `;
         });
