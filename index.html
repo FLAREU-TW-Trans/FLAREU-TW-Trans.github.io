@@ -100,6 +100,12 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 .watched-modal-content { 
     max-width: 650px !important; width: 90%; max-height: 85vh; display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.95) !important; backdrop-filter: blur(8px);
 }
+#watched-modal .watched-modal-content, .watched-modal-content {
+    position: relative !important; z-index: 2147483647 !important; width: 90% !important; max-width: 650px !important; max-height: 85vh !important; box-sizing: border-box !important;
+    display: flex !important; flex-direction: column !important; background: rgba(255, 255, 255, 0.98) !important; backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important; padding: 24px !important; border-radius: 20px !important; border: 1px solid rgba(255, 255, 255, 0.8) !important; 
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(170, 175, 195, 0.2) !important; overflow: hidden !important;
+}
 
 /* 3. 關閉按鈕 */
 #watched-modal .close-modal-btn {
