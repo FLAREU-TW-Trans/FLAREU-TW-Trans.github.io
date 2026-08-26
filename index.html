@@ -719,37 +719,28 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
 @media (min-width: 769px) {
     .responsive-break { display: none !important; }
 }
+    
 /* =========================================================
-   WATCHED VIDEO MODAL
-   強制置於整個網站最上層
+   1. Modal 遮罩層 (全螢幕背景)
    ========================================================= */
-
 #watched-modal {
     position: fixed !important;
-
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
-
-    width: 100vw !important;
-    height: 100vh !important;
-
+    width: 100% !important;                       
+    height: 100% !important;
     margin: 0 !important;
     padding: 20px !important;
-
     box-sizing: border-box !important;
-
     z-index: 2147483647 !important;
-
     display: none;
-
     align-items: center !important;
     justify-content: center !important;
-
-    overflow: hidden !important;
-
+    overflow: hidden !important;                   
     background: rgba(0, 0, 0, 0.45) !important;
+    touch-action: none;                            
 }
 
 /* Modal 開啟 */
@@ -757,79 +748,195 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
     display: flex !important;
 }
 
-
 /* =========================================================
-   Modal 內容本體
+   2. Modal 內容本體 (卡片方框)
    ========================================================= */
-
 #watched-modal .watched-modal-content,
 #watched-modal .gb-modal-content,
 #watched-modal .modal-content,
 #watched-modal .modal-box {
     position: relative !important;
-
     z-index: 2147483647 !important;
-
     width: 90% !important;
     max-width: 650px !important;
-
     max-height: 85vh !important;
-
     box-sizing: border-box !important;
 
-    overflow: hidden !important;
+    /* 佈局結構 */
+    display: flex !important;
+    flex-direction: column !important;
+
+    /* 核心視覺卡片樣式：白底、圓角、外框與立體陰影 */
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    padding: 20px !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(170, 175, 195, 0.2) !important;
+
+    /* 徹底禁止橫向滑動 */
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
 }
 
+/* =========================================================
+   3. 頂部標題列與右上角關閉按鈕
+   ========================================================= */
+.gb-modal-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding-bottom: 12px !important;
+    margin-bottom: 12px !important;
+    border-bottom: 1px solid rgba(170, 175, 195, 0.2) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.gb-modal-title {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #334155 !important;
+}
+
+/* 右上角關閉按鈕 */
+#watched-modal .close-modal-btn {
+    padding: 6px 14px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border-radius: 20px !important;
+    cursor: pointer !important;
+    margin-bottom: 0 !important;
+    transition: all 0.2s ease !important;
+    border: 1px solid rgba(170, 175, 195, 0.4) !important; 
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #64748b !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+#watched-modal .close-modal-btn:hover {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+}
 
 /* =========================================================
-   iPhone / Safari
+   4. 中間清單容器與標題文字修復（防止手機推開寬度）
    ========================================================= */
+.watched-list-container {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;                
+    padding: 6px 2px !important;
+    margin-bottom: 10px !important;
+    -webkit-overflow-scrolling: touch;
+}
 
+.watched-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.watched-item-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    flex: 1 !important;
+    min-width: 0 !important;                       
+}
+
+/* 允許標題折行（最多兩行） */
+.watched-item-title {
+    font-size: 14.5px !important;
+    color: #334155 !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.4 !important;
+}
+
+.watched-item-date {
+    font-size: 12px !important;
+    color: rgb(152, 165, 189) !important;
+    margin-left: 6px !important;
+    white-space: nowrap !important;
+}
+
+/* =========================================================
+   5. 底部保存紀錄按鈕
+   ========================================================= */
+.modal-action-bar {
+    display: flex !important;
+    justify-content: center !important;
+    padding-top: 12px !important;
+    border-top: 1px solid rgba(170, 175, 195, 0.2) !important;
+    margin-top: 4px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.modal-action-bar .random-btn {
+    width: 100% !important;
+    max-width: 240px !important;
+    height: 42px !important;
+    background: rgb(120, 136, 189) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(120, 136, 189, 0.35) !important;
+    transition: all 0.2s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.modal-action-bar .random-btn:hover {
+    background: rgb(100, 116, 169) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(120, 136, 189, 0.45) !important;
+}
+
+/* =========================================================
+   6. iPhone / Safari 適配
+   ========================================================= */
 @supports (-webkit-touch-callout: none) {
-
     #watched-modal {
         position: fixed !important;
-
         top: 0 !important;
         left: 0 !important;
         right: 0 !important;
         bottom: 0 !important;
-
         width: 100% !important;
         height: 100% !important;
-
         z-index: 2147483647 !important;
-
-        padding:
-            20px
-            20px
-            calc(20px + env(safe-area-inset-bottom))
-            20px !important;
+        padding: 16px 16px calc(16px + env(safe-area-inset-bottom)) 16px !important;
     }
 
     #watched-modal .watched-modal-content,
     #watched-modal .gb-modal-content,
     #watched-modal .modal-content,
     #watched-modal .modal-box {
-
-        max-height: calc(100vh - 40px) !important;
-        max-height: calc(100dvh - 40px) !important;
+        max-height: calc(100vh - 32px) !important;
+        max-height: calc(100dvh - 32px - env(safe-area-inset-bottom)) !important;
     }
 }
 
-
 /* =========================================================
-   開啟 Modal 時禁止背景滾動
+   7. 狀態控制與頁面防護
    ========================================================= */
-
 body.modal-open {
     overflow: hidden !important;
 }
-
-
-/* =========================================================
-   Modal 開啟時隱藏影片清單浮動按鈕
-   ========================================================= */
 
 body.modal-open .floating-gb-btn {
     opacity: 0 !important;
