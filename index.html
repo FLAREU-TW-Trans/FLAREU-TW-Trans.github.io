@@ -855,7 +855,7 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
 </button>
 
 <!-- 打開影片清單 -->
-<button class="floating-gb-btn" id="open-watched-modal" onclick="openWatchedModal()" title="影片清單">📋影片清單</button>
+<button class="floating-gb-btn" id="open-watched-modal" type="button" title="影片清單">📋影片清單</button>
 
 <!-- 影片清單 Modal -->
 <div class="gb-modal" id="watched-modal" style="display: none;">
@@ -2374,6 +2374,21 @@ window.addEventListener('click', function(event) {
 /* =========================================
    ⭐ 9. 批次勾選已觀看影片&過濾顯示未觀看影片功能
    ========================================= */
+document.addEventListener('DOMContentLoaded', function () {
+
+    const openWatchedBtn = document.getElementById('open-watched-modal');
+
+    if (openWatchedBtn) {
+
+        openWatchedBtn.addEventListener('click', function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            openWatchedModal();
+        });
+    }
+});
 // --- 1. 全域變數定義 ---
 let showOnlyUnwatched = false; // 是否開啟「僅顯示未觀看」過濾
 const CATEGORY_NAMES = {
@@ -2386,18 +2401,35 @@ const CATEGORY_NAMES = {
 
 // --- 2. 開啟與關閉 Modal ---
 function openWatchedModal() {
+
+    console.log('openWatchedModal 被點擊');
+
     const modal = document.getElementById('watched-modal');
-    if (modal) {
-        renderWatchedModalList();
-        modal.style.display = 'flex';
+
+    console.log('watched-modal:', modal);
+
+    if (!modal) {
+        console.error('找不到 #watched-modal');
+        return;
     }
+
+    renderWatchedModalList();
+
+    modal.style.display = 'flex';
+
+    // 如果你的 CSS / 其他 JS 有使用 modal-open
+    document.body.classList.add('modal-open');
 }
 
 function closeWatchedModal() {
+
     const modal = document.getElementById('watched-modal');
+
     if (modal) {
         modal.style.display = 'none';
     }
+
+    document.body.classList.remove('modal-open');
 }
 
 // --- 3. 渲染 Modal 內的影視作品分類與清單 ---
