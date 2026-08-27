@@ -86,83 +86,90 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 .about-body::-webkit-scrollbar-thumb { background: #dcdad5; border-radius: 10px; }
 
 /* ===== 批次勾選已觀看影片 ===== */
-/* 1. 影片清單按鈕 */
-.floating-gb-btn {
-    position: fixed !important; bottom: calc(24px + env(safe-area-inset-bottom)) !important; left: 24px !important; z-index: 99999 !important; pointer-events: auto !important;                                  
-    width: auto !important; height: 48px !important; padding: 0 18px !important; border-radius: 24px !important; font-size: 14px !important;      
-    font-weight: 600 !important; white-space: nowrap !important; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important; background: rgb(120, 136, 189) !important; 
-    color: #ffffff !important; border: none !important; cursor: pointer !important; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    display: inline-flex !important; align-items: center !important; justify-content: center !important; -webkit-user-select: none; -webkit-tap-highlight-color: transparent;
+/* =========================================================
+   1. Modal 遮罩層與本體外框
+   ========================================================= */
+#watched-modal {
+    position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; width: 100% !important; height: 100% !important;
+    margin: 0 !important; padding: 20px !important; box-sizing: border-box !important; z-index: 2147483647 !important; display: none; align-items: center !important;
+    justify-content: center !important; overflow: hidden !important; background: rgba(0, 0, 0, 0.45) !important; touch-action: none;
 }
-.floating-gb-btn:hover { background: rgb(100, 116, 169) !important; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.2) !important; }
-    
-/* 2. Modal 外框 */
-.watched-modal-content { 
-    max-width: 650px !important; width: 90%; max-height: 85vh; display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.95) !important; backdrop-filter: blur(8px);
-}
-#watched-modal .watched-modal-content, .watched-modal-content {
+
+/* Modal 開啟狀態 */
+#watched-modal[style*="display: flex"] { display: flex !important; }
+
+/* Modal 內容本體 */
+.watched-modal-content, #watched-modal .watched-modal-content, #watched-modal .gb-modal-content, #watched-modal .modal-content, #watched-modal .modal-box {
     position: relative !important; z-index: 2147483647 !important; width: 90% !important; max-width: 650px !important; max-height: 85vh !important; box-sizing: border-box !important;
     display: flex !important; flex-direction: column !important; background: rgba(255, 255, 255, 0.98) !important; backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important; padding: 24px !important; border-radius: 20px !important; border: 1px solid rgba(255, 255, 255, 0.8) !important; 
+    -webkit-backdrop-filter: blur(12px) !important; padding: 20px !important; border-radius: 20px !important; border: 1px solid rgba(255, 255, 255, 0.8) !important;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(170, 175, 195, 0.2) !important; overflow: hidden !important;
 }
 
-/* 3. 關閉按鈕 */
+/* =========================================================
+   2. 頂部標題列與關閉按鈕
+   ========================================================= */
 .gb-modal-header {
-    display: flex !important; justify-content: space-between !important; align-items: center !important; padding-bottom: 12px !important;
-    margin-bottom: 12px !important; border-bottom: 1px solid rgba(170, 175, 195, 0.2) !important;
+    display: flex !important; justify-content: space-between !important; align-items: center !important; padding-bottom: 12px !important; margin-bottom: 12px !important; 
+    border-bottom: 1px solid rgba(170, 175, 195, 0.2) !important; width: 100% !important; box-sizing: border-box !important;
 }
 .gb-modal-title { font-size: 18px !important; font-weight: 700 !important; color: #334155 !important; }
 #watched-modal .close-modal-btn {
-    padding: 6px 16px !important; font-size: 14px !important; font-weight: 600 !important; border-radius: 8px !important; cursor: pointer !important; margin-bottom: 0 !important;
-    transition: all 0.2s ease !important; border: 1px solid rgba(170, 175, 195, 0.3) !important; 
-    background: rgba(255, 255, 255, 0.8) !important; color: rgb(120, 136, 189) !important; display: inline-block !important;
+    padding: 6px 14px !important;  font-size: 13px !important;  font-weight: 600 !important; border-radius: 20px !important; cursor: pointer !important; margin-bottom: 0 !important;
+    transition: all 0.2s ease !important; border: 1px solid rgba(170, 175, 195, 0.4) !important; background: rgba(255, 255, 255, 0.9) !important; color: #64748b !important;
+    display: inline-flex !important; align-items: center !important; justify-content: center !important;
 }
-#watched-modal .close-modal-btn:hover { background: rgb(120, 136, 189) !important; color: #ffffff !important; }
+#watched-modal .close-modal-btn:hover { background: #f1f5f9 !important; color: #0f172a !important; border-color: #cbd5e1 !important; }
 
-/* 4. 快捷操作列 */
-.watched-quick-actions {
-    display: flex; justify-content: space-between; align-items: center; padding: 0 4px 12px 4px; border-bottom: 1px solid rgba(170, 175, 195, 0.3);
+/* =========================================================
+   3. 快捷操作列
+   ========================================================= */
+.watched-quick-actions { 
+    display: flex; justify-content: space-between; align-items: center;  padding: 0 4px 12px 4px; border-bottom: 1px solid rgba(170, 175, 195, 0.3);
     font-size: 14px; color: rgb(120, 136, 189);
 }
 .watched-count-info b { color: rgb(120, 136, 189); font-size: 16px; }
-
 .action-link-btn { background: none; border: none; color: rgb(152, 165, 189); cursor: pointer; font-size: 14px; font-weight: 600; padding: 2px 6px; transition: color 0.2s; }
 .action-link-btn:hover { color: rgb(120, 136, 189); text-decoration: underline; }
-
 .watched-quick-actions .divider { color: rgba(170, 175, 195, 0.5); }
 
-/* 5. 列表捲動區域 */
-.watched-list-container { flex: 1; overflow-y: auto; padding: 10px 4px; margin-bottom: 15px; -webkit-overflow-scrolling: touch; }
-
-/* 6. 分類標題 */
+/* =========================================================
+   4. 中間清單容器與分類標題
+   ========================================================= */
+.watched-list-container { flex: 1 !important; overflow-y: auto !important; overflow-x: hidden !important; padding: 6px 2px !important; margin-bottom: 10px !important; -webkit-overflow-scrolling: touch; }
 .watched-category-group { margin-bottom: 20px; }
 .watched-category-title { 
-    font-size: 15px; font-weight: bold; color: rgb(120, 136, 189); 
-    background: rgba(170, 175, 195, 0.12); padding: 6px 12px; border-radius: 8px; border-left: 4px solid rgb(120, 136, 189); margin-bottom: 10px;
+    font-size: 15px; font-weight: bold; color: rgb(120, 136, 189); background: rgba(170, 175, 195, 0.12); padding: 6px 12px; border-radius: 8px; 
+    border-left: 4px solid rgb(120, 136, 189); margin-bottom: 10px;
 }
 
-/* 7. 作品單項 */
-.watched-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 10px; transition: background 0.2s; gap: 12px; }
+/* =========================================================
+   5. 作品清單項目 (單集 / 系列 / 連結)
+   ========================================================= */
+.watched-item { 
+    display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; box-sizing: border-box !important; 
+    padding: 10px 12px; border-radius: 10px; transition: background 0.2s; gap: 12px; 
+}
 .watched-item:hover { background: rgba(170, 175, 195, 0.15); }
-.watched-item-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-
-/* 8. Checkbox */
+.watched-item-left { display: flex !important; align-items: center !important; gap: 10px !important; flex: 1 !important; min-width: 0 !important; }
+/* Checkbox */
 .watched-checkbox { width: 20px; height: 20px; accent-color: rgb(120, 136, 189); cursor: pointer; flex-shrink: 0; }
-
-/* 9. 作品標題 */
-.watched-item-title { font-size: 14.5px; color: #334155; font-weight: 500; cursor: pointer; white-space: normal !important; word-break: break-word !important;
-    display: inline-block; line-height: 1.4; }
-.watched-item-date { font-size: 12px; color: rgb(152, 165, 189); margin-left: 6px; white-space: nowrap; }
-
-/* 10. 前往觀看連結 */
+/* 作品標題與日期 */
+.watched-item-title { 
+    font-size: 14.5px !important; color: #334155 !important; font-weight: 500 !important; cursor: pointer !important; white-space: normal !important; 
+    word-break: break-word !important; line-height: 1.4 !important; display: inline-block; 
+}
+.watched-item-date { font-size: 12px !important; color: rgb(152, 165, 189) !important; margin-left: 6px !important; white-space: nowrap !important; }
+/* 前往觀看連結 */
 .watched-item-link {
-    font-size: 14px; color: rgb(120, 136, 189); text-decoration: none; font-weight: bold; padding: 4px 10px; border-radius: 6px;
-    background: rgba(170, 175, 195, 0.18); white-space: nowrap; flex-shrink: 0; transition: all 0.2s;
+    font-size: 14px; color: rgb(120, 136, 189); text-decoration: none; font-weight: bold; padding: 4px 10px; border-radius: 6px; background: rgba(170, 175, 195, 0.18); 
+    white-space: nowrap; flex-shrink: 0; transition: all 0.2s;
 }
 .watched-item-link:hover { background: rgb(120, 136, 189); color: #ffffff; }
 
-/* 11. 僅顯示未觀看影片 */
+/* =========================================================
+   6. 僅顯示未觀看篩選按鈕
+   ========================================================= */
 .unwatched-filter-btn {
     padding: 8px 16px; border-radius: 10px; border: 1px solid rgba(170, 175, 195, 0.4); background: rgba(255, 255, 255, 0.9); color: rgb(120, 136, 189); font-size: 14px;
     font-weight: 600; cursor: pointer; transition: all 0.2s; 
@@ -170,16 +177,48 @@ header p { margin-top: 8px; font-size: 14px; font-weight: 400; letter-spacing: 1
 .unwatched-filter-btn:hover { background: rgba(170, 175, 195, 0.15); border-color: rgb(152, 165, 189); }
 .unwatched-filter-btn.active { background: rgb(120, 136, 189); color: #ffffff; border-color: rgb(120, 136, 189); box-shadow: 0 4px 12px rgba(120, 136, 189, 0.3); }
 
-/* 12. 保存紀錄 */
-.modal-action-bar { display: flex !important; justify-content: center !important; padding-top: 14px !important; border-top: 1px solid rgba(170, 175, 195, 0.2) !important; margin-top: 8px !important; }
+/* =========================================================
+   7. 底部保存紀錄按鈕列
+   ========================================================= */
+.modal-action-bar { 
+    display: flex !important; justify-content: center !important; padding-top: 12px !important; border-top: 1px solid rgba(170, 175, 195, 0.2) !important;
+    margin-top: 4px !important; width: 100% !important; box-sizing: border-box !important; 
+}
 .modal-action-bar .random-btn {
-    width: 100% !important; max-width: 240px !important; height: 42px !important; background: rgb(120, 136, 189) !important; color: #ffffff !important;
-    border: none !important; border-radius: 12px !important; font-size: 15px !important; font-weight: 600 !important; cursor: pointer !important;
-    box-shadow: 0 4px 12px rgba(120, 136, 189, 0.35) !important; transition: all 0.2s ease !important; display: inline-flex !important;
-    align-items: center !important; justify-content: center !important;
+    width: 100% !important; max-width: 240px !important; height: 42px !important; background: rgb(120, 136, 189) !important; color: #ffffff !important; border: none !important;
+    border-radius: 12px !important; font-size: 15px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(120, 136, 189, 0.35) !important;
+    transition: all 0.2s ease !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;
 }
 .modal-action-bar .random-btn:hover { background: rgb(100, 116, 169) !important; transform: translateY(-2px) !important; box-shadow: 0 6px 16px rgba(120, 136, 189, 0.45) !important; }
 .modal-action-bar .random-btn:active { transform: translateY(0) !important; }
+
+/* =========================================================
+   8. 浮動按鈕與頁面開關狀態控制
+   ========================================================= */
+.floating-gb-btn {
+    position: fixed !important; bottom: calc(24px + env(safe-area-inset-bottom)) !important; left: 24px !important; z-index: 99999 !important; pointer-events: auto !important;                                     
+    width: auto !important; height: 48px !important; padding: 0 18px !important; border-radius: 24px !important; font-size: 14px !important; font-weight: 600 !important; 
+    white-space: nowrap !important; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important; background: rgb(120, 136, 189) !important; color: #ffffff !important; 
+    border: none !important; cursor: pointer !important; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; display: inline-flex !important; align-items: center !important; 
+    justify-content: center !important; -webkit-user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.floating-gb-btn:hover { background: rgb(100, 116, 169) !important; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.2) !important; }
+/* Modal 開啟時防護與隱藏浮動按鈕 */
+body.modal-open { overflow: hidden !important; }
+body.modal-open .floating-gb-btn { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+
+/* =========================================================
+   9. iPhone / Safari 適配
+   ========================================================= */
+@supports (-webkit-touch-callout: none) {
+    #watched-modal {
+        position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; width: 100% !important; height: 100% !important;
+        z-index: 2147483647 !important; padding: 16px 16px calc(16px + env(safe-area-inset-bottom)) 16px !important;
+    }
+    #watched-modal .watched-modal-content, #watched-modal .gb-modal-content, #watched-modal .modal-content, #watched-modal .modal-box {
+        max-height: calc(100vh - 32px) !important; max-height: calc(100dvh - 32px - env(safe-area-inset-bottom)) !important;
+    }
+}
     
 /* ===== Search ===== */
 .search-box { position: absolute; top: 14px; left: 16px; z-index: 3; }
@@ -678,7 +717,7 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
         white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none;
     }
     .sidebar::-webkit-scrollbar { display: none; }
-    .sidebar > * { flex-shrink: 0; /* 確保內容不被擠壓 */ }
+    .sidebar > * { flex-shrink: 0; }
     .sidebar button { flex: 0 0 auto; width: auto; margin: 0; padding: 6px 12px; font-size: 13px; justify-content: center; }
 
     .sort-dropdown-container { width: auto !important; flex-shrink: 0; margin-bottom: 0; }
@@ -718,230 +757,6 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
 /* 電腦版 */
 @media (min-width: 769px) {
     .responsive-break { display: none !important; }
-}
-    
-/* =========================================================
-   1. Modal 遮罩層 (全螢幕背景)
-   ========================================================= */
-#watched-modal {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 100% !important;                       
-    height: 100% !important;
-    margin: 0 !important;
-    padding: 20px !important;
-    box-sizing: border-box !important;
-    z-index: 2147483647 !important;
-    display: none;
-    align-items: center !important;
-    justify-content: center !important;
-    overflow: hidden !important;                   
-    background: rgba(0, 0, 0, 0.45) !important;
-    touch-action: none;                            
-}
-
-/* Modal 開啟 */
-#watched-modal[style*="display: flex"] {
-    display: flex !important;
-}
-
-/* =========================================================
-   2. Modal 內容本體 (卡片方框)
-   ========================================================= */
-#watched-modal .watched-modal-content,
-#watched-modal .gb-modal-content,
-#watched-modal .modal-content,
-#watched-modal .modal-box {
-    position: relative !important;
-    z-index: 2147483647 !important;
-    width: 90% !important;
-    max-width: 650px !important;
-    max-height: 85vh !important;
-    box-sizing: border-box !important;
-
-    /* 佈局結構 */
-    display: flex !important;
-    flex-direction: column !important;
-
-    /* 核心視覺卡片樣式：白底、圓角、外框與立體陰影 */
-    background: rgba(255, 255, 255, 0.98) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    padding: 20px !important;
-    border-radius: 20px !important;
-    border: 1px solid rgba(255, 255, 255, 0.8) !important;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(170, 175, 195, 0.2) !important;
-
-    /* 徹底禁止橫向滑動 */
-    overflow-x: hidden !important;
-    overflow-y: hidden !important;
-}
-
-/* =========================================================
-   3. 頂部標題列與右上角關閉按鈕
-   ========================================================= */
-.gb-modal-header {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    padding-bottom: 12px !important;
-    margin-bottom: 12px !important;
-    border-bottom: 1px solid rgba(170, 175, 195, 0.2) !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-.gb-modal-title {
-    font-size: 18px !important;
-    font-weight: 700 !important;
-    color: #334155 !important;
-}
-
-/* 右上角關閉按鈕 */
-#watched-modal .close-modal-btn {
-    padding: 6px 14px !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-    border-radius: 20px !important;
-    cursor: pointer !important;
-    margin-bottom: 0 !important;
-    transition: all 0.2s ease !important;
-    border: 1px solid rgba(170, 175, 195, 0.4) !important; 
-    background: rgba(255, 255, 255, 0.9) !important;
-    color: #64748b !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-#watched-modal .close-modal-btn:hover {
-    background: #f1f5f9 !important;
-    color: #0f172a !important;
-    border-color: #cbd5e1 !important;
-}
-
-/* =========================================================
-   4. 中間清單容器與標題文字修復（防止手機推開寬度）
-   ========================================================= */
-.watched-list-container {
-    flex: 1 !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;                
-    padding: 6px 2px !important;
-    margin-bottom: 10px !important;
-    -webkit-overflow-scrolling: touch;
-}
-
-.watched-item {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-.watched-item-left {
-    display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
-    flex: 1 !important;
-    min-width: 0 !important;                       
-}
-
-/* 允許標題折行（最多兩行） */
-.watched-item-title {
-    font-size: 14.5px !important;
-    color: #334155 !important;
-    font-weight: 500 !important;
-    cursor: pointer !important;
-    white-space: normal !important;
-    word-break: break-word !important;
-    line-height: 1.4 !important;
-}
-
-.watched-item-date {
-    font-size: 12px !important;
-    color: rgb(152, 165, 189) !important;
-    margin-left: 6px !important;
-    white-space: nowrap !important;
-}
-
-/* =========================================================
-   5. 底部保存紀錄按鈕
-   ========================================================= */
-.modal-action-bar {
-    display: flex !important;
-    justify-content: center !important;
-    padding-top: 12px !important;
-    border-top: 1px solid rgba(170, 175, 195, 0.2) !important;
-    margin-top: 4px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-.modal-action-bar .random-btn {
-    width: 100% !important;
-    max-width: 240px !important;
-    height: 42px !important;
-    background: rgb(120, 136, 189) !important;
-    color: #ffffff !important;
-    border: none !important;
-    border-radius: 12px !important;
-    font-size: 15px !important;
-    font-weight: 600 !important;
-    cursor: pointer !important;
-    box-shadow: 0 4px 12px rgba(120, 136, 189, 0.35) !important;
-    transition: all 0.2s ease !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-.modal-action-bar .random-btn:hover {
-    background: rgb(100, 116, 169) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 16px rgba(120, 136, 189, 0.45) !important;
-}
-
-/* =========================================================
-   6. iPhone / Safari 適配
-   ========================================================= */
-@supports (-webkit-touch-callout: none) {
-    #watched-modal {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        z-index: 2147483647 !important;
-        padding: 16px 16px calc(16px + env(safe-area-inset-bottom)) 16px !important;
-    }
-
-    #watched-modal .watched-modal-content,
-    #watched-modal .gb-modal-content,
-    #watched-modal .modal-content,
-    #watched-modal .modal-box {
-        max-height: calc(100vh - 32px) !important;
-        max-height: calc(100dvh - 32px - env(safe-area-inset-bottom)) !important;
-    }
-}
-
-/* =========================================================
-   7. 狀態控制與頁面防護
-   ========================================================= */
-body.modal-open {
-    overflow: hidden !important;
-}
-
-body.modal-open .floating-gb-btn {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
 }
 </style>
 </head>
