@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
+<link rel="stylesheet" href="../../css/reaction.css">
+  
+<title>20260820 FLARE U 直播 𝑭𝑳𝑨𝑹𝑬 𝑼 𝑫𝒆𝒃𝒖𝒕 𝟏𝟎𝟎 𝑫𝒂𝒚𝒔₊˚ ✩ ⋆</title>
+
+<style>
+body {
+    margin: 0;
+    background: #111;
+    color: #fff;
+    font-family: Arial, "Noto Sans TC", sans-serif;
+    text-align: center;
+}
+
+html, body {
+    background: #000 !important;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.birthday-text {
+    /* 🧊 清爽質感的柔和淺藍色 */
+    color: rgb(159, 188, 198);
+    
+    /* 🧸 舒適的字體設定：字體圓潤微粗，行距拉開讓閱讀最舒服 */
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.8;
+    letter-spacing: 1.5px;
+    text-align: center;
+    margin: 20px auto;
+    max-width: 90%;
+    display: block;
+    
+    /* ✨ 高級感關鍵：捨棄厚重多層邊框，改用極輕柔的「絲絨暗影」，
+       在黑底或深色背景下能像精品店燈光一樣，把字體優雅地襯托出來 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+</style>
+</head>
+
+<body>
+<div id="controls">
+    <div class="control-row">
+        <button onclick="toggleBarrageDisplay()" id="barrage-toggle-btn">即時表情：開</button>
+
+        <div class="control-group barrage-control">
+            <span>大小</span>
+            <input type="range" id="barrage-size-slider" min="16" max="60" value="24" oninput="updateBarrageSize(this.value)">
+        </div>
+
+        <div class="control-group barrage-control">
+            <span>範圍</span>
+            <input type="range" id="barrage-height-slider" min="10" max="100" value="40" oninput="updateBarrageHeight(this.value)">
+            <span id="height-val">40%</span>
+        </div>
+
+        <div class="control-group barrage-control">
+            <span>速度</span>
+            <input type="range" id="barrage-speed-slider" min="3" max="10" step="1" value="5" oninput="updateBarrageSpeed(this.value)">
+        </div>
+
+        <div class="control-group">
+            <button class="sub-btn" onclick="changeSubtitleSize(-0.1)">A−</button>
+            <span>字幕</span>
+            <button class="sub-btn" onclick="changeSubtitleSize(0.1)">A＋</button>
+        </div>
+        <button id="home-btn" onclick="window.location.href='/'">首頁</button>
+        <button id="fs-btn">進入全螢幕</button>
+    </div>
+</div>
+
+<h2>20260820 FLARE U 直播 𝑭𝑳𝑨𝑹𝑬 𝑼 𝑫𝒆𝒃𝒖𝒕 𝟏𝟎𝟎 𝑫𝒂𝒚𝒔₊˚ ✩ ⋆</h2>
+<p class="birthday-text">慶祝FLARE U出道滿100天♡</p>
+
+<div id="video-wrapper">
+    <div id="player"></div>
+    <div id="subtitle">字幕載入中...</div>
+    <div id="barrage-container"></div>
+
+    <button id="emoji-trigger-btn" onclick="toggleEmojiDrawer(event)">😊</button>
+
+    <div id="emoji-drawer"></div>
+    
+    <button id="exit-fs-btn" title="退出全螢幕" style="display: none; opacity: 0;">
+        <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+    </button>
+</div>
+
+<div class="reaction-section">
+    <p id="reaction-title">覺得這部翻譯影片如何？點個表情吧！</p>
+    <div class="reaction-wall"></div>
+    <br>
+</div>
+
+<script>
+/* 影片ID和SRT文件 */
+const MY_VIDEO_ID = "881beUt0WMA"; 
+const MY_SRT_FILE = "20260820_FLARE_U_Debut_100_Days.srt";
+
+/* ===== 字幕大小設定 ===== */
+function changeSubtitleSize(delta) {
+        if (typeof coreChangeSubtitleSize === "function") coreChangeSubtitleSize(delta);
+}
+</script>
+    
+<script type="module" src="../../js/firebase-init.js"></script>
+
+<script src="../../js/core-player.js"></script>
+<script src="../../js/reaction-core.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+
+</body>
+</html>
