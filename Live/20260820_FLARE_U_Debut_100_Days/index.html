@@ -27,8 +27,6 @@ html, body {
 
 .birthday-text { 
     color: rgb(114, 179, 226); /* 淺藍 */
-    
-    /* 🧸 舒適的字體設定：字體圓潤微粗，行距拉開讓閱讀最舒服 */
     font-size: 1.25rem;
     font-weight: 700;
     line-height: 1.8;
@@ -37,30 +35,25 @@ html, body {
     margin: 20px auto;
     max-width: 90%;
     display: block;
-    
-    /* 加上微弱的藍色微光暈，讓文字更立體清晰 */
     text-shadow: 0 0 8px rgba(100, 194, 236, 0.3), 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .time-btn {
+    font-size: 1.2rem;
     font-weight: 600;
-    padding: 8px 18px;
+    padding: 8px 20px;
     border-radius: 50px;
-    
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-    color: #e0f2fe; 
-
-    backdrop-filter: blur(8px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.3);
-    
+    background: linear-gradient(180deg, #FFFFFF 0%, #D8DCE0 100%);
+    color: #1A1D20; 
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.9);
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s ease;
 }
 
 .time-btn:hover {
-    border-color: rgba(159, 188, 198, 0.6);
-    box-shadow: 0 6px 20px rgba(100, 194, 236, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+    background: linear-gradient(180deg, #FFFFFF 0%, #EBEFE3 100%);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.25), inset 0 1px 1px rgba(255, 255, 255, 1);
     transform: translateY(-1px);
 }
 
