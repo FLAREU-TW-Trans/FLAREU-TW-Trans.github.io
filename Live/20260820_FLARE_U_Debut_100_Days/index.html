@@ -80,6 +80,9 @@ html, body {
 
 <h2>20260820 FLARE U 直播 𝑭𝑳𝑨𝑹𝑬 𝑼 𝑫𝒆𝒃𝒖𝒕 𝟏𝟎𝟎 𝑫𝒂𝒚𝒔₊˚ ✩ ⋆</h2>
 <p class="birthday-text">慶祝FLARE U出道滿100天♡</p>
+<div class="time-jump-group">
+        <button class="time-btn" onclick="jumpToTime(573)">跳轉</button>
+  </div>
 
 <div id="video-wrapper">
     <div id="player"></div>
@@ -112,6 +115,19 @@ const MY_SRT_FILE = "20260820_FLARE_U_Debut_100_Days.srt";
 /* ===== 字幕大小設定 ===== */
 function changeSubtitleSize(delta) {
         if (typeof coreChangeSubtitleSize === "function") coreChangeSubtitleSize(delta);
+}
+
+/* 跳轉時間 */
+function jumpToTime(seconds) {
+    // 檢查 player 物件是否存在，且是否有 seekTo 這個方法
+    if (typeof player !== 'undefined' && player.seekTo) {
+        player.seekTo(seconds, true);
+        
+        // 跳轉後自動播放影片
+        player.playVideo(); 
+    } else {
+        console.error("YouTube 播放器尚未準備就緒或未正確定義。");
+    }
 }
 </script>
     
