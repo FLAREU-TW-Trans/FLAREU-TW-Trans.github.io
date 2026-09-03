@@ -3,7 +3,7 @@
 
   <url>
     <loc>https://flareu-tw-trans.github.io/</loc>
-    <lastmod>2026-08-26</lastmod>
+    <lastmod>2026-09-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -92,6 +92,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://flareu-tw-trans.github.io/Live/20260820_FLARE_U_Debut_100_Days/</loc>
+    <lastmod>2026-09-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://flareu-tw-trans.github.io/Live/THE_SHOW/</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>monthly</changefreq>
@@ -109,6 +115,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  
   <url>
     <loc>https://flareu-tw-trans.github.io/Program/</loc>
     <lastmod>2026-05-17</lastmod>
@@ -166,6 +173,12 @@
   <url>
     <loc>https://flareu-tw-trans.github.io/Program/SeoulMyFriend/EP10/</loc>
     <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://flareu-tw-trans.github.io/Program/SeoulMyFriend/EP11/</loc>
+    <lastmod>2026-08-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
