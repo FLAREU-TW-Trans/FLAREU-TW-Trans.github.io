@@ -11,31 +11,51 @@
 
 <style>
         /* ==========================================
-           1. 基本樣式與 Header
+           1. 全域變數與高級質感色系
            ========================================== */
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, "Noto Sans TC", sans-serif;
-            background-color: #f8fafc;
-            color: #1e293b;
+        :root {
+            --primary-dark: rgb(33, 33, 71);
+            --bg-light: rgb(228, 227, 238);
+            --surface-white: #ffffff;
+            --text-main: rgb(33, 33, 71);
+            --text-muted: #64748b;
+            --accent-blue: #3b82f6;
+            --shadow-soft: 0 10px 25px -5px rgba(33, 33, 71, 0.08);
+            --border-radius: 12px;
         }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        /* ==========================================
+           2. 頂部 Header
+           ========================================== */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
-            background: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 16px 24px;
+            background: var(--surface-white);
+            box-shadow: 0 2px 10px rgba(33, 33, 71, 0.05);
+        }
+
+        .header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            letter-spacing: -0.5px;
         }
 
         .header-btn-group {
             display: flex;
-            gap: 10px;
-            align-items: center;
+            gap: 12px;
         }
 
         .nav-btn {
@@ -44,249 +64,307 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
-            transition: background 0.2s;
-            display: inline-block;
+            transition: all 0.2s ease;
         }
-
-        .home-btn {
-            background: #3b82f6;
-            color: #ffffff;
-        }
-        .home-btn:hover { background: #2563eb; }
 
         .official-btn {
-            background: #059669;
-            color: #ffffff;
+            background: rgba(33, 33, 71, 0.08);
+            color: var(--primary-dark);
         }
-        .official-btn:hover { background: #047857; }
+        .official-btn:hover { background: rgba(33, 33, 71, 0.15); }
+
+        .home-btn {
+            background: var(--primary-dark);
+            color: var(--surface-white);
+        }
+        .home-btn:hover { opacity: 0.9; }
 
         .container {
-            max-width: 800px;
-            margin: 20px auto;
+            max-width: 760px;
+            margin: 28px auto 0;
             padding: 0 16px;
         }
 
         /* ==========================================
-           2. 成員與模式切換頁籤
+           3. 整合型分頁控制器
            ========================================== */
-        .member-tabs, .mode-toggle, .lang-filter {
+        .control-panel {
+            background: var(--surface-white);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 20px;
             display: flex;
-            gap: 8px;
-            justify-content: center;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 14px;
         }
 
-        .tab-btn, .mode-btn, .lang-btn {
-            padding: 8px 18px;
-            border: 1px solid #cbd5e1;
-            background: #ffffff;
-            border-radius: 20px;
-            cursor: pointer;
+        .segmented-row {
+            display: flex;
+            background: rgba(33, 33, 71, 0.05);
+            padding: 4px;
+            border-radius: 10px;
+            gap: 4px;
+        }
+
+        .segmented-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 8px 12px;
             font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+
+        .segmented-btn.active {
+            background: var(--surface-white);
+            color: var(--primary-dark);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .lang-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid rgba(33, 33, 71, 0.08);
+            padding-top: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .lang-options {
+            display: flex;
+            gap: 6px;
+        }
+
+        .lang-chip {
+            border: none;
+            background: transparent;
+            padding: 4px 10px;
+            font-size: 13px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-muted);
             font-weight: 500;
-            color: #64748b;
             transition: all 0.2s;
         }
 
-        .tab-btn.active, .mode-btn.active, .lang-btn.active {
-            background: #3b82f6;
-            color: #ffffff;
-            border-color: #3b82f6;
-            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.25);
+        .lang-chip.active {
+            background: var(--primary-dark);
+            color: var(--surface-white);
         }
 
         /* ==========================================
-           3. 控制列與時間微調 (動態逐句專用)
+           4. 動態逐句控制區塊 (背景靜音播放)
            ========================================== */
-        .controls-card {
-            background: #ffffff;
-            padding: 16px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
+        .audio-card {
+            background: var(--surface-white);
+            border-radius: var(--border-radius);
+            padding: 16px 20px;
+            box-shadow: var(--shadow-soft);
             margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        .audio-player {
-            width: 100%;
+        .notice-banner {
+            font-size: 13px;
+            color: var(--text-muted);
+            background: rgba(33, 33, 71, 0.04);
+            padding: 8px 12px;
+            border-radius: 8px;
             margin-bottom: 12px;
-        }
-
-        .time-adjust-group {
             display: flex;
-            gap: 6px;
-            justify-content: center;
             align-items: center;
+            justify-content: space-between;
+        }
+
+        .sync-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 12px;
+        }
+
+        .playback-btn-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .play-toggle-btn {
+            border: none;
+            background: var(--primary-dark);
+            color: var(--surface-white);
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .play-toggle-btn:hover { opacity: 0.9; }
+
+        .time-btn-group {
+            display: flex;
+            gap: 4px;
         }
 
         .time-btn {
-            padding: 4px 10px;
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
+            border: 1px solid rgba(33, 33, 71, 0.15);
+            background: transparent;
+            color: var(--primary-dark);
+            padding: 4px 8px;
             font-size: 12px;
+            border-radius: 6px;
             cursor: pointer;
-            color: #475569;
-            transition: background 0.2s;
+            font-weight: 600;
+            transition: all 0.2s;
         }
-        .time-btn:hover { background: #e2e8f0; }
+        .time-btn:hover { background: rgba(33, 33, 71, 0.05); }
 
         .sync-btn {
-            background: #10b981;
-            color: white;
             border: none;
-            padding: 6px 14px;
+            background: rgba(33, 33, 71, 0.08);
+            color: var(--primary-dark);
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
             border-radius: 6px;
-            font-size: 13px;
             cursor: pointer;
-            font-weight: bold;
+            transition: background 0.2s;
         }
-        .sync-btn:hover { background: #059669; }
+        .sync-btn:hover { background: rgba(33, 33, 71, 0.15); }
 
         /* ==========================================
-           4. 內容區塊與字幕顯示
+           5. 字幕顯示卡片
            ========================================== */
-        .subtitle-box {
-            background: #ffffff;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            padding: 20px;
-            min-height: 300px;
-            max-height: 500px;
+        .subtitle-card {
+            background: var(--surface-white);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+            min-height: 320px;
+            max-height: 520px;
             overflow-y: auto;
-            position: relative;
         }
 
         .sub-line {
-            padding: 12px 16px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            transition: background 0.2s, transform 0.2s;
-            cursor: pointer;
+            padding: 14px 18px;
+            margin-bottom: 8px;
+            border-radius: 10px;
             border-left: 4px solid transparent;
+            transition: all 0.25s ease;
+            cursor: pointer;
         }
-        .sub-line:hover { background: #f8fafc; }
+        .sub-line:hover { background: rgba(33, 33, 71, 0.03); }
 
         .sub-line.active {
-            background: #eff6ff;
-            border-left-color: #3b82f6;
-            transform: scale(1.01);
+            background: rgba(33, 33, 71, 0.06);
+            border-left-color: var(--primary-dark);
         }
 
         .kor-text {
             font-size: 18px;
             font-weight: 600;
-            color: #0f172a;
+            color: var(--primary-dark);
             line-height: 1.5;
         }
 
         .chi-text {
             font-size: 14px;
-            color: #64748b;
+            color: var(--text-muted);
             margin-top: 4px;
-            line-height: 1.4;
         }
 
         .hide-kor .kor-text { display: none !important; }
         .hide-chi .chi-text { display: none !important; }
 
         /* ==========================================
-           5. 教學單字標記樣式
+           6. 教學單字與彈出視窗 (Modal)
            ========================================== */
         .vocab-word {
-            color: #2563eb;
-            background: #dbeafe;
+            color: var(--primary-dark);
+            background: rgba(33, 33, 71, 0.1);
             padding: 2px 6px;
             border-radius: 4px;
             font-weight: 700;
             cursor: pointer;
-            border-bottom: 2px solid #3b82f6;
-            transition: all 0.2s;
+            border-bottom: 2px solid var(--primary-dark);
+            transition: background 0.2s;
         }
-        .vocab-word:hover {
-            background: #bfdbfe;
-            color: #1d4ed8;
-        }
+        .vocab-word:hover { background: rgba(33, 33, 71, 0.2); }
 
-        /* ==========================================
-           6. 單字彈出視窗 (Modal)
-           ========================================== */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(33, 33, 71, 0.4);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            backdrop-filter: blur(2px);
+            backdrop-filter: blur(4px);
         }
 
         .modal-card {
-            background: #ffffff;
+            background: var(--surface-white);
             width: 90%;
-            max-width: 400px;
+            max-width: 380px;
             border-radius: 16px;
             padding: 24px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 30px rgba(33, 33, 71, 0.2);
             position: relative;
-            animation: modalIn 0.2s ease-out;
-        }
-
-        @keyframes modalIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .modal-close {
             position: absolute;
             top: 16px; right: 16px;
             border: none;
-            background: #f1f5f9;
+            background: rgba(33, 33, 71, 0.05);
             width: 28px; height: 28px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 16px;
-            color: #64748b;
+            font-size: 14px;
+            color: var(--text-muted);
         }
 
         .modal-header {
             display: flex;
             align-items: baseline;
-            gap: 10px;
-            margin-bottom: 8px;
+            gap: 8px;
+            margin-bottom: 6px;
         }
 
-        .modal-kor { font-size: 24px; font-weight: bold; color: #0f172a; }
-        .modal-pos { font-size: 13px; background: #e2e8f0; color: #475569; padding: 2px 8px; border-radius: 10px; }
-        .modal-pinyin { font-size: 14px; color: #64748b; margin-bottom: 12px; }
-        .modal-chi { font-size: 16px; color: #334155; margin-bottom: 20px; font-weight: 500; }
+        .modal-kor { font-size: 24px; font-weight: bold; color: var(--primary-dark); }
+        .modal-pos { font-size: 12px; background: rgba(33, 33, 71, 0.08); color: var(--primary-dark); padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+        .modal-pinyin { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+        .modal-chi { font-size: 16px; color: var(--primary-dark); margin-bottom: 20px; font-weight: 500; }
 
         .audio-play-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
             width: 100%;
             padding: 12px 0;
-            background: #2563eb;
-            color: #ffffff;
+            background: var(--primary-dark);
+            color: var(--surface-white);
             border: none;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 10px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: opacity 0.2s;
         }
-        .audio-play-btn:hover { background: #1d4ed8; }
+        .audio-play-btn:hover { opacity: 0.9; }
     </style>
 </head>
 
 <body>
-
+  <!-- 隱藏式音訊標籤 -->
+  <audio id="audio-player" muted preload="auto" style="display: none;"></audio>
+  
     <!-- 頁面最上方：回到首頁按鈕 -->
     <header class="header">
         <h2 style="margin:0; font-size: 18px;">20260628 朗讀教科書中的文學作品</h2>
@@ -298,49 +376,59 @@
 
     <div class="container">
 
-        <!-- 第一層：成員切換 -->
-        <div class="member-tabs">
-            <button class="tab-btn" data-member="liyu" onclick="switchMember('liyu')">立于</button>
-            <button class="tab-btn" data-member="woojin" onclick="switchMember('woojin')">玗進</button>
-        </div>
+        <!-- 整合控制面板 -->
+        <div class="control-panel">
+            <!-- 第一層：成員切換 -->
+            <div class="segmented-row">
+                <button class="segmented-btn" data-member="leeyu" onclick="switchMember('leeyu')">崔立于</button>
+                <button class="segmented-btn" data-member="woojin" onclick="switchMember('woojin')">崔玗进</button>
+            </div>
 
-        <!-- 第二層：閱讀模式切換 -->
-        <div class="mode-toggle">
-            <button class="mode-btn" data-mode="dynamic" onclick="switchMode('dynamic')">🎵 動態逐句</button>
-            <button class="mode-btn" data-mode="full" onclick="switchMode('full')">📖 完整全文</button>
-        </div>
+            <!-- 第二層：閱讀模式切換 -->
+            <div class="segmented-row">
+                <button class="segmented-btn" data-mode="dynamic" onclick="switchMode('dynamic')">🎵 動態逐句</button>
+                <button class="segmented-btn" data-mode="full" onclick="switchMode('full')">📖 完整全文</button>
+            </div>
 
-        <!-- 語言顯示設定 -->
-        <div class="lang-filter">
-            <button class="lang-btn" data-lang="all" onclick="switchLang('all')">顯示韓文和中文</button>
-            <button class="lang-btn" data-lang="kor" onclick="switchLang('kor')">只顯示韓文</button>
-            <button class="lang-btn" data-lang="chi" onclick="switchLang('chi')">只顯示中文</button>
-        </div>
-
-        <!-- 動態逐句專用控制卡片 -->
-        <div class="controls-card" id="dynamic-controls">
-            <audio id="audio-player" class="audio-player" controls src=""></audio>
-            
-            <div class="time-adjust-group">
-                <span>時間微調：</span>
-                <button class="time-btn" onclick="adjustTime(-1)">-1s</button>
-                <button class="time-btn" onclick="adjustTime(-0.5)">-0.5s</button>
-                <button class="time-btn" onclick="adjustTime(-0.1)">-0.1s</button>
-                <button class="time-btn" onclick="adjustTime(0.1)">+0.1s</button>
-                <button class="time-btn" onclick="adjustTime(0.5)">+0.5s</button>
-                <button class="time-btn" onclick="adjustTime(1)">+1s</button>
-                <button class="sync-btn" onclick="scrollToCurrentSub(true)">🎯 回到當前播放句子</button>
+            <!-- 第三層：語言切換 -->
+            <div class="lang-bar">
+                <span>顯示設定</span>
+                <div class="lang-options">
+                    <button class="lang-chip" data-lang="all" onclick="switchLang('all')">雙語</button>
+                    <button class="lang-chip" data-lang="kor" onclick="switchLang('kor')">韓文</button>
+                    <button class="lang-chip" data-lang="chi" onclick="switchLang('chi')">中文</button>
+                </div>
             </div>
         </div>
 
-        <!-- 內容顯示區域 -->
-        <div class="subtitle-box" id="subtitle-box">
-            <!-- 字幕列表由 JS 動態生成 -->
+        <!-- 動態逐句同步控制卡片 -->
+        <div class="audio-card" id="dynamic-controls">
+            <div class="notice-banner">
+                <span>🔇 字幕同步運行中（請開啟「官方收聽」點擊同步播放音訊）</span>
+            </div>
+            
+            <div class="sync-controls">
+                <div class="playback-btn-group">
+                    <button class="play-toggle-btn" id="play-toggle-btn" onclick="togglePlay()">▶ 開始動態同步</button>
+                </div>
+
+                <div class="time-btn-group">
+                    <button class="time-btn" onclick="adjustTime(-1)">-1s</button>
+                    <button class="time-btn" onclick="adjustTime(-0.5)">-0.5s</button>
+                    <button class="time-btn" onclick="adjustTime(0.5)">+0.5s</button>
+                    <button class="time-btn" onclick="adjustTime(1)">+1s</button>
+                </div>
+
+                <button class="sync-btn" onclick="scrollToCurrentSub(true)">🎯 當前句子</button>
+            </div>
         </div>
+
+        <!-- 字幕容器 -->
+        <div class="subtitle-card" id="subtitle-box"></div>
 
     </div>
 
-    <!-- 單字詳細資料彈出視窗 (Modal) -->
+    <!-- 單字詳細資料彈窗 (Modal) -->
     <div class="modal-overlay" id="vocab-modal" onclick="closeModal(event)">
         <div class="modal-card">
             <button class="modal-close" onclick="closeModalDirect()">✕</button>
@@ -351,16 +439,31 @@
             <div class="modal-pinyin" id="modal-pinyin">[gyo-gwa-seo]</div>
             <div class="modal-chi" id="modal-chi">教科書</div>
             
-            <!-- 原頁面即時播放按鈕 -->
-            <button class="audio-play-btn" id="modal-speak-btn">
-                🔊 播放發音
-            </button>
+            <button class="audio-play-btn" id="modal-speak-btn">🔊 播放發音</button>
         </div>
     </div>
+  
+  <div class="reaction-section">
+    <p id="reaction-title">覺得這部翻譯作品如何？點個表情吧！</p>
+    <div class="reaction-wall"></div>
+    <br>
+  </div>
+  
+  <script>
+    window.MY_VIDEO_ID = "20260628_Literature_in_Textbooks";
+  </script>
 
     <script>
-        /* ==========================================
+      /* ==========================================
            1. 教學單字資料庫
+           ========================================== */
+      const audioSources = {
+            leeyu: "20260628_Literature_in_Textbooks_Liyu.mp3",
+            woojin: "20260628_Literature_in_Textbooks_Woojin.mp3"
+        };
+      
+        /* ==========================================
+           2. 教學單字資料庫
            ========================================== */
         const vocabDb = {
             "교과서": {
@@ -378,13 +481,13 @@
         };
 
         /* ==========================================
-           2. SRT 資料庫與範例資料
+           3. SRT 資料庫與範例資料
            ========================================== */
         const mockSrtData = {
     liyu: {
         kor: `1
 00:00:00,000 --> 00:00:11,200
-최립우가 들려주는 교과서 속 문학
+최립우가 들려주는 {교과서} 속 {문학}
 
 2
 00:00:11,200 --> 00:00:14,800
@@ -1724,7 +1827,7 @@
     }
 };
         /* ==========================================
-           3. 狀態管理 (使用 LocalStorage)
+           4. 狀態管理 (使用 LocalStorage)
            ========================================== */
         let currentState = {
             member: localStorage.getItem('app_member') || 'liyu',
@@ -1796,8 +1899,47 @@
             if (currentState.lang === 'chi') box.classList.add('hide-kor');
         }
 
+        function updateAudioSource() {
+            const audio = document.getElementById('audio-player');
+            audio.muted = true; // 強制靜音，防止產生聲音
+            audio.volume = 0;
+            
+            if (audioSources[currentState.member]) {
+                audio.src = audioSources[currentState.member];
+                audio.load();
+                
+                // 如果目前是動態模式，自動觸發背景靜音播放
+                if (currentState.mode === 'dynamic') {
+                    audio.play().then(() => {
+                        updatePlayButtonState(true);
+                    }).catch(e => {
+                        console.log("自動播放受阻，等待使用者點擊按鈕：", e);
+                        updatePlayButtonState(false);
+                    });
+                }
+            }
+        }
+
+        function togglePlay() {
+            const audio = document.getElementById('audio-player');
+            if (audio.paused) {
+                audio.play();
+                updatePlayButtonState(true);
+            } else {
+                audio.pause();
+                updatePlayButtonState(false);
+            }
+        }
+
+        function updatePlayButtonState(isPlaying) {
+            const btn = document.getElementById('play-toggle-btn');
+            if (btn) {
+                btn.innerText = isPlaying ? "⏸ 暫停動態同步" : "▶ 開始動態同步";
+            }
+        }
+
         /* ==========================================
-           4. SRT 解析器與教學單字標記替換
+           5. SRT 解析器與教學單字標記替換
            ========================================== */
         function parseSRT(srtString) {
             const pattern = /(\d+)\n(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})\n([\s\S]*?)(?=\n\n|\n*$)/g;
@@ -1832,17 +1974,15 @@
         }
 
         /* ==========================================
-           5. 載入與渲染內容
+           6. 載入與渲染內容
            ========================================== */
         function loadAndRenderContent() {
-            // 此處載入預設 SRT 範例資料 (如需讀取實體檔案可改用 fetch)
             const korSrt = mockSrtData[currentState.member].kor;
             const chiSrt = mockSrtData[currentState.member].chi;
 
             const korParsed = parseSRT(korSrt);
             const chiParsed = parseSRT(chiSrt);
 
-            // 合併韓中文字幕
             parsedSubtitles = korParsed.map((item, index) => ({
                 start: item.start,
                 end: item.end,
@@ -1861,24 +2001,25 @@
                 const korHtml = renderVocabText(item.kor);
                 const chiHtml = item.chi;
 
-                // 韓文在上、中文在下
                 lineDiv.innerHTML = `
                     <div class="kor-text">${korHtml}</div>
                     <div class="chi-text">${chiHtml}</div>
                 `;
 
-                // 點擊句子快速跳轉播放時間 (僅動態模式)
                 lineDiv.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('vocab-word')) return; // 點擊單字不觸發跳時間
+                    if (e.target.classList.contains('vocab-word')) return;
                     if (currentState.mode === 'dynamic') {
                         const audio = document.getElementById('audio-player');
                         audio.currentTime = item.start;
                         audio.play();
+                        updatePlayButtonState(true);
                     }
                 });
 
                 box.appendChild(lineDiv);
             });
+            
+            updateAudioSource();
         }
 
         /* ==========================================
@@ -1897,6 +2038,10 @@
                     highlightCurrentSub(activeIndex);
                     scrollToCurrentSub(false);
                 }
+            });
+
+            audio.addEventListener('ended', () => {
+                updatePlayButtonState(false);
             });
         }
 
