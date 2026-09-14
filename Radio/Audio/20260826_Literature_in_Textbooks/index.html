@@ -11,17 +11,17 @@
 
 <style>
         /* ==========================================
-           1. 全域變數與高級質感色系 (大幅強化 Active 狀態對比)
+           1. 全域變數與高級質感色系
            ========================================== */
         :root {
             --primary-dark: rgb(33, 33, 71);
             --bg-light: rgb(228, 227, 238);
             --surface-white: #ffffff;
             --text-main: rgb(33, 33, 71);
-            --text-muted: #4b5563; /* 加深預設灰色，提升讀取舒適度 */
+            --text-muted: #4b5563;
             --shadow-soft: 0 10px 25px -5px rgba(33, 33, 71, 0.08);
             --border-radius: 12px;
-            /* 專為 Active 狀態設定的高對比主題色 */
+            /* 高對比 Active 狀態主題色 */
             --active-bg: rgb(33, 33, 71);
             --active-text: #ffffff;
         }
@@ -37,7 +37,7 @@
         }
 
         /* ==========================================
-           2. 頂部 Header
+           2. 頂部 Header (支援手機端自動換行)
            ========================================== */
         .header {
             display: flex;
@@ -46,6 +46,8 @@
             padding: 16px 24px;
             background: var(--surface-white);
             box-shadow: 0 2px 10px rgba(33, 33, 71, 0.05);
+            flex-wrap: wrap; /* 支援自動換行 */
+            gap: 12px;
         }
 
         .header h2 {
@@ -81,6 +83,18 @@
         }
         .home-btn:hover { opacity: 0.9; }
 
+        /* 手機端媒體查詢：強制 Header 標題與按鈕分成上下兩行 */
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-btn-group {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+
         .container {
             max-width: 760px;
             margin: 28px auto 0;
@@ -88,89 +102,93 @@
         }
 
         /* ==========================================
-           3. 整合型分頁控制器 (極致化 Active 狀態差異)
+           3. 控制面板 (字體放大 + 極致 Active 顯眼樣式)
            ========================================== */
         .control-panel {
             background: var(--surface-white);
             border-radius: var(--border-radius);
-            padding: 16px;
+            padding: 18px;
             box-shadow: var(--shadow-soft);
             margin-bottom: 20px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 16px;
         }
 
         .segmented-row {
             display: flex;
             background: rgba(33, 33, 71, 0.08);
-            padding: 5px;
-            border-radius: 10px;
-            gap: 6px;
+            padding: 6px;
+            border-radius: 12px;
+            gap: 8px;
         }
 
         .segmented-btn {
             flex: 1;
-            border: 1.5px solid transparent;
+            border: 2px solid transparent;
             background: transparent;
-            padding: 9px 12px;
-            font-size: 14px;
+            padding: 12px 16px; /* 擴大點擊範圍 */
+            font-size: 17px;    /* 放大字體 (原 14px) */
             font-weight: 600;
             color: var(--text-muted);
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
         }
 
-        /* 點擊選擇後的 Active 強烈反差樣式 */
+        /* 點擊選擇後的 Active 超強對比樣式 */
         .segmented-btn.active {
             background: var(--active-bg);
             color: var(--active-text);
             font-weight: 700;
-            box-shadow: 0 4px 12px rgba(33, 33, 71, 0.25);
-            transform: translateY(-1px);
+            border-color: var(--active-bg);
+            box-shadow: 0 6px 16px rgba(33, 33, 71, 0.3);
+            transform: translateY(-2px);
         }
 
         .lang-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-top: 1px solid rgba(33, 33, 71, 0.08);
-            padding-top: 12px;
-            font-size: 14px;
+            border-top: 1px solid rgba(33, 33, 71, 0.1);
+            padding-top: 16px;
+            font-size: 16px; /* 放大標題「語言顯示設定」字體 (原 13px) */
             font-weight: 700;
             color: var(--primary-dark);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .lang-options {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
 
         .lang-chip {
-            border: 1px solid rgba(33, 33, 71, 0.2);
+            border: 2px solid rgba(33, 33, 71, 0.2);
             background: var(--surface-white);
-            padding: 6px 14px;
-            font-size: 14px;
-            border-radius: 8px;
+            padding: 8px 18px; /* 擴大按鈕範圍 */
+            font-size: 16px;   /* 放大字體 (原 13px) */
+            border-radius: 10px;
             cursor: pointer;
             color: var(--text-muted);
             font-weight: 600;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* 語言切換按鈕的 Active 樣式 */
+        /* 語言切換按鈕點擊後的 Active 樣式 */
         .lang-chip.active {
             background: var(--active-bg);
             color: var(--active-text);
             border-color: var(--active-bg);
             font-weight: 700;
-            box-shadow: 0 3px 8px rgba(33, 33, 71, 0.2);
+            box-shadow: 0 4px 12px rgba(33, 33, 71, 0.25);
+            transform: translateY(-1px);
         }
 
         /* ==========================================
-           4. 動態逐句控制區塊 (按鈕字體放大與明確樣式)
+           4. 動態逐句控制區塊
            ========================================== */
         .audio-card {
             background: var(--surface-white);
@@ -212,7 +230,7 @@
             background: var(--primary-dark);
             color: var(--surface-white);
             padding: 10px 18px;
-            font-size: 15px; /* 放大字體 */
+            font-size: 15px;
             font-weight: 700;
             border-radius: 8px;
             cursor: pointer;
@@ -225,16 +243,15 @@
             gap: 6px;
         }
 
-        /* 時間微調按鈕：放大字體與增加邊框對比 */
         .time-btn {
             border: 1.5px solid var(--primary-dark);
             background: rgba(33, 33, 71, 0.04);
             color: var(--primary-dark);
-            padding: 8px 12px; /* 擴大點擊範圍 */
-            font-size: 15px;    /* 放大字體 (原 12px) */
+            padding: 8px 12px;
+            font-size: 15px;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: 700;   /* 加粗文字 */
+            font-weight: 700;
             transition: all 0.2s;
         }
         .time-btn:hover {
@@ -242,14 +259,13 @@
             color: var(--surface-white);
         }
 
-        /* 「當前句子」定位按鈕：放大字體與強烈風格 */
         .sync-btn {
             border: 1.5px solid var(--primary-dark);
             background: rgba(33, 33, 71, 0.08);
             color: var(--primary-dark);
-            padding: 8px 16px;  /* 擴大點擊範圍 */
-            font-size: 15px;    /* 放大字體 (原 12px) */
-            font-weight: 700;   /* 加粗文字 */
+            padding: 8px 16px;
+            font-size: 15px;
+            font-weight: 700;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
@@ -260,7 +276,7 @@
         }
 
         /* ==========================================
-           5. 字幕顯示卡片 (放大中文字幕字體)
+           5. 字幕顯示卡片
            ========================================== */
         .subtitle-card {
             background: var(--surface-white);
@@ -294,7 +310,6 @@
             line-height: 1.5;
         }
 
-        /* 中文字幕：字體放大至 16px (原 14px)，加深顏色 */
         .chi-text {
             font-size: 16px;
             color: #374151;
@@ -388,10 +403,10 @@
   
     <!-- 頁面最上方：回到首頁按鈕 -->
     <header class="header">
-        <h2 style="margin:0; font-size: 18px;">20260628 朗讀教科書中的文學作品</h2>
+        <h2 style="margin:0; font-size: 18px;">朗讀教科書中的文學作品</h2>
         <div class="header-btn-group">
             <a href="https://www.togetherschool.go.kr/audio/main?seriesSeq=2" target="_blank" class="nav-btn official-btn">🎧 官方網站收聽</a>
-            <a href="/" class="nav-btn home-btn">回到首頁</a>
+            <a href="/" class="nav-btn home-btn">首頁</a>
         </div>
     </header>
 
@@ -423,11 +438,7 @@
         </div>
 
         <!-- 動態逐句同步控制卡片 -->
-        <div class="audio-card" id="dynamic-controls">
-            <div class="notice-banner">
-                <span> 請點擊「官方網站收聽」按鈕同步播放音訊</span>
-            </div>
-            
+        <div class="audio-card" id="dynamic-controls">     
             <div class="sync-controls">
                 <div class="playback-btn-group">
                     <button class="play-toggle-btn" id="play-toggle-btn" onclick="togglePlay()">▶ 開始動態同步</button>
@@ -439,8 +450,6 @@
                     <button class="time-btn" onclick="adjustTime(0.5)">+0.5s</button>
                     <button class="time-btn" onclick="adjustTime(1)">+1s</button>
                 </div>
-
-                <button class="sync-btn" onclick="scrollToCurrentSub(true)">🎯 當前句子</button>
             </div>
         </div>
 
@@ -464,7 +473,7 @@
         </div>
     </div>
   
-  <div class="reaction-section">
+  <div class="reaction-section" style="margin-bottom:20px;">
     <p id="reaction-title">覺得這部翻譯作品如何？點個表情吧！</p>
     <div class="reaction-wall"></div>
     <br>
@@ -2070,15 +2079,6 @@
             document.querySelectorAll('.sub-line').forEach((el, idx) => {
                 el.classList.toggle('active', idx === index);
             });
-        }
-
-        function scrollToCurrentSub(force = false) {
-            if (currentSubIndex === -1 && !force) return;
-            const targetIdx = currentSubIndex !== -1 ? currentSubIndex : 0;
-            const targetEl = document.querySelector(`.sub-line[data-index="${targetIdx}"]`);
-            if (targetEl) {
-                targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
         }
 
         function adjustTime(seconds) {
