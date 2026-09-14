@@ -11,17 +11,19 @@
 
 <style>
         /* ==========================================
-           1. 全域變數與高級質感色系
+           1. 全域變數與高級質感色系 (大幅強化 Active 狀態對比)
            ========================================== */
         :root {
             --primary-dark: rgb(33, 33, 71);
             --bg-light: rgb(228, 227, 238);
             --surface-white: #ffffff;
             --text-main: rgb(33, 33, 71);
-            --text-muted: #64748b;
-            --accent-blue: #3b82f6;
+            --text-muted: #4b5563; /* 加深預設灰色，提升讀取舒適度 */
             --shadow-soft: 0 10px 25px -5px rgba(33, 33, 71, 0.08);
             --border-radius: 12px;
+            /* 專為 Active 狀態設定的高對比主題色 */
+            --active-bg: rgb(33, 33, 71);
+            --active-text: #ffffff;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -86,7 +88,7 @@
         }
 
         /* ==========================================
-           3. 整合型分頁控制器
+           3. 整合型分頁控制器 (極致化 Active 狀態差異)
            ========================================== */
         .control-panel {
             background: var(--surface-white);
@@ -101,30 +103,33 @@
 
         .segmented-row {
             display: flex;
-            background: rgba(33, 33, 71, 0.05);
-            padding: 4px;
+            background: rgba(33, 33, 71, 0.08);
+            padding: 5px;
             border-radius: 10px;
-            gap: 4px;
+            gap: 6px;
         }
 
         .segmented-btn {
             flex: 1;
-            border: none;
+            border: 1.5px solid transparent;
             background: transparent;
-            padding: 8px 12px;
+            padding: 9px 12px;
             font-size: 14px;
             font-weight: 600;
             color: var(--text-muted);
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
             text-align: center;
         }
 
+        /* 點擊選擇後的 Active 強烈反差樣式 */
         .segmented-btn.active {
-            background: var(--surface-white);
-            color: var(--primary-dark);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            background: var(--active-bg);
+            color: var(--active-text);
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(33, 33, 71, 0.25);
+            transform: translateY(-1px);
         }
 
         .lang-bar {
@@ -133,61 +138,66 @@
             justify-content: space-between;
             border-top: 1px solid rgba(33, 33, 71, 0.08);
             padding-top: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary-dark);
         }
 
         .lang-options {
             display: flex;
-            gap: 6px;
+            gap: 8px;
         }
 
         .lang-chip {
-            border: none;
-            background: transparent;
-            padding: 4px 10px;
-            font-size: 13px;
-            border-radius: 6px;
+            border: 1px solid rgba(33, 33, 71, 0.2);
+            background: var(--surface-white);
+            padding: 6px 14px;
+            font-size: 14px;
+            border-radius: 8px;
             cursor: pointer;
             color: var(--text-muted);
-            font-weight: 500;
-            transition: all 0.2s;
+            font-weight: 600;
+            transition: all 0.2s ease;
         }
 
+        /* 語言切換按鈕的 Active 樣式 */
         .lang-chip.active {
-            background: var(--primary-dark);
-            color: var(--surface-white);
+            background: var(--active-bg);
+            color: var(--active-text);
+            border-color: var(--active-bg);
+            font-weight: 700;
+            box-shadow: 0 3px 8px rgba(33, 33, 71, 0.2);
         }
 
         /* ==========================================
-           4. 動態逐句控制區塊 (背景靜音播放)
+           4. 動態逐句控制區塊 (按鈕字體放大與明確樣式)
            ========================================== */
         .audio-card {
             background: var(--surface-white);
             border-radius: var(--border-radius);
-            padding: 16px 20px;
+            padding: 18px 20px;
             box-shadow: var(--shadow-soft);
             margin-bottom: 20px;
         }
 
         .notice-banner {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-muted);
-            background: rgba(33, 33, 71, 0.04);
-            padding: 8px 12px;
+            background: rgba(33, 33, 71, 0.05);
+            padding: 10px 14px;
             border-radius: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            font-weight: 500;
         }
 
         .sync-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
@@ -201,9 +211,9 @@
             border: none;
             background: var(--primary-dark);
             color: var(--surface-white);
-            padding: 8px 16px;
-            font-size: 13px;
-            font-weight: 600;
+            padding: 10px 18px;
+            font-size: 15px; /* 放大字體 */
+            font-weight: 700;
             border-radius: 8px;
             cursor: pointer;
             transition: opacity 0.2s;
@@ -212,37 +222,45 @@
 
         .time-btn-group {
             display: flex;
-            gap: 4px;
+            gap: 6px;
         }
 
+        /* 時間微調按鈕：放大字體與增加邊框對比 */
         .time-btn {
-            border: 1px solid rgba(33, 33, 71, 0.15);
-            background: transparent;
+            border: 1.5px solid var(--primary-dark);
+            background: rgba(33, 33, 71, 0.04);
             color: var(--primary-dark);
-            padding: 4px 8px;
-            font-size: 12px;
-            border-radius: 6px;
+            padding: 8px 12px; /* 擴大點擊範圍 */
+            font-size: 15px;    /* 放大字體 (原 12px) */
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;   /* 加粗文字 */
             transition: all 0.2s;
         }
-        .time-btn:hover { background: rgba(33, 33, 71, 0.05); }
+        .time-btn:hover {
+            background: var(--primary-dark);
+            color: var(--surface-white);
+        }
 
+        /* 「當前句子」定位按鈕：放大字體與強烈風格 */
         .sync-btn {
-            border: none;
+            border: 1.5px solid var(--primary-dark);
             background: rgba(33, 33, 71, 0.08);
             color: var(--primary-dark);
-            padding: 6px 12px;
-            font-size: 12px;
-            font-weight: 600;
-            border-radius: 6px;
+            padding: 8px 16px;  /* 擴大點擊範圍 */
+            font-size: 15px;    /* 放大字體 (原 12px) */
+            font-weight: 700;   /* 加粗文字 */
+            border-radius: 8px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
-        .sync-btn:hover { background: rgba(33, 33, 71, 0.15); }
+        .sync-btn:hover {
+            background: var(--primary-dark);
+            color: var(--surface-white);
+        }
 
         /* ==========================================
-           5. 字幕顯示卡片
+           5. 字幕顯示卡片 (放大中文字幕字體)
            ========================================== */
         .subtitle-card {
             background: var(--surface-white);
@@ -256,16 +274,16 @@
 
         .sub-line {
             padding: 14px 18px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             border-radius: 10px;
-            border-left: 4px solid transparent;
+            border-left: 5px solid transparent;
             transition: all 0.25s ease;
             cursor: pointer;
         }
-        .sub-line:hover { background: rgba(33, 33, 71, 0.03); }
+        .sub-line:hover { background: rgba(33, 33, 71, 0.04); }
 
         .sub-line.active {
-            background: rgba(33, 33, 71, 0.06);
+            background: rgba(33, 33, 71, 0.07);
             border-left-color: var(--primary-dark);
         }
 
@@ -276,10 +294,13 @@
             line-height: 1.5;
         }
 
+        /* 中文字幕：字體放大至 16px (原 14px)，加深顏色 */
         .chi-text {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-top: 4px;
+            font-size: 16px;
+            color: #374151;
+            margin-top: 6px;
+            font-weight: 500;
+            line-height: 1.5;
         }
 
         .hide-kor .kor-text { display: none !important; }
@@ -343,7 +364,7 @@
         .modal-kor { font-size: 24px; font-weight: bold; color: var(--primary-dark); }
         .modal-pos { font-size: 12px; background: rgba(33, 33, 71, 0.08); color: var(--primary-dark); padding: 2px 8px; border-radius: 10px; font-weight: 600; }
         .modal-pinyin { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
-        .modal-chi { font-size: 16px; color: var(--primary-dark); margin-bottom: 20px; font-weight: 500; }
+        .modal-chi { font-size: 18px; color: var(--primary-dark); margin-bottom: 20px; font-weight: 600; }
 
         .audio-play-btn {
             width: 100%;
@@ -380,8 +401,8 @@
         <div class="control-panel">
             <!-- 第一層：成員切換 -->
             <div class="segmented-row">
-                <button class="segmented-btn" data-member="liyu" onclick="switchMember('liyu')">崔立于</button>
-                <button class="segmented-btn" data-member="woojin" onclick="switchMember('woojin')">姜玗進</button>
+                <button class="segmented-btn" data-member="liyu" onclick="switchMember('liyu')">立于</button>
+                <button class="segmented-btn" data-member="woojin" onclick="switchMember('woojin')">玗進</button>
             </div>
 
             <!-- 第二層：閱讀模式切換 -->
@@ -392,7 +413,7 @@
 
             <!-- 第三層：語言切換 -->
             <div class="lang-bar">
-                <span>顯示設定</span>
+                <span>語言顯示設定</span>
                 <div class="lang-options">
                     <button class="lang-chip" data-lang="all" onclick="switchLang('all')">雙語</button>
                     <button class="lang-chip" data-lang="kor" onclick="switchLang('kor')">韓文</button>
@@ -404,7 +425,7 @@
         <!-- 動態逐句同步控制卡片 -->
         <div class="audio-card" id="dynamic-controls">
             <div class="notice-banner">
-                <span>🔇 字幕同步運行中（請開啟「官方收聽」點擊同步播放音訊）</span>
+                <span> 請點擊「官方網站收聽」按鈕同步播放音訊</span>
             </div>
             
             <div class="sync-controls">
