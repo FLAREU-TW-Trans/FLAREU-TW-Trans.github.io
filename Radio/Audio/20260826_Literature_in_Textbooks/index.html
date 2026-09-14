@@ -15,6 +15,7 @@
            ========================================== */
         :root {
             --primary-dark: rgb(33, 33, 71);
+            --primary-light: rgba(33, 33, 71, 0.08);
             --bg-light: rgb(228, 227, 238);
             --surface-white: #ffffff;
             --text-main: rgb(33, 33, 71);
@@ -22,9 +23,9 @@
             --shadow-soft: 0 10px 25px -5px rgba(33, 33, 71, 0.08);
             --border-radius: 12px;
             
-            /* 極致高對比 Active 狀態 */
-            --active-bg: #212147 !important;
-            --active-text: #ffffff !important;
+            /* 動態字體大小預設 */
+            --kor-font-size: 18px;
+            --chi-font-size: 16px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,7 +39,7 @@
         }
 
         /* ==========================================
-           2. 頂部 Header & 說明視窗
+           2. 頂部 Header
            ========================================== */
         .header {
             display: flex;
@@ -77,17 +78,21 @@
         }
 
         .official-btn {
-            background: rgba(33, 33, 71, 0.08);
+            background: var(--primary-light);
             color: var(--primary-dark);
         }
         .official-btn:hover { background: rgba(33, 33, 71, 0.15); }
 
+        /* 搭配主題色的使用說明按鈕 */
         .info-btn {
-            background: rgba(59, 130, 246, 0.1);
-            color: #1d4ed8;
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            background: rgba(33, 33, 71, 0.05);
+            color: var(--primary-dark);
+            border: 1px solid rgba(33, 33, 71, 0.2);
         }
-        .info-btn:hover { background: rgba(59, 130, 246, 0.2); }
+        .info-btn:hover {
+            background: var(--primary-dark);
+            color: var(--surface-white);
+        }
 
         .home-btn {
             background: var(--primary-dark);
@@ -95,7 +100,6 @@
         }
         .home-btn:hover { opacity: 0.9; }
 
-        /* 手機端 RWD：h2 置中且放大字體 */
         @media (max-width: 600px) {
             .header {
                 flex-direction: column;
@@ -103,7 +107,7 @@
                 text-align: center;
             }
             .header h2 {
-                font-size: 22px !important; /* 手機端字體放大 */
+                font-size: 22px !important;
                 width: 100%;
                 text-align: center;
             }
@@ -120,7 +124,7 @@
         }
 
         /* ==========================================
-           3. 控制面板 (降低按鈕高度 + !important 強制 Active 樣式)
+           3. 控制面板 & 按鈕 Active 高亮狀態
            ========================================== */
         .control-panel {
             background: var(--surface-white);
@@ -130,7 +134,7 @@
             margin-bottom: 20px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
         }
 
         .segmented-row {
@@ -141,66 +145,65 @@
             gap: 6px;
         }
 
-        /* 降低按鈕高度（高度調整為 padding: 6px 12px） */
         .segmented-btn {
             flex: 1;
-            border: 1px solid transparent !important;
-            background: transparent !important;
-            padding: 6px 12px !important; /* 降低按鈕高度 */
-            font-size: 16px !important;
-            font-weight: 600 !important;
-            color: #4b5563 !important;
-            border-radius: 8px !important;
+            border: none;
+            background: transparent;
+            padding: 8px 12px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #64748b;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.2s ease;
             text-align: center;
         }
 
-        /* 極高優先度 Active 狀態區隔 */
-        button.segmented-btn.active {
+        /* 明確的 Active 顏色變化 */
+        .segmented-btn.active {
             background-color: var(--primary-dark) !important;
             color: #ffffff !important;
             font-weight: 700 !important;
-            box-shadow: 0 4px 10px rgba(33, 33, 71, 0.3) !important;
+            box-shadow: 0 3px 8px rgba(33, 33, 71, 0.25);
         }
 
-        .lang-bar {
+        .lang-bar, .font-size-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-top: 1px solid rgba(33, 33, 71, 0.1);
+            border-top: 1px solid rgba(33, 33, 71, 0.08);
             padding-top: 12px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: var(--primary-dark);
             flex-wrap: wrap;
             gap: 8px;
         }
 
-        .lang-options {
+        .option-group {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .lang-chip {
-            border: 1.5px solid #cbd5e1 !important;
-            background: #ffffff !important;
-            padding: 5px 14px !important; /* 調整高度 */
-            font-size: 15px !important;
-            border-radius: 8px !important;
+        .chip-btn {
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            padding: 5px 12px;
+            font-size: 14px;
+            border-radius: 8px;
             cursor: pointer;
-            color: #4b5563 !important;
-            font-weight: 600 !important;
-            transition: all 0.15s ease;
+            color: #64748b;
+            font-weight: 600;
+            transition: all 0.2s ease;
         }
 
-        /* 語言按鈕 Active 狀態 */
-        button.lang-chip.active {
+        /* 晶片按鈕 Active 狀態 */
+        .chip-btn.active {
             background-color: var(--primary-dark) !important;
             color: #ffffff !important;
             border-color: var(--primary-dark) !important;
             font-weight: 700 !important;
-            box-shadow: 0 3px 8px rgba(33, 33, 71, 0.25) !important;
+            box-shadow: 0 2px 6px rgba(33, 33, 71, 0.2);
         }
 
         /* ==========================================
@@ -221,9 +224,6 @@
             padding: 10px 14px;
             border-radius: 8px;
             margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             font-weight: 500;
         }
 
@@ -233,12 +233,6 @@
             align-items: center;
             gap: 10px;
             flex-wrap: wrap;
-        }
-
-        .playback-btn-group {
-            display: flex;
-            gap: 8px;
-            align-items: center;
         }
 
         .play-toggle-btn {
@@ -260,39 +254,29 @@
         }
 
         .time-btn {
-            border: 1.5px solid var(--primary-dark);
+            border: 1px solid var(--primary-dark);
             background: rgba(33, 33, 71, 0.04);
             color: var(--primary-dark);
-            padding: 8px 12px;
-            font-size: 15px;
+            padding: 6px 10px;
+            font-size: 14px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 700;
-            transition: all 0.2s;
-        }
-        .time-btn:hover {
-            background: var(--primary-dark);
-            color: var(--surface-white);
         }
 
         .sync-btn {
-            border: 1.5px solid var(--primary-dark);
+            border: 1px solid var(--primary-dark);
             background: rgba(33, 33, 71, 0.08);
             color: var(--primary-dark);
-            padding: 8px 16px;
-            font-size: 15px;
+            padding: 8px 14px;
+            font-size: 14px;
             font-weight: 700;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-        .sync-btn:hover {
-            background: var(--primary-dark);
-            color: var(--surface-white);
         }
 
         /* ==========================================
-           5. 字幕顯示卡片
+           5. 字幕顯示區與動態大小
            ========================================== */
         .subtitle-card {
             background: var(--surface-white);
@@ -314,20 +298,21 @@
         }
         .sub-line:hover { background: rgba(33, 33, 71, 0.04); }
 
+        /* 當前播放句子的高亮樣式 */
         .sub-line.active {
-            background: rgba(33, 33, 71, 0.07);
-            border-left-color: var(--primary-dark);
+            background: rgba(33, 33, 71, 0.08) !important;
+            border-left-color: var(--primary-dark) !important;
         }
 
         .kor-text {
-            font-size: 18px;
+            font-size: var(--kor-font-size);
             font-weight: 600;
             color: var(--primary-dark);
             line-height: 1.5;
         }
 
         .chi-text {
-            font-size: 16px;
+            font-size: var(--chi-font-size);
             color: #374151;
             margin-top: 6px;
             font-weight: 500;
@@ -338,7 +323,7 @@
         .hide-chi .chi-text { display: none !important; }
 
         /* ==========================================
-           6. 教學單字與 Modal 彈窗 (調整 Modal 字體與置中)
+           6. 單字與 Modal 彈窗 (modal-kor 置中，modal-pos 靠右)
            ========================================== */
         .vocab-word {
             color: var(--primary-dark);
@@ -348,9 +333,7 @@
             font-weight: 700;
             cursor: pointer;
             border-bottom: 2px solid var(--primary-dark);
-            transition: background 0.2s;
         }
-        .vocab-word:hover { background: rgba(33, 33, 71, 0.2); }
 
         .modal-overlay {
             position: fixed;
@@ -385,15 +368,16 @@
             color: var(--text-muted);
         }
 
+        /* modal-header: 彈性布局確保 modal-kor 絕對居中，modal-pos 位於其右側 */
         .modal-header {
             display: flex;
             align-items: center;
-            justify-content: center; /* modal-kor 置中 */
-            gap: 10px;
+            justify-content: center;
+            position: relative;
             margin-bottom: 8px;
+            width: 100%;
         }
 
-        /* modal-kor 置中 */
         .modal-kor { 
             font-size: 28px; 
             font-weight: bold; 
@@ -401,19 +385,18 @@
             text-align: center;
         }
 
-        /* modal-pos 放大字體 */
         .modal-pos { 
-            font-size: 14px; /* 放大 (原 12px) */
+            font-size: 14px; 
             background: rgba(33, 33, 71, 0.08); 
             color: var(--primary-dark); 
-            padding: 3px 10px; 
-            border-radius: 12px; 
+            padding: 2px 8px; 
+            border-radius: 10px; 
             font-weight: 700; 
+            margin-left: 8px; /* 排在 modal-kor 右側 */
         }
 
-        /* modal-pinyin 放大字體並置中 */
         .modal-pinyin { 
-            font-size: 16px; /* 放大 (原 13px) */
+            font-size: 16px; 
             color: var(--text-muted); 
             margin-bottom: 14px; 
             text-align: center;
@@ -438,9 +421,7 @@
             font-weight: 600;
             border-radius: 10px;
             cursor: pointer;
-            transition: opacity 0.2s;
         }
-        .audio-play-btn:hover { opacity: 0.9; }
     </style>
 </head>
 
@@ -483,6 +464,27 @@
                     <button class="lang-chip" data-lang="chi" onclick="switchLang('chi')">中文</button>
                 </div>
             </div>
+
+            <!-- 第四層：字體大小調節 -->
+            <div class="font-size-bar">
+                <span>韓文大小</span>
+                <div class="option-group">
+                    <button class="chip-btn" data-kor-size="16px" onclick="setKorFontSize('16px')">S</button>
+                    <button class="chip-btn" data-kor-size="18px" onclick="setKorFontSize('18px')">M</button>
+                    <button class="chip-btn" data-kor-size="22px" onclick="setKorFontSize('22px')">L</button>
+                    <button class="chip-btn" data-kor-size="26px" onclick="setKorFontSize('26px')">XL</button>
+                </div>
+            </div>
+
+            <div class="font-size-bar">
+                <span>中文大小</span>
+                <div class="option-group">
+                    <button class="chip-btn" data-chi-size="14px" onclick="setChiFontSize('14px')">S</button>
+                    <button class="chip-btn" data-chi-size="16px" onclick="setChiFontSize('16px')">M</button>
+                    <button class="chip-btn" data-chi-size="19px" onclick="setChiFontSize('19px')">L</button>
+                    <button class="chip-btn" data-chi-size="22px" onclick="setChiFontSize('22px')">XL</button>
+                </div>
+            </div>
         </div>
 
         <!-- 動態逐句同步控制卡片 -->
@@ -516,7 +518,6 @@
             <div class="modal-chi" style="text-align: left; font-size: 15px; margin-bottom: 16px; color: #4b5563;">
                 如果要使用動態同步功能，請點擊上方<b>「🎧 官方網站收聽」</b>按鈕，開啟官方網頁並播放音訊，再點擊本頁面的<b>「▶ 開始動態同步」</b>按鈕搭配字幕觀看。
             </div>
-            <button class="audio-play-btn" onclick="closeInfoModalDirect()">了解</button>
         </div>
     </div>
 
@@ -535,7 +536,7 @@
         </div>
     </div>
   
-  <div class="reaction-section" style="margin-bottom:20px;">
+  <div class="reaction-section">
     <p id="reaction-title">覺得這部翻譯作品如何？點個表情吧！</p>
     <div class="reaction-wall"></div>
     <br>
@@ -558,18 +559,8 @@
            2. 教學單字資料庫
            ========================================== */
         const vocabDb = {
-            "교과서": {
-                kor: "교과서",
-                pinyin: "gyo-gwa-seo",
-                chi: "教科書",
-                pos: "名詞"
-            },
-            "문학": {
-                kor: "문학",
-                pinyin: "mun-hak",
-                chi: "文學 / 文學作品",
-                pos: "名詞"
-            }
+            "교과서": { kor: "교과서", pinyin: "gyo-gwa-seo", chi: "教科書", pos: "名詞" },
+            "문학": { kor: "문학", pinyin: "mun-hak", chi: "文學 / 文學作品", pos: "名詞" }
         };
 
         /* ==========================================
@@ -1924,7 +1915,9 @@
         let currentState = {
             member: localStorage.getItem('app_member') || 'liyu',
             mode: localStorage.getItem('app_mode') || 'dynamic',
-            lang: localStorage.getItem('app_lang') || 'all'
+            lang: localStorage.getItem('app_lang') || 'all',
+            korFontSize: localStorage.getItem('app_kor_font_size') || '18px',
+            chiFontSize: localStorage.getItem('app_chi_font_size') || '16px'
         };
 
         let parsedSubtitles = [];
@@ -1941,6 +1934,8 @@
             localStorage.setItem('app_member', currentState.member);
             localStorage.setItem('app_mode', currentState.mode);
             localStorage.setItem('app_lang', currentState.lang);
+            localStorage.setItem('app_kor_font_size', currentState.korFontSize);
+            localStorage.setItem('app_chi_font_size', currentState.chiFontSize);
         }
 
         function switchMember(member) {
@@ -1964,21 +1959,41 @@
             applyLangDisplay();
         }
 
+        function setKorFontSize(size) {
+            currentState.korFontSize = size;
+            saveState();
+            applyFontSizeToUI();
+        }
+
+        function setChiFontSize(size) {
+            currentState.chiFontSize = size;
+            saveState();
+            applyFontSizeToUI();
+        }
+
+        function applyFontSizeToUI() {
+            document.documentElement.style.setProperty('--kor-font-size', currentState.korFontSize);
+            document.documentElement.style.setProperty('--chi-font-size', currentState.chiFontSize);
+
+            document.querySelectorAll('[data-kor-size]').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.korSize === currentState.korFontSize);
+            });
+            document.querySelectorAll('[data-chi-size]').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.chiSize === currentState.chiFontSize);
+            });
+        }
+
         function applyStateToUI() {
-            // 切換 Member UI
-            document.querySelectorAll('.tab-btn').forEach(btn => {
+            document.querySelectorAll('.segmented-btn[data-member]').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.member === currentState.member);
             });
-            // 切換 Mode UI
-            document.querySelectorAll('.mode-btn').forEach(btn => {
+            document.querySelectorAll('.segmented-btn[data-mode]').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.mode === currentState.mode);
             });
-            // 切換 Lang UI
-            document.querySelectorAll('.lang-btn').forEach(btn => {
+            document.querySelectorAll('.chip-btn[data-lang]').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.lang === currentState.lang);
             });
 
-            // 顯示/隱藏音訊控制
             const controls = document.getElementById('dynamic-controls');
             controls.style.display = currentState.mode === 'dynamic' ? 'block' : 'none';
             applyLangDisplay();
@@ -1993,7 +2008,7 @@
 
         function updateAudioSource() {
             const audio = document.getElementById('audio-player');
-            audio.pause(); 
+            audio.pause();
             audio.muted = true;
             audio.volume = 0;
             
@@ -2097,12 +2112,15 @@
                         audio.currentTime = item.start;
                         audio.play();
                         updatePlayButtonState(true);
+                        highlightCurrentSub(idx);
                     }
                 });
 
                 box.appendChild(lineDiv);
             });
             
+            currentSubIndex = 0;
+            highlightCurrentSub(0); 
             updateAudioSource();
         }
 
@@ -2115,7 +2133,17 @@
                 if (currentState.mode !== 'dynamic') return;
 
                 const time = audio.currentTime;
-                const activeIndex = parsedSubtitles.findIndex(s => time >= s.start && time <= s.end);
+                // 自動捕捉當前時間對應的句子索引
+                let activeIndex = parsedSubtitles.findIndex(s => time >= s.start && time <= s.end);
+
+                if (activeIndex === -1) {
+                    for (let i = 0; i < parsedSubtitles.length; i++) {
+                        if (time >= parsedSubtitles[i].start && (i === parsedSubtitles.length - 1 || time < parsedSubtitles[i + 1].start)) {
+                            activeIndex = i;
+                            break;
+                        }
+                    }
+                }
 
                 if (activeIndex !== -1 && activeIndex !== currentSubIndex) {
                     currentSubIndex = activeIndex;
@@ -2153,20 +2181,12 @@
            7. 單字發音引擎與 Modal 控制 (內建 Web Speech / Google API)
            ========================================== */
         function playKoreanSpeech(text) {
-            // 優先使用 Web Speech API
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // 停止先前的發音
+                window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'ko-KR';
-                utterance.rate = 0.6; // 發音速度設定為 0.8
+                utterance.rate = 0.8;
                 window.speechSynthesis.speak(utterance);
-            } else {
-                // 回退備案：使用 Google 翻譯發音音訊 API
-                const googleTtsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=ko&client=tw-ob`;
-                const audio = new Audio(googleTtsUrl);
-                audio.play().catch(() => {
-                    alert("發音播放失敗，請檢查網路連線。");
-                });
             }
         }
 
