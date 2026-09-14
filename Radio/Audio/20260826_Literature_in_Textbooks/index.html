@@ -11,7 +11,7 @@
 
 <style>
         /* ==========================================
-           1. 全域變數與高級質感色系
+           1. 全域變數與主題設定
            ========================================== */
         :root {
             --primary-dark: rgb(33, 33, 71);
@@ -21,9 +21,10 @@
             --text-muted: #4b5563;
             --shadow-soft: 0 10px 25px -5px rgba(33, 33, 71, 0.08);
             --border-radius: 12px;
-            /* 高對比 Active 狀態主題色 */
-            --active-bg: rgb(33, 33, 71);
-            --active-text: #ffffff;
+            
+            /* 極致高對比 Active 狀態 */
+            --active-bg: #212147 !important;
+            --active-text: #ffffff !important;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,7 +38,7 @@
         }
 
         /* ==========================================
-           2. 頂部 Header (支援手機端自動換行)
+           2. 頂部 Header & 說明視窗
            ========================================== */
         .header {
             display: flex;
@@ -46,12 +47,11 @@
             padding: 16px 24px;
             background: var(--surface-white);
             box-shadow: 0 2px 10px rgba(33, 33, 71, 0.05);
-            flex-wrap: wrap; /* 支援自動換行 */
+            flex-wrap: wrap;
             gap: 12px;
         }
 
         .header h2 {
-            font-size: 20px;
             font-weight: 700;
             color: var(--primary-dark);
             letter-spacing: -0.5px;
@@ -59,16 +59,21 @@
 
         .header-btn-group {
             display: flex;
-            gap: 12px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .nav-btn {
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 8px;
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
             transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
         }
 
         .official-btn {
@@ -77,21 +82,34 @@
         }
         .official-btn:hover { background: rgba(33, 33, 71, 0.15); }
 
+        .info-btn {
+            background: rgba(59, 130, 246, 0.1);
+            color: #1d4ed8;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        .info-btn:hover { background: rgba(59, 130, 246, 0.2); }
+
         .home-btn {
             background: var(--primary-dark);
             color: var(--surface-white);
         }
         .home-btn:hover { opacity: 0.9; }
 
-        /* 手機端媒體查詢：強制 Header 標題與按鈕分成上下兩行 */
+        /* 手機端 RWD：h2 置中且放大字體 */
         @media (max-width: 600px) {
             .header {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: center;
+                text-align: center;
+            }
+            .header h2 {
+                font-size: 22px !important; /* 手機端字體放大 */
+                width: 100%;
+                text-align: center;
             }
             .header-btn-group {
                 width: 100%;
-                justify-content: flex-start;
+                justify-content: center;
             }
         }
 
@@ -102,49 +120,48 @@
         }
 
         /* ==========================================
-           3. 控制面板 (字體放大 + 極致 Active 顯眼樣式)
+           3. 控制面板 (降低按鈕高度 + !important 強制 Active 樣式)
            ========================================== */
         .control-panel {
             background: var(--surface-white);
             border-radius: var(--border-radius);
-            padding: 18px;
+            padding: 16px;
             box-shadow: var(--shadow-soft);
             margin-bottom: 20px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
         }
 
         .segmented-row {
             display: flex;
-            background: rgba(33, 33, 71, 0.08);
-            padding: 6px;
-            border-radius: 12px;
-            gap: 8px;
+            background: #e2e8f0;
+            padding: 4px;
+            border-radius: 10px;
+            gap: 6px;
         }
 
+        /* 降低按鈕高度（高度調整為 padding: 6px 12px） */
         .segmented-btn {
             flex: 1;
-            border: 2px solid transparent;
-            background: transparent;
-            padding: 12px 16px; /* 擴大點擊範圍 */
-            font-size: 17px;    /* 放大字體 (原 14px) */
-            font-weight: 600;
-            color: var(--text-muted);
-            border-radius: 10px;
+            border: 1px solid transparent !important;
+            background: transparent !important;
+            padding: 6px 12px !important; /* 降低按鈕高度 */
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            color: #4b5563 !important;
+            border-radius: 8px !important;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.15s ease;
             text-align: center;
         }
 
-        /* 點擊選擇後的 Active 超強對比樣式 */
-        .segmented-btn.active {
-            background: var(--active-bg);
-            color: var(--active-text);
-            font-weight: 700;
-            border-color: var(--active-bg);
-            box-shadow: 0 6px 16px rgba(33, 33, 71, 0.3);
-            transform: translateY(-2px);
+        /* 極高優先度 Active 狀態區隔 */
+        button.segmented-btn.active {
+            background-color: var(--primary-dark) !important;
+            color: #ffffff !important;
+            font-weight: 700 !important;
+            box-shadow: 0 4px 10px rgba(33, 33, 71, 0.3) !important;
         }
 
         .lang-bar {
@@ -152,39 +169,38 @@
             align-items: center;
             justify-content: space-between;
             border-top: 1px solid rgba(33, 33, 71, 0.1);
-            padding-top: 16px;
-            font-size: 16px; /* 放大標題「語言顯示設定」字體 (原 13px) */
+            padding-top: 12px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--primary-dark);
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
 
         .lang-options {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         .lang-chip {
-            border: 2px solid rgba(33, 33, 71, 0.2);
-            background: var(--surface-white);
-            padding: 8px 18px; /* 擴大按鈕範圍 */
-            font-size: 16px;   /* 放大字體 (原 13px) */
-            border-radius: 10px;
+            border: 1.5px solid #cbd5e1 !important;
+            background: #ffffff !important;
+            padding: 5px 14px !important; /* 調整高度 */
+            font-size: 15px !important;
+            border-radius: 8px !important;
             cursor: pointer;
-            color: var(--text-muted);
-            font-weight: 600;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #4b5563 !important;
+            font-weight: 600 !important;
+            transition: all 0.15s ease;
         }
 
-        /* 語言切換按鈕點擊後的 Active 樣式 */
-        .lang-chip.active {
-            background: var(--active-bg);
-            color: var(--active-text);
-            border-color: var(--active-bg);
-            font-weight: 700;
-            box-shadow: 0 4px 12px rgba(33, 33, 71, 0.25);
-            transform: translateY(-1px);
+        /* 語言按鈕 Active 狀態 */
+        button.lang-chip.active {
+            background-color: var(--primary-dark) !important;
+            color: #ffffff !important;
+            border-color: var(--primary-dark) !important;
+            font-weight: 700 !important;
+            box-shadow: 0 3px 8px rgba(33, 33, 71, 0.25) !important;
         }
 
         /* ==========================================
@@ -322,7 +338,7 @@
         .hide-chi .chi-text { display: none !important; }
 
         /* ==========================================
-           6. 教學單字與彈出視窗 (Modal)
+           6. 教學單字與 Modal 彈窗 (調整 Modal 字體與置中)
            ========================================== */
         .vocab-word {
             color: var(--primary-dark);
@@ -352,7 +368,7 @@
             width: 90%;
             max-width: 380px;
             border-radius: 16px;
-            padding: 24px;
+            padding: 28px 24px;
             box-shadow: 0 20px 30px rgba(33, 33, 71, 0.2);
             position: relative;
         }
@@ -371,15 +387,46 @@
 
         .modal-header {
             display: flex;
-            align-items: baseline;
-            gap: 8px;
-            margin-bottom: 6px;
+            align-items: center;
+            justify-content: center; /* modal-kor 置中 */
+            gap: 10px;
+            margin-bottom: 8px;
         }
 
-        .modal-kor { font-size: 24px; font-weight: bold; color: var(--primary-dark); }
-        .modal-pos { font-size: 12px; background: rgba(33, 33, 71, 0.08); color: var(--primary-dark); padding: 2px 8px; border-radius: 10px; font-weight: 600; }
-        .modal-pinyin { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
-        .modal-chi { font-size: 18px; color: var(--primary-dark); margin-bottom: 20px; font-weight: 600; }
+        /* modal-kor 置中 */
+        .modal-kor { 
+            font-size: 28px; 
+            font-weight: bold; 
+            color: var(--primary-dark); 
+            text-align: center;
+        }
+
+        /* modal-pos 放大字體 */
+        .modal-pos { 
+            font-size: 14px; /* 放大 (原 12px) */
+            background: rgba(33, 33, 71, 0.08); 
+            color: var(--primary-dark); 
+            padding: 3px 10px; 
+            border-radius: 12px; 
+            font-weight: 700; 
+        }
+
+        /* modal-pinyin 放大字體並置中 */
+        .modal-pinyin { 
+            font-size: 16px; /* 放大 (原 13px) */
+            color: var(--text-muted); 
+            margin-bottom: 14px; 
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .modal-chi { 
+            font-size: 18px; 
+            color: var(--primary-dark); 
+            margin-bottom: 22px; 
+            font-weight: 600; 
+            text-align: center;
+        }
 
         .audio-play-btn {
             width: 100%;
@@ -387,7 +434,7 @@
             background: var(--primary-dark);
             color: var(--surface-white);
             border: none;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 600;
             border-radius: 10px;
             cursor: pointer;
@@ -406,6 +453,7 @@
         <h2 style="margin:0; font-size: 18px;">朗讀教科書中的文學作品</h2>
         <div class="header-btn-group">
             <a href="https://www.togetherschool.go.kr/audio/main?seriesSeq=2" target="_blank" class="nav-btn official-btn">🎧 官方網站收聽</a>
+            <button class="nav-btn info-btn" onclick="openInfoModal()">💡 使用說明</button>
             <a href="/" class="nav-btn home-btn">首頁</a>
         </div>
     </header>
@@ -428,7 +476,7 @@
 
             <!-- 第三層：語言切換 -->
             <div class="lang-bar">
-                <span>語言顯示設定</span>
+                <span>語言顯示</span>
                 <div class="lang-options">
                     <button class="lang-chip" data-lang="all" onclick="switchLang('all')">雙語</button>
                     <button class="lang-chip" data-lang="kor" onclick="switchLang('kor')">韓文</button>
@@ -456,6 +504,20 @@
         <!-- 字幕容器 -->
         <div class="subtitle-card" id="subtitle-box"></div>
 
+    </div>
+
+    <!-- 說明提示彈窗 -->
+    <div class="modal-overlay" id="info-modal" onclick="closeInfoModal(event)">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeInfoModalDirect()">✕</button>
+            <div class="modal-header">
+                <span class="modal-kor">💡 動態同步說明</span>
+            </div>
+            <div class="modal-chi" style="text-align: left; font-size: 15px; margin-bottom: 16px; color: #4b5563;">
+                如果要使用動態同步功能，請點擊上方<b>「🎧 官方網站收聽」</b>按鈕，開啟官方網頁並播放音訊，再點擊本頁面的<b>「▶ 開始動態同步」</b>按鈕搭配字幕觀看。
+            </div>
+            <button class="audio-play-btn" onclick="closeInfoModalDirect()">了解</button>
+        </div>
     </div>
 
     <!-- 單字詳細資料彈窗 (Modal) -->
@@ -1931,23 +1993,15 @@
 
         function updateAudioSource() {
             const audio = document.getElementById('audio-player');
-            audio.muted = true; // 強制靜音，防止產生聲音
+            audio.pause(); 
+            audio.muted = true;
             audio.volume = 0;
             
             if (audioSources[currentState.member]) {
                 audio.src = audioSources[currentState.member];
                 audio.load();
-                
-                // 如果目前是動態模式，自動觸發背景靜音播放
-                if (currentState.mode === 'dynamic') {
-                    audio.play().then(() => {
-                        updatePlayButtonState(true);
-                    }).catch(e => {
-                        console.log("自動播放受阻，等待使用者點擊按鈕：", e);
-                        updatePlayButtonState(false);
-                    });
-                }
             }
+            updatePlayButtonState(false);
         }
 
         function togglePlay() {
@@ -2081,6 +2135,15 @@
             });
         }
 
+        function scrollToCurrentSub(force = false) {
+            if (currentSubIndex === -1 && !force) return;
+            const targetIdx = currentSubIndex !== -1 ? currentSubIndex : 0;
+            const targetEl = document.querySelector(`.sub-line[data-index="${targetIdx}"]`);
+            if (targetEl) {
+                targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
         function adjustTime(seconds) {
             const audio = document.getElementById('audio-player');
             audio.currentTime = Math.max(0, audio.currentTime + seconds);
@@ -2090,12 +2153,12 @@
            7. 單字發音引擎與 Modal 控制 (內建 Web Speech / Google API)
            ========================================== */
         function playKoreanSpeech(text) {
-            // 優先使用 Web Speech API（零延遲、無需外連）
+            // 優先使用 Web Speech API
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel(); // 停止先前的發音
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'ko-KR';
-                utterance.rate = 0.8; // 發音速度設定為 0.8
+                utterance.rate = 0.6; // 發音速度設定為 0.8
                 window.speechSynthesis.speak(utterance);
             } else {
                 // 回退備案：使用 Google 翻譯發音音訊 API
@@ -2132,6 +2195,21 @@
 
         function closeModalDirect() {
             document.getElementById('vocab-modal').style.display = 'none';
+        }
+
+        /* 說明視窗控制 */
+        function openInfoModal() {
+            document.getElementById('info-modal').style.display = 'flex';
+        }
+
+        function closeInfoModal(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                document.getElementById('info-modal').style.display = 'none';
+            }
+        }
+
+        function closeInfoModalDirect() {
+            document.getElementById('info-modal').style.display = 'none';
         }
     </script>
     
