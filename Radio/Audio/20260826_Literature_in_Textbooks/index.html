@@ -10,47 +10,632 @@
 <title>20260628 朗讀教科書中的文學作品</title>
 
 <style>
+        /* ==========================================
+           1. 基本樣式與 Header
+           ========================================== */
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, "Noto Sans TC", sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
 
-</style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .header-btn-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s;
+            display: inline-block;
+        }
+
+        .home-btn {
+            background: #3b82f6;
+            color: #ffffff;
+        }
+        .home-btn:hover { background: #2563eb; }
+
+        .official-btn {
+            background: #059669;
+            color: #ffffff;
+        }
+        .official-btn:hover { background: #047857; }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 16px;
+        }
+
+        /* ==========================================
+           2. 成員與模式切換頁籤
+           ========================================== */
+        .member-tabs, .mode-toggle, .lang-filter {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn, .mode-btn, .lang-btn {
+            padding: 8px 18px;
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active, .mode-btn.active, .lang-btn.active {
+            background: #3b82f6;
+            color: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.25);
+        }
+
+        /* ==========================================
+           3. 控制列與時間微調 (動態逐句專用)
+           ========================================== */
+        .controls-card {
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .audio-player {
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .time-adjust-group {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .time-btn {
+            padding: 4px 10px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            color: #475569;
+            transition: background 0.2s;
+        }
+        .time-btn:hover { background: #e2e8f0; }
+
+        .sync-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .sync-btn:hover { background: #059669; }
+
+        /* ==========================================
+           4. 內容區塊與字幕顯示
+           ========================================== */
+        .subtitle-box {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            min-height: 300px;
+            max-height: 500px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .sub-line {
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            transition: background 0.2s, transform 0.2s;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+        }
+        .sub-line:hover { background: #f8fafc; }
+
+        .sub-line.active {
+            background: #eff6ff;
+            border-left-color: #3b82f6;
+            transform: scale(1.01);
+        }
+
+        .kor-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0f172a;
+            line-height: 1.5;
+        }
+
+        .chi-text {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        .hide-kor .kor-text { display: none !important; }
+        .hide-chi .chi-text { display: none !important; }
+
+        /* ==========================================
+           5. 教學單字標記樣式
+           ========================================== */
+        .vocab-word {
+            color: #2563eb;
+            background: #dbeafe;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            border-bottom: 2px solid #3b82f6;
+            transition: all 0.2s;
+        }
+        .vocab-word:hover {
+            background: #bfdbfe;
+            color: #1d4ed8;
+        }
+
+        /* ==========================================
+           6. 單字彈出視窗 (Modal)
+           ========================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-card {
+            background: #ffffff;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            animation: modalIn 0.2s ease-out;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px; right: 16px;
+            border: none;
+            background: #f1f5f9;
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .modal-kor { font-size: 24px; font-weight: bold; color: #0f172a; }
+        .modal-pos { font-size: 13px; background: #e2e8f0; color: #475569; padding: 2px 8px; border-radius: 10px; }
+        .modal-pinyin { font-size: 14px; color: #64748b; margin-bottom: 12px; }
+        .modal-chi { font-size: 16px; color: #334155; margin-bottom: 20px; font-weight: 500; }
+
+        .audio-play-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px 0;
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .audio-play-btn:hover { background: #1d4ed8; }
+    </style>
 </head>
 
 <body>
-  
-<!-- 第一層：成員切換 -->
-<div class="member-tabs">
-  <button class="tab-btn active" data-member="leeyu">崔立于</button>
-  <button class="tab-btn" data-member="woojin">崔玗进</button>
-</div>
 
-<!-- 第二層：閱讀模式切換 -->
-<div class="mode-toggle">
-  <button class="mode-btn active" data-mode="dynamic">🎵 動態逐句</button>
-  <button class="mode-btn" data-mode="full">📖 完整全文</button>
-</div>
+    <!-- 頁面最上方：回到首頁按鈕 -->
+    <header class="header">
+        <h2 style="margin:0; font-size: 18px;">20260628 朗讀教科書中的文學作品</h2>
+        <div class="header-btn-group">
+            <a href="https://www.togetherschool.go.kr/audio/main?seriesSeq=2" target="_blank" class="nav-btn official-btn">🎧 官方網站收聽</a>
+            <a href="/" class="nav-btn home-btn">回到首頁</a>
+        </div>
+    </header>
 
-<!-- 內容顯示區域 -->
-<div id="content-display">
-  <!-- JavaScript 會根據 (member + mode) 動態渲染相對應的區塊 -->
-</div>
+    <div class="container">
 
-<script>
-// 當前頁面狀態
-let currentState = {
-  member: 'leeyu', // 'leeyu' | 'woojin'
-  mode: 'dynamic'  // 'dynamic' | 'full'
-};
+        <!-- 第一層：成員切換 -->
+        <div class="member-tabs">
+            <button class="tab-btn" data-member="liyu" onclick="switchMember('liyu')">立于</button>
+            <button class="tab-btn" data-member="woojin" onclick="switchMember('woojin')">玗進</button>
+        </div>
 
-function updateView() {
-  // 1. 隱藏所有內容區塊
-  document.querySelectorAll('.poem-container').forEach(el => el.style.display = 'none');
-  
-  // 2. 顯示當前組合的區塊，例如：#poem-leeyu-dynamic
-  const activeContainer = document.querySelector(`#poem-${currentState.member}-${currentState.mode}`);
-  if (activeContainer) {
-    activeContainer.style.display = 'block';
-  }
-}
-</script>
+        <!-- 第二層：閱讀模式切換 -->
+        <div class="mode-toggle">
+            <button class="mode-btn" data-mode="dynamic" onclick="switchMode('dynamic')">🎵 動態逐句</button>
+            <button class="mode-btn" data-mode="full" onclick="switchMode('full')">📖 完整全文</button>
+        </div>
+
+        <!-- 語言顯示設定 -->
+        <div class="lang-filter">
+            <button class="lang-btn" data-lang="all" onclick="switchLang('all')">顯示韓文和中文</button>
+            <button class="lang-btn" data-lang="kor" onclick="switchLang('kor')">只顯示韓文</button>
+            <button class="lang-btn" data-lang="chi" onclick="switchLang('chi')">只顯示中文</button>
+        </div>
+
+        <!-- 動態逐句專用控制卡片 -->
+        <div class="controls-card" id="dynamic-controls">
+            <audio id="audio-player" class="audio-player" controls src=""></audio>
+            
+            <div class="time-adjust-group">
+                <span>時間微調：</span>
+                <button class="time-btn" onclick="adjustTime(-1)">-1s</button>
+                <button class="time-btn" onclick="adjustTime(-0.5)">-0.5s</button>
+                <button class="time-btn" onclick="adjustTime(-0.1)">-0.1s</button>
+                <button class="time-btn" onclick="adjustTime(0.1)">+0.1s</button>
+                <button class="time-btn" onclick="adjustTime(0.5)">+0.5s</button>
+                <button class="time-btn" onclick="adjustTime(1)">+1s</button>
+                <button class="sync-btn" onclick="scrollToCurrentSub(true)">🎯 回到當前播放句子</button>
+            </div>
+        </div>
+
+        <!-- 內容顯示區域 -->
+        <div class="subtitle-box" id="subtitle-box">
+            <!-- 字幕列表由 JS 動態生成 -->
+        </div>
+
+    </div>
+
+    <!-- 單字詳細資料彈出視窗 (Modal) -->
+    <div class="modal-overlay" id="vocab-modal" onclick="closeModal(event)">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModalDirect()">✕</button>
+            <div class="modal-header">
+                <span class="modal-kor" id="modal-kor">교과서</span>
+                <span class="modal-pos" id="modal-pos">名詞</span>
+            </div>
+            <div class="modal-pinyin" id="modal-pinyin">[gyo-gwa-seo]</div>
+            <div class="modal-chi" id="modal-chi">教科書</div>
+            
+            <!-- 原頁面即時播放按鈕 -->
+            <button class="audio-play-btn" id="modal-speak-btn">
+                🔊 播放發音
+            </button>
+        </div>
+    </div>
+
+    <script>
+        /* ==========================================
+           1. 教學單字資料庫
+           ========================================== */
+        const vocabDb = {
+            "교과서": {
+                kor: "교과서",
+                pinyin: "gyo-gwa-seo",
+                chi: "教科書",
+                pos: "名詞"
+            },
+            "문학": {
+                kor: "문학",
+                pinyin: "mun-hak",
+                chi: "文學 / 文學作品",
+                pos: "名詞"
+            }
+        };
+
+        /* ==========================================
+           2. SRT 資料庫與範例資料
+           ========================================== */
+        const mockSrtData = {
+            liyu: {
+                kor: `1\n00:00:01,000 --> 00:00:04,000\n최립우가 들려주는 {교과서} 속 {문학}\n\n2\n00:00:04,500 --> 00:00:08,000\n오늘 읽어드릴 작품은 아주 유명합니다.`,
+                chi: `1\n00:00:01,000 --> 00:00:04,000\n崔立于朗讀教科書中的文學作品\n\n2\n00:00:04,500 --> 00:00:08,000\n今天讀給大家的作品非常有名。`
+            },
+            woojin: {
+                kor: `1\n00:00:01,000 --> 00:00:04,000\n최우진이 읽어주는 한국 {문학}\n\n2\n00:00:04,500 --> 00:00:08,000\n{교과서}에 나오는 시를 소개합니다.`,
+                chi: `1\n00:00:01,000 --> 00:00:04,000\n崔玗进朗讀的韓國文學\n\n2\n00:00:04,500 --> 00:00:08,000\n介紹教科書裡出現的詩。`
+            }
+        };
+
+        /* ==========================================
+           3. 狀態管理 (使用 LocalStorage)
+           ========================================== */
+        let currentState = {
+            member: localStorage.getItem('app_member') || 'liyu',
+            mode: localStorage.getItem('app_mode') || 'dynamic',
+            lang: localStorage.getItem('app_lang') || 'all'
+        };
+
+        let parsedSubtitles = [];
+        let currentSubIndex = -1;
+
+        // 初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            applyStateToUI();
+            loadAndRenderContent();
+            initAudioListener();
+        });
+
+        function saveState() {
+            localStorage.setItem('app_member', currentState.member);
+            localStorage.setItem('app_mode', currentState.mode);
+            localStorage.setItem('app_lang', currentState.lang);
+        }
+
+        function switchMember(member) {
+            currentState.member = member;
+            saveState();
+            applyStateToUI();
+            loadAndRenderContent();
+        }
+
+        function switchMode(mode) {
+            currentState.mode = mode;
+            saveState();
+            applyStateToUI();
+            loadAndRenderContent();
+        }
+
+        function switchLang(lang) {
+            currentState.lang = lang;
+            saveState();
+            applyStateToUI();
+            applyLangDisplay();
+        }
+
+        function applyStateToUI() {
+            // 切換 Member UI
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.member === currentState.member);
+            });
+            // 切換 Mode UI
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === currentState.mode);
+            });
+            // 切換 Lang UI
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === currentState.lang);
+            });
+
+            // 顯示/隱藏音訊控制
+            const controls = document.getElementById('dynamic-controls');
+            controls.style.display = currentState.mode === 'dynamic' ? 'block' : 'none';
+            applyLangDisplay();
+        }
+
+        function applyLangDisplay() {
+            const box = document.getElementById('subtitle-box');
+            box.classList.remove('hide-kor', 'hide-chi');
+            if (currentState.lang === 'kor') box.classList.add('hide-chi');
+            if (currentState.lang === 'chi') box.classList.add('hide-kor');
+        }
+
+        /* ==========================================
+           4. SRT 解析器與教學單字標記替換
+           ========================================== */
+        function parseSRT(srtString) {
+            const pattern = /(\d+)\n(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})\n([\s\S]*?)(?=\n\n|\n*$)/g;
+            const result = [];
+            let matches;
+            
+            function timeToSeconds(tStr) {
+                const [h, m, sWithMs] = tStr.split(':');
+                const [s, ms] = sWithMs.split(',');
+                return parseInt(h)*3600 + parseInt(m)*60 + parseInt(s) + parseInt(ms)/1000;
+            }
+
+            while ((matches = pattern.exec(srtString)) !== null) {
+                result.push({
+                    id: matches[1],
+                    start: timeToSeconds(matches[2]),
+                    end: timeToSeconds(matches[3]),
+                    text: matches[4].trim()
+                });
+            }
+            return result;
+        }
+
+        // 將 {單字} 自動替換為可點擊的 HTML 元素
+        function renderVocabText(text) {
+            return text.replace(/\{([^}]+)\}/g, (match, word) => {
+                if (vocabDb[word]) {
+                    return `<span class="vocab-word" onclick="openVocabModal('${word}', event)">${word}</span>`;
+                }
+                return word;
+            });
+        }
+
+        /* ==========================================
+           5. 載入與渲染內容
+           ========================================== */
+        function loadAndRenderContent() {
+            // 此處載入預設 SRT 範例資料 (如需讀取實體檔案可改用 fetch)
+            const korSrt = mockSrtData[currentState.member].kor;
+            const chiSrt = mockSrtData[currentState.member].chi;
+
+            const korParsed = parseSRT(korSrt);
+            const chiParsed = parseSRT(chiSrt);
+
+            // 合併韓中文字幕
+            parsedSubtitles = korParsed.map((item, index) => ({
+                start: item.start,
+                end: item.end,
+                kor: item.text,
+                chi: chiParsed[index] ? chiParsed[index].text : ''
+            }));
+
+            const box = document.getElementById('subtitle-box');
+            box.innerHTML = '';
+
+            parsedSubtitles.forEach((item, idx) => {
+                const lineDiv = document.createElement('div');
+                lineDiv.className = 'sub-line';
+                lineDiv.dataset.index = idx;
+
+                const korHtml = renderVocabText(item.kor);
+                const chiHtml = item.chi;
+
+                // 韓文在上、中文在下
+                lineDiv.innerHTML = `
+                    <div class="kor-text">${korHtml}</div>
+                    <div class="chi-text">${chiHtml}</div>
+                `;
+
+                // 點擊句子快速跳轉播放時間 (僅動態模式)
+                lineDiv.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('vocab-word')) return; // 點擊單字不觸發跳時間
+                    if (currentState.mode === 'dynamic') {
+                        const audio = document.getElementById('audio-player');
+                        audio.currentTime = item.start;
+                        audio.play();
+                    }
+                });
+
+                box.appendChild(lineDiv);
+            });
+        }
+
+        /* ==========================================
+           6. 音訊播放與自動捲動同步
+           ========================================== */
+        function initAudioListener() {
+            const audio = document.getElementById('audio-player');
+            audio.addEventListener('timeupdate', () => {
+                if (currentState.mode !== 'dynamic') return;
+
+                const time = audio.currentTime;
+                const activeIndex = parsedSubtitles.findIndex(s => time >= s.start && time <= s.end);
+
+                if (activeIndex !== -1 && activeIndex !== currentSubIndex) {
+                    currentSubIndex = activeIndex;
+                    highlightCurrentSub(activeIndex);
+                    scrollToCurrentSub(false);
+                }
+            });
+        }
+
+        function highlightCurrentSub(index) {
+            document.querySelectorAll('.sub-line').forEach((el, idx) => {
+                el.classList.toggle('active', idx === index);
+            });
+        }
+
+        function scrollToCurrentSub(force = false) {
+            if (currentSubIndex === -1 && !force) return;
+            const targetIdx = currentSubIndex !== -1 ? currentSubIndex : 0;
+            const targetEl = document.querySelector(`.sub-line[data-index="${targetIdx}"]`);
+            if (targetEl) {
+                targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function adjustTime(seconds) {
+            const audio = document.getElementById('audio-player');
+            audio.currentTime = Math.max(0, audio.currentTime + seconds);
+        }
+
+        /* ==========================================
+           7. 單字發音引擎與 Modal 控制 (內建 Web Speech / Google API)
+           ========================================== */
+        function playKoreanSpeech(text) {
+            // 優先使用 Web Speech API（零延遲、無需外連）
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // 停止先前的發音
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ko-KR';
+                utterance.rate = 0.8; // 發音速度設定為 0.8
+                window.speechSynthesis.speak(utterance);
+            } else {
+                // 回退備案：使用 Google 翻譯發音音訊 API
+                const googleTtsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=ko&client=tw-ob`;
+                const audio = new Audio(googleTtsUrl);
+                audio.play().catch(() => {
+                    alert("發音播放失敗，請檢查網路連線。");
+                });
+            }
+        }
+
+        function openVocabModal(word, event) {
+            event.stopPropagation();
+            const data = vocabDb[word];
+            if (!data) return;
+
+            document.getElementById('modal-kor').innerText = data.kor;
+            document.getElementById('modal-pos').innerText = data.pos;
+            document.getElementById('modal-pinyin').innerText = `[${data.pinyin}]`;
+            document.getElementById('modal-chi').innerText = data.chi;
+
+            // 設定點擊按鈕直接觸發發音
+            const speakBtn = document.getElementById('modal-speak-btn');
+            speakBtn.onclick = () => playKoreanSpeech(data.kor);
+
+            document.getElementById('vocab-modal').style.display = 'flex';
+        }
+
+        function closeModal(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                document.getElementById('vocab-modal').style.display = 'none';
+            }
+        }
+
+        function closeModalDirect() {
+            document.getElementById('vocab-modal').style.display = 'none';
+        }
+    </script>
     
 <script type="module" src="../../../js/firebase-init.js"></script>
 
