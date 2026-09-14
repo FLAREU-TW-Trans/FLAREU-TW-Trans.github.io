@@ -46,8 +46,8 @@
 ## 📈 翻譯站營運成效 (Project Impact)
 
 除了網頁技術的打磨，本站亦持續深度經營社群生態，建立高黏著度的粉絲社群：
-*   📷 **Instagram:** 2,200+ Followers
-*   🧵 **Threads:** 4,200+ Followers
+*   📷 **Instagram:** 3,000+ Followers
+*   🧵 **Threads:** 5,400+ Followers
 *   📊 **Google Search Console:** 網頁已正式編入 Google 索引，具備良好的 SEO 搜尋權重。
 
 ---
