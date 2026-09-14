@@ -35,7 +35,7 @@
             background-color: var(--bg-light);
             color: var(--text-main);
             line-height: 1.6;
-            padding-bottom: 40px;
+            padding-bottom: 100px; /* 增加距離底部的距離 */
         }
 
         /* ==========================================
@@ -83,7 +83,6 @@
         }
         .official-btn:hover { background: rgba(33, 33, 71, 0.15); }
 
-        /* 搭配主題色的使用說明按鈕 */
         .info-btn {
             background: rgba(33, 33, 71, 0.05);
             color: var(--primary-dark);
@@ -159,7 +158,6 @@
             text-align: center;
         }
 
-        /* 明確的 Active 顏色變化 */
         .segmented-btn.active {
             background-color: var(--primary-dark) !important;
             color: #ffffff !important;
@@ -197,7 +195,6 @@
             transition: all 0.2s ease;
         }
 
-        /* 晶片按鈕 Active 狀態 */
         .chip-btn.active {
             background-color: var(--primary-dark) !important;
             color: #ffffff !important;
@@ -323,7 +320,7 @@
         .hide-chi .chi-text { display: none !important; }
 
         /* ==========================================
-           6. 單字與 Modal 彈窗 (modal-kor 置中，modal-pos 靠右)
+           6. 單字與 Modal 彈窗 (modal-kor 絕對居中，modal-pos 緊貼其右)
            ========================================== */
         .vocab-word {
             color: var(--primary-dark);
@@ -368,31 +365,38 @@
             color: var(--text-muted);
         }
 
-        /* modal-header: 彈性布局確保 modal-kor 絕對居中，modal-pos 位於其右側 */
+        /* 絕對居中與貼齊定位 */
         .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 40px;
             margin-bottom: 8px;
             width: 100%;
         }
 
         .modal-kor { 
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             font-size: 28px; 
             font-weight: bold; 
             color: var(--primary-dark); 
             text-align: center;
+            white-space: nowrap;
         }
 
         .modal-pos { 
+            position: absolute;
+            left: calc(50% + 4px); /* 根據 modal-kor 的寬度動態調整，於 JS 開啟時設定或保持靠右鄰近 */
             font-size: 14px; 
             background: rgba(33, 33, 71, 0.08); 
             color: var(--primary-dark); 
             padding: 2px 8px; 
             border-radius: 10px; 
             font-weight: 700; 
-            margin-left: 8px; /* 排在 modal-kor 右側 */
+            white-space: nowrap;
         }
 
         .modal-pinyin { 
@@ -458,10 +462,10 @@
             <!-- 第三層：語言切換 -->
             <div class="lang-bar">
                 <span>語言顯示</span>
-                <div class="lang-options">
-                    <button class="lang-chip" data-lang="all" onclick="switchLang('all')">雙語</button>
-                    <button class="lang-chip" data-lang="kor" onclick="switchLang('kor')">韓文</button>
-                    <button class="lang-chip" data-lang="chi" onclick="switchLang('chi')">中文</button>
+                <div class="option-group">
+                    <button class="chip-btn" data-lang="all" onclick="switchLang('all')">雙語</button>
+                    <button class="chip-btn" data-lang="kor" onclick="switchLang('kor')">韓文</button>
+                    <button class="chip-btn" data-lang="chi" onclick="switchLang('chi')">中文</button>
                 </div>
             </div>
 
@@ -1921,10 +1925,11 @@
         };
 
         let parsedSubtitles = [];
-        let currentSubIndex = -1;
+        let currentSubIndex = 0;
 
         // 初始化
         window.addEventListener('DOMContentLoaded', () => {
+            applyFontSizeToUI();
             applyStateToUI();
             loadAndRenderContent();
             initAudioListener();
@@ -1996,6 +2001,14 @@
 
             const controls = document.getElementById('dynamic-controls');
             controls.style.display = currentState.mode === 'dynamic' ? 'block' : 'none';
+
+            // 完整全文模式下移除高亮
+            if (currentState.mode === 'full') {
+                highlightCurrentSub(-1);
+            } else {
+                highlightCurrentSub(currentSubIndex);
+            }
+          
             applyLangDisplay();
         }
 
@@ -2120,7 +2133,11 @@
             });
             
             currentSubIndex = 0;
-            highlightCurrentSub(0); 
+            if (currentState.mode === 'dynamic') {
+                highlightCurrentSub(0);
+            } else {
+                highlightCurrentSub(-1);
+            }
             updateAudioSource();
         }
 
@@ -2159,7 +2176,11 @@
 
         function highlightCurrentSub(index) {
             document.querySelectorAll('.sub-line').forEach((el, idx) => {
-                el.classList.toggle('active', idx === index);
+                if (currentState.mode === 'full') {
+                    el.classList.remove('active');
+                } else {
+                    el.classList.toggle('active', idx === index);
+                }
             });
         }
 
@@ -2195,16 +2216,23 @@
             const data = vocabDb[word];
             if (!data) return;
 
-            document.getElementById('modal-kor').innerText = data.kor;
-            document.getElementById('modal-pos').innerText = data.pos;
+            const korEl = document.getElementById('modal-kor');
+            const posEl = document.getElementById('modal-pos');
+
+            korEl.innerText = data.kor;
+            posEl.innerText = data.pos;
             document.getElementById('modal-pinyin').innerText = `[${data.pinyin}]`;
             document.getElementById('modal-chi').innerText = data.chi;
 
-            // 設定點擊按鈕直接觸發發音
             const speakBtn = document.getElementById('modal-speak-btn');
             speakBtn.onclick = () => playKoreanSpeech(data.kor);
 
             document.getElementById('vocab-modal').style.display = 'flex';
+
+            requestAnimationFrame(() => {
+                const korWidth = korEl.offsetWidth;
+                posEl.style.left = `calc(50% + ${korWidth / 2 + 6}px)`;
+            });
         }
 
         function closeModal(event) {
