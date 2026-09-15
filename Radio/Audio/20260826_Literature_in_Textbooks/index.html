@@ -136,7 +136,7 @@
         .sub-line:hover { background: rgba(33, 33, 71, 0.04); }
         .sub-line.active { background: rgba(33, 33, 71, 0.08) !important; border-left-color: var(--primary-dark) !important; }
 
-        .kor-text { font-size: var(--kor-font-size); font-weight: 600; color: var(--primary-dark); line-height: 1.5; }
+        .kor-text { font-size: var(--kor-font-size); font-weight: 600; color: var(--primary-dark); line-height: 1.85; }
 
         .chi-text { font-size: var(--chi-font-size); color: #374151; margin-top: 6px; font-weight: 500; line-height: 1.5; }
 
@@ -146,10 +146,10 @@
         /* ==========================================
            6. 單字與 Modal 彈窗 
            ========================================== */
-        .vocab-word {
-            color: var(--primary-dark); background: rgba(33, 33, 71, 0.1); padding: 2px 6px; border-radius: 4px;
-            font-weight: 700; cursor: pointer; border-bottom: 2px solid var(--primary-dark);
+        .vocab-word { color: var(--primary-dark); background: rgba(33, 33, 71, 0.05); padding: 1px 5px; border-radius: 4px; font-weight: 700; cursor: pointer; 
+          border-bottom: 2px solid var(--primary-dark); -webkit-box-decoration-break: clone; box-decoration-break: clone; margin: 0 1px; display: inline; transition: background 0.2s ease;
         }
+        .vocab-word:hover { background: rgba(33, 33, 71, 0.12); }
 
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(33, 33, 71, 0.4); display: none;
