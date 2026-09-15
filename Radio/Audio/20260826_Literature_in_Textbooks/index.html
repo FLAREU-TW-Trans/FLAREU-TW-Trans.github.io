@@ -14,417 +14,172 @@
            1. 全域變數與主題設定
            ========================================== */
         :root {
-            --primary-dark: rgb(33, 33, 71);
-            --primary-light: rgba(33, 33, 71, 0.08);
-            --bg-light: rgb(228, 227, 238);
-            --surface-white: #ffffff;
-            --text-main: rgb(33, 33, 71);
-            --text-muted: #4b5563;
-            --shadow-soft: 0 10px 25px -5px rgba(33, 33, 71, 0.08);
-            --border-radius: 12px;
-            
-            /* 動態字體大小預設 */
-            --kor-font-size: 18px;
-            --chi-font-size: 16px;
+            --primary-dark: rgb(33, 33, 71); --primary-light: rgba(33, 33, 71, 0.08); --bg-light: rgb(228, 227, 238); --surface-white: #ffffff;
+            --text-main: rgb(33, 33, 71); --text-muted: #4b5563; --shadow-soft: 0 10px 25px -5px rgba(33, 33, 71, 0.08); --border-radius: 12px;
+            --kor-font-size: 18px; --chi-font-size: 16px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-main);
-            line-height: 1.6;
-            padding-bottom: 100px; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif; background-color: var(--bg-light);
+            color: var(--text-main); line-height: 1.6; padding-bottom: 100px; 
         }
 
         /* ==========================================
            2. 頂部 Header
            ========================================== */
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 24px;
-            background: var(--surface-white);
-            box-shadow: 0 2px 10px rgba(33, 33, 71, 0.05);
-            flex-wrap: wrap;
-            gap: 12px;
+            display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: var(--surface-white);
+            box-shadow: 0 2px 10px rgba(33, 33, 71, 0.05); flex-wrap: wrap; gap: 12px;
         }
-
-        .header h2 {
-            font-weight: 700;
-            color: var(--primary-dark);
-            letter-spacing: -0.5px;
-        }
-
-        .header-btn-group {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
+        .header h2 { font-weight: 700; color: var(--primary-dark); letter-spacing: -0.5px; }
+        .header-btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
 
         .nav-btn {
-            padding: 8px 14px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            border: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
+            padding: 8px 14px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 600; transition: all 0.2s ease; border: none;
+            cursor: pointer; display: inline-flex; align-items: center;
         }
 
-        .official-btn {
-            background: var(--primary-light);
-            color: var(--primary-dark);
-        }
+        .official-btn { background: var(--primary-light); color: var(--primary-dark); }
         .official-btn:hover { background: rgba(33, 33, 71, 0.15); }
 
-        .info-btn {
-            background: rgba(33, 33, 71, 0.05);
-            color: var(--primary-dark);
-            border: 1px solid rgba(33, 33, 71, 0.2);
-        }
-        .info-btn:hover {
-            background: var(--primary-dark);
-            color: var(--surface-white);
-        }
+        .info-btn { background: rgba(33, 33, 71, 0.05); color: var(--primary-dark); border: 1px solid rgba(33, 33, 71, 0.2); }
+        .info-btn:hover { background: var(--primary-dark); color: var(--surface-white); }
 
-        .home-btn {
-            background: var(--primary-dark);
-            color: var(--surface-white);
-        }
+        .home-btn { background: var(--primary-dark); color: var(--surface-white); }
         .home-btn:hover { opacity: 0.9; }
 
         @media (max-width: 600px) {
-            .header {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            .header h2 {
-                font-size: 22px !important;
-                width: 100%;
-                text-align: center;
-            }
-            .header-btn-group {
-                width: 100%;
-                justify-content: center;
-            }
+            .header { flex-direction: column; align-items: center; text-align: center; }
+            .header h2 { font-size: 22px !important; width: 100%; text-align: center; }
+            .header-btn-group { width: 100%; justify-content: center; }
         }
 
-        .container {
-            max-width: 760px;
-            margin: 28px auto 0;
-            padding: 0 16px;
-        }
+        .container { max-width: 760px; margin: 28px auto 0; padding: 0 16px; }
 
         /* ==========================================
-           3. 控制面板 & 按鈕 Active 高亮狀態
+           3. 控制面板 & 按鈕 
            ========================================== */
         .control-panel {
-            background: var(--surface-white);
-            border-radius: var(--border-radius);
-            padding: 16px;
-            box-shadow: var(--shadow-soft);
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
+            background: var(--surface-white); border-radius: var(--border-radius); padding: 16px; box-shadow: var(--shadow-soft);
+            margin-bottom: 20px; display: flex; flex-direction: column; gap: 14px;
         }
 
-        .segmented-row {
-            display: flex;
-            background: #e2e8f0;
-            padding: 4px;
-            border-radius: 10px;
-            gap: 6px;
-        }
-
+        .segmented-row { display: flex; background: #e2e8f0; padding: 4px; border-radius: 10px; gap: 6px; }
         .segmented-btn {
-            flex: 1;
-            border: none;
-            background: transparent;
-            padding: 8px 12px;
-            font-size: 15px;
-            font-weight: 600;
-            color: #64748b;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: center;
+            flex: 1; border: none; background: transparent; padding: 8px 12px; font-size: 15px; font-weight: 600; color: #64748b;
+            border-radius: 8px; cursor: pointer; transition: all 0.2s ease; text-align: center;
         }
-
         .segmented-btn.active {
-            background-color: var(--primary-dark) !important;
-            color: #ffffff !important;
-            font-weight: 700 !important;
-            box-shadow: 0 3px 8px rgba(33, 33, 71, 0.25);
+            background-color: var(--primary-dark) !important; color: #ffffff !important; font-weight: 700 !important; box-shadow: 0 3px 8px rgba(33, 33, 71, 0.25);
         }
 
         .lang-bar, .font-size-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-top: 1px solid rgba(33, 33, 71, 0.08);
-            padding-top: 12px;
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--primary-dark);
-            flex-wrap: wrap;
-            gap: 8px;
+            display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(33, 33, 71, 0.08);
+            padding-top: 12px; font-size: 15px; font-weight: 700; color: var(--primary-dark); flex-wrap: wrap; gap: 8px;
         }
 
-        .option-group {
-            display: flex;
-            gap: 6px;
-        }
+        .option-group { display: flex; gap: 6px; }
 
         .chip-btn {
-            border: 1px solid #cbd5e1;
-            background: #ffffff;
-            padding: 5px 12px;
-            font-size: 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            color: #64748b;
-            font-weight: 600;
-            transition: all 0.2s ease;
+            border: 1px solid #cbd5e1; background: #ffffff; padding: 5px 12px; font-size: 14px; border-radius: 8px;
+            cursor: pointer; color: #64748b; font-weight: 600; transition: all 0.2s ease;
         }
-
         .chip-btn.active {
-            background-color: var(--primary-dark) !important;
-            color: #ffffff !important;
-            border-color: var(--primary-dark) !important;
-            font-weight: 700 !important;
-            box-shadow: 0 2px 6px rgba(33, 33, 71, 0.2);
+            background-color: var(--primary-dark) !important; color: #ffffff !important; border-color: var(--primary-dark) !important;
+            font-weight: 700 !important; box-shadow: 0 2px 6px rgba(33, 33, 71, 0.2);
         }
 
         /* ==========================================
            4. 動態逐句控制區塊
            ========================================== */
         .audio-card {
-            background: var(--surface-white);
-            border-radius: var(--border-radius);
-            padding: 18px 20px;
-            box-shadow: var(--shadow-soft);
-            margin-bottom: 20px;
+            background: var(--surface-white); border-radius: var(--border-radius); padding: 18px 20px; box-shadow: var(--shadow-soft); margin-bottom: 20px;
         }
 
         .notice-banner {
-            font-size: 14px;
-            color: var(--text-muted);
-            background: rgba(33, 33, 71, 0.05);
-            padding: 10px 14px;
-            border-radius: 8px;
-            margin-bottom: 14px;
-            font-weight: 500;
+            font-size: 14px; color: var(--text-muted); background: rgba(33, 33, 71, 0.05); padding: 10px 14px; border-radius: 8px;
+            margin-bottom: 14px; font-weight: 500;
         }
 
-        .sync-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+        .sync-controls { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
 
         .play-toggle-btn {
-            border: none;
-            background: var(--primary-dark);
-            color: var(--surface-white);
-            padding: 10px 18px;
-            font-size: 15px;
-            font-weight: 700;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: opacity 0.2s;
+            border: none; background: var(--primary-dark); color: var(--surface-white); padding: 10px 18px; font-size: 15px; font-weight: 700;
+            border-radius: 8px; cursor: pointer; transition: opacity 0.2s;
         }
         .play-toggle-btn:hover { opacity: 0.9; }
 
-        .time-btn-group {
-            display: flex;
-            gap: 6px;
-        }
-
+        .time-btn-group { display: flex; gap: 6px; }
         .time-btn {
-            border: 1px solid var(--primary-dark);
-            background: rgba(33, 33, 71, 0.04);
-            color: var(--primary-dark);
-            padding: 6px 10px;
-            font-size: 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 700;
+            border: 1px solid var(--primary-dark); background: rgba(33, 33, 71, 0.04); color: var(--primary-dark); padding: 6px 10px;
+            font-size: 14px; border-radius: 8px; cursor: pointer; font-weight: 700;
         }
 
         .sync-btn {
-            border: 1px solid var(--primary-dark);
-            background: rgba(33, 33, 71, 0.08);
-            color: var(--primary-dark);
-            padding: 8px 14px;
-            font-size: 14px;
-            font-weight: 700;
-            border-radius: 8px;
-            cursor: pointer;
+            border: 1px solid var(--primary-dark); background: rgba(33, 33, 71, 0.08); color: var(--primary-dark); padding: 8px 14px;
+            font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer;
         }
 
         /* ==========================================
            5. 字幕顯示區與動態大小
            ========================================== */
         .subtitle-card {
-            background: var(--surface-white);
-            border-radius: var(--border-radius);
-            padding: 24px;
-            box-shadow: var(--shadow-soft);
-            min-height: 320px;
-            max-height: 520px;
-            overflow-y: auto;
+            background: var(--surface-white); border-radius: var(--border-radius); padding: 24px; box-shadow: var(--shadow-soft);
+            min-height: 320px; max-height: 520px; overflow-y: auto;
         }
-
         .sub-line {
-            padding: 14px 18px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            border-left: 5px solid transparent;
-            transition: all 0.25s ease;
-            cursor: pointer;
+            padding: 14px 18px; margin-bottom: 10px; border-radius: 10px; border-left: 5px solid transparent;
+            transition: all 0.25s ease; cursor: pointer;
         }
         .sub-line:hover { background: rgba(33, 33, 71, 0.04); }
+        .sub-line.active { background: rgba(33, 33, 71, 0.08) !important; border-left-color: var(--primary-dark) !important; }
 
-        /* 當前播放句子的高亮樣式 */
-        .sub-line.active {
-            background: rgba(33, 33, 71, 0.08) !important;
-            border-left-color: var(--primary-dark) !important;
-        }
+        .kor-text { font-size: var(--kor-font-size); font-weight: 600; color: var(--primary-dark); line-height: 1.5; }
 
-        .kor-text {
-            font-size: var(--kor-font-size);
-            font-weight: 600;
-            color: var(--primary-dark);
-            line-height: 1.5;
-        }
-
-        .chi-text {
-            font-size: var(--chi-font-size);
-            color: #374151;
-            margin-top: 6px;
-            font-weight: 500;
-            line-height: 1.5;
-        }
+        .chi-text { font-size: var(--chi-font-size); color: #374151; margin-top: 6px; font-weight: 500; line-height: 1.5; }
 
         .hide-kor .kor-text { display: none !important; }
         .hide-chi .chi-text { display: none !important; }
 
         /* ==========================================
-           6. 單字與 Modal 彈窗 (modal-kor 絕對居中，modal-pos 緊貼其右)
+           6. 單字與 Modal 彈窗 
            ========================================== */
         .vocab-word {
-            color: var(--primary-dark);
-            background: rgba(33, 33, 71, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 700;
-            cursor: pointer;
-            border-bottom: 2px solid var(--primary-dark);
+            color: var(--primary-dark); background: rgba(33, 33, 71, 0.1); padding: 2px 6px; border-radius: 4px;
+            font-weight: 700; cursor: pointer; border-bottom: 2px solid var(--primary-dark);
         }
 
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(33, 33, 71, 0.4);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            backdrop-filter: blur(4px);
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(33, 33, 71, 0.4); display: none;
+            align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(4px);
         }
-
         .modal-card {
-            background: var(--surface-white);
-            width: 90%;
-            max-width: 380px;
-            border-radius: 16px;
-            padding: 28px 24px;
-            box-shadow: 0 20px 30px rgba(33, 33, 71, 0.2);
-            position: relative;
+            background: var(--surface-white); width: 90%; max-width: 380px; border-radius: 16px; padding: 28px 24px;
+            box-shadow: 0 20px 30px rgba(33, 33, 71, 0.2); position: relative;
         }
-
         .modal-close {
-            position: absolute;
-            top: 16px; right: 16px;
-            border: none;
-            background: rgba(33, 33, 71, 0.05);
-            width: 28px; height: 28px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 14px;
-            color: var(--text-muted);
+            position: absolute; top: 16px; right: 16px; border: none; background: rgba(33, 33, 71, 0.05);
+            width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 14px; color: var(--text-muted);
         }
-
-        /* 絕對居中與貼齊定位 */
         .modal-header {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 40px;
-            margin-bottom: 8px;
-            width: 100%;
+            position: relative; display: flex; justify-content: center; align-items: center; min-height: 40px;
+            margin-bottom: 8px; width: 100%;
         }
-
         .modal-kor { 
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 28px; 
-            font-weight: bold; 
-            color: var(--primary-dark); 
-            text-align: center;
-            white-space: nowrap;
+            position: absolute; left: 50%; transform: translateX(-50%); font-size: 28px; font-weight: bold; 
+            color: var(--primary-dark); text-align: center; white-space: nowrap;
         }
-
         .modal-pos { 
-            position: absolute;
-            left: calc(50% + 4px); /* 根據 modal-kor 的寬度動態調整，於 JS 開啟時設定或保持靠右鄰近 */
-            font-size: 14px; 
-            background: rgba(33, 33, 71, 0.08); 
-            color: var(--primary-dark); 
-            padding: 2px 8px; 
-            border-radius: 10px; 
-            font-weight: 700; 
-            white-space: nowrap;
+            position: absolute; left: calc(50% + 4px); font-size: 14px; background: rgba(33, 33, 71, 0.08); 
+            color: var(--primary-dark); padding: 2px 8px; border-radius: 10px; font-weight: 700; white-space: nowrap;
         }
-
-        .modal-pinyin { 
-            font-size: 16px; 
-            color: var(--text-muted); 
-            margin-bottom: 14px; 
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .modal-chi { 
-            font-size: 18px; 
-            color: var(--primary-dark); 
-            margin-bottom: 22px; 
-            font-weight: 600; 
-            text-align: center;
-        }
-
+        .modal-pinyin { font-size: 16px; color: var(--text-muted); margin-bottom: 14px; text-align: center; font-weight: 500; }
+        .modal-chi { font-size: 18px; color: var(--primary-dark); margin-bottom: 22px; font-weight: 600; text-align: center; }
         .audio-play-btn {
-            width: 100%;
-            padding: 12px 0;
-            background: var(--primary-dark);
-            color: var(--surface-white);
-            border: none;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 10px;
-            cursor: pointer;
+            width: 100%; padding: 12px 0; background: var(--primary-dark); color: var(--surface-white); border: none;
+            font-size: 16px; font-weight: 600; border-radius: 10px; cursor: pointer;
         }
     </style>
 </head>
@@ -569,11 +324,393 @@
            2. 教學單字資料庫
            ========================================== */
         const vocabDb = {
-            "교과서": { kor: "교과서", pinyin: "gyo-gwa-seo", chi: "教科書", pos: "名詞" },
-            "문학": { kor: "문학", pinyin: "mun-hak", chi: "文學 / 文學作品", pos: "名詞" },
-            "어리다": { kor: "어리다", pinyin: "eo-ri-da", chi: "幼小、年幼", pos: "形容詞" },
-            "많다": { kor: "많다", pinyin: "man-ta", chi: "多、許多", pos: "形容詞" }
-        };
+    // A
+    "가난하다": { kor: "가난하다", pinyin: "ga-nan-ha-da", chi: "貧窮", pos: "形容詞" },
+    "가장": { kor: "가장", pinyin: "ga-jang", chi: "最", pos: "副詞" },
+    "가족": { kor: "가족", pinyin: "ga-jok", chi: "家人", pos: "名詞" },
+    "가지가지": { kor: "가지가지", pinyin: "ga-ji-ga-ji", chi: "各式各樣", pos: "名詞" },
+    "가슴": { kor: "가슴", pinyin: "ga-seum", chi: "胸口、內心", pos: "名詞" },
+    "가수": { kor: "가수", pinyin: "ga-su", chi: "歌手", pos: "名詞" },
+    "가깝다": { kor: "가깝다", pinyin: "ga-kkap-da", chi: "近", pos: "形容詞" },
+    "갇히다": { kor: "갇히다", pinyin: "gat-hi-da", chi: "被關、被囚禁", pos: "動詞" },
+    "감시": { kor: "감시", pinyin: "gam-si", chi: "監視", pos: "名詞" },
+    "감정": { kor: "감정", pinyin: "gam-jeong", chi: "感情、情緒", pos: "名詞" },
+    "강하다": { kor: "강하다", pinyin: "gang-ha-da", chi: "強大", pos: "形容詞" },
+    "같다": { kor: "같다", pinyin: "gat-da", chi: "相同、一樣", pos: "形容詞" },
+    "거의": { kor: "거의", pinyin: "geo-ui", chi: "幾乎", pos: "副詞" },
+    "거짓말하다": { kor: "거짓말하다", pinyin: "geo-jit-mal-ha-da", chi: "說謊", pos: "動詞" },
+    "거만하다": { kor: "거만하다", pinyin: "geo-man-ha-da", chi: "傲慢、高傲", pos: "形容詞" },
+    "거북": { kor: "거북", pinyin: "geo-buk", chi: "烏龜", pos: "名詞" },
+    "건드리다": { kor: "건드리다", pinyin: "geon-deu-ri-da", chi: "惹、觸碰", pos: "動詞" },
+    "겉": { kor: "겉", pinyin: "geot", chi: "外表、表面", pos: "名詞" },
+    "겉모습": { kor: "겉모습", pinyin: "geot-mo-seup", chi: "外貌、外表", pos: "名詞" },
+    "게다가": { kor: "게다가", pinyin: "ge-da-ga", chi: "此外、加上", pos: "副詞" },
+    "결국에": { kor: "결국에", pinyin: "gyeol-guk-e", chi: "最終、結果", pos: "副詞" },
+    "결코": { kor: "결코", pinyin: "gyeol-ko", chi: "絕不", pos: "副詞" },
+    "경험": { kor: "경험", pinyin: "gyeong-heom", chi: "經驗", pos: "名詞" },
+    "고등학교": { kor: "고등학교", pinyin: "go-deung-hak-gyo", chi: "高中", pos: "名詞" },
+    "고향": { kor: "고향", pinyin: "go-hyang", chi: "故鄉", pos: "名詞" },
+    "공부하다": { kor: "공부하다", pinyin: "gong-bu-ha-da", chi: "學習", pos: "動詞" },
+    "과연": { kor: "과연", pinyin: "gwa-yeon", chi: "果然", pos: "副詞" },
+    "과정": { kor: "과정", pinyin: "gwa-jeong", chi: "過程", pos: "名詞" },
+    "관심": { kor: "관심", pinyin: "gwan-sim", chi: "興趣、關心", pos: "名詞" },
+    "관상": { kor: "관상", pinyin: "gwan-sang", chi: "相貌、面相", pos: "名詞" },
+    "관상쟁이": { kor: "관상쟁이", pinyin: "gwan-sang-jaeng-i", chi: "算命師、面相師", pos: "名詞" },
+    "관습": { kor: "관습", pinyin: "gwan-seup", chi: "習俗、慣例", pos: "名詞" },
+    "괜찮다": { kor: "괜찮다", pinyin: "gwaen-chan-ta", chi: "沒關係、不錯", pos: "形容詞" },
+    "괴롭다": { kor: "괴롭다", pinyin: "goe-rop-da", chi: "痛苦、難受", pos: "形容詞" },
+    "교과서": { kor: "교과서", pinyin: "gyo-gwa-seo", chi: "教科書", pos: "名詞" },
+    "교훈": { kor: "교훈", pinyin: "gyo-hun", chi: "教訓、啟示", pos: "名詞" },
+    "구슬": { kor: "구슬", pinyin: "gu-seul", chi: "珠子、玉珠", pos: "名詞" },
+    "구부러뜨리다": { kor: "구부러뜨리다", pinyin: "gu-bu-reo-tteu-ri-da", chi: "弄彎、扭曲", pos: "動詞" },
+    "귀": { kor: "귀", pinyin: "gwi", chi: "耳朵", pos: "名詞" },
+    "귀하다": { kor: "귀하다", pinyin: "gwi-ha-da", chi: "珍貴、尊貴", pos: "形容詞" },
+    "귀티": { kor: "귀티", pinyin: "gwi-ti", chi: "貴氣", pos: "名詞" },
+    "그리워하다": { kor: "그리워하다", pinyin: "geu-ri-wo-ha-da", chi: "思念、想念", pos: "動詞" },
+    "그림자": { kor: "그림자", pinyin: "geu-rim-ja", chi: "影子", pos: "名詞" },
+    "그리고": { kor: "그리고", pinyin: "geu-ri-go", chi: "還有、而且", pos: "連詞" },
+    "그것": { kor: "그것", pinyin: "geu-geot", chi: "那個", pos: "代詞" },
+    "그런데": { kor: "그런데", pinyin: "geu-reon-de", chi: "但是、不過", pos: "連詞" },
+    "긍정적": { kor: "긍정적", pinyin: "geung-jeong-jeok", chi: "積極的、肯定的", pos: "冠詞/名詞" },
+    "기록하다": { kor: "기록하다", pinyin: "gi-rok-ha-da", chi: "記錄", pos: "動詞" },
+    "기름": { kor: "기름", pinyin: "gi-reum", chi: "油、脂肪", pos: "名詞" },
+    "기분": { kor: "기분", pinyin: "gi-bun", chi: "心情、情緒", pos: "名詞" },
+    "길거리": { kor: "길거리", pinyin: "gil-geo-ri", chi: "街頭、街道", pos: "名詞" },
+    "길흉화복": { kor: "길흉화복", pinyin: "gil-hyung-hwa-bok", chi: "吉凶禍福", pos: "名詞" },
+    "깊다": { kor: "깊다", pinyin: "gip-da", chi: "深", pos: "形容詞" },
+    "까닭": { kor: "까닭", pinyin: "kka-dak", chi: "原因、緣故", pos: "名詞" },
+    "까지": { kor: "까지", pinyin: "kka-ji", chi: "到、直到", pos: "助詞" },
+    "깜짝 놀라다": { kor: "깜짝 놀라다", pinyin: "kkam-jjak nol-ra-da", chi: "嚇一跳", pos: "動詞片語" },
+    "깔보다": { kor: "깔보다", pinyin: "kkal-bo-da", chi: "小看、瞧不起", pos: "動詞" },
+    "꿈꾸다": { kor: "꿈꾸다", pinyin: "kkum-kku-da", chi: "做夢、夢想", pos: "動詞" },
+
+    // N
+    "나이": { kor: "나이", pinyin: "na-i", chi: "年齡", pos: "名詞" },
+    "나중에": { kor: "나중에", pinyin: "na-jung-e", chi: "之後、以後", pos: "副詞" },
+    "나쁘다": { kor: "나쁘다", pinyin: "na-ppeu-da", chi: "壞、不好", pos: "形容詞" },
+    "낙천적": { kor: "낙천적", pinyin: "nak-cheon-jeok", chi: "樂觀的", pos: "冠詞/名詞" },
+    "날": { kor: "날", pinyin: "nal", chi: "日子、天", pos: "名詞" },
+    "날카롭다": { kor: "날카롭다", pinyin: "nal-ka-rop-da", chi: "尖銳、敏銳", pos: "形容詞" },
+    "남녀노소": { kor: "남녀노소", pinyin: "nam-nyeo-no-so", chi: "男女老少", pos: "名詞" },
+    "낡다": { kor: "낡다", pinyin: "nak-da", chi: "破舊、老舊", pos: "形容詞" },
+    "낭독하다": { kor: "낭독하다", pinyin: "nang-dok-ha-da", chi: "朗讀", pos: "動詞" },
+    "낮다": { kor: "낮다", pinyin: "nat-da", chi: "低、卑微", pos: "形容詞" },
+    "낫다": { kor: "낫다", pinyin: "nat-da", chi: "更好、勝過", pos: "形容詞" },
+    "내면": { kor: "내면", pinyin: "nae-myeon", chi: "內心、內部", pos: "名詞" },
+    "너그럽다": { kor: "너그럽다", pinyin: "neo-geu-rop-da", chi: "寬厚、寬容", pos: "形容詞" },
+    "넓다": { kor: "넓다", pinyin: "neol-da", chi: "寬廣", pos: "形容詞" },
+    "네": { kor: "네", pinyin: "ne", chi: "是的", pos: "感嘆詞" },
+    "년대": { kor: "년대", pinyin: "nyeon-dae", chi: "年代", pos: "依存名詞" },
+    "노래": { kor: "노래", pinyin: "no-rae", chi: "歌曲", pos: "名詞" },
+    "노력하다": { kor: "노력하다", pinyin: "no-ryeok-ha-da", chi: "努力", pos: "動詞" },
+    "녹음하다": { kor: "녹음하다", pinyin: "nog-eum-ha-da", chi: "錄音", pos: "動詞" },
+    "높다": { kor: "높다", pinyin: "nop-da", chi: "高、高貴", pos: "形容詞" },
+    "눈": { kor: "눈", pinyin: "nun", chi: "眼睛", pos: "名詞" },
+    "눈물": { kor: "눈물", pinyin: "nun-mul", chi: "眼淚", pos: "名詞" },
+    "눈물을 흘리다": { kor: "눈물을 흘리다", pinyin: "nun-mur-eul heul-ri-da", chi: "流淚", pos: "動詞片語" },
+    "눈멀다": { kor: "눈멀다", pinyin: "nun-meol-da", chi: "失明、瞎眼", pos: "動詞" },
+    "느끼다": { kor: "느끼다", pinyin: "neu-kki-da", chi: "感受、感覺", pos: "動詞" },
+    "느낌": { kor: "느낌", pinyin: "neu-kkim", chi: "感覺", pos: "名詞" },
+
+    // D
+    "다니다": { kor: "다니다", pinyin: "da-ni-da", chi: "往返、上(學/班)", pos: "動詞" },
+    "다양하다": { kor: "다양하다", pinyin: "da-yang-ha-da", chi: "多樣的、豐富的", pos: "形容詞" },
+    "단단하다": { kor: "단단하다", pinyin: "dan-dan-ha-da", chi: "堅固、堅強", pos: "形容詞" },
+    "달아나다": { kor: "달아나다", pinyin: "dal-a-na-da", chi: "逃跑、逃走", pos: "動詞" },
+    "당대": { kor: "당대", pinyin: "dang-dae", chi: "當代", pos: "名詞" },
+    "당시": { kor: "당시", pinyin: "dang-si", chi: "當時", pos: "名詞" },
+    "대구": { kor: "대구", pinyin: "dae-gu", chi: "大邱 (地名)", pos: "名詞" },
+    "대단히": { kor: "대단히", pinyin: "dae-dan-hi", chi: "非常、極其", pos: "副詞" },
+    "대답하다": { kor: "대답하다", pinyin: "dae-dap-ha-da", chi: "回答", pos: "動詞" },
+    "대화": { kor: "대화", pinyin: "dae-hwa", chi: "對話", pos: "名詞" },
+    "대표하다": { kor: "대표하다", pinyin: "dae-pyo-ha-da", chi: "代表", pos: "動詞" },
+    "더": { kor: "더", pinyin: "deo", chi: "更加、更", pos: "副詞" },
+    "데뷔하다": { kor: "데뷔하다", pinyin: "de-byu-ha-da", chi: "出道", pos: "動詞" },
+    "도움": { kor: "도움", pinyin: "do-um", chi: "幫助", pos: "名詞" },
+    "독특하다": { kor: "독특하다", pinyin: "dok-teuk-ha-da", chi: "獨特", pos: "形容詞" },
+    "두려워하다": { kor: "두려워하다", pinyin: "du-ryeo-wo-ha-da", chi: "害怕、恐懼", pos: "動詞" },
+    "들리다": { kor: "들리다", pinyin: "deul-ri-da", chi: "聽見、傳來", pos: "動詞" },
+    "디자인": { kor: "디자인", pinyin: "di-ja-in", chi: "設計", pos: "名詞" },
+    "따르다": { kor: "따르다", pinyin: "tta-reu-da", chi: "跟隨、遵循", pos: "動詞" },
+    "뜨겁다": { kor: "뜨겁다", pinyin: "tteu-geop-da", chi: "熾熱、熱", pos: "形容詞" },
+
+    // R / M
+    "마음": { kor: "마음", pinyin: "ma-eum", chi: "心、心意", pos: "名詞" },
+    "마찬가지": { kor: "마찬가지", pinyin: "ma-chan-ga-ji", chi: "同樣、一樣", pos: "名詞" },
+    "막히다": { kor: "막히다", pinyin: "mak-hi-da", chi: "受阻、堵塞", pos: "動詞" },
+    "많다": { kor: "많다", pinyin: "man-ta", chi: "多、許多", pos: "形容詞" },
+    "많이": { kor: "많이", pinyin: "man-i", chi: "很多地、非常", pos: "副詞" },
+    "말하다": { kor: "말하다", pinyin: "mal-ha-da", chi: "說、講", pos: "動詞" },
+    "맞다": { kor: "맞다", pinyin: "mat-da", chi: "正確、符合", pos: "動詞/形容詞" },
+    "맞히다": { kor: "맞히다", pinyin: "mat-hi-da", chi: "猜中、算中", pos: "動詞" },
+    "맨날": { kor: "맨날", pinyin: "maen-nal", chi: "每天、總是", pos: "副詞" },
+    "먹다": { kor: "먹다", pinyin: "meok-da", chi: "吃", pos: "動詞" },
+    "목": { kor: "목", pinyin: "mok", chi: "脖子", pos: "名詞" },
+    "목소리": { kor: "목소리", pinyin: "mok-so-ri", chi: "聲音", pos: "名詞" },
+    "몸": { kor: "몸", pinyin: "mom", chi: "身體", pos: "名詞" },
+    "모습": { kor: "모습", pinyin: "mo-seup", chi: "樣子、面貌", pos: "名詞" },
+    "모양": { kor: "모양", pinyin: "mo-yang", chi: "形狀、樣子", pos: "名詞" },
+    "모두": { kor: "모두", pinyin: "mo-du", chi: "全部、大家", pos: "名詞/副詞" },
+    "모르다": { kor: "모르다", pinyin: "mo-reu-da", chi: "不知道", pos: "動詞" },
+    "못하다": { kor: "못하다", pinyin: "mot-ha-da", chi: "無法、做不到", pos: "動詞" },
+    "무": { kor: "무", pinyin: "mu", chi: "蘿蔔", pos: "名詞" },
+    "무대": { kor: "무대", pinyin: "mu-dae", chi: "舞台", pos: "名詞" },
+    "문학": { kor: "문학", pinyin: "mun-hak", chi: "文學 / 文學作品", pos: "名詞" },
+    "물": { kor: "물", pinyin: "mul", chi: "水", pos: "名詞" },
+    "미모": { kor: "미모", pinyin: "mi-mo", chi: "美貌", pos: "名詞" },
+    "민첩하다": { kor: "민첩하다", pinyin: "min-cheop-ha-da", chi: "敏捷、機敏", pos: "形容詞" },
+    "믿다": { kor: "믿다", pinyin: "mit-da", chi: "相信", pos: "動詞" },
+
+    // B
+    "바람": { kor: "바람", pinyin: "ba-ram", chi: "風", pos: "名詞" },
+    "바르다": { kor: "바르다", pinyin: "ba-reu-da", chi: "端正、正確", pos: "形容詞" },
+    "바뀌다": { kor: "바뀌다", pinyin: "ba-kkwi-da", chi: "改變、轉變", pos: "動詞" },
+    "박수": { kor: "박수", pinyin: "bak-su", chi: "掌聲", pos: "名詞" },
+    "받다": { kor: "받다", pinyin: "bat-da", chi: "接受、受到", pos: "動詞" },
+    "발": { kor: "발", pinyin: "bal", chi: "腳", pos: "名詞" },
+    "밝다": { kor: "밝다", pinyin: "bak-da", chi: "明亮、清晰", pos: "形容詞" },
+    "방": { kor: "방", pinyin: "bang", chi: "房間", pos: "名詞" },
+    "방향": { kor: "방향", pinyin: "bang-hyang", chi: "方向", pos: "名詞" },
+    "방법": { kor: "방법", pinyin: "bang-beop", chi: "方法", pos: "名詞" },
+    "배추": { kor: "배추", pinyin: "bae-chu", chi: "大白菜", pos: "名詞" },
+    "배우다": { kor: "배우다", pinyin: "bae-u-da", chi: "學習", pos: "動詞" },
+    "백석": { kor: "백석", pinyin: "baek-seok", chi: "白石 (詩人名)", pos: "名詞" },
+    "벌": { kor: "벌", pinyin: "beol", chi: "蜜蜂", pos: "名詞" },
+    "벌써": { kor: "벌써", pinyin: "beol-sseo", chi: "已經", pos: "副詞" },
+    "범": { kor: "범", pinyin: "beom", chi: "老虎", pos: "名詞" },
+    "법칙": { kor: "법칙", pinyin: "beop-chik", chi: "法則、規律", pos: "名詞" },
+    "벽": { kor: "벽", pinyin: "byeok", chi: "牆壁", pos: "名詞" },
+    "변하다": { kor: "변하다", pinyin: "byeon-ha-da", chi: "改變", pos: "動詞" },
+    "보내다": { kor: "보내다", pinyin: "bo-nae-da", chi: "度過、發送", pos: "動詞" },
+    "보배": { kor: "보배", pinyin: "bo-bae", chi: "寶物、寶貝", pos: "名詞" },
+    "보이다": { kor: "보이다", pinyin: "bo-i-da", chi: "顯現、看起來", pos: "動詞" },
+    "보다": { kor: "보다", pinyin: "bo-da", chi: "看、視為", pos: "動詞" },
+    "보잘것없다": { kor: "보잘것없다", pinyin: "bo-jal-geot-eop-da", chi: "微不足道、渺小", pos: "形容詞" },
+    "부귀하다": { kor: "부귀하다", pinyin: "bu-gwi-ha-da", chi: "富貴", pos: "形容詞" },
+    "부유하다": { kor: "부유하다", pinyin: "bu-yu-ha-da", chi: "富有", pos: "形容詞" },
+    "부인": { kor: "부인", pinyin: "bu-in", chi: "夫人、妻子", pos: "名詞" },
+    "부터": { kor: "부터", pinyin: "bu-teo", chi: "從…起", pos: "助詞" },
+    "부탁하다": { kor: "부탁하다", pinyin: "bu-tak-ha-da", chi: "拜託、委託", pos: "動詞" },
+    "북적북적": { kor: "북적북적", pinyin: "buk-jeok-buk-jeok", chi: "熙熙攘攘、熱鬧", pos: "副詞" },
+    "분위기": { kor: "분위기", pinyin: "bun-wi-gi", chi: "氣氛、氛圍", pos: "名詞" },
+    "불빛": { kor: "불빛", pinyin: "bul-bit", chi: "燈光、火光", pos: "名詞" },
+    "부르다": { kor: "부르다", pinyin: "bu-reu-da", chi: "演唱、呼喚", pos: "動詞" },
+    "비판하다": { kor: "비판하다", pinyin: "bi-phan-ha-da", chi: "批判、批評", pos: "動詞" },
+    "빛나다": { kor: "빛나다", pinyin: "bit-na-da", chi: "發光、閃耀", pos: "動詞" },
+    "뿐만 아니라": { kor: "뿐만 아니라", pinyin: "ppun-man a-ni-ra", chi: "不僅如此", pos: "連詞" },
+    "빼어나다": { kor: "빼어나다", pinyin: "ppae-eo-na-da", chi: "出眾、卓越", pos: "形容詞" },
+
+    // S
+    "사람": { kor: "사람", pinyin: "sa-ram", chi: "人", pos: "名詞" },
+    "사랑": { kor: "사랑", pinyin: "sa-rang", chi: "愛、愛情", pos: "名詞" },
+    "사랑하다": { kor: "사랑하다", pinyin: "sa-rang-ha-da", chi: "愛", pos: "動詞" },
+    "사기꾼": { kor: "사기꾼", pinyin: "sa-gi-kkun", chi: "騙子", pos: "名詞" },
+    "사치스럽다": { kor: "사치스럽다", pinyin: "sa-chi-seu-reop-da", chi: "奢侈、奢華", pos: "形容詞" },
+    "사진을 찍다": { kor: "사진을 찍다", pinyin: "sa-jin-eul jjik-da", chi: "拍照", pos: "動詞片語" },
+    "살": { kor: "살", pinyin: "sal", chi: "歲", pos: "量詞" },
+    "살다": { kor: "살다", pinyin: "sal-da", chi: "生活、居住", pos: "動詞" },
+    "살찌다": { kor: "살찌다", pinyin: "sal-jji-da", chi: "發胖、肥胖", pos: "動詞" },
+    "삶": { kor: "삶", pinyin: "sam", chi: "人生、生活", pos: "名詞" },
+    "상식": { kor: "상식", pinyin: "sang-sik", chi: "常識", pos: "名詞" },
+    "상황": { kor: "상황", pinyin: "sang-hwang", chi: "狀況、處境", pos: "名詞" },
+    "생각": { kor: "생각", pinyin: "saeng-gak", chi: "想法、思考", pos: "名詞" },
+    "생각하다": { kor: "생각하다", pinyin: "saeng-gak-ha-da", chi: "思考、認為", pos: "動詞" },
+    "서로": { kor: "서로", pinyin: "seo-ro", chi: "互相", pos: "副詞" },
+    "선물": { kor: "선물", pinyin: "seon-mul", chi: "禮物", pos: "名詞" },
+    "설명": { kor: "설명", pinyin: "seol-myeong", chi: "說明、解釋", pos: "名詞" },
+    "섬세하다": { kor: "섬세하다", pinyin: "seom-se-ha-da", chi: "細膩、細致", pos: "形容詞" },
+    "세상": { kor: "세상", pinyin: "se-sang", chi: "世界、世間", pos: "名詞" },
+    "소개하다": { kor: "소개하다", pinyin: "so-gae-ha-da", chi: "介紹", pos: "動詞" },
+    "소중하다": { kor: "소중하다", pinyin: "so-jung-ha-da", chi: "珍貴、重要", pos: "形容詞" },
+    "손": { kor: "손", pinyin: "son", chi: "手", pos: "名詞" },
+    "손님": { kor: "손님", pinyin: "son-nim", chi: "客人、顧客", pos: "名詞" },
+    "손바닥": { kor: "손바닥", pinyin: "son-ba-dak", chi: "手掌", pos: "名詞" },
+    "손뼉을 치다": { kor: "손뼉을 치다", pinyin: "son-ppyeog-eul chi-da", chi: "拍手、鼓掌", pos: "動詞片語" },
+    "수양하다": { kor: "수양하다", pinyin: "su-yang-ha-da", chi: "修養", pos: "動詞" },
+    "수척하다": { kor: "수척하다", pinyin: "su-cheok-ha-da", chi: "消瘦、憔悴", pos: "形容詞" },
+    "순간": { kor: "순간", pinyin: "sun-gan", chi: "瞬間、時刻", pos: "名詞" },
+    "순박하다": { kor: "순박하다", pinyin: "sun-bak-ha-da", chi: "淳樸、質樸", pos: "形容詞" },
+    "술": { kor: "술", pinyin: "sul", chi: "酒", pos: "名詞" },
+    "쉬운": { kor: "쉬운", pinyin: "swi-un", chi: "容易的", pos: "冠詞形" },
+    "쉽다": { kor: "쉽다", pinyin: "swip-da", chi: "容易、簡單", pos: "形容詞" },
+    "스스로": { kor: "스스로", pinyin: "seu-seu-ro", chi: "自己、自發地", pos: "名詞/副詞" },
+    "슬픔": { kor: "슬픔", pinyin: "seul-pheum", chi: "悲傷、悲痛", pos: "名詞" },
+    "시간": { kor: "시간", pinyin: "si-gan", chi: "時間", pos: "名詞" },
+    "시": { kor: "시", pinyin: "si", chi: "詩", pos: "名詞" },
+    "시인": { kor: "시인", pinyin: "si-in", chi: "詩人", pos: "名詞" },
+    "시작되다": { kor: "시작되다", pinyin: "si-jak-doe-da", chi: "開始", pos: "動詞" },
+    "시대": { kor: "시대", pinyin: "si-dae", chi: "時代", pos: "名詞" },
+    "식사": { kor: "식사", pinyin: "sik-sa", chi: "用餐、吃飯", pos: "名詞" },
+    "신분": { kor: "신분", pinyin: "sin-bun", chi: "身分、地位", pos: "名詞" },
+    "심문하다": { kor: "심문하다", pinyin: "sim-mun-ha-da", chi: "審問", pos: "動詞" },
+    "씻다": { kor: "씻다", pinyin: "ssit-da", chi: "洗、清洗", pos: "動詞" },
+    "쓸쓸하다": { kor: "sseul-sseul-ha-da", chi: "淒涼、孤單", pos: "形容詞" },
+    "쓰다": { kor: "쓰다", pinyin: "sseu-da", chi: "寫、使用", pos: "動詞" },
+
+    // A
+    "아기": { kor: "아기", pinyin: "a-gi", chi: "嬰兒、小孩", pos: "名詞" },
+    "아름답다": { kor: "아름답다", pinyin: "a-reum-dap-da", chi: "美麗、漂亮", pos: "形容詞" },
+    "아무리": { kor: "아무리", pinyin: "a-mu-ri", chi: "無論怎樣、再怎麼", pos: "副詞" },
+    "아프다": { kor: "아프다", pinyin: "a-pheu-da", chi: "痛、生病", pos: "形容詞" },
+    "안주": { kor: "안주", pinyin: "an-ju", chi: "下酒菜", pos: "名詞" },
+    "앉다": { kor: "앉다", pinyin: "an-da", chi: "坐", pos: "動詞" },
+    "안녕하세요": { kor: "안녕하세요", pinyin: "an-nyeong-ha-se-yo", chi: "你好", pos: "感嘆詞" },
+    "악당": { kor: "악당", pinyin: "ak-dang", chi: "惡棍、壞人", pos: "名詞" },
+    "양고기": { kor: "양고기", pinyin: "yang-go-gi", chi: "羊肉", pos: "名詞" },
+    "어둡다": { kor: "어둡다", pinyin: "eo-dup-da", chi: "昏暗、黑暗", pos: "形容詞" },
+    "어디": { kor: "어디", pinyin: "eo-di", chi: "哪裡", pos: "代詞" },
+    "어리다": { kor: "어리다", pinyin: "eo-ri-da", chi: "幼小、年幼", pos: "形容詞" },
+    "어려운": { kor: "어려운", pinyin: "eo-ryeo-un", chi: "困難的", pos: "冠詞形" },
+    "어렵다": { kor: "어렵다", pinyin: "eo-ryeop-da", chi: "困難", pos: "形容詞" },
+    "어린": { kor: "어린", pinyin: "eo-rin", chi: "年幼的", pos: "冠詞形" },
+    "어머니": { kor: "어머니", pinyin: "eo-meo-ni", chi: "母親", pos: "名詞" },
+    "어쩐지": { kor: "어쩐지", pinyin: "eo-jjeon-ji", chi: "怪不得、不知為何", pos: "副詞" },
+    "어떻게": { kor: "어떻게", pinyin: "eo-tteoh-ge", chi: "如何、怎樣", pos: "副詞" },
+    "어떤": { kor: "어떤", pinyin: "eo-tteon", chi: "什麼樣的、某種", pos: "冠詞" },
+    "어쩌면": { kor: "어쩌면", pinyin: "eo-jjeo-myeon", chi: "也許、可能", pos: "副詞" },
+    "어질다": { kor: "어질다", pinyin: "eo-jil-da", chi: "仁慈、賢良", pos: "形容詞" },
+    "얼굴": { kor: "얼굴", pinyin: "eol-gul", chi: "臉龐", pos: "名詞" },
+    "엄마": { kor: "엄마", pinyin: "eom-ma", chi: "媽媽", pos: "名詞" },
+    "언제나": { kor: "언제나", pinyin: "eon-je-na", chi: "總是、無論何時", pos: "副詞" },
+    "여위다": { kor: "여위다", pinyin: "yeo-wi-da", chi: "消瘦、消瘠", pos: "動詞/形容詞" },
+    "여러분": { kor: "여러분", pinyin: "yeo-reo-bun", chi: "各位、大家", pos: "代詞" },
+    "역할": { kor: "역할", pinyin: "yeok-hal", chi: "角色、作用", pos: "名詞" },
+    "연기": { kor: "연기", pinyin: "yeon-gi", chi: "演技、表演", pos: "名詞" },
+    "열심히": { kor: "열심히", pinyin: "yeol-sim-hi", chi: "熱心、努力地", pos: "副詞" },
+    "영감": { kor: "영감", pinyin: "yeong-gam", chi: "靈感", pos: "名詞" },
+    "영상": { kor: "영상", pinyin: "yeong-sang", chi: "影片、影像", pos: "名詞" },
+    "영향": { kor: "영향", pinyin: "yeong-hyang", chi: "影響", pos: "名詞" },
+    "예술": { kor: "예술", pinyin: "ye-sul", chi: "藝術", pos: "名詞" },
+    "예전": { kor: "예전", pinyin: "ye-jeon", chi: "以前、過去", pos: "名詞" },
+    "오다": { kor: "오다", pinyin: "o-da", chi: "來", pos: "動詞" },
+    "오래": { kor: "오래", pinyin: "o-rae", chi: "長久地、很久", pos: "副詞" },
+    "오늘": { kor: "오늘", pinyin: "o-neul", chi: "今天", pos: "名詞" },
+    "옥": { kor: "옥", pinyin: "ok", chi: "監獄", pos: "名詞" },
+    "온전히": { kor: "온전히", pinyin: "on-jeon-hi", chi: "完整地、完全地", pos: "副詞" },
+    "올해": { kor: "올해", pinyin: "ol-hae", chi: "今年", pos: "名詞" },
+    "완성하다": { kor: "완성하다", pinyin: "wan-seong-ha-da", chi: "完成", pos: "動詞" },
+    "왕비": { kor: "왕비", pinyin: "wang-bi", chi: "王妃", pos: "名詞" },
+    "외롭다": { kor: "외롭다", pinyin: "oe-rop-da", chi: "孤單、寂寞", pos: "形容詞" },
+    "외모": { kor: "외모", pinyin: "oe-mo", chi: "外貌", pos: "名詞" },
+    "요염하다": { kor: "요염하다", pinyin: "yo-yeom-ha-da", chi: "妖豔", pos: "形容詞" },    
+    "용맹": { kor: "용맹", pinyin: "yong-maeng", chi: "勇猛", pos: "名詞" },
+    "우두머리": { kor: "우두머리", pinyin: "u-du-meo-ri", chi: "首領、頭目", pos: "名詞" },
+    "우리": { kor: "우리", pinyin: "u-ri", chi: "我們", pos: "代詞" },
+    "운명": { kor: "운명", pinyin: "un-myeong", chi: "命運", pos: "名詞" },
+    "운수": { kor: "운수", pinyin: "un-su", chi: "運勢、氣運", pos: "名詞" },
+    "위로하다": { kor: "위로하다", pinyin: "wi-ro-ha-da", chi: "慰藉、安慰", pos: "動詞" },
+    "위험": { kor: "위험", pinyin: "wi-heom", chi: "危險", pos: "名詞" },
+    "유별나다": { kor: "유별나다", pinyin: "yu-byeol-na-da", chi: "特別、異乎尋常", pos: "形容詞" },
+    "육식": { kor: "육식", pinyin: "yuk-sik", chi: "吃肉、肉食", pos: "名詞" },
+    "의견": { kor: "의견", pinyin: "ui-gyeon", chi: "意見", pos: "名詞" },
+    "의지": { kor: "의지", pinyin: "ui-ji", chi: "意志", pos: "名詞" },
+    "의미": { kor: "의미", pinyin: "ui-mi", chi: "意義、意思", pos: "名詞" },
+    "이것": { kor: "이것", pinyin: "i-geot", chi: "這個", pos: "代詞" },
+    "이런": { kor: "이런", pinyin: "i-reon", chi: "這樣的", pos: "冠詞" },
+    "이렇게": { kor: "이렇게", pinyin: "i-reoh-ge", chi: "這樣地", pos: "副詞" },
+    "이미지": { kor: "이미지", pinyin: "i-mi-ji", chi: "形象、印象", pos: "名詞" },
+    "이야기": { kor: "이야기", pinyin: "i-ya-gi", chi: "故事、話語", pos: "名詞" },
+    "이상하다": { kor: "이상하다", pinyin: "i-sang-ha-da", chi: "奇怪", pos: "形容詞" },
+    "이번": { kor: "이번", pinyin: "i-beon", chi: "這次", pos: "名詞" },
+    "익숙하다": { kor: "익숙하다", pinyin: "ik-suk-ha-da", chi: "熟悉、習慣", pos: "形容詞" },
+    "인기": { kor: "인기", pinyin: "in-gi", chi: "人氣、受歡迎", pos: "名詞" },
+    "일어나다": { kor: "일어나다", pinyin: "ir-eo-na-da", chi: "起身、發生", pos: "動詞" },
+    "읽다": { kor: "읽다", pinyin: "ik-da", chi: "閱讀", pos: "動詞" },
+    "잃다": { kor: "잃다", pinyin: "il-ta", chi: "失去、遺失", pos: "動詞" },
+    "입다": { kor: "입다", pinyin: "ip-da", chi: "穿", pos: "動詞" },
+    "있어": { kor: "있어", pinyin: "iss-eo", chi: "有 (口語非格式體)", pos: "動詞" },
+    "있다": { kor: "있다", pinyin: "it-da", chi: "有、存在", pos: "動詞/形容詞" },
+
+    // J
+    "자객": { kor: "자객", pinyin: "ja-gaek", chi: "刺客", pos: "名詞" },
+    "자신": { kor: "자신", pinyin: "ja-sin", chi: "自己", pos: "名詞" },
+    "작품": { kor: "작품", pinyin: "jak-phum", chi: "作品", pos: "名詞" },
+    "작가": { kor: "작가", pinyin: "jak-ga", chi: "作家", pos: "名詞" },
+    "잔인하다": { kor: "잔인하다", pinyin: "jan-in-ha-da", chi: "殘忍", pos: "形容詞" },
+    "장님": { kor: "장님", pinyin: "jang-nim", chi: "盲人、瞎子", pos: "名詞" },
+    "장면": { kor: "장면", pinyin: "jang-myeon", chi: "場景、畫面", pos: "名詞" },
+    "재미있다": { kor: "재미있다", pinyin: "jae-mi-it-da", chi: "有趣", pos: "形容詞" },
+    "저녁": { kor: "저녁", pinyin: "jeo-nyeok", chi: "晚上、傍晚", pos: "名詞" },
+    "전시회": { kor: "전시회", pinyin: "jeon-si-hoe", chi: "展覽會", pos: "名詞" },
+    "전부": { kor: "전부", pinyin: "jeon-bu", chi: "全部", pos: "名詞/副詞" },
+    "절름발이": { kor: "절름발이", pinyin: "jeol-reum-ba-ri", chi: "跛子、瘸子", pos: "名詞" },
+    "정말": { kor: "정말", pinyin: "jeong-mal", chi: "真的、確實", pos: "副詞/名詞" },
+    "정직하다": { kor: "정직하다", pinyin: "jeong-jik-ha-da", chi: "正直", pos: "形容詞" },
+    "제일": { kor: "제일", pinyin: "je-il", chi: "第一、最", pos: "副詞/名詞" },
+    "제목": { kor: "제목", pinyin: "je-mok", chi: "題目、標題", pos: "名詞" },
+    "조용히": { kor: "조용히", pinyin: "jo-yong-hi", chi: "安靜地", pos: "副詞" },
+    "조명": { kor: "조명", pinyin: "jo-myeong", chi: "燈光、照明", pos: "名詞" },
+    "존귀하다": { kor: "존귀하다", pinyin: "jon-gwi-ha-da", chi: "尊貴", pos: "形容詞" },
+    "좁다": { kor: "좁다", pinyin: "jop-da", chi: "狹窄", pos: "形容詞" },
+    "좌우명": { kor: "좌우명", pinyin: "jwa-u-myeong", chi: "座右銘", pos: "名詞" },
+    "죄": { kor: "죄", pinyin: "joe", chi: "罪過、罪行", pos: "名詞" },
+    "주다": { kor: "주다", pinyin: "ju-da", chi: "給予", pos: "動詞" },
+    "죽다": { kor: "죽다", pinyin: "juk-da", chi: "死亡", pos: "動詞" },
+    "즐겁다": { kor: "즐겁다", pinyin: "jeul-geop-da", chi: "愉快、快樂", pos: "形容詞" },
+    "지키다": { kor: "지키다", pinyin: "ji-khi-da", chi: "守護、堅守", pos: "動詞" },
+    "직업": { kor: "직업", pinyin: "jig-eop", chi: "職業", pos: "名詞" },
+    "진흙": { kor: "진흙", pinyin: "jin-heulk", chi: "泥巴、泥濘", pos: "名詞" },
+    "진심": { kor: "진심", pinyin: "jin-sim", chi: "真心", pos: "名詞" },
+    "질문": { kor: "질문", pinyin: "jil-mun", chi: "提問、問題", pos: "名詞" },
+    "징조": { kor: "징조", pinyin: "jing-jo", chi: "徵兆、前兆", pos: "名詞" },
+
+    // CH
+    "차꼬": { kor: "차꼬", pinyin: "cha-kko", chi: "腳鐐", pos: "名詞" },
+    "참": { kor: "참", pinyin: "cham", chi: "真、確實", pos: "副詞" },
+    "처지": { kor: "처지", pinyin: "cheo-ji", chi: "處境、境遇", pos: "名詞" },
+    "처음": { kor: "처음", pinyin: "cheo-eum", chi: "第一次、當初", pos: "名詞/副詞" },
+    "천하다": { kor: "천하다", pinyin: "cheon-ha-da", chi: "卑賤、下賤", pos: "形容詞" },
+    "철": { kor: "철", pinyin: "cheol", chi: "季節", pos: "名詞" },
+    "첫": { kor: "첫", pinyin: "cheot", chi: "第一、初", pos: "冠詞" },
+    "초": { kor: "초", pinyin: "cho", chi: "初期、初", pos: "名詞/依存名詞" },
+    "축하하다": { kor: "축하하다", pinyin: "chuk-ha-da", chi: "祝賀、慶祝", pos: "動詞" },
+    "출연하다": { kor: "출연하다", pinyin: "chul-yeon-ha-da", chi: "演出、出演", pos: "動詞" },
+    "춤추다": { kor: "춤추다", pinyin: "chum-chu-da", chi: "跳舞", pos: "動詞" },
+    "춥다": { kor: "춥다", pinyin: "chup-da", chi: "寒冷", pos: "形容詞" },
+    "치욕": { kor: "치욕", pinyin: "chi-yok", chi: "恥辱", pos: "名詞" },
+    "칭찬하다": { kor: "칭찬하다", pinyin: "ching-chan-ha-da", chi: "稱讚、表揚", pos: "動詞" },
+
+    // KH / TH / PH / H
+    "케이팝": { kor: "케이팝", pinyin: "khei-i-ppap", chi: "K-POP (韓國流行音樂)", pos: "名詞" },
+    "코": { kor: "코", pinyin: "kho", chi: "鼻子", pos: "名詞" },
+    "큰칼": { kor: "큰칼", pinyin: "kheun-kal", chi: "枷鎖、大刀", pos: "名詞" },
+    "크다": { kor: "크다", pinyin: "kheu-da", chi: "大", pos: "形容詞" },
+    "태어나다": { kor: "태어나다", pinyin: "thae-eo-na-da", chi: "出生", pos: "動詞" },
+    "태도": { kor: "태도", pinyin: "thae-do", chi: "態度", pos: "名詞" },
+    "터무니없다": { kor: "터무니없다", pinyin: "theo-mu-ni-eop-da", chi: "荒謬、毫無根據", pos: "形容詞" },
+    "통쾌하다": { kor: "통쾌하다", pinyin: "thong-kwae-ha-da", chi: "痛快、人心大快", pos: "形容詞" },
+    "특히": { kor: "특히", pinyin: "theuk-hi", chi: "特別是、尤其", pos: "副詞" },
+    "특별히": { kor: "특별히", pinyin: "theuk-byeol-hi", chi: "特別地", pos: "副詞" },
+    "판단하다": { kor: "판단하다", pinyin: "phan-dan-ha-da", chi: "判斷", pos: "動詞" },
+    "표정": { kor: "표정", pinyin: "phyo-jeong", chi: "表情", pos: "名詞" },
+    "표범": { kor: "표범", pinyin: "phyo-beom", chi: "豹子", pos: "名詞" },
+    "프로그램": { kor: "프로그램", pinyin: "pheu-ro-geu-raem", chi: "節目、程序", pos: "名詞" },
+    "하늘": { kor: "하늘", pinyin: "ha-neul", chi: "天空", pos: "名詞" },
+    "하지만": { kor: "하지만", pinyin: "ha-ji-man", chi: "但是", pos: "連詞" },
+    "학창": { kor: "학창", pinyin: "hak-chang", chi: "求學時期、學生時代", pos: "名詞" },
+    "한국": { kor: "한국", pinyin: "han-guk", chi: "韓國", pos: "名詞" },
+    "함께": { kor: "함께", pinyin: "ham-kke", chi: "一起", pos: "副詞" },
+    "해": { kor: "해", pinyin: "hae", chi: "太陽、年份", pos: "名詞" },
+    "행복하다": { kor: "행복하다", pinyin: "haeng-bok-ha-da", chi: "幸福", pos: "形容詞" },
+    "향하다": { kor: "향하다", pinyin: "hyang-ha-da", chi: "朝向、面向", pos: "動詞" },
+    "현명하다": { kor: "현명하다", pinyin: "hyeon-myeong-ha-da", chi: "賢明、明智", pos: "形容詞" },
+    "현재": { kor: "현재", pinyin: "hyeon-jae", chi: "現在、目前", pos: "名詞/副詞" },
+    "형식": { kor: "형식", pinyin: "hyeong-sik", chi: "形式", pos: "名詞" },
+    "한편": { kor: "한편", pinyin: "han-phyeon", chi: "另一方面", pos: "副詞/名詞" },
+    "혹시": { kor: "혹시", pinyin: "hok-si", chi: "或許、難道", pos: "副詞" },
+    "혹하다": { kor: "혹하다", pinyin: "hok-ha-da", chi: "迷戀、迷惑", pos: "動詞" },
+    "혼자": { kor: "혼자", pinyin: "hon-ja", chi: "獨自、一個人", pos: "名詞/副詞" },
+    "홀로": { kor: "홀로", pinyin: "hol-ro", chi: "獨自地", pos: "副詞" },
+    "화려하다": { kor: "화려하다", pinyin: "hwa-ryeo-ha-da", chi: "華麗", pos: "形容詞" },
+    "흉하다": { kor: "흉하다", pinyin: "hyung-ha-da", chi: "不祥、醜陋", pos: "形容詞" },
+    "흉악하다": { kor: "흉악하다", pinyin: "hyung-ak-ha-da", chi: "凶惡、殘暴", pos: "形容詞" },
+    "희다": { kor: "희다", pinyin: "hui-da", chi: "白、白色", pos: "形容詞" },
+    "힘": { kor: "힘", pinyin: "him", chi: "力量、精力", pos: "名詞" },
+    "힘들다": { kor: "힘들다", pinyin: "him-deul-da", chi: "辛苦、困難", pos: "形容詞" },
+
+    // 文法與複合句構 (Grammar Patterns & Expressions)
+    "~고 싶다": { kor: "~고 싶다", pinyin: "-go sip-da", chi: "想要（做…）", pos: "句型" } 
+};
 
         /* ==========================================
            3. SRT 資料庫與範例資料
@@ -582,140 +719,140 @@
     liyu: {
         kor: `1
 00:00:00,000 --> 00:00:11,200
-최립우가 들려주는 {교과서} 속 {문학}
+최립우가 {들리다|들려주는} {교과서} 속 {문학}
 
 2
 00:00:11,200 --> 00:00:14,800
-안녕하세요 플레어유 최립우입니다
+{안녕하세요} 플레어유 최립우입니다
 
 3
 00:00:14,800 --> 00:00:18,500
-저는 {어리다|어렸을} 때부터 여러 예술에 관심이 {많다|많았어요}
+저는 {어리다|어렸을} 때부터 여러 {예술}에 {관심}이 {많다|많았어요}
 
 4
 00:00:18,500 --> 00:00:26,500
-학교 다닐때는 디자인을 공부했고 18살은 고향을 떠나 한국으로 와서 케이팝 가수를 꿈꿨어요
+{학교} {다니다|다닐}때는 {디자인}을 {공부하다|공부했고} 18{살}은 {고향}을 떠나 {한국}으로 {오다|와서} {케이팝} {가수}를 {꿈꾸다|꿈꿨어요}
 
 5
 00:00:26,500 --> 00:00:31,800
-데뷔하고 나서는 제가 찍은 사진으로 작은 전시회도 열었죠
+{데뷔하다|데뷔하고} 나서는 제가 {사진을 찍다|찍은 사진} 으로 작은 {전시회}도 열었죠
 
 6
 00:00:31,800 --> 00:00:34,900
-문학도 저에게 큰 영감을 주는데요
+{문학}도 저에게 {크다|큰} {영감}을 주는데요
 
 7
 00:00:34,900 --> 00:00:42,600
-특히 한국시를 읽으면 짧은 글인데도 섬세한 감정이 잘 느껴져서 마음에 오래 남더라구요
+{특히} {한국}{시}를 {읽다|읽으면} {짧다|짧은} 글인데도 {섬세하다|섬세한} {감정}이 잘 {느끼다|느껴져서} {마음}에 {오래} 남더라구요
 
 8
 00:00:42,600 --> 00:00:48,640
-그리고 여러분이 학교에서 배우는 교과서에도 좋은 작품들이 정말 많아요
+{그리고} {여러분}이 {학교}에서 {배우다|배우는} {교과서}에도 {좋다|좋은} {작품}들이 {정말} {많다|많아요}
 
 9
 00:00:48,640 --> 00:00:53,800
-그 중에서 저는 시인 백석의 시를 소개해드리려고 합니다
+그 중에서 저는 {시인} 백석의 {시}를 {소개하다|소개해드리려고} 합니다
 
 10
 00:00:53,800 --> 00:01:00,900
-1930년대를 대표하는 시인 백석은 당대 세련된 모던 보이로 알려졌지만
+1930{년대}를 {대표하다|대표하는} {시인} 백석은 {당대} 세련된 모던 보이로 알려졌지만
 
 11
 00:01:00,900 --> 00:01:06,100
-고향과 가족을 그리워하는 외로운 마음도 가지고 있었어요
+{고향}과 {가족}을 {그리워하다|그리워하는} {외롭다|외로운} {마음}도 가지고 있었어요
 
 12
 00:01:06,100 --> 00:01:09,400
-그 마음은 그의 시에도 담겨있는데요
+그 {마음}은 그의 {시}에도 담겨있는데요
 
 13
 00:01:09,400 --> 00:01:14,300
-제가 들려드릴 흰 바람벽이 있어라는 작품도 마찬가지입니다
+제가 {들리다|들려드릴} {희다|흰} {바람}{벽}이 {있다|있어}라는 {작품}도 {마찬가지}입니다
 
 14
 00:01:14,300 --> 00:01:22,000
-이 시는 고향을 떠나 외롭게 살아가는 사람이 자신의 마음속을 조용히 들여다보는 이야기예요
+이 {시}는 {고향}을 떠나 {외롭다|외롭게} {살다|살아가는} {사람}이 {자신}의 {마음}속을 {조용히} 들여다보는 {이야기}예요
 
 15
 00:01:22,000 --> 00:01:26,500
-흰 바람벽이 이 사람의 속마음을 어떻게 보여주는지
+{희다|흰} {바람}{벽}이 이 {사람}의 속{마음}을 {어떻게} 보여주는지
 
 16
 00:01:26,500 --> 00:01:29,600
-그 벽을 보면서 어떤 감정을 느끼는지
+그 {벽}을 {보다|보면서} {어떤} {감정}을 {느끼다|느끼는지}
 
 17
 00:01:29,600 --> 00:01:33,400
-생각하며 들어보시면 더 좋을 것 같아요
+{생각하다|생각하며} 들어보시면 {더} {좋다|좋을} 것 같아요
 
 18
 00:01:33,400 --> 00:01:43,500
-그럼 지금부터 백석의 흰 바람벽이 있어 읽어드릴게요
+그럼 {지금}부터 백석의 {희다|흰} {바람}{벽}이 {있다|있어} {읽다|읽어드릴게요}
 
 19
 00:01:43,500 --> 00:01:49,300
-흰 바람벽이 있어-백석
+{희다|흰} {바람}{벽}이 {있다|있어}-백석
 
 20
 00:01:49,300 --> 00:01:59,140
-오늘 저녁 이 좁다란 방의 흰 바람벽에
-어쩐지 쓸쓸한 것만이 오고 간다
+{오늘} {저녁} 이 {좁다|좁다란} {방}의 {희다|흰} {바람}{벽}에
+{어쩐지} {쓸쓸하다|쓸쓸한} 것만이 오고 간다
 
 21
 00:01:59,140 --> 00:02:07,700
-이 흰 바람벽에
-희미한 십오촉(十五燭) 전등이 지치운 불빛을 내어던지고
+이 {희다|흰} {바람}{벽}에
+희미한 십오촉(十五燭) 전등이 지치운 {불빛}을 내어던지고
 
 22
 00:02:07,700 --> 00:02:13,450
-때글은 다 낡은 무명샤쓰가 어두운 그림자를 쉬이고
+때글은 다 {낡다|낡은} 무명샤쓰가 {어둡다|어두운} {그림자}를 쉬이고
 
 23
 00:02:13,450 --> 00:02:25,000
-그리고 또 달디단 따끈한 감주나 한잔 먹고 싶다고 생각하는 내 가지가지 외로운 생각이 헤매인다
+{그리고} 또 달디단 따끈한 감주나 한잔 {먹다|먹}{~고 싶다|고 싶다고} {생각하다|생각하는} 내 {가지가지} {외롭다|외로운} {생각}이 헤매인다
 
 24
 00:02:25,000 --> 00:02:29,600
-그런데 이것은 또 어인 일인가
+{그런데} {이것}은 또 어인 일인가
 
 25
 00:02:29,600 --> 00:02:36,300
-이 흰 바람벽에
-내 가난한 늙은 어머니가 있다
+이 {희다|흰} {바람}{벽}에
+내 {가난하다|가난한} {늙다|늙은} {어머니}가 {있다}
 
 26
 00:02:36,300 --> 00:02:49,900
-내 가난한 늙은 어머니가
-이렇게 시퍼러둥둥하니 추운 날인데 차디찬 물에 손은 담그고 무이며 배추를 씻고 있다.
+내 {가난하다|가난한} {늙다|늙은} {어머니}가
+{이렇게} 시퍼러둥둥하니 {춥다|추운} {날}인데 차디찬 {물}에 {손}은 담그고 {무}이며 {배추}를 {씻다|씻고} 있다.
 
 27
 00:02:49,900 --> 00:02:54,000
-또 내 사랑하는 사람이 있다
+또 내 {사랑하다|사랑하는} {사람}이 {있다}
 
 28
 00:02:54,000 --> 00:02:56,800
-내 사랑하는 어여쁜 사람이
+내 {사랑하다|사랑하는} 어여쁜 {사람}이
 
 29
 00:02:56,800 --> 00:03:02,800
-어느 먼 앞대 조용한 개포가의 나즈막한 집에서
+어느 먼 앞대 {조용히|조용한} 개포가의 나즈막한 {집}에서
 
 30
 00:03:02,800 --> 00:03:10,300
-그의 지아비와 마조 앉아 대구국을 끓여놓고 저녁을 먹는다
+그의 지아비와 마조 {앉다|앉아} {대구}국을 끓여놓고 {저녁}을 {먹다|먹는다}
 
 31
 00:03:10,300 --> 00:03:16,900
-벌써 어린것도 생겨서 옆에 끼고 저녁을 먹는다
+{벌써} {어리다|어린}것도 생겨서 {옆}에 끼고 {저녁}을 {먹다|먹는다}
 
 32
 00:03:16,900 --> 00:03:21,600
-그런데 또 이즈막하야 어늬 사이엔가
+{그런데} 또 이즈막하야 어늬 사이엔가
 
 33
 00:03:21,600 --> 00:03:26,920
-이 흰 바람벽엔
-내 쓸쓸한 얼굴을 쳐다보며
+이 {희다|흰} {바람}{벽}엔
+내 {쓸쓸하다|쓸쓸한} {얼굴}을 쳐다보며
 
 34
 00:03:26,920 --> 00:03:31,000
@@ -723,16 +860,16 @@
 
 35
 00:03:31,000 --> 00:03:41,500
-- 나는 이 세상에서 가난하고 외롭고 높고 쓸쓸하니 살어가도록 태어났다
+- 나는 이 {세상}에서 {가난하다|가난하고} {외롭다|외롭고} {높다|높고} {쓸쓸하다|쓸쓸하니} {살다|살어가도록} {태어나다|태어났다}
 
 36
 00:03:41,500 --> 00:03:55,700
-그리고 이 세상을 살어가는데
-내 가슴은 너무도 많이 뜨거운 것으로 호젓한 것으로 사랑으로 슬픔으로 가득 찬다
+{그리고} 이 {세상}을 {살다|살어가는데}
+내 {가슴}은 너무도 {많이} {뜨겁다|뜨거운} 것으로 호젓한 것으로 {사랑}으로 {슬픔}으로 가득 찬다
 
 37
 00:03:55,700 --> 00:04:02,500
-그리고 이번에는 나를 위로하는 듯이 나를 울력하는 듯이
+{그리고} {이번}에는 나를 {위로하다|위로하는} 듯이 나를 울력하는 듯이
 
 38
 00:04:02,500 --> 00:04:09,500
@@ -740,11 +877,11 @@
 
 39
 00:04:09,500 --> 00:04:17,100
-- 하늘이 이 세상을 내일 적에 그가 가장 귀해하고 사랑하는 것들은
+- {하늘}이 이 {세상}을 내일 적에 그가 {가장} {귀하다|귀해하고} {사랑하다|사랑하는} 것들은
 
 40
 00:04:17,100 --> 00:04:31,200
-모두 가난하고 외롭고 높고 쓸쓸하니 그리고 언제나 넘치는 사랑과 슬픔 속에 살도록 만드신 것이다
+{모두} {가난하다|가난하고} {외롭다|외롭고} {높다|높고} {쓸쓸하다|쓸쓸하니} {그리고} {언제나} 넘치는 {사랑}과 {슬픔} 속에 {살다|살도록} 만드신 것이다
 
 41
 00:04:31,200 --> 00:04:38,400
@@ -752,75 +889,75 @@
 
 42
 00:04:38,400 --> 00:04:58,800
-그리고 또 '프랑시쓰 쨈'과 도연명과 '라이넬 마리아 릴케'가 그러하듯이
+{그리고} 또 '프랑시쓰 쨈'과 도연명과 '라이넬 마리아 릴케'가 그러하듯이
 
 43
 00:04:58,800 --> 00:05:04,700
-백석의 시, 흰 바람벽이 있어 들려드렸습니다. 괜찮았나요?
+백석의 {시}, {희다|흰} {바람}{벽}이 {있다|있어} {들리다|들려드렸습니다}. {괜찮다|괜찮았나요}?
 
 44
 00:05:04,700 --> 00:05:09,400
-여러분은 들으면서 어떤 장면들이 떠오르셨나요?
+{여러분}은 들으면서 {어떤} {장면}들이 떠오르셨나요?
 
 45
 00:05:09,400 --> 00:05:18,400
-가난한 늙은 어머니, 사랑하는 사람, 그리고 가난하고 외롭고 높고 쓸쓸한 나의 모습까지
+{가난하다|가난한} {늙다|늙은} {어머니}, {사랑하다|사랑하는} {사람}, {그리고} {가난하다|가난하고} {외롭다|외롭고} {높다|높고} {쓸쓸하다|쓸쓸한} 나의 {모습}{까지}
 
 46
 00:05:18,400 --> 00:05:28,000
-좁은 방에서 이 사람은 그리운 사람들과 자신의 마음속 깊은 곳을 함께 떠올렸어요
+{좁다|좁은} {방}에서 이 {사람}은 그리운 {사람}들과 {자신}의 {마음}속 {깊다|깊은} 곳을 {함께} 떠올렸어요
 
 47
 00:05:28,000 --> 00:05:34,100
-여러분은 혹시 이 세상에 홀로 남겨진 듯한 기분을 느낀 적이 있나요?
+{여러분}은 {혹시} 이 {세상}에 {홀로} 남겨진 듯한 {기분}을 {느끼다|느낀} 적이 {있다|있나요}?
 
 48
 00:05:34,100 --> 00:05:42,100
-저는 어린 나이에 고향을 떠나 한국에 왔을 때 그런 기분이 들었던 순간들이 있었거든요
+저는 {어리다|어린} {나이}에 {고향}을 떠나 {한국}에 {오다|왔을} 때 그런 {기분}이 {들리다|들었던} {순간}들이 {있다|있었거든요}
 
 49
 00:05:42,100 --> 00:05:49,600
-이 시가 쓰였을 때 백석도 고향을 떠나 나선 곳에서 힘든 시간을 보내고 있었대요
+이 {시}가 쓰였을 때 백석도 {고향}을 떠나 나선 곳에서 {힘들다|힘든} {시간}을 {보내다|보내고} 있었대요
 
 50
 00:05:49,600 --> 00:05:55,800
-그래서 그 외로움이 저에게 더 가깝게 느껴졌던 것 같아요
+{그래서} 그 외로움이 저에게 {더} {가깝다|가깝게} {느끼다|느껴졌던} 것 같아요
 
 51
 00:05:55,800 --> 00:06:00,640
-하지만 백석은 그 외로움에만 머물지 않았어요
+{하지만} 백석은 그 외로움에만 머물지 않았어요
 
 52
 00:06:00,640 --> 00:06:06,500
-외로움과 쓸쓸함 속에서도 운명을 긍정적으로 받아들이고
+외로움과 {쓸쓸하다|쓸쓸함} 속에서도 {운명}을 {긍정적}으로 받아들이고
 
 53
 00:06:06,500 --> 00:06:13,700
-스스로를 위로하면서 현재의 삶을 견뎌나가려는 의지를 보여줬죠
+{스스로}를 {위로하다|위로하면서} {현재}의 {삶}을 견뎌나가려는 {의지}를 보여줬죠
 
 54
 00:06:13,700 --> 00:06:18,300
-그리고 이런 태도는 우리에게도 큰 힘이 됩니다
+{그리고} 이런 {태도}는 {우리}에게도 {크다|큰} {힘}이 됩니다
 
 55
 00:06:18,300 --> 00:06:27,400
-어려운 순간을 그냥 슬픔으로만 두지 않고 그 속에서 자신만의 의미를 찾아가는 모습이 참 멋지잖아요?
+{어렵다|어려운} {순간}을 그냥 {슬픔}으로만 두지 않고 그 속에서 {자신}만의 {의미}를 찾아가는 {모습}이 {참} 멋지잖아요?
 
 56
 00:06:27,400 --> 00:06:36,000
-여러분이 지금 힘든 시간을 보내고 계신다면 어쩌면 백석이 말한 높고 쓸쓸한 과정일지도 몰라요
+{여러분}이 {지금} {힘들다|힘든} {시간}을 {보내다|보내고} 계신다면 {어쩌면} 백석이 {말하다|말한} {높다|높고} {쓸쓸하다|쓸쓸한} {과정}일지도 몰라요
 
 57
 00:06:36,000 --> 00:06:42,200
-그 시간이 지나면 더 단단하고 소중한 사람이 될 거예요
+그 {시간}이 지나면 {더} {단단하다|단단하고} {소중하다|소중한} {사람}이 될 거예요
 
 58
 00:06:42,200 --> 00:06:49,700
-제가 이 시를 읽으면서 느꼈던 문학이 주는 위로를 여러분도 함께 느끼셨길 바라며
+제가 이 {시}를 {읽다|읽으면서} {느끼다|느꼈던} {문학}이 주는 위로를 {여러분}도 {함께} {느끼다|느끼셨길} 바라며
 
 59
 00:06:49,700 --> 00:06:55,400
-지금까지 플레어유 최립우였습니다`,
+{지금}{까지} 플레어유 최립우였습니다`,
         chi: `1
 00:00:00,000 --> 00:00:11,200
 崔立于朗讀教科書中的文學作品
@@ -1067,431 +1204,431 @@
     woojin: {
         kor: `1
 00:00:00,000 --> 00:00:09,400
-강우진이 들려주는 교과서 속 문학
+강우진이 {들리다|들려주는} {교과서} 속 {문학}
 
 2
 00:00:09,400 --> 00:00:12,800
-안녕하세요 플레어유의 강우진 입니다.
+{안녕하세요} 플레어유의 강우진 입니다.
 
 3
 00:00:12,800 --> 00:00:17,000
-여러분은 사람을 처음 볼 때 어떤 것부터 보시나요?
+{여러분}은 {사람}을 {처음} {보다|볼} 때 {어떤} 것부터 보시나요?
 
 4
 00:00:17,000 --> 00:00:20,300
-얼굴? 분위기? 느낌?
+{얼굴}? {분위기}? {느낌}?
 
 5
 00:00:20,300 --> 00:00:25,400
-사실 저도 예전엔 겉으로 보이는 이미지에 영향을 많이 받았어요.
+{사실} 저도 {예전}엔 겉으로 보이는 {이미지}에 {영향}을 {많이} {받다|받았어요}.
 
 6
 00:00:25,400 --> 00:00:28,100
-특히 오디션 프로그램을 하면서는
+{특히} 오디션 {프로그램}을 하면서는
 
 7
 00:00:28,100 --> 00:00:36,400
-단 몇 초의 무대, 몇 장면의 영상만으로 아 이 사람은 이런 사람이다 정해지는 느낌이 들 때도 있었죠.
+단 몇 {초}의 {무대}, 몇 {장면}의 {영상}만으로 아 이 {사람}은 이런 {사람}이다 {정하다|정해지는} {느낌}이 들 때도 {있다|있었죠}.
 
 8
 00:00:36,400 --> 00:00:40,200
-그럴 때마다 전 이런 생각을 하곤 했습니다.
+그럴 때마다 전 이런 {생각}을 하곤 했습니다.
 
 9
 00:00:40,200 --> 00:00:44,400
-겉으로 보이는 모습이 전부일까?
+겉으로 보이는 {모습}이 전부일까?
 
 10
 00:00:44,400 --> 00:00:50,000
-지금부터 제가 여러분께 소개해드릴 이야기도 바로 그 질문에서 시작됩니다.
+{지금}부터 제가 {여러분}께 {소개하다|소개해드릴} {이야기}도 바로 그 {질문}에서 {시작되다|시작됩니다}.
 
 11
 00:00:50,000 --> 00:00:57,900
-고등학교 문학 교과서에 수록된 고려시대 문인 이규보의 한문수필, 이상한 관상쟁이인데요.
+{고등학교} {문학} {교과서}에 수록된 고려시대 문인 이규보의 한문{수필}, {이상하다|이상한} {관상쟁이}인데요.
 
 12
 00:00:57,900 --> 00:01:04,400
-작가와 한 관상쟁이의 대화를 문답 형식으로 풀어낸 작품이에요.
+{작가}와 한 {관상쟁이}의 {대화}를 {문답} {형식}으로 {풀다|풀어낸} {작품}이에요.
 
 13
 00:01:04,400 --> 00:01:12,400
-이규보는 고려시대의 문신이자 문인으로 상식과 통념을 과감히 깨트리는 글을 많이 썼습니다.
+이규보는 고려시대의 문신이자 문인으로 {상식}과 통념을 과감히 {깨뜨리다|깨트리는} {글}을 {많이} {쓰다|썼습니다}.
 
 14
 00:01:12,400 --> 00:01:20,800
-이 이야기에서도 겉모습이 아닌 그 사람의 삶과 태도, 앞으로의 방향을 읽어내는 관상쟁이를 통해
+이 {이야기}에서도 겉모습이 아닌 그 {사람}의 {삶}과 {태도}, 앞으로의 {방향}을 읽어내는 {관상쟁이}를 {통하다|통해}
 
 15
 00:01:20,800 --> 00:01:25,200
-우리가 익숙하게 믿어왔던 기준을 뒤집어 보게 만들죠.
+{우리}가 {익숙하다|익숙하게} {믿다|믿어왔던} {기준}을 뒤집어 보게 만들죠.
 
 16
 00:01:25,200 --> 00:01:28,000
-무엇을 보고 사람을 판단할 것인가?
+무엇을 {보다|보고} {사람}을 {판단하다|판단할} 것인가?
 
 17
 00:01:28,000 --> 00:01:38,000
-이 질문을 떠올리면서 그럼 이규보의 이상한 관상쟁이 읽어드리겠습니다.
+이 {질문}을 떠올리면서 그럼 이규보의 {이상하다|이상한} {관상쟁이} {읽다|읽어드리겠습니다}.
 
 18
 00:01:38,000 --> 00:01:43,600
-이상한 관상쟁이, 이규보
+{이상하다|이상한} {관상쟁이}, 이규보
 
 19
 00:01:43,600 --> 00:01:46,300
-어떤 관상쟁이가 있었다.
+{어떤} {관상쟁이}가 {있다|있었다}.
 
 20
 00:01:46,300 --> 00:01:54,400
-어디서 왔는지도 알 수 없고, 따로 관상 보는 책을 읽은 것도 아니며, 관상 보는 법칙을 따르지도 않는데,
+어디서 {오다|왔는지도} {알다|알} 수 없고, 따로 관상 {보다|보는} {책}을 {읽다|읽은} 것도 아니며, 관상 {보다|보는} 법칙을 {따르다|따르지도} 않는데,
 
 21
 00:01:54,400 --> 00:02:01,900
-이상한 방법으로 관상을 잘 보아서 모두 그를 이상한 관상쟁이라 불렀다.
+{이상하다|이상한} {방법}으로 관상을 잘 {보다|보아서} {모두} 그를 {이상하다|이상한} {관상쟁이}라 {부르다|불렀다}.
 
 22
 00:02:01,900 --> 00:02:05,400
-점잖은 체면의 벼슬아치와 남녀노소 할 것 없이
+점잖은 체면의 {벼슬아치}와 {남녀노소} 할 것 없이
 
 23
 00:02:05,400 --> 00:02:11,300
-앞다투어 그를 불러들이거나 찾아가 관상을 봐 달라고 하였다.
+앞다투어 그를 불러들이거나 {찾아가다|찾아가} 관상을 봐 달라고 하였다.
 
 24
 00:02:11,300 --> 00:02:20,000
-그 관상쟁이는 부유하고 신분이 높으며 살찌고 얼굴에 기름이 흐르는 사람의 관상을 보고는 이렇게 말했다.
+그 {관상쟁이}는 {부유하다|부유하고} {신분}이 {높다|높으며} {살찌다|살찌고} {얼굴}에 기름이 흐르는 {사람}의 관상을 {보다|보고는} {이렇게} {말하다|말했다}.
 
 25
 00:02:20,000 --> 00:02:25,800
-"당신의 모습이 매우 수척해 보이니 당신만큼 천한 족속도 없겠소."
+"{당신}의 {모습}이 {매우} {수척하다|수척해} 보이니 {당신}만큼 {천하다|천한} 족속도 {없다|없겠소}."
 
 26
 00:02:25,800 --> 00:02:31,600
-한편 가난하고 천하며 여윈 사람의 관상을 보고는 이렇게 말하였다.
+{한편} {가난하다|가난하고} {천하다|천하며} 여윈 {사람}의 관상을 {보다|보고는} {이렇게} {말하다|말하였다}.
 
 27
 00:02:31,600 --> 00:02:37,800
-"당신의 모습이 살쪄 보이니, 당신만큼 귀한 족속도 드물 것이오."
+"{당신}의 {모습}이 {살찌다|살쪄} 보이니, {당신}만큼 {귀하다|귀한} 족속도 드물 것이오."
 
 28
 00:02:37,800 --> 00:02:40,700
-장님의 관상을 보고는 말했다.
+장님의 관상을 {보다|보고는} {말하다|말했다}.
 
 29
 00:02:40,700 --> 00:02:43,600
-"눈이 밝은 사람이다."
+"{눈}이 {밝다|밝은} {사람}이다."
 
 30
 00:02:43,600 --> 00:02:48,600
-민첩하고 달리기를 잘하는 사람의 관상을 보고는 말했다.
+{민첩하다|민첩하고} {달리기}를 잘하는 {사람}의 관상을 {보다|보고는} {말하다|말했다}.
 
 31
 00:02:48,600 --> 00:02:52,300
-"절름발이라 걷지 못하는 사람이다."
+"절름발이라 {걷다|걷지} 못하는 {사람}이다."
 
 32
 00:02:52,300 --> 00:02:56,300
-미모가 빼어난 부인의 관상을 보고는 말했다.
+미모가 {빼어나다|빼어난} {부인}의 관상을 {보다|보고는} {말하다|말했다}.
 
 33
 00:02:56,300 --> 00:03:00,200
-"아름답기도 하고 못나기도 하다."
+"{아름답다|아름답기도} 하고 {못나다|못나기도} 하다."
 
 34
 00:03:00,200 --> 00:03:05,600
-세상에서 너그럽고 어질다고 일컫는 사람의 관상을 보고는 말했다.
+{세상}에서 {너그럽다|너그럽고} 어질다고 일컫는 {사람}의 관상을 {보다|보고는} {말하다|말했다}.
 
 35
 00:03:05,600 --> 00:03:09,000
-"만인의 마음을 아프게 하리라."
+"만인의 {마음}을 {아프다|아프게} 하리라."
 
 36
 00:03:09,000 --> 00:03:14,700
-당시 사람들이 대단히 잔인하다 일컫는 사람의 관상을 보고는 말했다.
+{당시} {사람}들이 {대단히} {잔인하다|잔인하다} 일컫는 {사람}의 관상을 {보다|보고는} {말하다|말했다}.
 
 37
 00:03:14,700 --> 00:03:19,300
-"만인의 마음을 즐겁게 하리라."
+"만인의 {마음}을 {즐겁다|즐겁게} 하리라."
 
 38
 00:03:19,300 --> 00:03:22,200
-그의 관상은 거의 이런 식이었다.
+그의 관상은 거의 이런 {식}이었다.
 
 39
 00:03:22,200 --> 00:03:28,700
-다만 길흉화복이 어떻게 일어나는 것인지에 대해서는 잘 말할 줄 모를 뿐만 아니라,
+다만 길흉화복이 {어떻게} 일어나는 것인지에 {대하다|대해서는} 잘 {말하다|말할} 줄 모를 뿐만 아니라,
 
 40
 00:03:28,700 --> 00:03:33,200
-손님들의 처지나 상황 따위는 모두 잘 맞히지 못하였다.
+{손님}들의 {처지}나 {상황} 따위는 {모두} 잘 맞히지 못하였다.
 
 41
 00:03:33,200 --> 00:03:37,200
-그러자 여러 사람들은 그를 사기꾼이라 떠들어 대며
+그러자 여러 {사람}들은 그를 사기꾼이라 떠들어 대며
 
 42
 00:03:37,200 --> 00:03:42,000
-잡아다 심문하여 거짓말한 죄를 다스려야 한다고 하였다.
+잡아다 심문하여 {거짓말}한 죄를 다스려야 한다고 하였다.
 
 43
 00:03:42,000 --> 00:03:46,400
-나는 홀로 사람들을 말리면서 이렇게 말했다.
+나는 {홀로} {사람}들을 말리면서 {이렇게} {말하다|말했다}.
 
 44
 00:03:46,400 --> 00:03:52,700
-"대체로 말에는 처음에는 귀에 거슬리지만 나중에는 순순히 받아들여지는 말도 있고,
+"대체로 {말}에는 {처음}에는 {귀}에 거슬리지만 나중에는 순순히 받아들여지는 {말}도 있고,
 
 45
 00:03:52,700 --> 00:03:59,700
-겉으로 듣기에는 얄팍한 얘기 같지만 속으로는 깊고 먼 뜻을 품고 있는 말도 있소.
+겉으로 {듣다|듣기에는} 얄팍한 {이야기|얘기} 같지만 속으로는 {깊다|깊고} 먼 {뜻}을 품고 있는 {말}도 있소.
 
 46
 00:03:59,700 --> 00:04:06,200
-그도 역시 눈이 있는 사람인데, 어찌 살찐 사람이며 여윈 사람, 눈먼 사람인 줄 몰라서,
+그도 역시 {눈}이 {있다|있는} {사람}인데, 어찌 {살찌다|살찐} {사람}이며 여윈 {사람}, {눈}먼 {사람}인 줄 몰라서,
 
 47
 00:04:06,200 --> 00:04:13,800
-살찐 사람더러 여위었다 하고 여윈 사람더러 살졌다 하며 눈먼 사람더러 눈이 밝다 했겠소?
+{살찌다|살찐} {사람}더러 여위었다 하고 여윈 {사람}더러 살졌다 하며 {눈}먼 {사람}더러 {눈}이 {밝다} 했겠소?
 
 48
 00:04:13,800 --> 00:04:19,600
-그는 반드시 관상을 특별히 잘 보는 사람일 거요."
+그는 {반드시} 관상을 {특별히} 잘 {보다|보는} {사람}일 거요."
 
 49
 00:04:19,600 --> 00:04:26,200
-나는 목욕하고 옷매무새를 단정히 하여 그 관상쟁이가 사는 곳에 찾아갔다.
+나는 {목욕하다|목욕하고} 옷매무새를 단정히 하여 그 {관상쟁이}가 {살다|사는} 곳에 {찾아가다|찾아갔다}.
 
 50
 00:04:26,200 --> 00:04:33,200
-그리고 그의 곁에 있는 사람들을 모두 물러가게 하고는 그에게 이렇게 물어보았다.
+{그리고} 그의 곁에 있는 {사람}들을 {모두} 물러가게 하고는 그에게 {이렇게} 물어보았다.
 
 51
 00:04:33,200 --> 00:04:39,700
-"당신이 이러이러한 사람들의 관상을 보고 '이러이러하다'라고 말한 것은 어째서요?"
+"{당신}이 이러이러한 {사람}들의 관상을 {보다|보고} '이러이러하다'라고 {말하다|말한} 것은 어째서요?"
 
 52
 00:04:39,700 --> 00:04:42,800
-그는 이렇게 대답했다.
+그는 {이렇게} {대답하다|대답했다}.
 
 53
 00:04:42,800 --> 00:04:48,000
- "부유하고 신분이 높으면, 거만하고 남을 업신여기는 마음이 자랍니다.
+ "{부유하다|부유하고} {신분}이 {높다|높으면}, {거만하다|거만하고} 남을 {업신여기다|업신여기는} {마음}이 자랍니다.
 
 54
 00:04:48,000 --> 00:04:56,600
-그리하여 죄가 가득 차면 하늘이 반드시 그 사람을 거꾸러뜨려 장차 겨죽도 못 먹을 때가 오게 됩니다.
+그리하여 죄가 가득 차면 {하늘}이 {반드시} 그 {사람}을 거꾸러뜨려 장차 겨죽도 못 {먹다|먹을} 때가 {오다|오게} 됩니다.
 
 55
 00:04:56,600 --> 00:05:07,000
-그러니 '여위었다'라고 한 것이고, 앞으로 보잘것없는 비천한 사나이가 될 테니 '당신의 족속이 천할 것이다'라고 한 겁니다.
+그러니 '여위었다'라고 한 것이고, 앞으로 보잘것없는 {비천하다|비천한} 사나이가 될 테니 '{당신}의 족속이 {천하다|천할} 것이다'라고 한 겁니다.
 
 56
 00:05:07,000 --> 00:05:15,900
-가난하고 신분이 낮으면, 뜻을 굽히고 자신을 낮추어 걱정하고 두려워하며, 반성하고 수양하는 마음이 있게 됩니다.
+{가난하다|가난하고} {신분}이 {낮다|낮으면}, {뜻}을 굽히고 {자신}을 {낮추다|낮추어} {걱정하다|걱정하고} {두려워하다|두려워하며}, {반성하다|반성하고} {수양하다|수양하는} {마음}이 {있다|있게} 됩니다.
 
 57
 00:05:15,900 --> 00:05:21,500
-그러다 막힌 운수가 끝나면 반드시 운수가 트이게 되는 법이지요.
+그러다 막힌 운수가 {끝나다|끝나면} {반드시} 운수가 트이게 되는 법이지요.
 
 58
 00:05:21,500 --> 00:05:26,800
-그러니 육식을 하며 부귀하게 살 징조가 보여 '살쪘다'라고 한 것이고,
+그러니 육식을 하며 {부귀하다|부귀하게} 살 징조가 보여 '{살찌다|살쪘다}'라고 한 것이고,
 
 59
 00:05:26,800 --> 00:05:37,100
-앞으로 만 석의 봉급을 받고 다섯 대의 수레를 굴릴 만큼 존귀하게 될 테니 '당신의 족속이 귀할 것이다'라고 한 겁니다.
+앞으로 만 석의 봉급을 받고 다섯 대의 수레를 굴릴 만큼 {존귀하다|존귀하게} 될 테니 '{당신}의 족속이 {귀하다|귀할} 것이다'라고 한 겁니다.
 
 60
 00:05:37,100 --> 00:05:42,400
-요염한 자태와 아름다운 얼굴을 엿보다가는 위험을 건드리기 쉽고,
+요염한 자태와 {아름답다|아름다운} {얼굴}을 엿보다가는 {위험}을 건드리기 {쉽다|쉽고},
 
 61
 00:05:42,400 --> 00:05:45,800
-진귀하고 좋은 보배를 보면 욕심이 생깁니다.
+{진귀하다|진귀하고} {좋다|좋은} 보배를 {보다|보면} {욕심}이 생깁니다.
 
 62
 00:05:45,800 --> 00:05:53,300
-그러니 사람의 마음을 혹하게 하고 사람의 바른 마음을 구부러뜨리는 것은 눈이라 하겠습니다.
+그러니 {사람}의 {마음}을 혹하게 하고 {사람}의 바른 {마음}을 구부러뜨리는 것은 {눈}이라 하겠습니다.
 
 63
 00:05:53,300 --> 00:06:02,200
-눈에 보이는 대로 따르다가 생각도 못 한 치욕을 당하게 되니 이 어찌 눈먼 것이라 하지 않겠습니까?
+{눈}에 보이는 대로 {따르다|따르다가} {생각}도 못 한 {치욕}을 {당하다|당하게} 되니 이 어찌 눈먼 것이라 하지 않겠습니까?
 
 64
 00:06:02,200 --> 00:06:11,000
-그렇지만 장님은 마음이 맑아 욕심도 위험도 없으니 몸을 온전히 지킬 수 있고 치욕을 당할 일도 없습니다.
+그렇지만 장님은 {마음}이 {맑다|맑아} {욕심}도 {위험}도 {없다|없으니} {몸}을 {온전히} {지키다|지킬} 수 있고 {치욕}을 {당하다|당할} 일도 {없다|없습니다}.
 
 65
 00:06:11,000 --> 00:06:19,900
-이런 점은 현명한 사람이나 깨달은 사람보다 낫다고 하겠기에 '눈이 밝다'라고 한 겁니다.
+이런 점은 {현명하다|현명한} {사람}이나 깨달은 {사람}보다 낫다고 하겠기에 '{눈}이 {밝다|밝다}'라고 한 겁니다.
 
 66
 00:06:19,900 --> 00:06:27,500
-대체로 민첩한 사람은 용맹을 좋아하는데, 용맹한 이는 다른 많은 사람을 깔보기가 쉽습니다.
+대체로 {민첩하다|민첩한} {사람}은 {용맹}을 {좋아하다|좋아하는데}, {용맹하다|용맹한} 이는 다른 {많다|많은} {사람}을 깔보기가 {쉽다|쉽습니다}.
 
 67
 00:06:27,500 --> 00:06:35,400
-그러다 결국에는 자객이나 악당의 우두머리나 되었다가, 무관에게 잡히고 옥에 갇혀 감시를 받겠지요.
+그러다 {결국}에는 자객이나 악당의 {우두머리}나 되었다가, 무관에게 잡히고 옥에 갇혀 {감시}를 받겠지요.
 
 68
 00:06:35,400 --> 00:06:42,600
-발에는 차꼬를 차고 목에는 큰칼을 썼으니 아무리 달아나려 한들 그럴 수 있겠습니까?
+{발}에는 차꼬를 차고 {목}에는 큰칼을 썼으니 아무리 달아나려 한들 그럴 수 있겠습니까?
 
 69
 00:06:42,600 --> 00:06:47,200
-그래서 '절름발이라 걸을 수 없다'라고 한 겁니다.
+{그래서} '절름발이라 {걷다|걸을} 수 없다'라고 한 겁니다.
 
 70
 00:06:47,200 --> 00:06:56,300
-그리고 빼어난 미모라는 것은, 음탕하고 사치스러운 자가 보면 귀한 구슬처럼 고와 보이겠지만
+{그리고} {빼어나다|빼어난} 미모라는 것은, 음탕하고 사치스러운 자가 {보다|보면} {귀하다|귀한} 구슬처럼 고와 보이겠지만
 
 71
 00:06:56,300 --> 00:07:02,200
-정직하고 순박한 사람이 보면 진흙처럼 흉해 보이는 법입니다.
+{정직하다|정직하고} {순박하다|순박한} {사람}이 {보다|보면} 진흙처럼 흉해 보이는 법입니다.
 
 72
 00:07:02,200 --> 00:07:08,100
-그래서 '아름답기도 하고 못나기도 하다'라고 한 것이지요.
+{그래서} '{아름답다|아름답기도} 하고 {못나다|못나기도} 하다'라고 한 것이지요.
 
 73
 00:07:08,100 --> 00:07:20,100
-한편 어질다는 사람이 죽으면 사람들이 북적북적 모여 그를 그리며 눈물을 흘리고 마치 어머니를 잃은 어린 아기처럼 슬퍼할 것입니다.
+{한편} 어질다는 {사람}이 {죽다|죽으면} {사람}들이 북적북적 모여 그를 그리며 {눈물}을 흘리고 마치 {어머니}를 잃은 {어리다|어린} 아기처럼 {슬퍼하다|슬퍼할} 것입니다.
 
 74
 00:07:20,100 --> 00:07:25,200
-그래서 '만인의 마음을 아프게 한다'라고 한 겁니다.
+{그래서} '만인의 {마음}을 {아프다|아프게} 한다'라고 한 겁니다.
 
 75
 00:07:25,200 --> 00:07:34,900
-반면에 몹시 잔인한 사람이 죽으면, 길거리마다 노래를 주고받고 양고기 안주에 술을 차려 놓고 축하하게 될 것입니다.
+반면에 {몹시} {잔인하다|잔인한} {사람}이 {죽다|죽으면}, 길거리마다 {노래}를 주고받고 양고기 {안주}에 {술}을 차려 놓고 {축하하다|축하하게} 될 것입니다.
 
 76
 00:07:34,900 --> 00:07:41,800
-이 중에는 웃느라 입을 다물지 못하고, 손바닥이 찢어져라 손뼉을 칠 사람도 있겠지요.
+이 중에는 {웃다|웃느라} {입}을 다물지 못하고, {손바닥}이 찢어져라 {손뼉을 치다|손뼉을 칠} {사람}도 있겠지요.
 
 77
 00:07:41,800 --> 00:07:48,200
-그래서 '만인을 기쁘게 한다'라고 한 겁니다."
+{그래서} '만인을 {기쁘다|기쁘게} 한다'라고 한 겁니다."
 
 78
 00:07:48,200 --> 00:07:51,800
-나는 깜짝 놀라 일어나서 이렇게 말했다.
+나는 깜짝 놀라 {일어나다|일어나서} {이렇게} {말하다|말했다}.
 
 79
 00:07:51,800 --> 00:07:57,400
-"과연 내 말이 맞았구나. 이 사람은 정말 관상을 유별나게 잘 보는구나!
+"과연 내 {말}이 맞았구나. 이 {사람}은 {정말} 관상을 {유별나다|유별나게} 잘 {보다|보는구나}!
 
 80
 00:07:57,400 --> 00:08:01,300
-그의 말은 좌우명과 교훈으로 삼을 만하다.
+그의 {말}은 {좌우명}과 {교훈}으로 삼을 만하다.
 
 81
 00:08:01,300 --> 00:08:06,900
-이 사람은 결코, 얼굴 모양이나 표정만을 살펴 귀티가 나면
+이 {사람}은 결코, {얼굴} {모양}이나 {표정}만을 {살피다|살펴} 귀티가 나면
 
 82
 00:08:06,900 --> 00:08:14,500
-'몸에 거북 무늬가 있어 높은 벼슬하겠고, 코가 무소뿔 모양이라 왕비가 될 상'이라 하고,
+'{몸}에 {거북} {무늬}가 {있다|있어} {높다|높은} {벼슬}하겠고, {코}가 무소뿔 {모양}이라 {왕비}가 될 상'이라 하고,
 
 83
 00:08:14,500 --> 00:08:21,800
-관상이 나쁘면 '벌의 눈처럼 퉁방울눈에다, 목소리는 표범처럼 날카로워 흉악한 상'
+관상이 {나쁘다|나쁘면} '벌의 {눈}처럼 퉁방울눈에다, {목소리}는 {표범}처럼 {날카롭다|날카로워} {흉악하다|흉악한} 상'
 
 84
 00:08:21,800 --> 00:08:32,200
-이라는 식으로 늘 하던 대로 똑같은 말만 주워섬기면서 스스로 신통하다고 떠벌리는 그런 관상쟁이가 아닌 것이다."
+이라는 {식}으로 늘 하던 대로 {똑같다|똑같은} {말}만 주워섬기면서 {스스로} {신통하다|신통하다고} 떠벌리는 그런 {관상쟁이}가 아닌 것이다."
 
 85
 00:08:32,200 --> 00:08:41,700
-그리고 집에 돌아와 그의 대답을 적어 둔다.
+{그리고} {집}에 {돌아오다|돌아와} 그의 {대답}을 {적다|적어} 둔다.
 
 86
 00:08:41,700 --> 00:08:46,000
-이규보의 한문수필 이상한 관상쟁이 읽어드렸습니다.
+이규보의 한문{수필} {이상하다|이상한} {관상쟁이} {읽다|읽어드렸습니다}.
 
 87
 00:08:46,000 --> 00:08:51,200
-맨날 노래만 녹음하다가 이렇게 문학작품을 낭독을 하다 보니까
+맨날 {노래}만 {녹음하다|녹음하다가} {이렇게} {문학}{작품}을 {낭독}을 하다 보니까
 
 88
 00:08:51,200 --> 00:08:56,600
-뭔가 잘 읽어야 된다 이런 생각도 있어서 되게 열심히 노력하면서 읽은 것 같은데요.
+뭔가 잘 {읽다|읽어야} 된다 이런 {생각}도 {있다|있어서} 되게 {열심히} {노력하다|노력하면서} {읽다|읽은} 것 같은데요.
 
 89
 00:08:56,600 --> 00:09:01,200
-어떻게 여러분은 관상쟁이의 말을 들으면서 어떤 생각이 드셨나요.
+{어떻게} {여러분}은 {관상쟁이}의 {말}을 {듣다|들으면서} {어떤} {생각}이 드셨나요.
 
 90
 00:09:01,200 --> 00:09:04,800
-부유한 일을 수척하고 천하다고 하고
+{부유하다|부유한} 일을 {수척하다|수척하고} {천하다|천하다고} 하고
 
 91
 00:09:04,800 --> 00:09:09,000
-가난한 일을 귀하고 살쪘다며 칭찬하는 말들
+{가난하다|가난한} 일을 {귀하다|귀하고} {살찌다|살쪘다며} {칭찬하다|칭찬하는} {말}들
 
 92
 00:09:09,000 --> 00:09:14,300
-처음엔 터무니없어 보였지만 설명을 들으면 모든 게 딱 맞아 떨어지죠.
+{처음}엔 터무니없어 보였지만 {설명}을 {듣다|들으면} {모든} 게 딱 맞아 떨어지죠.
 
 93
 00:09:14,300 --> 00:09:19,900
-저도 데뷔 후 무대 경험이 쌓이면서 생각이 조금씩 바뀌었어요.
+저도 {데뷔} 후 {무대} {경험}이 {쌓이다|쌓이면서} {생각}이 {조금}씩 바뀌었어요.
 
 94
 00:09:19,900 --> 00:09:26,000
-처음엔 화려한 조명과 퍼포먼스 같은 것들이 저를 완성한다고 믿었습니다.
+{처음}엔 {화려하다|화려한} {조명}과 퍼포먼스 같은 것들이 저를 {완성하다|완성한다고} {믿다|믿었습니다}.
 
 95
 00:09:26,000 --> 00:09:33,500
-하지만 시간이 지나고 어느 순간 제가 어떤 마음으로 노래하는지가 더 크게 전해진다는 걸 느꼈어요.
+{하지만} {시간}이 {지나다|지나고} 어느 {순간} 제가 {어떤} {마음}으로 {노래하다|노래하는지가} {더} {크다|크게} {전하다|전해진다는} 걸 {느끼다|느꼈어요}.
 
 96
 00:09:33,500 --> 00:09:35,500
-그때 알게 됐습니다.
+그때 {알다|알게} 됐습니다.
 
 97
 00:09:35,500 --> 00:09:42,100
-겉으로 보이는 모습이 아니라 저의 태도와 진심이 마음에 더 오래 남는다는 걸요.
+겉으로 보이는 {모습}이 아니라 저의 {태도}와 {진심}이 {마음}에 {더} {오래} 남는다는 걸요.
 
 98
 00:09:42,100 --> 00:09:47,600
-이 작품 속 이상한 관상쟁이도 바로 그 지점을 얘기하고 있습니다.
+이 {작품} 속 {이상하다|이상한} {관상쟁이}도 바로 그 지점을 얘기하고 있습니다.
 
 99
 00:09:47,600 --> 00:09:54,400
-그 사람이 어떤 마음으로 살아가고 있는지 어떤 방향으로 나아가고 있는지를 본 거죠.
+그 {사람}이 {어떤} {마음}으로 {살아가다|살아가고} 있는지 {어떤} {방향}으로 나아가고 있는지를 본 거죠.
 
 100
 00:09:54,400 --> 00:10:03,800
-이 작품은 이규보가 관상쟁이와 주고받은 대화를 기록했다고 해서 원래 제목은 이상자대 라고 불립니다.
+이 {작품}은 이규보가 {관상쟁이}와 {주고받다|주고받은} {대화}를 {기록하다|기록했다고} 해서 {원래} {제목}은 이상자대 라고 {부르다|불립니다}.
 
 101
 00:10:03,800 --> 00:10:11,600
-작가는 이 대화 형식을 통해 외모로 사람을 판단하는 낡은 관습을 통쾌하게 비판하죠.
+{작가}는 이 {대화} {형식}을 {통하다|통해} {외모}로 {사람}을 {판단하다|판단하는} {낡다|낡은} {관습}을 {통쾌하다|통쾌하게} {비판하다|비판하죠}.
 
 102
 00:10:11,600 --> 00:10:17,700
-우리가 학교에서 배우는 설이라는 문학양식도 바로 이런 흐름을 따릅니다.
+{우리}가 {학교}에서 {배우다|배우는} 설이라는 문학양식도 바로 이런 흐름을 {따르다|따릅니다}.
 
 103
 00:10:17,700 --> 00:10:22,700
-사물의 이치를 풀이하고 작가의 의견을 덧붙이는 방식인데요.
+사물의 이치를 풀이하고 {작가}의 {의견}을 {덧붙이다|덧붙이는} {방식}인데요.
 
 104
 00:10:22,700 --> 00:10:29,100
-이규보는 다양한 설을 통해 시대를 관통하는 날카로운 사유를 남겼습니다.
+이규보는 {다양하다|다양한} 설을 {통하다|통해} {시대}를 관통하는 {날카롭다|날카로운} 사유를 남겼습니다.
 
 105
 00:10:29,100 --> 00:10:32,200
-무엇을 보고 사람을 판단할 것인가?
+무엇을 {보다|보고} {사람}을 {판단하다|판단할} 것인가?
 
 106
 00:10:32,200 --> 00:10:41,400
-이 질문이 여러분의 공부는 물론 앞으로 누군가를 만나고 세상을 살아가는 데에도 작지만 소중한 지표가 됐으면 좋겠습니다.
+이 {질문}이 {여러분}의 {공부}는 물론 앞으로 누군가를 {만나다|만나고} {세상}을 {살아가다|살아가는} 데에도 작지만 {소중하다|소중한} {지표}가 됐으면 좋겠습니다
 
 107
 00:10:41,400 --> 00:10:48,400
-그럼 지금까지 플레어유의 강우진이었습니다.`,
+그럼 {지금}{까지} 플레어유의 강우진였습니다.`,
         chi: `1
 00:00:00,000 --> 00:00:09,400
 姜玗進朗讀教科書中的文學作品
