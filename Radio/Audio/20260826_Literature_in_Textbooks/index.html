@@ -514,15 +514,21 @@
 
     <!-- 說明提示彈窗 -->
     <div class="modal-overlay" id="info-modal" onclick="closeInfoModal(event)">
-        <div class="modal-card">
-            <button class="modal-close" onclick="closeInfoModalDirect()">✕</button>
-            <div class="modal-header">
-                <span class="modal-kor">💡 動態同步說明</span>
-            </div>
-            <div class="modal-chi" style="text-align: left; font-size: 15px; margin-bottom: 16px; color: #4b5563;">
-                如果要使用動態同步功能，請點擊上方<b>「🎧 官方網站收聽」</b>按鈕，開啟官方網頁並播放音訊，再點擊本頁面的<b>「▶ 開始動態同步」</b>按鈕搭配字幕觀看。
-            </div>
+      <div class="modal-card">
+        <button class="modal-close" onclick="closeInfoModalDirect()">✕</button>
+        <div class="modal-header">
+            <span class="modal-kor">💡 動態同步與版本說明</span>
         </div>
+        <div class="modal-chi" style="text-align: left; font-size: 14px; margin-bottom: 20px; color: #4b5563; line-height: 1.6;">
+            <p style="margin-bottom: 12px;">
+                1. <b>動態同步功能：</b>請點擊上方<b>「🎧 官方網站收聽」</b>開啟官方網頁並播放音訊，再點擊本頁面的<b>「▶ 開始動態同步」</b>按鈕搭配字幕觀看。
+            </p>
+            <p style="margin-bottom: 0;">
+                2. <b>詩詞版本說明：</b>立于朗讀白石的詩詞《有白色風牆》現存有多個版本，部分單字略有不同。本站顯示之內文為<b>納木維基 (나무위키)</b> 上記載的版本，僅供學習與參考。
+            </p>
+        </div>
+        <button class="audio-play-btn" onclick="closeInfoModalDirect()">我知道了</button>
+      </div>
     </div>
 
     <!-- 單字詳細資料彈窗 (Modal) -->
