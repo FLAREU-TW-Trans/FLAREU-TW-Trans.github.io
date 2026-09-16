@@ -66,10 +66,10 @@ body {
     margin-bottom: 20px; display: flex; flex-direction: column; gap: 14px;
 }
 
-.segmented-row { display: flex; background: #e2e8f0; padding: 4px; border-radius: 10px; gap: 6px; }
+.segmented-row { display: flex; background: #e2e8f0; padding: 4px; border-radius: 10px; gap: 6px; width: 100%; }
 .segmented-btn {
     flex: 1; border: none; background: transparent; padding: 8px 12px; font-size: 15px; font-weight: 600; color: #64748b;
-    border-radius: 8px; cursor: pointer; transition: all 0.2s ease; text-align: center;
+    border-radius: 8px; cursor: pointer; transition: all 0.2s ease; text-align: center; white-space: nowrap;
 }
 .segmented-btn.active {
     background-color: var(--primary-dark) !important; color: #ffffff !important; font-weight: 700 !important; box-shadow: 0 3px 8px rgba(33, 33, 71, 0.25);
@@ -89,6 +89,11 @@ body {
 .chip-btn.active {
     background-color: var(--primary-dark) !important; color: #ffffff !important; border-color: var(--primary-dark) !important;
     font-weight: 700 !important; box-shadow: 0 2px 6px rgba(33, 33, 71, 0.2);
+}
+
+@media (max-width: 768px) {
+    .segmented-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .segmented-btn { padding: 8px 6px; font-size: 0.85rem; }
 }
 
 /* ==========================================
@@ -160,7 +165,7 @@ body {
 }
 
 /* ==========================================
-  7. 單字測驗與打字測驗 (修正寬度與樣式)
+  7. 單字測驗與打字測驗
    ========================================== */
 .test-card { background: var(--surface-white); border-radius: var(--border-radius); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow-soft); width: 100%; }
 .test-header {
@@ -198,19 +203,23 @@ body {
 
 .metric-val { color: #2563eb; }
 
-.typing-target {
-    font-size: 18px; line-height: 1.8; background: #ffffff; padding: 16px; border-radius: 8px; border: 1.5px solid #cbd5e1;
-    min-height: 100px; margin-bottom: 16px; word-break: break-all; white-space: pre-wrap;
+.typing-card { background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 16px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 10px; }
+.typing-target { font-size: 20px; font-weight: bold; line-height: 1.6; color: var(--primary-dark); word-break: break-all; min-height: 32px; }
+.typing-sub-target { font-size: 15px; color: #64748b; margin-bottom: 6px; min-height: 22px; }
+
+.space-char { 
+    display: inline-block; width: 0.6em; height: 1.2em; vertical-align: middle; background-color: #f1f5f9; border-bottom: 2px solid #94a3b8;
+    border-radius: 2px; margin: 0 1px;
 }
-.typing-input-area {
-    width: 100%; height: 120px; padding: 12px; border-radius: 8px; border: 1.5px solid #cbd5e1;
-    font-size: 16px; resize: none; box-sizing: border-box; font-family: inherit;
-}
-.typing-input-area:focus { outline: none; border-color: var(--primary-dark); }
 
 .correct-char { color: #059669; background-color: #d1fae5; }
 .incorrect-char { color: #dc2626; background-color: #fee2e2; }
 .current-char { text-decoration: underline; font-weight: bold; }
+.correct-char.space-char { background-color: #a7f3d0; border-color: #059669; }
+.incorrect-char.space-char { background-color: #fca5a5; border-color: #dc2626; }
+
+.typing-input-field { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1.5px solid #cbd5e1; font-size: 16px; box-sizing: border-box; font-family: inherit; outline: none; }
+.typing-input-field:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2); }
 </style>
 </head>
 
@@ -336,8 +345,8 @@ body {
         <div class="segmented-row" style="margin-bottom: 16px;">
             <button class="segmented-btn active" onclick="setTypingScope('rand-10-words', this)">抽選十個單字</button>
             <button class="segmented-btn" onclick="setTypingScope('rand-10-sentences', this)">抽選十個句子</button>
-            <button class="segmented-btn" onclick="setTypingScope('liyu-article', this)">立于文章</button>
-            <button class="segmented-btn" onclick="setTypingScope('woojin-article', this)">玗進文章</button>
+            <button class="segmented-btn" onclick="setTypingScope('liyu-article', this)">立于朗讀文章</button>
+            <button class="segmented-btn" onclick="setTypingScope('woojin-article', this)">玗進朗讀文章</button>
         </div>
 
         <div class="typing-metrics">
@@ -346,11 +355,14 @@ body {
             <div>正確率：<span id="accuracy-val" class="metric-val">100%</span></div>
         </div>
 
-        <!-- 目標文章文字顯示 -->
-        <div class="typing-target" id="typing-target-display">請點擊上方「開始打字」...</div>
-
-        <!-- 輸入框 -->
-        <textarea id="typing-input" rows="5" class="typing-input-area" placeholder="請在此輸入對應的韓文..." disabled oninput="handleTypingInput()"></textarea>
+        <!-- 題目區域：固定卡片高度 -->
+        <div class="typing-card">
+            <!-- 第一行：韓文原文 -->
+            <div class="typing-target" id="typing-target-display">請點擊上方「開始打字」...</div>
+      
+            <!-- 第二行：單行打字輸入框 -->
+            <input type="text" id="typing-input" class="typing-input-field" placeholder="請在此輸入對應的韓文..." disabled oninput="handleTypingInput()" autocomplete="off" />
+        </div>
     </div>
 </div>
 
@@ -2774,34 +2786,94 @@ function prepareTypingQueue() {
         const shuffled = [...sentenceBank].sort(() => 0.5 - Math.random()).slice(0, 10);
         typingQueue = shuffled.slice(0, 10);
     } else if (typingScope === 'liyu-article') {
-        typingQueue = [liyuArticle];
+        // 將多行文章按 '\n' 切分成「行」陣列，並過濾掉純空白行
+        typingQueue = liyuArticle.split('\n').map(line => line.trim()).filter(line => line.length > 0);
     } else if (typingScope === 'woojin-article') {
-        typingQueue = [woojinArticle];
+        typingQueue = woojinArticle.split('\n').map(line => line.trim()).filter(line => line.length > 0);
     }
 
     // 重置 UI 狀態
     const inputArea = document.getElementById('typing-input');
-    inputArea.value = '';
-    inputArea.disabled = true;
+    if (inputArea) {
+        inputArea.value = '';
+        inputArea.disabled = true;
+    }
     document.getElementById('cpm-val').innerText = '0';
     document.getElementById('accuracy-val').innerText = '100%';
     document.getElementById('countdown-display').innerText = '請點擊開始';
     
-    // 渲染第一題
     renderCurrentTypingTarget();
 }
-
+  
 // 渲染當前題目的目標文字
 function renderCurrentTypingTarget() {
     const targetDisplay = document.getElementById('typing-target-display');
-    const progressDisplay = document.getElementById('typing-progress-display'); 
+    const subDisplay = document.getElementById('typing-sub-display');
     
     if (typingQueue.length > 0 && currentTypingIdx < typingQueue.length) {
-        targetDisplay.innerText = typingQueue[currentTypingIdx];
-        if (progressDisplay) {
-            progressDisplay.innerText = `進度：${currentTypingIdx + 1} / ${typingQueue.length}`;
+        const currentItem = typingQueue[currentTypingIdx];
+        
+        // 判斷佇列存放的是物件 {kor, chi} 還是純字串
+        const korText = typeof currentItem === 'object' ? currentItem.kor : currentItem;
+        const chiText = typeof currentItem === 'object' ? (currentItem.chi || '') : '';
+
+        // 預設渲染醒目空格
+        let formattedHTML = "";
+        for (let char of korText) {
+            if (char === ' ') {
+                formattedHTML += `<span class="space-char">&nbsp;</span>`;
+            } else {
+                formattedHTML += char;
+            }
+        }
+
+        targetDisplay.innerHTML = formattedHTML;
+        if (subDisplay) subDisplay.innerText = chiText;
+    }
+}
+
+// 即時輸入比對與高亮渲染
+function handleTypingInput() {
+    if (!typingStartTime) return;
+
+    const inputVal = document.getElementById('typing-input').value;
+    const currentItem = typingQueue[currentTypingIdx] || "";
+    const targetText = typeof currentItem === 'object' ? currentItem.kor : currentItem;
+    const targetDisplay = document.getElementById('typing-target-display');
+
+    let highlightedHTML = "";
+    let currentCorrectChars = 0;
+
+    for (let i = 0; i < targetText.length; i++) {
+        const targetChar = targetText[i];
+        const inputChar = inputVal[i];
+        const isSpace = targetChar === ' ';
+        const spaceClass = isSpace ? ' space-char' : '';
+        const displayChar = isSpace ? '&nbsp;' : targetChar;
+
+        if (inputChar === undefined) {
+            const isCurrent = (i === inputVal.length) ? ' current-char' : '';
+            highlightedHTML += `<span class="${spaceClass}${isCurrent}">${displayChar}</span>`;
+        } else if (inputChar === targetChar) {
+            highlightedHTML += `<span class="correct-char${spaceClass}">${displayChar}</span>`;
+            currentCorrectChars++;
+        } else {
+            highlightedHTML += `<span class="incorrect-char${spaceClass}">${displayChar}</span>`;
         }
     }
+
+    targetDisplay.innerHTML = highlightedHTML;
+
+    // 即時計算 CPM 與正確率
+    const timeElapsedMin = (new Date() - typingStartTime) / 60000;
+    const totalCharsSoFar = totalTypedChars + inputVal.length;
+    const totalCorrectSoFar = totalCorrectChars + currentCorrectChars;
+
+    const cpm = timeElapsedMin > 0 ? Math.round(totalCharsSoFar / timeElapsedMin) : 0;
+    const accuracy = totalCharsSoFar > 0 ? Math.round((totalCorrectSoFar / totalCharsSoFar) * 100) : 100;
+
+    document.getElementById('cpm-val').innerText = cpm;
+    document.getElementById('accuracy-val').innerText = accuracy + '%';
 }
 
 // 開始測驗：觸發倒數 3 秒
@@ -2833,11 +2905,9 @@ function startTypingTest() {
 // 監聽輸入框的 keydown 事件 (處理 Enter 鍵送出切換)
 document.getElementById('typing-input').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
-        if (typingScope === 'liyu-article' || typingScope === 'woojin-article') {
-            return; // 文章模式正常換行
-        }
-
-        e.preventDefault();
+        e.preventDefault(); // 阻止 Enter 預設行為
+        
+        // 只有在框內有內容時，才推進到下一行
         if (this.value.trim() !== '') {
             advanceToNextTarget();
         }
