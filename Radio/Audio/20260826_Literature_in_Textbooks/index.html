@@ -2347,70 +2347,70 @@
         }
 
         /* ==========================================
-           8. 單字發音引擎與 Modal 控制 (內建有道 API)
-           ========================================== */
-        function playKoreanSpeech(text) {
-            const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&le=ko`;
-            const audio = new Audio(url);
-            audio.playbackRate = 0.8;
-            audio.play().catch(error => {
-                console.error("播放語音失敗：", error);
-            });
-        }
+   8. 單字發音引擎與 Modal 控制 (內建有道 API)
+   ========================================== */
+function playKoreanSpeech(text) {
+    const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&le=ko`;
+    const audio = new Audio(url);
+    audio.playbackRate = 0.8;
+    audio.play().catch(error => {
+        console.error("播放語音失敗：", error);
+    });
+}
 
-        function openVocabModal(word, event) {
-            event.stopPropagation();
-            const data = vocabDb[word];
-            if (!data) return;
+function openVocabModal(word, event) {
+    event.stopPropagation();
+    const data = vocabDb[word];
+    if (!data) return;
 
-            const korEl = document.getElementById('modal-kor');
-            const posEl = document.getElementById('modal-pos');
+    const korEl = document.getElementById('modal-kor');
+    const posEl = document.getElementById('modal-pos');
 
-            korEl.innerText = data.kor;
-            posEl.innerText = data.pos;
-            document.getElementById('modal-pinyin').innerText = `[${data.pinyin}]`;
-            document.getElementById('modal-chi').innerText = data.chi;
+    korEl.innerText = data.kor;
+    posEl.innerText = data.pos;
+    document.getElementById('modal-pinyin').innerText = `[${data.pinyin}]`;
+    document.getElementById('modal-chi').innerText = data.chi;
 
-            const speakBtn = document.getElementById('modal-speak-btn');
-            speakBtn.onclick = () => playKoreanSpeech(data.kor);
+    const speakBtn = document.getElementById('modal-speak-btn');
+    speakBtn.onclick = () => playKoreanSpeech(data.kor);
 
-            document.getElementById('vocab-modal').style.display = 'flex';
+    document.getElementById('vocab-modal').style.display = 'flex';
 
-            requestAnimationFrame(() => {
-                const korWidth = korEl.offsetWidth;
-                posEl.style.left = `calc(50% + ${korWidth / 2 + 6}px)`;
-            });
-        }
+    requestAnimationFrame(() => {
+        const korWidth = korEl.offsetWidth;
+        posEl.style.left = `calc(50% + ${korWidth / 2 + 6}px)`;
+    });
+}
 
-        function closeModal(event) {
-            if (event.target.classList.contains('modal-overlay')) {
-                document.getElementById('vocab-modal').style.display = 'none';
-            }
-        }
+function closeModal(event) {
+    if (event.target.classList.contains('modal-overlay')) {
+        document.getElementById('vocab-modal').style.display = 'none';
+    }
+}
 
-        function closeModalDirect() {
-            document.getElementById('vocab-modal').style.display = 'none';
-        }
+function closeModalDirect() {
+    document.getElementById('vocab-modal').style.display = 'none';
+}
 
-        /* 說明視窗控制 */
-        function openInfoModal() {
-            document.getElementById('info-modal').style.display = 'flex';
-        }
+/* 說明視窗控制 */
+function openInfoModal() {
+    document.getElementById('info-modal').style.display = 'flex';
+}
 
-        function closeInfoModal(event) {
-            if (event.target.classList.contains('modal-overlay')) {
-                document.getElementById('info-modal').style.display = 'none';
-            }
-        }
+function closeInfoModal(event) {
+    if (event.target.classList.contains('modal-overlay')) {
+        document.getElementById('info-modal').style.display = 'none';
+    }
+}
 
-        function closeInfoModalDirect() {
-            document.getElementById('info-modal').style.display = 'none';
-        }
+function closeInfoModalDirect() {
+    document.getElementById('info-modal').style.display = 'none';
+}
 
-      /* ==========================================
-           9. 單字測驗佇列邏輯 (Anki 模式)
-           ========================================== */
-      let vocabQueue = [];
+/* ==========================================
+   9. 單字測驗佇列邏輯 (Anki 模式)
+   ========================================== */
+let vocabQueue = [];
 let currentVocabItem = null;
 
 function startVocabTest(direction = 'chi-to-kor') { // 'chi-to-kor' 或 'kor-to-chi'
@@ -2449,78 +2449,10 @@ function handleVocabResult(isCorrect, direction) {
     nextVocabQuestion(direction);
 }
 
-      /* ==========================================
-           10. 打字測驗倒數與即時比對邏輯
-           ========================================== */
-      let typingTimer = null;
-let startTime = null;
-let targetText = "";
-
-function startTypingCountdown() {
-    const inputEl = document.getElementById('typing-input');
-    const countdownEl = document.getElementById('countdown-display');
-    
-    inputEl.disabled = true;
-    inputEl.value = "";
-    let count = 3;
-    countdownEl.innerText = count;
-
-    const timer = setInterval(() => {
-        count--;
-        if (count > 0) {
-            countdownEl.innerText = count;
-        } else {
-            clearInterval(timer);
-            countdownEl.innerText = "開始！";
-            inputEl.disabled = false;
-            inputEl.focus();
-            startTime = new Date();
-            initTypingTracker();
-        }
-    }, 1000);
-}
-
-// 即時比對與高亮渲染
-function handleTypingInput() {
-    const input = document.getElementById('typing-input').value;
-    const displayEl = document.getElementById('typing-target-display');
-    
-    let html = "";
-    let correctCount = 0;
-
-    for (let i = 0; i < targetText.length; i++) {
-        const targetChar = targetText[i];
-        const inputChar = input[i];
-
-        if (inputChar == null) {
-            html += `<span>${targetChar}</span>`;
-        } else if (inputChar === targetChar) {
-            html += `<span style="color: #10B981;">${targetChar}</span>`;
-            correctCount++;
-        } else {
-            html += `<span style="background-color: #FEE2E2; color: #EF4444;">${targetChar}</span>`;
-        }
-    }
-
-    displayEl.innerHTML = html;
-
-    // 計算 WPM / 正確率
-    const elapsedSeconds = (new Date() - startTime) / 1000;
-    const cpm = Math.round((correctCount / elapsedSeconds) * 60);
-    const accuracy = input.length > 0 ? Math.round((correctCount / input.length) * 100) : 100;
-
-    document.getElementById('cpm-val').innerText = cpm;
-    document.getElementById('accuracy-val').innerText = `${accuracy}%`;
-
-    // 判斷是否打完
-    if (input.length >= targetText.length) {
-        finishTypingTest(cpm, accuracy);
-    }
-}
-      /* ==========================================
-           11. 打字測驗倒數與即時比對邏輯
-           ========================================== */
-  let typingTimer = null;
+/* ==========================================
+   10. 打字測驗倒數與即時比對邏輯
+   ========================================== */
+let typingTimer = null;
 let startTime = null;
 let targetText = "";
 
