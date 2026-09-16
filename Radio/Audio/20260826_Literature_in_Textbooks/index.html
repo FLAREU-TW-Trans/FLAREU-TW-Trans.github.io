@@ -479,6 +479,18 @@ body {
             <button class="segmented-btn" onclick="setTypingScope('woojin-article', this)">玗進朗讀文章</button>
         </div>
 
+        <div class="typing-personal-best">
+            <div>
+                <span>我的最快速度</span>
+                <strong id="my-best-cpm">尚無紀錄</strong>
+            </div>
+        
+            <div>
+                <span>我的最高正確率</span>
+                <strong id="my-best-accuracy">尚無紀錄</strong>
+            </div>
+        </div>
+
         <div class="typing-metrics">
             <div>倒數狀態：<span id="countdown-display" class="metric-val"></span></div>
             <div>速度 (CPM)：<span id="cpm-val" class="metric-val">0</span></div>
@@ -2609,7 +2621,7 @@ function loadAndRenderContent() {
             if (ttsBtn) {
                 ttsBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    playKoreanSpeech(item.kor);
+                    playKoreanSentence(item.kor);
                 });
             }
         }
@@ -2701,39 +2713,43 @@ function adjustTime(seconds) {
    ========================================== */
 let currentTtsAudio = null;
 
-function playKoreanSpeech(text) {
-    const cleanText = text
-        .replace(/\{([^|}]+)\|([^}]+)\}/g, '$2')
-        .replace(/\{([^}]+)\}/g, '$1');
+function cleanKoreanText(text) {
+    return text.replace(/\{([^}|]+)(?:\|([^}]+))?\}/g, (match, key, rawWord) => {
+        return rawWord || key;
+    });
+}
+
+// 單字：繼續使用 Youdao
+function playKoreanWord(text) {
+    const cleanText = cleanKoreanText(text);
 
     const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(cleanText)}&le=ko`;
-
-    console.log('TTS 原文：', text);
-    console.log('TTS 清理後：', cleanText);
-    console.log('TTS URL：', url);
 
     if (currentTtsAudio) {
         currentTtsAudio.pause();
         currentTtsAudio.currentTime = 0;
     }
 
-    currentTtsAudio = new Audio();
-
-    currentTtsAudio.addEventListener('error', (e) => {
-        console.error('TTS 音訊載入失敗：', e);
-        console.error('音訊網址：', url);
-    });
-
-    currentTtsAudio.src = url;
+    currentTtsAudio = new Audio(url);
     currentTtsAudio.playbackRate = 0.8;
 
-    currentTtsAudio.play()
-        .then(() => {
-            console.log('TTS 開始播放：', cleanText);
-        })
-        .catch(error => {
-            console.error('TTS 播放失敗：', error);
-        });
+    currentTtsAudio.play().catch(error => {
+        console.error("單字語音播放失敗：", error);
+    });
+}
+
+// 整句：使用瀏覽器內建韓文語音
+function playKoreanSentence(text) {
+    const cleanText = cleanKoreanText(text);
+
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.lang = 'ko-KR';
+    utterance.rate = 0.8;
+    utterance.pitch = 1;
+
+    window.speechSynthesis.speak(utterance);
 }
 
 function openVocabModal(word, event) {
@@ -2750,7 +2766,7 @@ function openVocabModal(word, event) {
     document.getElementById('modal-chi').innerText = data.chi;
 
     const speakBtn = document.getElementById('modal-speak-btn');
-    speakBtn.onclick = () => playKoreanSpeech(data.kor);
+    speakBtn.onclick = () => playKoreanWord(data.kor);
 
     document.getElementById('vocab-modal').style.display = 'flex';
 
@@ -3027,6 +3043,7 @@ function setTypingScope(scope, btn) {
         btn.classList.add('active');
     }
     prepareTypingQueue();
+    displayLocalTypingBest();
 }
 
 // 預備題目佇列
@@ -3195,20 +3212,33 @@ function finishTypingTest() {
     inputEl.disabled = true;
 
     const endTime = new Date();
-    const totalTimeSec = Math.round((endTime - typingStartTime) / 1000);
-    const totalTimeMin = (endTime - typingStartTime) / 1000 / 60;
+
+    const totalTimeSec = Math.round(
+        (endTime - typingStartTime) / 1000
+    );
+
+    const totalTimeMin =
+        (endTime - typingStartTime) / 1000 / 60;
 
     const finalCpm = totalTimeMin > 0
         ? Math.round(totalCorrectChars / totalTimeMin)
         : 0;
 
     const finalAcc = totalTypedChars > 0
-        ? Math.round((totalCorrectChars / totalTypedChars) * 100)
+        ? Math.round(
+            (totalCorrectChars / totalTypedChars) * 100
+        )
         : 100;
 
+    // 儲存個人最佳成績
+    updateLocalTypingBest(finalCpm, finalAcc);
+
     document.getElementById('res-cpm').innerText = finalCpm;
-    document.getElementById('res-accuracy').innerText = finalAcc + '%';
-    document.getElementById('res-time').innerText = totalTimeSec;
+    document.getElementById('res-accuracy').innerText =
+        finalAcc + '%';
+
+    document.getElementById('res-time').innerText =
+        totalTimeSec;
 
     document.getElementById('result-modal').style.display = 'flex';
 }
@@ -3240,6 +3270,63 @@ async function uploadScoreToFirebase() {
         alert("⚠️ Firebase 模組尚未載入完成，請稍後再試。");
     }
 }
+
+/* ==========================================
+   12. 紀錄個人成績到localStorage上
+   ========================================== */
+function updateLocalTypingBest(cpm, accuracy) {
+
+    const cpmKey =
+        `typing_best_cpm_${typingScope}`;
+
+    const accuracyKey =
+        `typing_best_accuracy_${typingScope}`;
+
+    const oldBestCpm = Number(
+        localStorage.getItem(cpmKey) || 0
+    );
+
+    const oldBestAccuracy = Number(
+        localStorage.getItem(accuracyKey) || 0
+    );
+
+    if (cpm > oldBestCpm) {
+        localStorage.setItem(cpmKey, cpm);
+    }
+
+    if (accuracy > oldBestAccuracy) {
+        localStorage.setItem(accuracyKey, accuracy);
+    }
+
+    displayLocalTypingBest();
+}
+
+function displayLocalTypingBest() {
+
+    const bestCpm = localStorage.getItem(
+        `typing_best_cpm_${typingScope}`
+    );
+
+    const bestAccuracy = localStorage.getItem(
+        `typing_best_accuracy_${typingScope}`
+    );
+
+    const cpmEl =
+        document.getElementById('my-best-cpm');
+
+    const accEl =
+        document.getElementById('my-best-accuracy');
+
+    if (cpmEl) {
+        cpmEl.innerText =
+            bestCpm ? `${bestCpm} CPM` : '尚無紀錄';
+    }
+
+    if (accEl) {
+        accEl.innerText =
+            bestAccuracy ? `${bestAccuracy}%` : '尚無紀錄';
+    }
+}
 </script>
 
 <script type="module" src="../../../js/firebase-init.js"></script>
@@ -3257,17 +3344,20 @@ window.uploadTypingScore = async function(mode, cpm, accuracy) {
             throw new Error("Realtime Database 尚未初始化");
         }
 
-        const userName =
-            (typeof currentUser !== 'undefined' && currentUser?.displayName)
-                ? currentUser.displayName
-                : "匿名使用者";
+        // 等待 Firebase 匿名登入完成
+        const user = await window.firebaseAuthReady;
+
+        if (!user) {
+            throw new Error("Firebase 使用者尚未建立");
+        }
 
         const scoreRef = push(
             window.fb_ref(window.db, "typing_leaderboard")
         );
 
         await set(scoreRef, {
-            username: userName,
+            uid: user.uid,
+            username: "匿名使用者",
             mode: mode,
             cpm: Number(cpm),
             accuracy: Number(String(accuracy).replace('%', '')),
