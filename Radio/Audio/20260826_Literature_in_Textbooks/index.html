@@ -341,7 +341,7 @@
             <!-- 第二層：閱讀模式切換 -->
             <div class="segmented-row">
                 <button class="segmented-btn" data-mode="dynamic" onclick="switchMode('dynamic')">🎵 動態逐句</button>
-                <button class="segmented-btn" data-mode="full" onclick="switchMode('full')">📖 完整全文</button>
+                <button class="segmented-btn" data-mode="full" onclick="switchMode('full')">📖 教學</button>
                 <button class="segmented-btn" data-mode="vocab-test" onclick="switchMode('vocab-test')">🎴 單字測驗</button>
                 <button class="segmented-btn" data-mode="typing-test" onclick="switchMode('typing-test')">⌨️ 打字測驗</button>
             </div>
@@ -434,8 +434,8 @@
 
             <!-- 範圍選擇器 -->
             <div class="segmented-row" style="margin-bottom: 16px;">
-                <button class="segmented-btn active" onclick="setTypingScope('rand-10-words', this)">隨機 10 單字</button>
-                <button class="segmented-btn" onclick="setTypingScope('rand-10-sentences', this)">隨機 10 句子</button>
+                <button class="segmented-btn active" onclick="setTypingScope('rand-10-words', this)">抽選十個單字</button>
+                <button class="segmented-btn" onclick="setTypingScope('rand-10-sentences', this)">抽選十個句子</button>
                 <button class="segmented-btn" onclick="setTypingScope('liyu-article', this)">立于文章</button>
                 <button class="segmented-btn" onclick="setTypingScope('woojin-article', this)">玗進文章</button>
             </div>
@@ -2646,9 +2646,12 @@ function closeInfoModalDirect() {
 
         // 打字測驗狀態
         let typingScope = 'rand-10-words';
-        let typingTargetText = "";
-        let typingStartTime = null;
-        let typingTimer = null;
+let typingQueue = [];       // 存放抽出的 10 個題目 (單字或句子)
+let currentTypingIdx = 0;   // 目前進度 (0~9)
+let typingStartTime = null;
+let typingCountdownTimer = null; // 3秒倒數計時器
+let totalTypedChars = 0;    // 累積打字總字數 (算總 CPM)
+let totalCorrectChars = 0;  // 累積正確字數 (算總正確率)
 
         /* ==========================================
            10. 單字測驗邏輯 (Anki 模式)
@@ -2734,87 +2737,204 @@ function closeInfoModalDirect() {
            11. 打字測驗邏輯
            ========================================== */
         function setTypingScope(scope, btn) {
-            typingScope = scope;
-            // 更新選取按鈕 active 樣式
-            btn.parentElement.querySelectorAll('.segmented-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            prepareTypingTarget();
-        }
-
-        function prepareTypingTarget() {
-    if (typingScope === 'rand-10-words') {
-        const vocabList = getVocabList();
-        const shuffled = [...vocabList].sort(() => 0.5 - Math.random()).slice(0, 10);
-        typingTargetText = shuffled.map(item => item.kor).join(' ');
-    } else if (typingScope === 'rand-10-sentences') {
-        const shuffled = [...sentenceBank].sort(() => 0.5 - Math.random()).slice(0, 10);
-        typingTargetText = shuffled.join(' ');
-    } else if (typingScope === 'liyu-article') {
-        typingTargetText = liyuArticle;
-    } else if (typingScope === 'woojin-article') {
-        typingTargetText = woojinArticle;
+    typingScope = scope;
+    if (btn) {
+        btn.parentElement.querySelectorAll('.segmented-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
     }
-
-    document.getElementById('typing-target-display').innerText = typingTargetText;
-    document.getElementById('typing-input').value = '';
-    document.getElementById('typing-input').disabled = true;
-    document.getElementById('countdown-display').innerText = ''; 
-    document.getElementById('cpm-val').innerText = '0';
-    document.getElementById('accuracy-val').innerText = '100%';
+    prepareTypingQueue();
 }
 
-        function startTypingTest() {
-            prepareTypingTarget();
-            const inputArea = document.getElementById('typing-input');
+// 預備題目佇列
+function prepareTypingQueue() {
+    const vocabList = getVocabList();
+    typingQueue = [];
+    currentTypingIdx = 0;
+    totalTypedChars = 0;
+    totalCorrectChars = 0;
+
+    if (typingScope === 'rand-10-words') {
+        const shuffled = [...vocabList].sort(() => 0.5 - Math.random()).slice(0, 10);
+        typingQueue = shuffled.map(item => item.kor);
+    } else if (typingScope === 'rand-10-sentences') {
+        const shuffled = [...sentenceBank].sort(() => 0.5 - Math.random()).slice(0, 10);
+        typingQueue = shuffled.slice(0, 10);
+    } else if (typingScope === 'liyu-article') {
+        typingQueue = [liyuArticle];
+    } else if (typingScope === 'woojin-article') {
+        typingQueue = [woojinArticle];
+    }
+
+    // 重置 UI 狀態
+    const inputArea = document.getElementById('typing-input');
+    inputArea.value = '';
+    inputArea.disabled = true;
+    document.getElementById('cpm-val').innerText = '0';
+    document.getElementById('accuracy-val').innerText = '100%';
+    document.getElementById('countdown-display').innerText = '請點擊開始';
+    
+    // 渲染第一題
+    renderCurrentTypingTarget();
+}
+
+// 渲染當前題目的目標文字
+function renderCurrentTypingTarget() {
+    const targetDisplay = document.getElementById('typing-target-display');
+    const progressDisplay = document.getElementById('typing-progress-display'); // 建議在 UI 加一個進度提示元件
+    
+    if (typingQueue.length > 0 && currentTypingIdx < typingQueue.length) {
+        targetDisplay.innerText = typingQueue[currentTypingIdx];
+        if (progressDisplay) {
+            progressDisplay.innerText = `進度：${currentTypingIdx + 1} / ${typingQueue.length}`;
+        }
+    }
+}
+
+// 開始測驗：觸發倒數 3 秒
+function startTypingTest() {
+    prepareTypingQueue();
+    const countdownEl = document.getElementById('countdown-display');
+    const inputArea = document.getElementById('typing-input');
+    
+    inputArea.disabled = true;
+    let secondsLeft = 3;
+    countdownEl.innerText = `預備... ${secondsLeft}`;
+
+    if (typingCountdownTimer) clearInterval(typingCountdownTimer);
+
+    typingCountdownTimer = setInterval(() => {
+        secondsLeft--;
+        if (secondsLeft > 0) {
+            countdownEl.innerText = `預備... ${secondsLeft}`;
+        } else {
+            clearInterval(typingCountdownTimer);
+            countdownEl.innerText = '開始打字！';
             inputArea.disabled = false;
             inputArea.focus();
-            typingStartTime = new Date();
-            document.getElementById('countdown-display').innerText = '進行中...';
+            typingStartTime = new Date(); // 真正開始計算時間
         }
+    }, 1000);
+}
 
-        function handleTypingInput() {
-            const inputVal = document.getElementById('typing-input').value;
-            const targetDisplay = document.getElementById('typing-target-display');
-            
-            if (!typingStartTime) typingStartTime = new Date();
-
-            let highlightedHTML = "";
-            let correctChars = 0;
-
-            for (let i = 0; i < typingTargetText.length; i++) {
-                const targetChar = typingTargetText[i];
-                const inputChar = inputVal[i];
-
-                if (inputChar === undefined) {
-                    if (i === inputVal.length) {
-                        highlightedHTML += `<span class="current-char">${targetChar}</span>`;
-                    } else {
-                        highlightedHTML += targetChar;
-                    }
-                } else if (inputChar === targetChar) {
-                    highlightedHTML += `<span class="correct-char">${targetChar}</span>`;
-                    correctChars++;
-                } else {
-                    highlightedHTML += `<span class="incorrect-char">${targetChar}</span>`;
-                }
-            }
-
-            targetDisplay.innerHTML = highlightedHTML;
-
-            // 計算 CPM & 正確率
-            const timeElapsedMin = (new Date() - typingStartTime) / 60000;
-            const cpm = timeElapsedMin > 0 ? Math.round(inputVal.length / timeElapsedMin) : 0;
-            const accuracy = inputVal.length > 0 ? Math.round((correctChars / inputVal.length) * 100) : 100;
-
-            document.getElementById('cpm-val').innerText = cpm;
-            document.getElementById('accuracy-val').innerText = accuracy + '%';
-
-            if (inputVal === typingTargetText) {
-                document.getElementById('countdown-display').innerText = '完成！';
-                document.getElementById('typing-input').disabled = true;
-            }
+// 監聽輸入框的 keydown 事件 (處理 Enter 鍵送出切換)
+document.getElementById('typing-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault(); // 防止預設換行
+        const currentTarget = typingQueue[currentTypingIdx];
+        
+        // 只有輸入完畢或按下 Enter 時才進下一題
+        if (this.value.trim() !== '') {
+            advanceToNextTarget();
         }
+    }
+});
+
+// 即時輸入比對
+function handleTypingInput() {
+    if (!typingStartTime) return;
+
+    const inputVal = document.getElementById('typing-input').value;
+    const targetText = typingQueue[currentTypingIdx] || "";
+    const targetDisplay = document.getElementById('typing-target-display');
+
+    let highlightedHTML = "";
+    let currentCorrectChars = 0;
+
+    for (let i = 0; i < targetText.length; i++) {
+        const targetChar = targetText[i];
+        const inputChar = inputVal[i];
+
+        if (inputChar === undefined) {
+            highlightedHTML += (i === inputVal.length) ? `<span class="current-char">${targetChar}</span>` : targetChar;
+        } else if (inputChar === targetChar) {
+            highlightedHTML += `<span class="correct-char">${targetChar}</span>`;
+            currentCorrectChars++;
+        } else {
+            highlightedHTML += `<span class="incorrect-char">${targetChar}</span>`;
+        }
+    }
+
+    targetDisplay.innerHTML = highlightedHTML;
+
+    // 即時計算當前 CPM 與正確率
+    const timeElapsedMin = (new Date() - typingStartTime) / 60000;
+    const totalCharsSoFar = totalTypedChars + inputVal.length;
+    const totalCorrectSoFar = totalCorrectChars + currentCorrectChars;
+
+    const cpm = timeElapsedMin > 0 ? Math.round(totalCharsSoFar / timeElapsedMin) : 0;
+    const accuracy = totalCharsSoFar > 0 ? Math.round((totalCorrectSoFar / totalCharsSoFar) * 100) : 100;
+
+    document.getElementById('cpm-val').innerText = cpm;
+    document.getElementById('accuracy-val').innerText = accuracy + '%';
+}
+
+// 切換至下一題或完成測驗
+function advanceToNextTarget() {
+    const inputArea = document.getElementById('typing-input');
+    const targetText = typingQueue[currentTypingIdx];
+    const inputVal = inputArea.value;
+
+    // 採計本題字數
+    totalTypedChars += inputVal.length;
+    let correctCount = 0;
+    for (let i = 0; i < Math.min(inputVal.length, targetText.length); i++) {
+        if (inputVal[i] === targetText[i]) correctCount++;
+    }
+    totalCorrectChars += correctCount;
+
+    // 清空輸入框
+    inputArea.value = '';
+    currentTypingIdx++;
+
+    if (currentTypingIdx < typingQueue.length) {
+        // 渲染下一題
+        renderCurrentTypingTarget();
+    } else {
+        // 10 題全部打完，觸發結算
+        finishTypingTest();
+    }
+}
+
+// 結算畫面與 Firebase 數據上傳
+async function finishTypingTest() {
+    const inputArea = document.getElementById('typing-input');
+    inputArea.disabled = true;
+    
+    const timeElapsedMin = (new Date() - typingStartTime) / 60000;
+    const finalCPM = timeElapsedMin > 0 ? Math.round(totalTypedChars / timeElapsedMin) : 0;
+    const finalAccuracy = totalTypedChars > 0 ? Math.round((totalCorrectChars / totalTypedChars) * 100) : 100;
+
+    document.getElementById('countdown-display').innerText = '🎉 測驗完成！';
+
+    // 顯示結算彈窗或提示
+    alert(`🏆 打字測驗完成！\n\n速度 (CPM)：${finalCPM}\n正確率：${finalAccuracy}%\n總耗時：${(timeElapsedMin * 60).toFixed(1)} 秒`);
+
+    // 上傳數據至 Firebase
+    await uploadTypingScoreToFirebase({
+        member: currentState.member,
+        scope: typingScope,
+        cpm: finalCPM,
+        accuracy: finalAccuracy,
+        timestamp: new Date().toISOString()
+    });
+}
+
+// Firebase 上傳函式
+async function uploadTypingScoreToFirebase(scoreData) {
+    if (typeof db === 'undefined') {
+        console.warn('Firebase db 未初始化，跳過數據上傳');
+        return;
+    }
+
+    try {
+        // 假設使用 Firebase v9+ Modular SDK
+        // import { collection, addDoc } from "firebase/firestore";
+        await firebase.firestore().collection('typing_results').add(scoreData);
+        console.log('數據成功上傳至 Firebase！', scoreData);
+    } catch (error) {
+        console.error('Firebase 上傳失敗：', error);
+    }
+}
 </script>
     
 <script type="module" src="../../../js/firebase-init.js"></script>
