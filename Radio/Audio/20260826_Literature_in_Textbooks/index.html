@@ -259,58 +259,126 @@ body {
   10. 排行榜
    ========================================== */
 .typing-leaderboard {
-    margin: 0 0 28px;
-    padding: 18px 20px;
+    margin: 18px 0 30px;
+    padding: 0;
     border-radius: 14px;
     background: rgba(33, 33, 71, 0.035);
     border: 1px solid rgba(33, 33, 71, 0.08);
+    overflow: hidden;
 }
-
+.leaderboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 52px;
+    padding: 0 50px;
+}
 .leaderboard-title {
-    text-align: center;
     font-size: 15px;
     font-weight: 700;
     color: var(--text-main);
-    margin-bottom: 14px;
+    text-align: center;
 }
 
+/* 收合按鈕 */
+.leaderboard-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(33, 33, 71, 0.06);
+    color: var(--text-muted);
+
+    font-size: 20px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        background 0.2s,
+        transform 0.15s;
+}
+.leaderboard-toggle:hover {
+    background: rgba(33, 33, 71, 0.12);
+}
+.leaderboard-toggle:active {
+    transform: translateY(-50%) scale(0.9);
+}
+
+/* 排行榜內容 */
+.leaderboard-content {
+    max-height: 500px;
+    opacity: 1;
+    overflow: hidden;
+
+    transition:
+        max-height 0.3s ease,
+        opacity 0.2s ease;
+}
 .leaderboard-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
+    gap: 8px;
 
+    padding: 0 18px 18px;
+}
 .leaderboard-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5px;
-    padding: 10px 8px;
-    min-height: 58px;
-}
 
+    min-height: 62px;
+    padding: 10px 8px;
+
+    gap: 5px;
+}
 .leaderboard-item span {
     font-size: 12px;
     color: var(--text-muted);
 }
-
 .leaderboard-item strong {
     font-size: 16px;
     color: var(--text-main);
 }
 
-.leaderboard-percent {
-    padding-top: 12px;
+/* 百分比資料 */
+.leaderboard-percent strong {
+    font-size: 15px;
+}
+
+/* 排行榜縮小狀態 */
+.typing-leaderboard.collapsed .leaderboard-content {
+    max-height: 0;
+    opacity: 0;
+}
+.typing-leaderboard.collapsed .leaderboard-header {
+    min-height: 48px;
+}
+.typing-leaderboard.collapsed .leaderboard-toggle {
+    font-size: 20px;
 }
 
 @media (max-width: 600px) {
+
     .leaderboard-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .typing-personal-best {
-        gap: 30px;
+    .leaderboard-item {
+        min-height: 58px;
     }
 }
 </style>
@@ -442,58 +510,64 @@ body {
             <button class="segmented-btn" onclick="setTypingScope('woojin-article', this)">玗進朗讀文章</button>
         </div>
 
-        <div class="typing-personal-best">
-            <div>
-                <span>我的最快速度</span>
-                <strong id="my-best-cpm">尚無紀錄</strong>
-            </div>
-        
-            <div>
-                <span>我的最高正確率</span>
-                <strong id="my-best-accuracy">尚無紀錄</strong>
-            </div>
-        </div>
-
         <!-- 排行榜 -->
-        <div class="typing-leaderboard">
-            <div class="leaderboard-title">
-                🏆 打字排行榜
-            </div>
-    
-            <div class="leaderboard-grid">
-    
-                <div class="leaderboard-item">
-                    <span>平均速度</span>
-                    <strong id="leaderboard-avg-cpm">—</strong>
-                </div>
-    
-                <div class="leaderboard-item">
-                    <span>平均正確率</span>
-                    <strong id="leaderboard-avg-accuracy">—</strong>
-                </div>
-    
-                <div class="leaderboard-item">
-                    <span>我的速度</span>
-                    <strong id="leaderboard-my-cpm">沒有成績</strong>
-                </div>
-    
-                <div class="leaderboard-item">
-                    <span>我的正確率</span>
-                    <strong id="leaderboard-my-accuracy">沒有成績</strong>
-                </div>
-    
-                <div class="leaderboard-item leaderboard-percent">
-                    <span>速度高於</span>
-                    <strong id="leaderboard-cpm-percent">沒有成績</strong>
-                </div>
-    
-                <div class="leaderboard-item leaderboard-percent">
-                    <span>正確率高於</span>
-                    <strong id="leaderboard-accuracy-percent">沒有成績</strong>
-                </div>
-    
-            </div>
-        </div>
+         <div class="typing-leaderboard" id="typing-leaderboard">
+         
+             <!-- 排行榜標題列 -->
+             <div class="leaderboard-header">
+                 <div class="leaderboard-title">
+                     🏆 打字排行榜
+                 </div>
+         
+                 <button
+                     type="button"
+                     class="leaderboard-toggle"
+                     onclick="toggleTypingLeaderboard()"
+                     aria-label="縮小或展開排行榜"
+                 >
+                     −
+                 </button>
+             </div>
+         
+             <!-- 排行榜內容 -->
+             <div class="leaderboard-content">
+         
+                 <div class="leaderboard-grid">
+         
+                     <div class="leaderboard-item">
+                         <span>平均速度</span>
+                         <strong id="leaderboard-avg-cpm">—</strong>
+                     </div>
+         
+                     <div class="leaderboard-item">
+                         <span>平均正確率</span>
+                         <strong id="leaderboard-avg-accuracy">—</strong>
+                     </div>
+         
+                     <div class="leaderboard-item">
+                         <span>我的最快速度</span>
+                         <strong id="leaderboard-my-cpm">沒有成績</strong>
+                     </div>
+         
+                     <div class="leaderboard-item">
+                         <span>我的最高正確率</span>
+                         <strong id="leaderboard-my-accuracy">沒有成績</strong>
+                     </div>
+         
+                     <div class="leaderboard-item leaderboard-percent">
+                         <span>速度高於</span>
+                         <strong id="leaderboard-cpm-percent">沒有成績</strong>
+                     </div>
+         
+                     <div class="leaderboard-item leaderboard-percent">
+                         <span>正確率高於</span>
+                         <strong id="leaderboard-accuracy-percent">沒有成績</strong>
+                     </div>
+         
+                 </div>
+         
+             </div>
+         </div>
 
         <!-- 測驗即時狀態 -->
         <div class="typing-metrics">
@@ -2338,8 +2412,6 @@ window.addEventListener('DOMContentLoaded', () => {
     loadAndRenderContent();
     if (typeof initAudioListener === 'function') initAudioListener();
 
-    displayLocalTypingBest();
-
     if (window.firebaseAuthReady) {
 
         window.firebaseAuthReady.then(() => {
@@ -3067,9 +3139,6 @@ function setTypingScope(scope, btn) {
 
     prepareTypingQueue();
 
-    // 更新個人 localStorage 最佳成績
-    displayLocalTypingBest();
-
     // 更新 Firebase 排行榜
     if (window.loadTypingLeaderboard) {
         window.loadTypingLeaderboard(typingScope);
@@ -3327,40 +3396,33 @@ function updateLocalTypingBest(cpm, accuracy) {
     if (accuracy > oldBestAccuracy) {
         localStorage.setItem(accuracyKey, accuracy);
     }
-
-    displayLocalTypingBest();
-}
-
-function displayLocalTypingBest() {
-
-    const bestCpm = localStorage.getItem(
-        `typing_best_cpm_${typingScope}`
-    );
-
-    const bestAccuracy = localStorage.getItem(
-        `typing_best_accuracy_${typingScope}`
-    );
-
-    const cpmEl =
-        document.getElementById('my-best-cpm');
-
-    const accEl =
-        document.getElementById('my-best-accuracy');
-
-    if (cpmEl) {
-        cpmEl.innerText =
-            bestCpm ? `${bestCpm} CPM` : '尚無紀錄';
-    }
-
-    if (accEl) {
-        accEl.innerText =
-            bestAccuracy ? `${bestAccuracy}%` : '尚無紀錄';
-    }
 }
 
 /* ==========================================
    13. 排行榜
    ========================================== */
+function toggleTypingLeaderboard() {
+
+    const leaderboard =
+        document.getElementById('typing-leaderboard');
+
+    const toggleBtn =
+        leaderboard.querySelector('.leaderboard-toggle');
+
+    if (!leaderboard) return;
+
+    const isCollapsed =
+        leaderboard.classList.toggle('collapsed');
+
+    if (isCollapsed) {
+        toggleBtn.innerText = '+';
+        toggleBtn.setAttribute('aria-label', '展開排行榜');
+    } else {
+        toggleBtn.innerText = '−';
+        toggleBtn.setAttribute('aria-label', '縮小排行榜');
+    }
+}
+
 function updateTypingLeaderboard(records) {
 
     const avgCpmEl =
