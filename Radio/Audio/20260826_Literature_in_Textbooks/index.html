@@ -98,11 +98,6 @@
             background: var(--surface-white); border-radius: var(--border-radius); padding: 18px 20px; box-shadow: var(--shadow-soft); margin-bottom: 20px;
         }
 
-        .notice-banner {
-            font-size: 14px; color: var(--text-muted); background: rgba(33, 33, 71, 0.05); padding: 10px 14px; border-radius: 8px;
-            margin-bottom: 14px; font-weight: 500;
-        }
-
         .sync-controls { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
 
         .play-toggle-btn {
@@ -115,11 +110,6 @@
         .time-btn {
             border: 1px solid var(--primary-dark); background: rgba(33, 33, 71, 0.04); color: var(--primary-dark); padding: 6px 10px;
             font-size: 14px; border-radius: 8px; cursor: pointer; font-weight: 700;
-        }
-
-        .sync-btn {
-            border: 1px solid var(--primary-dark); background: rgba(33, 33, 71, 0.08); color: var(--primary-dark); padding: 8px 14px;
-            font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer;
         }
 
         /* ==========================================
@@ -137,7 +127,6 @@
         .sub-line.active { background: rgba(33, 33, 71, 0.08) !important; border-left-color: var(--primary-dark) !important; }
 
         .kor-text { font-size: var(--kor-font-size); font-weight: 600; color: var(--primary-dark); line-height: 1.85; }
-
         .chi-text { font-size: var(--chi-font-size); color: #374151; margin-top: 6px; font-weight: 500; line-height: 1.5; }
 
         .hide-kor .kor-text { display: none !important; }
@@ -146,11 +135,6 @@
         /* ==========================================
            6. 單字與 Modal 彈窗 
            ========================================== */
-        .vocab-word { color: var(--primary-dark); background: rgba(33, 33, 71, 0.05); padding: 1px 5px; border-radius: 4px; font-weight: 700; cursor: pointer; 
-          border-bottom: 2px solid var(--primary-dark); -webkit-box-decoration-break: clone; box-decoration-break: clone; margin: 0 1px; display: inline; transition: background 0.2s ease;
-        }
-        .vocab-word:hover { background: rgba(33, 33, 71, 0.12); }
-
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(33, 33, 71, 0.4); display: none;
             align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(4px);
@@ -183,121 +167,150 @@
         }
 
   /* ==========================================
-           7. 單字測驗、打字測驗
+           7. 單字測驗與打字測驗 (修正寬度與樣式)
            ========================================== */
-      /* 測驗通用卡片樣式 */
-.test-card {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 24px;
-    margin-top: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
+        .test-card {
+            background: var(--surface-white);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-soft);
+            width: 100%;
+        }
 
-.test-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #e5e7eb;
-    padding-bottom: 12px;
-}
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-/* 單字測驗 (Anki 卡片) 樣式 */
-.flashcard-body {
-    min-height: 160px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: #f9fafb;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
+        /* 單字測驗卡片樣式 */
+        .flashcard-body {
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+        }
 
-.vocab-prompt {
-    font-size: 24px;
-    font-weight: bold;
-    color: #1f2937;
-    margin-bottom: 12px;
-}
+        .vocab-prompt {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            text-align: center;
+        }
 
-.vocab-answer-box {
-    text-align: center;
-    border-top: 2px dashed #d1d5db;
-    padding-top: 12px;
-    width: 100%;
-}
+        .vocab-answer-box {
+            text-align: center;
+            border-top: 2px dashed #cbd5e1;
+            padding-top: 12px;
+            width: 100%;
+        }
 
-.answer-kor { font-size: 20px; color: #2563eb; font-weight: 600; }
-.answer-chi { font-size: 16px; color: #4b5563; }
+        .answer-kor { font-size: 20px; color: #2563eb; font-weight: 600; }
+        .answer-chi { font-size: 16px; color: #4b5563; margin-top: 4px; }
 
-.test-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    align-items: center;
-}
+        .test-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            width: 100%;
+        }
 
-.anki-btn-group {
-    display: flex;
-    gap: 12px;
-    width: 100%;
-}
+        .show-ans-btn {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background: #f1f5f9;
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .show-ans-btn:hover { background: #e2e8f0; }
 
-.anki-btn {
-    flex: 1;
-    padding: 10px;
-    border-radius: 6px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-}
+        .anki-btn-group {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
 
-.wrong-btn { background: #fee2e2; color: #dc2626; }
-.right-btn { background: #d1fae5; color: #059669; }
+        .anki-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        .anki-btn:hover { opacity: 0.85; }
 
-/* 打字測驗樣式 */
-.typing-metrics {
-    display: flex;
-    justify-content: space-around;
-    background: #f3f4f6;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    font-weight: bold;
-}
+        .wrong-btn { background: #fee2e2; color: #dc2626; }
+        .right-btn { background: #d1fae5; color: #059669; }
 
-.metric-val { color: #2563eb; }
+        /* 打字測驗樣式 */
+        .typing-metrics {
+            display: flex;
+            justify-content: space-around;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-weight: bold;
+            border: 1px solid #e2e8f0;
+        }
 
-.typing-target {
-    font-size: 18px;
-    line-height: 1.8;
-    background: #f8fafc;
-    padding: 16px;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-    min-height: 80px;
-    margin-bottom: 16px;
-    word-break: break-all;
-}
+        .metric-val { color: #2563eb; }
 
-.typing-input-area {
-    width: 100%;
-    height: 100px;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1.5px solid #d1d5db;
-    font-size: 16px;
-    resize: none;
-    box-sizing: border-box;
-}
+        .typing-target {
+            font-size: 18px;
+            line-height: 1.8;
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1.5px solid #cbd5e1;
+            min-height: 100px;
+            margin-bottom: 16px;
+            word-break: break-all;
+            white-space: pre-wrap;
+        }
 
-.typing-input-area:focus {
-    outline: none;
-    border-color: #2563eb;
-}
+        .typing-input-area {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1.5px solid #cbd5e1;
+            font-size: 16px;
+            resize: none;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .typing-input-area:focus {
+            outline: none;
+            border-color: var(--primary-dark);
+        }
+
+        .correct-char { color: #059669; background-color: #d1fae5; }
+        .incorrect-char { color: #dc2626; background-color: #fee2e2; }
+        .current-char { text-decoration: underline; font-weight: bold; }
     </style>
 </head>
 
@@ -384,6 +397,61 @@
         <!-- 字幕容器 -->
         <div class="subtitle-card" id="subtitle-box"></div>
 
+        <!-- 單字測驗容器 (Anki 模式) -->
+        <div class="test-card" id="vocab-test-box" style="display: none;">
+            <div class="test-header">
+                <h3>🎴 單字卡複習</h3>
+                <div class="test-mode-selector">
+                    <button class="chip-btn active" id="btn-chi-to-kor" onclick="toggleVocabDirection('chi-to-kor', this)">中譯韓</button>
+                    <button class="chip-btn" id="btn-kor-to-chi" onclick="toggleVocabDirection('kor-to-chi', this)">韓譯中</button>
+                </div>
+            </div>
+            
+            <div class="flashcard-body">
+                <div class="vocab-prompt" id="vocab-test-prompt">點擊下方按鈕開始測驗</div>
+                
+                <div class="vocab-answer-box" id="vocab-test-answer" style="display: none;">
+                    <div class="answer-kor" id="vocab-ans-kor"></div>
+                    <div class="answer-chi" id="vocab-ans-chi"></div>
+                </div>
+            </div>
+
+            <div class="test-actions">
+                <button class="show-ans-btn" id="show-ans-btn" onclick="showVocabAnswer()">顯示答案</button>
+                <div class="anki-btn-group">
+                    <button class="anki-btn wrong-btn" onclick="handleVocabResult(false)">❌ 不熟悉 (重來)</button>
+                    <button class="anki-btn right-btn" onclick="handleVocabResult(true)">⭕ 已掌握 (下一題)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 打字測驗容器 -->
+        <div class="test-card" id="typing-test-box" style="display: none;">
+            <div class="test-header">
+                <h3>⌨️ 韓文打字練習</h3>
+                <button class="play-toggle-btn" onclick="startTypingTest()">🚀 開始打字</button>
+            </div>
+
+            <!-- 範圍選擇器 -->
+            <div class="segmented-row" style="margin-bottom: 16px;">
+                <button class="segmented-btn active" onclick="setTypingScope('rand-10-words', this)">隨機 10 單字</button>
+                <button class="segmented-btn" onclick="setTypingScope('rand-10-sentences', this)">隨機 10 句子</button>
+                <button class="segmented-btn" onclick="setTypingScope('liyu-article', this)">立于文章</button>
+                <button class="segmented-btn" onclick="setTypingScope('woojin-article', this)">玗進文章</button>
+            </div>
+
+            <div class="typing-metrics">
+                <div>倒數狀態：<span id="countdown-display" class="metric-val"></span></div>
+                <div>速度 (CPM)：<span id="cpm-val" class="metric-val">0</span></div>
+                <div>正確率：<span id="accuracy-val" class="metric-val">100%</span></div>
+            </div>
+
+            <!-- 目標文章文字顯示 (含動態比對高亮) -->
+            <div class="typing-target" id="typing-target-display">請選擇打字範圍並點擊上方「開始打字」...</div>
+
+            <!-- 輸入框 -->
+            <textarea id="typing-input" class="typing-input-area" placeholder="請在此輸入對應的韓文..." disabled oninput="handleTypingInput()"></textarea>
+        </div>
     </div>
 
     <!-- 說明提示彈窗 -->
@@ -405,7 +473,7 @@
       </div>
     </div>
 
-    <!-- 單字詳細資料彈窗 (Modal) -->
+  <!-- 單字詳細資料彈窗 (Modal) -->
     <div class="modal-overlay" id="vocab-modal" onclick="closeModal(event)">
         <div class="modal-card">
             <button class="modal-close" onclick="closeModalDirect()">✕</button>
@@ -415,58 +483,9 @@
             </div>
             <div class="modal-pinyin" id="modal-pinyin">[gyo-gwa-seo]</div>
             <div class="modal-chi" id="modal-chi">教科書</div>
-            
             <button class="audio-play-btn" id="modal-speak-btn">🔊 播放發音</button>
         </div>
     </div>
-
-    <!-- 單字測驗容器 (Anki 模式) -->
-        <div class="test-card" id="vocab-test-box" style="display: none;">
-            <div class="test-header">
-                <h3>🎴 單字卡複習</h3>
-                <div class="test-mode-selector">
-                    <button class="chip-btn active" onclick="startVocabTest('chi-to-kor')">中譯韓</button>
-                    <button class="chip-btn" onclick="startVocabTest('kor-to-chi')">韓譯中</button>
-                </div>
-            </div>
-            
-            <div class="flashcard-body">
-                <div class="vocab-prompt" id="vocab-test-prompt">點擊下方按鈕開始測驗</div>
-                
-                <div class="vocab-answer-box" id="vocab-test-answer" style="display: none;">
-                    <div class="answer-kor" id="vocab-ans-kor"></div>
-                    <div class="answer-chi" id="vocab-ans-chi"></div>
-                </div>
-            </div>
-
-            <div class="test-actions">
-                <button class="action-btn show-ans-btn" onclick="document.getElementById('vocab-test-answer').style.display='block'">顯示答案</button>
-                <div class="anki-btn-group">
-                    <button class="anki-btn wrong-btn" onclick="handleVocabResult(false)">❌ 不熟悉 (重來)</button>
-                    <button class="anki-btn right-btn" onclick="handleVocabResult(true)">⭕ 已掌握 (下一題)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 打字測驗容器 -->
-        <div class="test-card" id="typing-test-box" style="display: none;">
-            <div class="test-header">
-                <h3>⌨️ 韓文打字練習</h3>
-                <button class="play-toggle-btn" onclick="startTypingCountdown()">🚀 開始打字倒數</button>
-            </div>
-
-            <div class="typing-metrics">
-                <div>倒數狀態：<span id="countdown-display" class="metric-val">準備</span></div>
-                <div>速度 (CPM)：<span id="cpm-val" class="metric-val">0</span></div>
-                <div>正確率：<span id="accuracy-val" class="metric-val">100%</span></div>
-            </div>
-
-            <!-- 目標文章文字顯示 (含動態比對高亮) -->
-            <div class="typing-target" id="typing-target-display">點擊上方按鈕開始練習...</div>
-
-            <!-- 輸入框 -->
-            <textarea id="typing-input" class="typing-input-area" placeholder="請在此輸入對應的韓文..." disabled oninput="handleTypingInput()"></textarea>
-        </div>
   
   <div class="reaction-section">
     <p id="reaction-title">覺得這部翻譯作品如何？點個表情吧！</p>
@@ -2299,23 +2318,21 @@
         }
 
         function applyStateToUI() {
-            document.querySelectorAll('.segmented-btn[data-member]').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.member === currentState.member);
-            });
-            document.querySelectorAll('.segmented-btn[data-mode]').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.mode === currentState.mode);
-            });
-            document.querySelectorAll('.chip-btn[data-lang]').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === currentState.lang);
-            });
+    document.querySelectorAll('.segmented-btn[data-member]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.member === currentState.member);
+    });
+    document.querySelectorAll('.segmented-btn[data-mode]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === currentState.mode);
+    });
+    document.querySelectorAll('.chip-btn[data-lang]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === currentState.lang);
+    });
 
-            // 取得所有 UI 容器元件
     const dynamicControls = document.getElementById('dynamic-controls');
     const subtitleBox = document.getElementById('subtitle-box');
     const vocabBox = document.getElementById('vocab-test-box');
     const typingBox = document.getElementById('typing-test-box');
 
-    // 依據目前模式切換顯隱狀態
     if (dynamicControls) {
         dynamicControls.style.display = currentState.mode === 'dynamic' ? 'block' : 'none';
     }
@@ -2327,8 +2344,13 @@
     if (vocabBox) {
         const isVocab = currentState.mode === 'vocab-test';
         vocabBox.style.display = isVocab ? 'block' : 'none';
-        if (isVocab && typeof startVocabTest === 'function') {
-            startVocabTest('chi-to-kor'); // 切換到單字測驗時自動初始化
+        
+        if (isVocab) {
+            // 切換到單字測驗時初始化
+            if (typeof startVocabTest === 'function') startVocabTest('chi-to-kor');
+        } else {
+            // 補充：切換離開單字測驗時的清理（例如停止倒數計時器）
+            if (typeof stopVocabTest === 'function') stopVocabTest(); 
         }
     }
 
@@ -2336,7 +2358,6 @@
         typingBox.style.display = currentState.mode === 'typing-test' ? 'block' : 'none';
     }
 
-    // 高亮效果與語言顯示處理
     if (currentState.mode === 'full') {
         if (typeof highlightCurrentSub === 'function') highlightCurrentSub(-1);
     } else if (currentState.mode === 'dynamic') {
@@ -2344,7 +2365,7 @@
     }
 
     applyLangDisplay();
-        }
+}
 
         function applyLangDisplay() {
             const box = document.getElementById('subtitle-box');
@@ -2597,126 +2618,203 @@ function closeInfoModalDirect() {
 }
 
 /* ==========================================
-   9. 單字測驗佇列邏輯 (Anki 模式)
-   ========================================== */
-let vocabQueue = [];
-let currentVocabItem = null;
-
-function startVocabTest(direction = 'chi-to-kor') { // 'chi-to-kor' 或 'kor-to-chi'
-    // 將單字庫轉為陣列並隨機打亂
-    vocabQueue = Object.keys(vocabDb).map(key => ({ key, ...vocabDb[key] }));
-    vocabQueue.sort(() => Math.random() - 0.5);
-    nextVocabQuestion(direction);
-}
-
-function nextVocabQuestion(direction) {
-    if (vocabQueue.length === 0) {
-        alert("🎉 恭喜！所有單字皆已複習完成！");
-        return;
-    }
-
-    currentVocabItem = vocabQueue.shift(); // 取出第一個
-    const promptEl = document.getElementById('vocab-test-prompt');
-    const answerEl = document.getElementById('vocab-test-answer');
-    
-    // 隱藏答案區
-    answerEl.style.display = 'none';
-
-    if (direction === 'chi-to-kor') {
-        promptEl.innerText = currentVocabItem.chi;
-    } else {
-        promptEl.innerText = currentVocabItem.kor;
-    }
-}
-
-function handleVocabResult(isCorrect, direction) {
-    if (!isCorrect) {
-        // 答錯：隨機插回佇列後方
-        const insertIndex = Math.floor(Math.random() * (vocabQueue.length + 1));
-        vocabQueue.splice(insertIndex, 0, currentVocabItem);
-    }
-    nextVocabQuestion(direction);
-}
-
-/* ==========================================
-   10. 打字測驗倒數與即時比對邏輯
-   ========================================== */
-let typingTimer = null;
-let startTime = null;
-let targetText = "";
-
-function startTypingCountdown() {
-    const inputEl = document.getElementById('typing-input');
-    const countdownEl = document.getElementById('countdown-display');
-    
-    inputEl.disabled = true;
-    inputEl.value = "";
-    let count = 3;
-    countdownEl.innerText = count;
-
-    const timer = setInterval(() => {
-        count--;
-        if (count > 0) {
-            countdownEl.innerText = count;
-        } else {
-            clearInterval(timer);
-            countdownEl.innerText = "開始！";
-            inputEl.disabled = false;
-            inputEl.focus();
-            startTime = new Date();
-            if (typeof initTypingTracker === 'function') initTypingTracker();
+           9. 全域資料庫與狀態管理
+           ========================================== */
+        // 取得完整的單字陣列
+        function getVocabList() {
+            return typeof vocabDb !== 'undefined' ? Object.values(vocabDb) : [];
         }
-    }, 1000);
+
+        // 句子庫與完整文章範例
+        const sentenceBank = [
+            "하늘에 하얀 구름이 떠 있습니다.",
+            "문학 작품을 낭독하는 시간입니다.",
+            "바람이 불어오는 곳으로 떠납니다.",
+            "오늘도 즐겁고 보람찬 하루를 보냅니다.",
+            "시인의 마음으로 글을 읽어봅니다.",
+            "한국어 공부는 정말 fun하고 보람차요."
+        ];
+
+        const liyuArticle = "하얀 바람벽이 있어 온통 하얀 벽 위에 쓸쓸한 생각이 지나간다. 시인의 마음은 언제나 푸른 하늘을 향해 열려 있다.";
+        const woojinArticle = "교과서 속의 문학 작품을 낭독하며 우리는 새로운 세계를 만난다. 마음속 깊은 곳에서 울려 퍼지는 소리에 귀를 기울여 보자.";
+
+        // 單字測驗狀態
+        let currentVocabBatch = [];
+        let currentVocabIndex = 0;
+        let vocabDirection = 'chi-to-kor'; // 'chi-to-kor' 或 'kor-to-chi'
+        let isVocabFinished = false;
+
+        // 打字測驗狀態
+        let typingScope = 'rand-10-words';
+        let typingTargetText = "";
+        let typingStartTime = null;
+        let typingTimer = null;
+
+        /* ==========================================
+           10. 單字測驗邏輯 (Anki 模式)
+           ========================================== */
+        function initVocabTest() {
+    const vocabList = getVocabList();
+    // 從單字庫隨機抽出 10 個不重複單字
+    const shuffled = [...vocabList].sort(() => 0.5 - Math.random());
+    currentVocabBatch = shuffled.slice(0, Math.min(10, shuffled.length));
+    currentVocabIndex = 0;
+    isVocabFinished = false;
+
+    const showBtn = document.getElementById('show-ans-btn');
+    if (showBtn) showBtn.innerText = "顯示答案";
+
+    renderVocabCard();
 }
 
-// 即時比對與高亮渲染
-function handleTypingInput() {
-    const input = document.getElementById('typing-input').value;
-    const displayEl = document.getElementById('typing-target-display');
-    
-    let html = "";
-    let correctCount = 0;
-
-    for (let i = 0; i < targetText.length; i++) {
-        const targetChar = targetText[i];
-        const inputChar = input[i];
-
-        if (inputChar == null) {
-            html += `<span>${targetChar}</span>`;
-        } else if (inputChar === targetChar) {
-            html += `<span style="color: #10B981;">${targetChar}</span>`;
-            correctCount++;
-        } else {
-            html += `<span style="background-color: #FEE2E2; color: #EF4444;">${targetChar}</span>`;
+        function toggleVocabDirection(dir, btn) {
+            vocabDirection = dir;
+            // 更新按鈕 active 樣式
+            document.querySelectorAll('.test-mode-selector .chip-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            
+            initVocabTest();
         }
+
+        function renderVocabCard() {
+            const promptEl = document.getElementById('vocab-test-prompt');
+            const ansBox = document.getElementById('vocab-test-answer');
+            const ansKor = document.getElementById('vocab-ans-kor');
+            const ansChi = document.getElementById('vocab-ans-chi');
+
+            ansBox.style.display = 'none';
+
+            if (isVocabFinished) {
+                promptEl.innerText = "🎉 恭喜完成 10 個單字複習！";
+                ansKor.innerText = "";
+                ansChi.innerText = "";
+                document.getElementById('show-ans-btn').innerText = "再來一次";
+                return;
+            }
+
+            const item = currentVocabBatch[currentVocabIndex];
+            if (!item) return;
+
+            if (vocabDirection === 'chi-to-kor') {
+                promptEl.innerText = item.chi;
+                ansKor.innerText = item.kor;
+                ansChi.innerText = `[${item.pinyin}] (${item.pos})`;
+            } else {
+                promptEl.innerText = item.kor;
+                ansKor.innerText = item.chi;
+                ansChi.innerText = `[${item.pinyin}] (${item.pos})`;
+            }
+        }
+
+        function showVocabAnswer() {
+            if (isVocabFinished) {
+                initVocabTest();
+                return;
+            }
+            document.getElementById('vocab-test-answer').style.display = 'block';
+        }
+
+        function handleVocabResult(isMastered) {
+            if (isVocabFinished) return;
+
+            if (isMastered) {
+                currentVocabIndex++;
+                if (currentVocabIndex >= currentVocabBatch.length) {
+                    isVocabFinished = true;
+                }
+            } else {
+                // 不熟悉：把目前這個單字移到陣列最後面重新練習
+                const currentItem = currentVocabBatch.splice(currentVocabIndex, 1)[0];
+                currentVocabBatch.push(currentItem);
+            }
+            renderVocabCard();
+        }
+
+        /* ==========================================
+           11. 打字測驗邏輯
+           ========================================== */
+        function setTypingScope(scope, btn) {
+            typingScope = scope;
+            // 更新選取按鈕 active 樣式
+            btn.parentElement.querySelectorAll('.segmented-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            prepareTypingTarget();
+        }
+
+        function prepareTypingTarget() {
+    if (typingScope === 'rand-10-words') {
+        const vocabList = getVocabList();
+        const shuffled = [...vocabList].sort(() => 0.5 - Math.random()).slice(0, 10);
+        typingTargetText = shuffled.map(item => item.kor).join(' ');
+    } else if (typingScope === 'rand-10-sentences') {
+        const shuffled = [...sentenceBank].sort(() => 0.5 - Math.random()).slice(0, 10);
+        typingTargetText = shuffled.join(' ');
+    } else if (typingScope === 'liyu-article') {
+        typingTargetText = liyuArticle;
+    } else if (typingScope === 'woojin-article') {
+        typingTargetText = woojinArticle;
     }
 
-    displayEl.innerHTML = html;
-
-    // 計算 WPM / 正確率
-    const elapsedSeconds = (new Date() - startTime) / 1000;
-    const cpm = Math.round((correctCount / elapsedSeconds) * 60);
-    const accuracy = input.length > 0 ? Math.round((correctCount / input.length) * 100) : 100;
-
-    document.getElementById('cpm-val').innerText = cpm;
-    document.getElementById('accuracy-val').innerText = `${accuracy}%`;
-
-    // 判斷是否打完
-    if (input.length >= targetText.length) {
-        finishTypingTest(cpm, accuracy);
-    }
-}
-
-// 測驗結束處裡
-function finishTypingTest(cpm, accuracy) {
+    document.getElementById('typing-target-display').innerText = typingTargetText;
+    document.getElementById('typing-input').value = '';
     document.getElementById('typing-input').disabled = true;
-    const isUpload = confirm(`測驗結束！\n打字速度：${cpm} CPM\n正確率：${accuracy}%\n\n是否上傳成績？`);
-    
-    if (isUpload && typeof window.uploadTypingScore === 'function') {
-        const currentMode = (typeof currentState !== 'undefined' && currentState.typingMode) ? currentState.typingMode : 'words';
-        window.uploadTypingScore(currentMode, cpm, accuracy);
-    }
+    document.getElementById('countdown-display').innerText = ''; 
+    document.getElementById('cpm-val').innerText = '0';
+    document.getElementById('accuracy-val').innerText = '100%';
 }
+
+        function startTypingTest() {
+            prepareTypingTarget();
+            const inputArea = document.getElementById('typing-input');
+            inputArea.disabled = false;
+            inputArea.focus();
+            typingStartTime = new Date();
+            document.getElementById('countdown-display').innerText = '進行中...';
+        }
+
+        function handleTypingInput() {
+            const inputVal = document.getElementById('typing-input').value;
+            const targetDisplay = document.getElementById('typing-target-display');
+            
+            if (!typingStartTime) typingStartTime = new Date();
+
+            let highlightedHTML = "";
+            let correctChars = 0;
+
+            for (let i = 0; i < typingTargetText.length; i++) {
+                const targetChar = typingTargetText[i];
+                const inputChar = inputVal[i];
+
+                if (inputChar === undefined) {
+                    if (i === inputVal.length) {
+                        highlightedHTML += `<span class="current-char">${targetChar}</span>`;
+                    } else {
+                        highlightedHTML += targetChar;
+                    }
+                } else if (inputChar === targetChar) {
+                    highlightedHTML += `<span class="correct-char">${targetChar}</span>`;
+                    correctChars++;
+                } else {
+                    highlightedHTML += `<span class="incorrect-char">${targetChar}</span>`;
+                }
+            }
+
+            targetDisplay.innerHTML = highlightedHTML;
+
+            // 計算 CPM & 正確率
+            const timeElapsedMin = (new Date() - typingStartTime) / 60000;
+            const cpm = timeElapsedMin > 0 ? Math.round(inputVal.length / timeElapsedMin) : 0;
+            const accuracy = inputVal.length > 0 ? Math.round((correctChars / inputVal.length) * 100) : 100;
+
+            document.getElementById('cpm-val').innerText = cpm;
+            document.getElementById('accuracy-val').innerText = accuracy + '%';
+
+            if (inputVal === typingTargetText) {
+                document.getElementById('countdown-display').innerText = '完成！';
+                document.getElementById('typing-input').disabled = true;
+            }
+        }
 </script>
     
 <script type="module" src="../../../js/firebase-init.js"></script>
