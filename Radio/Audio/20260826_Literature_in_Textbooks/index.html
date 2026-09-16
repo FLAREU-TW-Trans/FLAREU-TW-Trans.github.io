@@ -710,7 +710,7 @@
     "힘들다": { kor: "힘들다", pinyin: "him-deul-da", chi: "辛苦、困難", pos: "形容詞" },
 
     // 文法與複合句構 (Grammar Patterns & Expressions)
-    "~고 싶다": { kor: "~고 싶다", pinyin: "go sip-da", chi: "想要（做…）", pos: "句型" } 
+    "~고 싶다": { kor: "고 싶다", pinyin: "go sip-da", chi: "想要（做…）", pos: "句型" } 
 };
 
         /* ==========================================
@@ -2351,6 +2351,7 @@
         function playKoreanSpeech(text) {
             const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&le=ko`;
             const audio = new Audio(url);
+            audio.playbackRate = 0.8;
             audio.play().catch(error => {
                 console.error("播放語音失敗：", error);
             });
