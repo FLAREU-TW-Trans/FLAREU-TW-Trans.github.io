@@ -3444,7 +3444,9 @@ function updateTypingLeaderboard(records) {
         document.getElementById('leaderboard-accuracy-percent');
 
 
+    // ==========================================
     // 沒有任何排行榜資料
+    // ==========================================
     if (!records || records.length === 0) {
 
         avgCpmEl.innerText = '—';
@@ -3460,33 +3462,95 @@ function updateTypingLeaderboard(records) {
     }
 
 
-    // ==========================
-    // 平均速度
-    // ==========================
-    const avgCpm =
-        records.reduce((sum, item) => sum + item.cpm, 0)
-        / records.length;
+    // ==========================================
+    // 將資料整理成「每個 UID 一人」
+    // 每個 UID 只保留自己的最佳 CPM / 正確率
+    // ==========================================
 
-    avgCpmEl.innerText =
-        `${Math.round(avgCpm)} CPM`;
+    const userBestMap = new Map();
+
+    records.forEach(item => {
+
+        if (!item.uid) return;
+
+        const cpm = Number(item.cpm);
+        const accuracy = Number(item.accuracy);
+
+        if (
+            !Number.isFinite(cpm) ||
+            !Number.isFinite(accuracy)
+        ) {
+            return;
+        }
+
+        if (!userBestMap.has(item.uid)) {
+
+            userBestMap.set(item.uid, {
+                uid: item.uid,
+                bestCpm: cpm,
+                bestAccuracy: accuracy
+            });
+
+        } else {
+
+            const user = userBestMap.get(item.uid);
+
+            // 取這個 UID 的最高速度
+            if (cpm > user.bestCpm) {
+                user.bestCpm = cpm;
+            }
+
+            // 取這個 UID 的最高正確率
+            if (accuracy > user.bestAccuracy) {
+                user.bestAccuracy = accuracy;
+            }
+        }
+    });
 
 
-    // ==========================
-    // 平均正確率
-    // ==========================
-    const avgAccuracy =
-        records.reduce(
-            (sum, item) => sum + item.accuracy,
-            0
-        ) / records.length;
-
-    avgAccuracyEl.innerText =
-        `${Math.round(avgAccuracy)}%`;
+    // 轉成陣列
+    const users = Array.from(userBestMap.values());
 
 
-    // ==========================
-    // 找出自己的 UID
-    // ==========================
+    // ==========================================
+    // 計算排行榜平均值
+    //
+    // 注意：
+    // 這裡也是「每個 UID 的最佳成績」
+    // 再計算所有使用者的平均
+    // ==========================================
+
+    if (users.length > 0) {
+
+        const avgCpm =
+            users.reduce(
+                (sum, user) => sum + user.bestCpm,
+                0
+            ) / users.length;
+
+        const avgAccuracy =
+            users.reduce(
+                (sum, user) => sum + user.bestAccuracy,
+                0
+            ) / users.length;
+
+        avgCpmEl.innerText =
+            `${Math.round(avgCpm)} CPM`;
+
+        avgAccuracyEl.innerText =
+            `${Math.round(avgAccuracy)}%`;
+
+    } else {
+
+        avgCpmEl.innerText = '—';
+        avgAccuracyEl.innerText = '—';
+    }
+
+
+    // ==========================================
+    // 找出目前使用者 UID
+    // ==========================================
+
     const myUid =
         window.currentFirebaseUser?.uid;
 
@@ -3503,15 +3567,19 @@ function updateTypingLeaderboard(records) {
     }
 
 
-    const myRecords = records.filter(item => {
-        return item.uid === myUid;
-    });
+    // ==========================================
+    // 找出自己的最佳成績
+    // ==========================================
+
+    const myRecord =
+        userBestMap.get(myUid);
 
 
-    // ==========================
-    // 自己沒有上傳過成績
-    // ==========================
-    if (myRecords.length === 0) {
+    // ==========================================
+    // 自己目前沒有 Firebase 成績
+    // ==========================================
+
+    if (!myRecord) {
 
         myCpmEl.innerText = '沒有成績';
         myAccuracyEl.innerText = '沒有成績';
@@ -3523,20 +3591,14 @@ function updateTypingLeaderboard(records) {
     }
 
 
-    // ==========================
-    // 自己的最高速度
-    // ==========================
     const myBestCpm =
-        Math.max(...myRecords.map(item => item.cpm));
+        myRecord.bestCpm;
 
-
-    // ==========================
-    // 自己的最高正確率
-    // ==========================
     const myBestAccuracy =
-        Math.max(...myRecords.map(item => item.accuracy));
+        myRecord.bestAccuracy;
 
 
+    // 顯示自己的最佳成績
     myCpmEl.innerText =
         `${myBestCpm} CPM`;
 
@@ -3544,64 +3606,72 @@ function updateTypingLeaderboard(records) {
         `${myBestAccuracy}%`;
 
 
-    // ==========================
-    // 速度高於多少使用者
-    // ==========================
-    const cpmLowerCount =
-        records.filter(item => {
-            return item.uid !== myUid &&
-                   item.cpm < myBestCpm;
-        }).length;
-
+    // ==========================================
+    // 取得其他使用者
+    // 現在 users 已經是一個 UID 一筆
+    // ==========================================
 
     const otherUsers =
-        new Set(
-            records
-                .filter(item => item.uid !== myUid)
-                .map(item => item.uid)
-        ).size;
+        users.filter(user => user.uid !== myUid);
 
 
-    if (otherUsers > 0) {
-
-        const cpmPercent =
-            Math.round(
-                (cpmLowerCount / otherUsers) * 100
-            );
-
-        cpmPercentEl.innerText =
-            `${cpmPercent}%`;
-    } else {
+    // 沒有其他使用者
+    if (otherUsers.length === 0) {
 
         cpmPercentEl.innerText =
             '暫無其他使用者';
+
+        accuracyPercentEl.innerText =
+            '暫無其他使用者';
+
+        return;
     }
 
 
-    // ==========================
-    // 正確率高於多少使用者
-    // ==========================
-    const accuracyLowerCount =
-        records.filter(item => {
-            return item.uid !== myUid &&
-                   item.accuracy < myBestAccuracy;
+    // ==========================================
+    // 速度：
+    // 我的最佳 CPM 高於多少其他使用者
+    // ==========================================
+
+    const cpmLowerCount =
+        otherUsers.filter(user => {
+            return user.bestCpm < myBestCpm;
         }).length;
 
 
-    if (otherUsers > 0) {
+    const cpmPercent =
+        Math.round(
+            (cpmLowerCount / otherUsers.length) * 100
+        );
 
-        const accuracyPercent =
-            Math.round(
-                (accuracyLowerCount / otherUsers) * 100
-            );
 
-        accuracyPercentEl.innerText =
-            `${accuracyPercent}%`;
-    } else {
+    cpmPercentEl.innerText =
+       cpmPercent === 100
+           ? '全部其他使用者'
+           : `${cpmPercent}%`;
 
-        accuracyPercentEl.innerText =
-            '暫無其他使用者';
-    }
+
+    // ==========================================
+    // 正確率：
+    // 我的最佳正確率高於多少其他使用者
+    // ==========================================
+
+    const accuracyLowerCount =
+        otherUsers.filter(user => {
+            return user.bestAccuracy < myBestAccuracy;
+        }).length;
+
+
+    const accuracyPercent =
+        Math.round(
+            (accuracyLowerCount / otherUsers.length) * 100
+        );
+
+
+    accuracyPercentEl.innerText =
+       accuracyPercent === 100
+           ? '全部其他使用者'
+           : `${accuracyPercent}%`;
 }
 </script>
 
