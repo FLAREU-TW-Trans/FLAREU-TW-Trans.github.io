@@ -2607,7 +2607,7 @@ function loadAndRenderContent() {
         }
 
         lineDiv.addEventListener('click', (e) => {
-            if (e.target.classList.contains('vocab-word') || e.target.classList.contains('sentence-tts-btn')) return;
+            if (e.target.closest('vocab-word') || e.target.closest('sentence-tts-btn')) return;
             if (currentState.mode === 'dynamic') {
                 const audio = document.getElementById('audio-player');
                 audio.currentTime = item.start;
@@ -2685,29 +2685,27 @@ function adjustTime(seconds) {
 /* ==========================================
    8. 單字發音引擎與 Modal 控制 (內建有道語音播放 API)
    ========================================== */
-let currentSpeechAudio = null;
+let currentTtsAudio = null;
 
 function playKoreanSpeech(text) {
     const cleanText = text
-        .replace(/[\{\}]/g, '')
-        .replace(/\|[^}]+/g, '')
-        .trim();
-
-    if (!cleanText) return;
-
-    // 停止上一段語音
-    if (currentSpeechAudio) {
-        currentSpeechAudio.pause();
-        currentSpeechAudio.currentTime = 0;
-    }
+        .replace(/\{([^|}]+)\|([^}]+)\}/g, '$2')
+        .replace(/[{}]/g, '');
 
     const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(cleanText)}&le=ko`;
 
-    currentSpeechAudio = new Audio(url);
-    currentSpeechAudio.playbackRate = 0.75;
+    if (currentTtsAudio) {
+        currentTtsAudio.pause();
+        currentTtsAudio.currentTime = 0;
+    }
 
-    currentSpeechAudio.play().catch(error => {
+    currentTtsAudio = new Audio(url);
+    currentTtsAudio.playbackRate = 0.8;
+
+    currentTtsAudio.play().catch(error => {
         console.error("播放韓文語音失敗：", error);
+        console.log("播放文字：", cleanText);
+        console.log("音檔網址：", url);
     });
 }
 
@@ -3171,12 +3169,20 @@ function finishTypingTest() {
 
     const endTime = new Date();
     const totalTimeSec = Math.round((endTime - typingStartTime) / 1000);
-    const finalCpm = document.getElementById('cpm-val').innerText;
-    const finalAcc = document.getElementById('accuracy-val').innerText;
+    const totalTimeMin = (endTime - typingStartTime) / 1000 / 60;
+
+    const finalCpm = totalTimeMin > 0
+        ? Math.round(totalCorrectChars / totalTimeMin)
+        : 0;
+
+    const finalAcc = totalTypedChars > 0
+        ? Math.round((totalCorrectChars / totalTypedChars) * 100)
+        : 100;
 
     document.getElementById('res-cpm').innerText = finalCpm;
-    document.getElementById('res-accuracy').innerText = finalAcc;
+    document.getElementById('res-accuracy').innerText = finalAcc + '%';
     document.getElementById('res-time').innerText = totalTimeSec;
+
     document.getElementById('result-modal').style.display = 'flex';
 }
 
@@ -3191,8 +3197,7 @@ async function uploadScoreToFirebase() {
         10
     );
 
-    const finalAcc =
-        document.getElementById('res-accuracy').innerText;
+    const finalAcc = document.getElementById('res-accuracy').innerText;
 
     if (window.uploadTypingScore) {
         const success = await window.uploadTypingScore(
@@ -3215,32 +3220,31 @@ async function uploadScoreToFirebase() {
 <!-- Firebase 成績上傳模組 -->
 <script type="module">
 import {
-    getFirestore,
-    collection,
-    addDoc,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-import {
-    getApps,
-    getApp
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    push,
+    set
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 window.uploadTypingScore = async function(mode, cpm, accuracy) {
     try {
-        const db = getFirestore();
+        if (!window.db) {
+            throw new Error("Realtime Database 尚未初始化");
+        }
 
         const userName =
             (typeof currentUser !== 'undefined' && currentUser?.displayName)
                 ? currentUser.displayName
                 : "匿名使用者";
 
-        await addDoc(collection(db, "typing_leaderboard"), {
+        const scoreRef = push(
+            window.fb_ref(window.db, "typing_leaderboard")
+        );
+
+        await set(scoreRef, {
             username: userName,
             mode: mode,
             cpm: Number(cpm),
-            accuracy: String(accuracy),
-            createdAt: serverTimestamp()
+            accuracy: Number(String(accuracy).replace('%', '')),
+            createdAt: Date.now()
         });
 
         alert("🎉 成績已成功上傳至排行榜！");
