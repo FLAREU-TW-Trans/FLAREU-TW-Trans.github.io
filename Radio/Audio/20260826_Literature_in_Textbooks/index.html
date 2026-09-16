@@ -181,6 +181,7 @@ body {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(33, 33, 71, 0.4); display: none;
     align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(4px);
 }
+.modal-overlay.active { display: flex !important; }
 .modal-card {
     background: var(--surface-white); width: 90%; max-width: 380px; border-radius: 16px; padding: 28px 24px;
     box-shadow: 0 20px 30px rgba(33, 33, 71, 0.2); position: relative;
@@ -260,16 +261,6 @@ body {
 /* ==========================================
   9. 打字測驗結算 Modal
    ========================================== */
-.modal-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
 .result-card {
     background: #fff;
     padding: 24px;
