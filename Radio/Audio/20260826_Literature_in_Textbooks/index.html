@@ -210,11 +210,37 @@ body {
     box-shadow: 0 20px 30px rgba(33, 33, 71, 0.2); position: relative;
 }
 .modal-close {
-    position: absolute; top: 16px; right: 16px; border: none; background: rgba(33, 33, 71, 0.05);
-    width: 44px; height: 44px; border-radius: 50%; cursor: pointer; font-size: 14px; color: var(--text-muted);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(33, 33, 71, 0.05);
+    color: var(--text-muted);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    line-height: 1;
+    box-sizing: border-box;
+    transition: background 0.2s, transform 0.15s;
 }
-.modal-close:hover { background: rgba(33, 33, 71, 0.08); color: var(--primary-dark); }
-.modal-close:active { background: rgba(33, 33, 71, 0.14); transform: scale(0.92); }
+
+.modal-close:hover {
+    background: rgba(33, 33, 71, 0.12);
+}
+
+.modal-close:active {
+    transform: scale(0.92);
+}
 .modal-header { position: relative; display: flex; justify-content: center; align-items: center; min-height: 40px; margin-bottom: 8px; width: 100%; }
 .modal-kor { 
     position: absolute; left: 50%; transform: translateX(-50%); font-size: 28px; font-weight: bold; 
@@ -421,7 +447,7 @@ body {
         </div>
         
         <div class="flashcard-body">
-            <div class="vocab-prompt" id="vocab-test-prompt"></div>
+            <div class="vocab-prompt" id="vocab-test-prompt">點擊上方按鈕開始測驗</div>
             
             <div class="vocab-answer-box" id="vocab-test-answer" style="display: none;">
                 <div class="answer-kor" id="vocab-ans-kor"></div>
@@ -2465,22 +2491,57 @@ function parseSRT(srtString) {
 function renderVocabText(text) {
     if (currentState.mode !== 'full') return text;
 
-    let processedText = text;
+    // 先暫時保護手動標記產生的 HTML
+    const protectedHtml = [];
 
-    // 先處理帶有 {key|word} 或 {key} 的手動標籤
-    processedText = processedText.replace(/\{([^}|]+)(?:\|([^}]+))?\}/g, (match, key, rawWord) => {
-        const displayWord = rawWord || key;
-        if (vocabDb[key]) {
-            return `<span class="vocab-word" onclick="openVocabModal('${key}', event)">${displayWord}</span>`;
+    let processedText = text.replace(
+        /\{([^}|]+)(?:\|([^}]+))?\}/g,
+        (match, key, rawWord) => {
+            const displayWord = rawWord || key;
+
+            if (vocabDb[key]) {
+                const index = protectedHtml.length;
+
+                protectedHtml.push(
+                    `<span class="vocab-word" data-word="${key}">${displayWord}</span>`
+                );
+
+                return `___VOCAB_PROTECTED_${index}___`;
+            }
+
+            return displayWord;
         }
-        return displayWord;
-    });
+    );
 
-    // 自動搜尋 vocabDb 中的所有單字並加上標示
-    Object.keys(vocabDb).forEach(word => {
-        if (!processedText.includes(word) || processedText.includes(`openVocabModal('${word}'`)) return;
-        const reg = new RegExp(word, 'g');
-        processedText = processedText.replace(reg, `<span class="vocab-word" onclick="openVocabModal('${word}', event)">${word}</span>`);
+    // 自動標示單字
+    Object.keys(vocabDb)
+        .sort((a, b) => b.length - a.length)
+        .forEach(word => {
+            const reg = new RegExp(
+                word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+                'g'
+            );
+
+            processedText = processedText.replace(
+                reg,
+                (match) => {
+                    const index = protectedHtml.length;
+
+                    protectedHtml.push(
+                        `<span class="vocab-word" data-word="${word}">${match}</span>`
+                    );
+
+                    return `___VOCAB_PROTECTED_${index}___`;
+                }
+            );
+        });
+
+    // 還原被保護的 HTML
+    protectedHtml.forEach((html, index) => {
+        processedText = processedText.replace(
+            `___VOCAB_PROTECTED_${index}___`,
+            html
+        );
     });
 
     return processedText;
@@ -2526,6 +2587,13 @@ function loadAndRenderContent() {
                 <div class="chi-text">${chiHtml}</div>
             </div>
         `;
+
+        lineDiv.querySelectorAll('.vocab-word').forEach(wordEl => {
+            wordEl.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openVocabModal(wordEl.dataset.word, e);
+            });
+        });
 
         if (currentState.mode === 'full') {
             const ttsBtn = lineDiv.querySelector('.sentence-tts-btn');
@@ -3117,13 +3185,25 @@ function closeResultModal() {
 }
 
 // 上傳成績
-function uploadScoreToFirebase() {
-    const finalCpm = parseInt(document.getElementById('res-cpm').innerText, 10);
-    const finalAcc = document.getElementById('res-accuracy').innerText;
-    
+async function uploadScoreToFirebase() {
+    const finalCpm = parseInt(
+        document.getElementById('res-cpm').innerText,
+        10
+    );
+
+    const finalAcc =
+        document.getElementById('res-accuracy').innerText;
+
     if (window.uploadTypingScore) {
-        window.uploadTypingScore(typingScope, finalCpm, finalAcc);
-        closeResultModal();
+        const success = await window.uploadTypingScore(
+            typingScope,
+            finalCpm,
+            finalAcc
+        );
+
+        if (success) {
+            closeResultModal();
+        }
     } else {
         alert("⚠️ Firebase 模組尚未載入完成，請稍後再試。");
     }
@@ -3148,12 +3228,7 @@ import {
 
 window.uploadTypingScore = async function(mode, cpm, accuracy) {
     try {
-        if (!getApps().length) {
-            throw new Error("Firebase App 尚未初始化");
-        }
-
-        const app = getApp();
-        const db = getFirestore(app);
+        const db = getFirestore();
 
         const userName =
             (typeof currentUser !== 'undefined' && currentUser?.displayName)
@@ -3163,17 +3238,18 @@ window.uploadTypingScore = async function(mode, cpm, accuracy) {
         await addDoc(collection(db, "typing_leaderboard"), {
             username: userName,
             mode: mode,
-            cpm: cpm,
-            accuracy: accuracy,
+            cpm: Number(cpm),
+            accuracy: String(accuracy),
             createdAt: serverTimestamp()
         });
 
         alert("🎉 成績已成功上傳至排行榜！");
-        closeResultModal();
+        return true;
 
     } catch (e) {
         console.error("成績上傳失敗：", e);
         alert(`上傳失敗：${e.message}`);
+        return false;
     }
 };
 </script>
