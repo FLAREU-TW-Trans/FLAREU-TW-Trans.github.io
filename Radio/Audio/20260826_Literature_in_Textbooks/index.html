@@ -2518,28 +2518,115 @@ function handleTypingInput() {
     }
 }
       /* ==========================================
-           11. Firebase 成績上傳
+           11. 打字測驗倒數與即時比對邏輯
            ========================================== */
-      import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
+  let typingTimer = null;
+let startTime = null;
+let targetText = "";
 
-async function uploadTypingScore(mode, cpm, accuracy) {
-    const db = getFirestore();
-    try {
-        await addDoc(collection(db, "typing_leaderboard"), {
-            username: currentUser.displayName || "匿名使用者",
-            mode: mode, // 'words', 'sentences', 'full'
-            cpm: cpm,
-            accuracy: accuracy,
-            createdAt: serverTimestamp()
-        });
-        alert("成績已成功上傳至排行榜！");
-    } catch (e) {
-        console.error("上傳失敗：", e);
+function startTypingCountdown() {
+    const inputEl = document.getElementById('typing-input');
+    const countdownEl = document.getElementById('countdown-display');
+    
+    inputEl.disabled = true;
+    inputEl.value = "";
+    let count = 3;
+    countdownEl.innerText = count;
+
+    const timer = setInterval(() => {
+        count--;
+        if (count > 0) {
+            countdownEl.innerText = count;
+        } else {
+            clearInterval(timer);
+            countdownEl.innerText = "開始！";
+            inputEl.disabled = false;
+            inputEl.focus();
+            startTime = new Date();
+            if (typeof initTypingTracker === 'function') initTypingTracker();
+        }
+    }, 1000);
+}
+
+// 即時比對與高亮渲染
+function handleTypingInput() {
+    const input = document.getElementById('typing-input').value;
+    const displayEl = document.getElementById('typing-target-display');
+    
+    let html = "";
+    let correctCount = 0;
+
+    for (let i = 0; i < targetText.length; i++) {
+        const targetChar = targetText[i];
+        const inputChar = input[i];
+
+        if (inputChar == null) {
+            html += `<span>${targetChar}</span>`;
+        } else if (inputChar === targetChar) {
+            html += `<span style="color: #10B981;">${targetChar}</span>`;
+            correctCount++;
+        } else {
+            html += `<span style="background-color: #FEE2E2; color: #EF4444;">${targetChar}</span>`;
+        }
+    }
+
+    displayEl.innerHTML = html;
+
+    // 計算 WPM / 正確率
+    const elapsedSeconds = (new Date() - startTime) / 1000;
+    const cpm = Math.round((correctCount / elapsedSeconds) * 60);
+    const accuracy = input.length > 0 ? Math.round((correctCount / input.length) * 100) : 100;
+
+    document.getElementById('cpm-val').innerText = cpm;
+    document.getElementById('accuracy-val').innerText = `${accuracy}%`;
+
+    // 判斷是否打完
+    if (input.length >= targetText.length) {
+        finishTypingTest(cpm, accuracy);
+    }
+}
+
+// 測驗結束處裡
+function finishTypingTest(cpm, accuracy) {
+    document.getElementById('typing-input').disabled = true;
+    const isUpload = confirm(`測驗結束！\n打字速度：${cpm} CPM\n正確率：${accuracy}%\n\n是否上傳成績？`);
+    
+    if (isUpload && typeof window.uploadTypingScore === 'function') {
+        const currentMode = (typeof currentState !== 'undefined' && currentState.typingMode) ? currentState.typingMode : 'words';
+        window.uploadTypingScore(currentMode, cpm, accuracy);
     }
 }
 </script>
     
 <script type="module" src="../../../js/firebase-init.js"></script>
+
+<!-- Firebase 成績上傳模組 (掛載至 window 供全域呼叫) -->
+<script type="module">
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // 將上傳方法掛載到 window，解決跨模組存取問題
+    window.uploadTypingScore = async function(mode, cpm, accuracy) {
+        try {
+            const db = getFirestore(); // 自動取得已初始化的 Firebase 執行個體
+            const userName = (typeof currentUser !== 'undefined' && currentUser?.displayName) 
+                             ? currentUser.displayName 
+                             : "匿名使用者";
+
+            await addDoc(collection(db, "typing_leaderboard"), {
+                username: userName,
+                mode: mode,
+                cpm: cpm,
+                accuracy: accuracy,
+                createdAt: serverTimestamp()
+            });
+
+            alert("🎉 成績已成功上傳至排行榜！");
+        } catch (e) {
+            console.error("成績上傳失敗：", e);
+            alert("上傳失敗，請確認 Firebase 已正確初始化。");
+        }
+    };
+</script>
 
 <script src="../../../js/core-player.js"></script>
 <script src="../../../js/reaction-core.js"></script>
