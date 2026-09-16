@@ -313,7 +313,7 @@
 
     <script>
       /* ==========================================
-           1. 教學單字資料庫
+           1. 動態同步音頻
            ========================================== */
       const audioSources = {
             liyu: "20260628_Literature_in_Textbooks_Liyu.mp3",
@@ -2289,7 +2289,7 @@
         }
 
         /* ==========================================
-           6. 音訊播放與自動捲動同步
+           7. 音訊播放與自動捲動同步
            ========================================== */
         function initAudioListener() {
             const audio = document.getElementById('audio-player');
@@ -2346,13 +2346,13 @@
         }
 
         /* ==========================================
-           7. 單字發音引擎與 Modal 控制 (內建 Web Speech / Google API)
+           8. 單字發音引擎與 Modal 控制 (內建 Web Speech / Google API)
            ========================================== */
         function playKoreanSpeech(text) {
-            const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ko&q=${encodeURIComponent(text)}`;
+            const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&le=ko`;
             const audio = new Audio(url);
             audio.play().catch(error => {
-              console.error("播放 Google 語音失敗：", error);
+                console.error("播放語音失敗：", error);
             });
         }
 
