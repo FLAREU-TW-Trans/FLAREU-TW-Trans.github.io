@@ -212,6 +212,8 @@
             <div class="segmented-row">
                 <button class="segmented-btn" data-mode="dynamic" onclick="switchMode('dynamic')">🎵 動態逐句</button>
                 <button class="segmented-btn" data-mode="full" onclick="switchMode('full')">📖 完整全文</button>
+                <button class="segmented-btn" data-mode="vocab-test" onclick="switchMode('vocab-test')">🎴 單字測驗</button>
+                <button class="segmented-btn" data-mode="typing-test" onclick="switchMode('typing-test')">⌨️ 打字測驗</button>
             </div>
 
             <!-- 第三層：語言切換 -->
@@ -2345,7 +2347,7 @@
         }
 
         /* ==========================================
-           8. 單字發音引擎與 Modal 控制 (內建 Web Speech / Google API)
+           8. 單字發音引擎與 Modal 控制 (內建有道 API)
            ========================================== */
         function playKoreanSpeech(text) {
             const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&le=ko`;
@@ -2404,7 +2406,138 @@
         function closeInfoModalDirect() {
             document.getElementById('info-modal').style.display = 'none';
         }
-    </script>
+
+      /* ==========================================
+           9. 單字測驗佇列邏輯 (Anki 模式)
+           ========================================== */
+      let vocabQueue = [];
+let currentVocabItem = null;
+
+function startVocabTest(direction = 'chi-to-kor') { // 'chi-to-kor' 或 'kor-to-chi'
+    // 將單字庫轉為陣列並隨機打亂
+    vocabQueue = Object.keys(vocabDb).map(key => ({ key, ...vocabDb[key] }));
+    vocabQueue.sort(() => Math.random() - 0.5);
+    nextVocabQuestion(direction);
+}
+
+function nextVocabQuestion(direction) {
+    if (vocabQueue.length === 0) {
+        alert("🎉 恭喜！所有單字皆已複習完成！");
+        return;
+    }
+
+    currentVocabItem = vocabQueue.shift(); // 取出第一個
+    const promptEl = document.getElementById('vocab-test-prompt');
+    const answerEl = document.getElementById('vocab-test-answer');
+    
+    // 隱藏答案區
+    answerEl.style.display = 'none';
+
+    if (direction === 'chi-to-kor') {
+        promptEl.innerText = currentVocabItem.chi;
+    } else {
+        promptEl.innerText = currentVocabItem.kor;
+    }
+}
+
+function handleVocabResult(isCorrect, direction) {
+    if (!isCorrect) {
+        // 答錯：隨機插回佇列後方
+        const insertIndex = Math.floor(Math.random() * (vocabQueue.length + 1));
+        vocabQueue.splice(insertIndex, 0, currentVocabItem);
+    }
+    nextVocabQuestion(direction);
+}
+
+      /* ==========================================
+           10. 打字測驗倒數與即時比對邏輯
+           ========================================== */
+      let typingTimer = null;
+let startTime = null;
+let targetText = "";
+
+function startTypingCountdown() {
+    const inputEl = document.getElementById('typing-input');
+    const countdownEl = document.getElementById('countdown-display');
+    
+    inputEl.disabled = true;
+    inputEl.value = "";
+    let count = 3;
+    countdownEl.innerText = count;
+
+    const timer = setInterval(() => {
+        count--;
+        if (count > 0) {
+            countdownEl.innerText = count;
+        } else {
+            clearInterval(timer);
+            countdownEl.innerText = "開始！";
+            inputEl.disabled = false;
+            inputEl.focus();
+            startTime = new Date();
+            initTypingTracker();
+        }
+    }, 1000);
+}
+
+// 即時比對與高亮渲染
+function handleTypingInput() {
+    const input = document.getElementById('typing-input').value;
+    const displayEl = document.getElementById('typing-target-display');
+    
+    let html = "";
+    let correctCount = 0;
+
+    for (let i = 0; i < targetText.length; i++) {
+        const targetChar = targetText[i];
+        const inputChar = input[i];
+
+        if (inputChar == null) {
+            html += `<span>${targetChar}</span>`;
+        } else if (inputChar === targetChar) {
+            html += `<span style="color: #10B981;">${targetChar}</span>`;
+            correctCount++;
+        } else {
+            html += `<span style="background-color: #FEE2E2; color: #EF4444;">${targetChar}</span>`;
+        }
+    }
+
+    displayEl.innerHTML = html;
+
+    // 計算 WPM / 正確率
+    const elapsedSeconds = (new Date() - startTime) / 1000;
+    const cpm = Math.round((correctCount / elapsedSeconds) * 60);
+    const accuracy = input.length > 0 ? Math.round((correctCount / input.length) * 100) : 100;
+
+    document.getElementById('cpm-val').innerText = cpm;
+    document.getElementById('accuracy-val').innerText = `${accuracy}%`;
+
+    // 判斷是否打完
+    if (input.length >= targetText.length) {
+        finishTypingTest(cpm, accuracy);
+    }
+}
+      /* ==========================================
+           11. Firebase 成績上傳
+           ========================================== */
+      import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
+
+async function uploadTypingScore(mode, cpm, accuracy) {
+    const db = getFirestore();
+    try {
+        await addDoc(collection(db, "typing_leaderboard"), {
+            username: currentUser.displayName || "匿名使用者",
+            mode: mode, // 'words', 'sentences', 'full'
+            cpm: cpm,
+            accuracy: accuracy,
+            createdAt: serverTimestamp()
+        });
+        alert("成績已成功上傳至排行榜！");
+    } catch (e) {
+        console.error("上傳失敗：", e);
+    }
+}
+</script>
     
 <script type="module" src="../../../js/firebase-init.js"></script>
 
