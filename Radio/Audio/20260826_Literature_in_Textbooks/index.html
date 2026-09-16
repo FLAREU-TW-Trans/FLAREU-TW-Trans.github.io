@@ -447,7 +447,7 @@ body {
         </div>
         
         <div class="flashcard-body">
-            <div class="vocab-prompt" id="vocab-test-prompt">點擊上方按鈕開始測驗</div>
+            <div class="vocab-prompt" id="vocab-test-prompt">點擊中譯韓/韓譯中開始測驗</div>
             
             <div class="vocab-answer-box" id="vocab-test-answer" style="display: none;">
                 <div class="answer-kor" id="vocab-ans-kor"></div>
@@ -2550,6 +2550,12 @@ function renderVocabText(text) {
 /* ==========================================
    6. 載入與渲染內容
    ========================================== */
+function cleanKoreanText(text) {
+    return text.replace(/\{([^}|]+)(?:\|([^}]+))?\}/g, (match, key, rawWord) => {
+        return rawWord || key;
+    });
+}
+
 function loadAndRenderContent() {
     const korSrt = mockSrtData[currentState.member].kor;
     const chiSrt = mockSrtData[currentState.member].chi;
@@ -2572,7 +2578,9 @@ function loadAndRenderContent() {
         lineDiv.className = 'sub-line';
         lineDiv.dataset.index = idx;
 
-        const korHtml = renderVocabText(item.kor);
+        const korHtml = currentState.mode === 'full'
+            ? renderVocabText(item.kor)
+            : cleanKoreanText(item.kor);
         const chiHtml = item.chi;
 
         // 教學模式顯示整句發音按鈕
@@ -2607,7 +2615,13 @@ function loadAndRenderContent() {
         }
 
         lineDiv.addEventListener('click', (e) => {
-            if (e.target.closest('vocab-word') || e.target.closest('sentence-tts-btn')) return;
+            if (
+                e.target.closest('.vocab-word') ||
+                e.target.closest('.sentence-tts-btn')
+            ) {
+                return;
+            }
+        
             if (currentState.mode === 'dynamic') {
                 const audio = document.getElementById('audio-player');
                 audio.currentTime = item.start;
@@ -2690,23 +2704,36 @@ let currentTtsAudio = null;
 function playKoreanSpeech(text) {
     const cleanText = text
         .replace(/\{([^|}]+)\|([^}]+)\}/g, '$2')
-        .replace(/[{}]/g, '');
+        .replace(/\{([^}]+)\}/g, '$1');
 
     const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(cleanText)}&le=ko`;
+
+    console.log('TTS 原文：', text);
+    console.log('TTS 清理後：', cleanText);
+    console.log('TTS URL：', url);
 
     if (currentTtsAudio) {
         currentTtsAudio.pause();
         currentTtsAudio.currentTime = 0;
     }
 
-    currentTtsAudio = new Audio(url);
+    currentTtsAudio = new Audio();
+
+    currentTtsAudio.addEventListener('error', (e) => {
+        console.error('TTS 音訊載入失敗：', e);
+        console.error('音訊網址：', url);
+    });
+
+    currentTtsAudio.src = url;
     currentTtsAudio.playbackRate = 0.8;
 
-    currentTtsAudio.play().catch(error => {
-        console.error("播放韓文語音失敗：", error);
-        console.log("播放文字：", cleanText);
-        console.log("音檔網址：", url);
-    });
+    currentTtsAudio.play()
+        .then(() => {
+            console.log('TTS 開始播放：', cleanText);
+        })
+        .catch(error => {
+            console.error('TTS 播放失敗：', error);
+        });
 }
 
 function openVocabModal(word, event) {
