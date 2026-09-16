@@ -114,8 +114,10 @@ body {
 .time-btn-group { display: flex; gap: 6px; }
 .time-btn {
     border: 1px solid var(--primary-dark); background: rgba(33, 33, 71, 0.04); color: var(--primary-dark); padding: 6px 10px;
-    font-size: 14px; border-radius: 8px; cursor: pointer; font-weight: 700;
+    font-size: 14px; border-radius: 8px; cursor: pointer; font-weight: 700; transition: all 0.12s ease; user-select: none;
 }
+.time-btn:hover { background: rgba(33, 33, 71, 0.08); }
+.time-btn:active { background: var(--primary-dark); color: #fff; transform: scale(0.94); box-shadow: 0 1px 3px rgba(33, 33, 71, 0.25); }
 
 /* ==========================================
    5. 字幕顯示區與動態大小
@@ -167,11 +169,32 @@ body {
 }
 
 .vocab-word {
-    color: #2563eb;
-    text-decoration: underline;
-    font-weight: bold;
+    color: var(--primary-dark);
+    font-weight: 700;
     cursor: pointer;
-    padding: 0 2px;
+    padding: 1px 4px 2px;
+    margin: 0 1px;
+    border-radius: 5px;
+    background: linear-gradient(
+        to top,
+        rgba(33, 33, 71, 0.10) 0%,
+        rgba(33, 33, 71, 0.10) 38%,
+        transparent 38%
+    );
+    transition:
+        color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.vocab-word:hover {
+    color: #11112f;
+    background: rgba(33, 33, 71, 0.10);
+    box-shadow: 0 2px 8px rgba(33, 33, 71, 0.08);
+}
+
+.vocab-word:active {
+    transform: translateY(1px);
 }
 
 /* ==========================================
@@ -188,8 +211,10 @@ body {
 }
 .modal-close {
     position: absolute; top: 16px; right: 16px; border: none; background: rgba(33, 33, 71, 0.05);
-    width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 14px; color: var(--text-muted);
+    width: 44px; height: 44px; border-radius: 50%; cursor: pointer; font-size: 14px; color: var(--text-muted);
 }
+.modal-close:hover { background: rgba(33, 33, 71, 0.08); color: var(--primary-dark); }
+.modal-close:active { background: rgba(33, 33, 71, 0.14); transform: scale(0.92); }
 .modal-header { position: relative; display: flex; justify-content: center; align-items: center; min-height: 40px; margin-bottom: 8px; width: 100%; }
 .modal-kor { 
     position: absolute; left: 50%; transform: translateX(-50%); font-size: 28px; font-weight: bold; 
@@ -396,7 +421,7 @@ body {
         </div>
         
         <div class="flashcard-body">
-            <div class="vocab-prompt" id="vocab-test-prompt">點擊下方按鈕開始測驗</div>
+            <div class="vocab-prompt" id="vocab-test-prompt"></div>
             
             <div class="vocab-answer-box" id="vocab-test-answer" style="display: none;">
                 <div class="answer-kor" id="vocab-ans-kor"></div>
@@ -2490,8 +2515,8 @@ function loadAndRenderContent() {
         const chiHtml = item.chi;
 
         // 教學模式顯示整句發音按鈕
-        const ttsBtnHtml = (currentState.mode === 'full') 
-            ? `<button class="sentence-tts-btn" title="聽整句發音" onclick="playKoreanSpeech('${item.kor.replace(/'/g, "\\'")}')">🔊</button>` 
+        const ttsBtnHtml = (currentState.mode === 'full')
+            ? `<button class="sentence-tts-btn" title="聽整句發音" type="button">🔊</button>`
             : '';
 
         lineDiv.innerHTML = `
@@ -2501,6 +2526,17 @@ function loadAndRenderContent() {
                 <div class="chi-text">${chiHtml}</div>
             </div>
         `;
+
+        if (currentState.mode === 'full') {
+            const ttsBtn = lineDiv.querySelector('.sentence-tts-btn');
+
+            if (ttsBtn) {
+                ttsBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    playKoreanSpeech(item.kor);
+                });
+            }
+        }
 
         lineDiv.addEventListener('click', (e) => {
             if (e.target.classList.contains('vocab-word') || e.target.classList.contains('sentence-tts-btn')) return;
@@ -2581,13 +2617,30 @@ function adjustTime(seconds) {
 /* ==========================================
    8. 單字發音引擎與 Modal 控制 (內建有道語音播放 API)
    ========================================== */
+let currentSpeechAudio = null;
+
 function playKoreanSpeech(text) {
-    // 清除標點符號與標籤，確保發音乾淨
-    const cleanText = text.replace(/[\{\}]/g, '').replace(/\|[^}]+/g, '');
+    const cleanText = text
+        .replace(/[\{\}]/g, '')
+        .replace(/\|[^}]+/g, '')
+        .trim();
+
+    if (!cleanText) return;
+
+    // 停止上一段語音
+    if (currentSpeechAudio) {
+        currentSpeechAudio.pause();
+        currentSpeechAudio.currentTime = 0;
+    }
+
     const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(cleanText)}&le=ko`;
-    const audio = new Audio(url);
-    audio.playbackRate = 0.8;
-    audio.play().catch(error => console.error("播放語音失敗：", error));
+
+    currentSpeechAudio = new Audio(url);
+    currentSpeechAudio.playbackRate = 0.75;
+
+    currentSpeechAudio.play().catch(error => {
+        console.error("播放韓文語音失敗：", error);
+    });
 }
 
 function openVocabModal(word, event) {
@@ -3081,14 +3134,31 @@ function uploadScoreToFirebase() {
 
 <!-- Firebase 成績上傳模組 -->
 <script type="module">
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+import {
+    getApps,
+    getApp
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 
 window.uploadTypingScore = async function(mode, cpm, accuracy) {
     try {
-        const db = getFirestore();
-        const userName = (typeof currentUser !== 'undefined' && currentUser?.displayName) 
-                         ? currentUser.displayName 
-                         : "匿名使用者";
+        if (!getApps().length) {
+            throw new Error("Firebase App 尚未初始化");
+        }
+
+        const app = getApp();
+        const db = getFirestore(app);
+
+        const userName =
+            (typeof currentUser !== 'undefined' && currentUser?.displayName)
+                ? currentUser.displayName
+                : "匿名使用者";
 
         await addDoc(collection(db, "typing_leaderboard"), {
             username: userName,
@@ -3099,9 +3169,11 @@ window.uploadTypingScore = async function(mode, cpm, accuracy) {
         });
 
         alert("🎉 成績已成功上傳至排行榜！");
+        closeResultModal();
+
     } catch (e) {
         console.error("成績上傳失敗：", e);
-        alert("上傳失敗，請確認 Firebase 已正確初始化。");
+        alert(`上傳失敗：${e.message}`);
     }
 };
 </script>
