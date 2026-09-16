@@ -134,7 +134,48 @@ body {
 .hide-chi .chi-text { display: none !important; }
 
 /* ==========================================
-   6. 單字與 Modal 彈窗 
+   6. 教學模式標示單字與語音按鈕樣式
+   ========================================== */
+.sub-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.sub-content {
+    flex: 1;
+}
+
+.sentence-tts-btn {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+.sentence-tts-btn:hover {
+    background: #e2e8f0;
+}
+
+.vocab-word {
+    color: #2563eb;
+    text-decoration: underline;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 2px;
+}
+
+/* ==========================================
+   7. 單字與 Modal 彈窗 
    ========================================== */
 .modal-overlay {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(33, 33, 71, 0.4); display: none;
@@ -165,7 +206,7 @@ body {
 }
 
 /* ==========================================
-  7. 單字測驗與打字測驗
+  8. 單字測驗與打字測驗
    ========================================== */
 .test-card { background: var(--surface-white); border-radius: var(--border-radius); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow-soft); width: 100%; }
 .test-header {
@@ -204,10 +245,8 @@ body {
 .metric-val { color: #2563eb; }
 
 .typing-card { background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 16px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 10px; }
-.typing-target { font-size: 20px; font-weight: bold; line-height: 1.6; color: var(--primary-dark); word-break: break-all; min-height: 32px; }
+.typing-target { font-size: 20px; font-weight: bold; line-height: 1.6; color: var(--primary-dark); word-break: break-all; min-height: 32px; white-space: pre-wrap; }
 .typing-sub-target { font-size: 15px; color: #64748b; margin-bottom: 6px; min-height: 22px; }
-
-.space-underline { font-weight: bold; color: #64748b; margin: 0 1px; }
 
 .correct-char { color: #059669; background-color: #d1fae5; }
 .incorrect-char { color: #dc2626; background-color: #fee2e2; }
@@ -217,6 +256,58 @@ body {
 
 .typing-input-field { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1.5px solid #cbd5e1; font-size: 16px; box-sizing: border-box; font-family: inherit; outline: none; }
 .typing-input-field:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2); }
+
+/* ==========================================
+  9. 打字測驗結算 Modal
+   ========================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.result-card {
+    background: #fff;
+    padding: 24px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.result-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-upload {
+    flex: 1;
+    background: #2563eb;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.btn-upload:hover { background: #1d4ed8; }
+
+.btn-close {
+    flex: 1;
+    background: #94a3b8;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
 </style>
 </head>
 
@@ -393,6 +484,22 @@ body {
         <div class="modal-pinyin" id="modal-pinyin">[gyo-gwa-seo]</div>
         <div class="modal-chi" id="modal-chi">教科書</div>
         <button class="audio-play-btn" id="modal-speak-btn">🔊 播放發音</button>
+    </div>
+</div>
+
+<!-- 結算成績對話框 -->
+<div id="result-modal" class="modal-overlay" style="display: none;">
+    <div class="result-card">
+        <h3>🎉 測試完成！</h3>
+        <div style="margin: 16px 0; text-align: left; line-height: 1.8;">
+            <p>打字速度：<span id="res-cpm" style="font-weight: bold; color: #2563eb;">0</span> CPM</p>
+            <p>正確率：<span id="res-accuracy" style="font-weight: bold; color: #059669;">100%</span></p>
+            <p>總花費時間：<span id="res-time">0</span> 秒</p>
+        </div>
+        <div class="result-actions">
+            <button class="btn-upload" onclick="uploadScoreToFirebase()">📤 上傳成績</button>
+            <button class="btn-close" onclick="closeResultModal()">關閉</button>
+        </div>
     </div>
 </div>
 
@@ -2340,16 +2447,27 @@ function parseSRT(srtString) {
 }
 
 function renderVocabText(text) {
-  // 支援 {原型|文章出現的詞} 與 {單一詞彙}
-  return text.replace(/\{([^}|]+)(?:\|([^}]+))?\}/g, (match, key, rawWord) => {
-      const displayWord = rawWord || key; // 若沒給 rawWord，就顯示 key
+    if (currentState.mode !== 'full') return text;
 
-      // 只有在「完整全文模式 (full)」且單字庫中有資料時才渲染成可點擊的單字標籤
-      if (currentState.mode === 'full' && vocabDb[key]) {
-          return `<span class="vocab-word" onclick="openVocabModal('${key}', event)">${displayWord}</span>`;
-      }
-      return displayWord;
-  });
+    let processedText = text;
+
+    // 先處理帶有 {key|word} 或 {key} 的手動標籤
+    processedText = processedText.replace(/\{([^}|]+)(?:\|([^}]+))?\}/g, (match, key, rawWord) => {
+        const displayWord = rawWord || key;
+        if (vocabDb[key]) {
+            return `<span class="vocab-word" onclick="openVocabModal('${key}', event)">${displayWord}</span>`;
+        }
+        return displayWord;
+    });
+
+    // 自動搜尋 vocabDb 中的所有單字並加上標示
+    Object.keys(vocabDb).forEach(word => {
+        if (!processedText.includes(word) || processedText.includes(`openVocabModal('${word}'`)) return;
+        const reg = new RegExp(word, 'g');
+        processedText = processedText.replace(reg, `<span class="vocab-word" onclick="openVocabModal('${word}', event)">${word}</span>`);
+    });
+
+    return processedText;
 }
 
 /* ==========================================
@@ -2380,13 +2498,21 @@ function loadAndRenderContent() {
         const korHtml = renderVocabText(item.kor);
         const chiHtml = item.chi;
 
+        // 教學模式顯示整句發音按鈕
+        const ttsBtnHtml = (currentState.mode === 'full') 
+            ? `<button class="sentence-tts-btn" title="聽整句發音" onclick="playKoreanSpeech('${item.kor.replace(/'/g, "\\'")}')">🔊</button>` 
+            : '';
+
         lineDiv.innerHTML = `
-            <div class="kor-text">${korHtml}</div>
-            <div class="chi-text">${chiHtml}</div>
+            ${ttsBtnHtml}
+            <div class="sub-content">
+                <div class="kor-text">${korHtml}</div>
+                <div class="chi-text">${chiHtml}</div>
+            </div>
         `;
 
         lineDiv.addEventListener('click', (e) => {
-            if (e.target.classList.contains('vocab-word')) return;
+            if (e.target.classList.contains('vocab-word') || e.target.classList.contains('sentence-tts-btn')) return;
             if (currentState.mode === 'dynamic') {
                 const audio = document.getElementById('audio-player');
                 audio.currentTime = item.start;
@@ -2398,13 +2524,9 @@ function loadAndRenderContent() {
 
         box.appendChild(lineDiv);
     });
-    
+
     currentSubIndex = 0;
-    if (currentState.mode === 'dynamic') {
-        highlightCurrentSub(0);
-    } else {
-        highlightCurrentSub(-1);
-    }
+    highlightCurrentSub(currentState.mode === 'dynamic' ? 0 : -1);
     updateAudioSource();
 }
 
@@ -2466,15 +2588,15 @@ function adjustTime(seconds) {
 }
 
 /* ==========================================
-   8. 單字發音引擎與 Modal 控制 (內建有道 API)
+   8. 單字發音引擎與 Modal 控制 (內建有道語音播放 API)
    ========================================== */
 function playKoreanSpeech(text) {
-    const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&le=ko`;
+    // 清除標點符號與標籤，確保發音乾淨
+    const cleanText = text.replace(/[\{\}]/g, '').replace(/\|[^}]+/g, '');
+    const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(cleanText)}&le=ko`;
     const audio = new Audio(url);
     audio.playbackRate = 0.8;
-    audio.play().catch(error => {
-        console.error("播放語音失敗：", error);
-    });
+    audio.play().catch(error => console.error("播放語音失敗：", error));
 }
 
 function openVocabModal(word, event) {
@@ -2538,8 +2660,10 @@ let isVocabFinished = false;
 let typingScope = 'rand-10-words';
 let typingQueue = [];       // 存放抽出的 10 個題目 (單字或句子)
 let currentTypingIdx = 0;   // 目前進度 (0~9)
+let targetSentence = "";
 let typingStartTime = null;
 let typingCountdownTimer = null; // 3秒倒數計時器
+let lastResultData = null;
 let totalTypedChars = 0;    // 累積打字總字數 (算總 CPM)
 let totalCorrectChars = 0;  // 累積正確字數 (算總正確率)
 
@@ -2759,6 +2883,8 @@ function handleVocabResult(isMastered) {
 /* ==========================================
    11. 打字測驗邏輯
    ========================================== */
+let targetSentence = '';
+  
 function setTypingScope(scope, btn) {
     typingScope = scope;
     if (btn) {
@@ -2801,55 +2927,37 @@ function prepareTypingQueue() {
     
     renderCurrentTypingTarget();
 }
+
+// 渲染當前題目目標
+function renderCurrentTypingTarget() {
+    if (typingQueue.length === 0) return;
+    targetSentence = typingQueue[currentTypingIdx] || '';
+    renderTypingDisplay('');
+}
   
 // 渲染當前題目的目標文字
-function renderCurrentTypingTarget() {
-    const targetDisplay = document.getElementById('typing-target-display');
-    
-    if (typingQueue.length > 0 && currentTypingIdx < typingQueue.length) {
-        const currentItem = typingQueue[currentTypingIdx];
-        const korText = typeof currentItem === 'object' ? currentItem.kor : currentItem;
+function renderTypingDisplay(inputText) {
+    const displayEl = document.getElementById('typing-target-display');
+    let html = '';
 
-        let formattedHTML = "";
-        for (let char of korText) {
-            if (char === ' ') {
-                formattedHTML += `<span class="space-underline">＿</span>`;
+    for (let i = 0; i < targetSentence.length; i++) {
+        const targetChar = targetSentence[i];
+        const typedChar = inputText[i];
+
+        if (i < inputText.length) {
+            if (typedChar === targetChar) {
+                html += `<span class="correct-char">${targetChar}</span>`;
             } else {
-                formattedHTML += char;
+                html += `<span class="incorrect-char">${targetChar}</span>`;
             }
-        }
-
-        targetDisplay.innerHTML = formattedHTML;
-    }
-}
-
-// 即時輸入比對與高亮渲染
-function handleTypingInput() {
-    const inputVal = document.getElementById('typing-input').value;
-    const currentItem = typingQueue[currentTypingIdx] || "";
-    const targetText = typeof currentItem === 'object' ? currentItem.kor : currentItem;
-    const targetDisplay = document.getElementById('typing-target-display');
-
-    let highlightedHTML = "";
-
-    for (let i = 0; i < targetText.length; i++) {
-        const targetChar = targetText[i];
-        const inputChar = inputVal[i];
-        const isSpace = targetChar === ' ';
-        const displayChar = isSpace ? '＿' : targetChar;
-        const extraClass = isSpace ? ' space-underline' : '';
-
-        if (inputChar === undefined) {
-            const isCurrent = (i === inputVal.length) ? ' current-char' : '';
-            highlightedHTML += `<span class="${extraClass}${isCurrent}">${displayChar}</span>`;
-        } else if (inputChar === targetChar) {
-            highlightedHTML += `<span class="correct-char${extraClass}">${displayChar}</span>`;
+        } else if (i === inputText.length) {
+            html += `<span class="current-char">${targetChar}</span>`;
         } else {
-            highlightedHTML += `<span class="incorrect-char${extraClass}">${displayChar}</span>`;
+            html += `<span>${targetChar}</span>`;
         }
     }
 
-    targetDisplay.innerHTML = highlightedHTML;
+    displayEl.innerHTML = html;
 }
   
 // 開始測驗：觸發倒數 3 秒
@@ -2881,9 +2989,7 @@ function startTypingTest() {
 // 監聽輸入框的 keydown 事件 (處理 Enter 鍵送出切換)
 document.getElementById('typing-input').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
-        e.preventDefault(); // 阻止 Enter 預設行為
-        
-        // 只有在框內有內容時，才推進到下一行
+        e.preventDefault();
         if (this.value.trim() !== '') {
             advanceToNextTarget();
         }
@@ -2892,50 +2998,45 @@ document.getElementById('typing-input').addEventListener('keydown', function(e) 
 
 // 即時輸入比對
 function handleTypingInput() {
-    if (!typingStartTime) return;
+    const inputEl = document.getElementById('typing-input');
+    const typedText = inputEl.value;
 
-    const inputVal = document.getElementById('typing-input').value;
-    const targetText = typingQueue[currentTypingIdx] || "";
-    const targetDisplay = document.getElementById('typing-target-display');
-
-    let highlightedHTML = "";
-    let currentCorrectChars = 0;
-
-    for (let i = 0; i < targetText.length; i++) {
-        const targetChar = targetText[i];
-        const inputChar = inputVal[i];
-
-        if (inputChar === undefined) {
-            highlightedHTML += (i === inputVal.length) ? `<span class="current-char">${targetChar}</span>` : targetChar;
-        } else if (inputChar === targetChar) {
-            highlightedHTML += `<span class="correct-char">${targetChar}</span>`;
-            currentCorrectChars++;
-        } else {
-            highlightedHTML += `<span class="incorrect-char">${targetChar}</span>`;
-        }
+    if (!typingStartTime && typedText.length > 0) {
+        typingStartTime = new Date();
     }
 
-    targetDisplay.innerHTML = highlightedHTML;
+    renderTypingDisplay(typedText);
+    updateTypingMetrics(typedText);
 
-    // 即時計算當前 CPM 與正確率
-    const timeElapsedMin = (new Date() - typingStartTime) / 60000;
-    const totalCharsSoFar = totalTypedChars + inputVal.length;
-    const totalCorrectSoFar = totalCorrectChars + currentCorrectChars;
+    // 當完全打對時，自動切換至下一題
+    if (typedText === targetSentence) {
+        advanceToNextTarget();
+    }
+}
 
-    const cpm = timeElapsedMin > 0 ? Math.round(totalCharsSoFar / timeElapsedMin) : 0;
-    const accuracy = totalCharsSoFar > 0 ? Math.round((totalCorrectSoFar / totalCharsSoFar) * 100) : 100;
+function updateTypingMetrics(typedText) {
+    if (!typingStartTime) return;
+    const now = new Date();
+    const elapsedMinutes = (now - typingStartTime) / 1000 / 60;
+
+    let correctCount = 0;
+    for (let i = 0; i < typedText.length; i++) {
+        if (typedText[i] === targetSentence[i]) correctCount++;
+    }
+
+    const cpm = elapsedMinutes > 0 ? Math.round(correctCount / elapsedMinutes) : 0;
+    const accuracy = typedText.length > 0 ? Math.round((correctCount / typedText.length) * 100) : 100;
 
     document.getElementById('cpm-val').innerText = cpm;
     document.getElementById('accuracy-val').innerText = accuracy + '%';
 }
-
+  
 // 切換至下一題或完成測驗
 function advanceToNextTarget() {
     const inputArea = document.getElementById('typing-input');
     const targetText = typingQueue[currentTypingIdx];
     const inputVal = inputArea.value;
 
-    // 採計本題字數
     totalTypedChars += inputVal.length;
     let correctCount = 0;
     for (let i = 0; i < Math.min(inputVal.length, targetText.length); i++) {
@@ -2943,35 +3044,46 @@ function advanceToNextTarget() {
     }
     totalCorrectChars += correctCount;
 
-    // 清空輸入框
     inputArea.value = '';
     currentTypingIdx++;
 
     if (currentTypingIdx < typingQueue.length) {
-        // 渲染下一題
         renderCurrentTypingTarget();
     } else {
-        // 10 題全部打完，觸發結算
         finishTypingTest();
     }
 }
 
-// 結算畫面與 Firebase 數據上傳
-async function finishTypingTest() {
-    const inputArea = document.getElementById('typing-input');
-    inputArea.disabled = true;
+// 結算畫面
+function finishTypingTest() {
+    const inputEl = document.getElementById('typing-input');
+    inputEl.disabled = true;
+
+    const endTime = new Date();
+    const totalTimeSec = Math.round((endTime - typingStartTime) / 1000);
+    const finalCpm = document.getElementById('cpm-val').innerText;
+    const finalAcc = document.getElementById('accuracy-val').innerText;
+
+    document.getElementById('res-cpm').innerText = finalCpm;
+    document.getElementById('res-accuracy').innerText = finalAcc;
+    document.getElementById('res-time').innerText = totalTimeSec;
+    document.getElementById('result-modal').style.display = 'flex';
+}
+
+function closeResultModal() {
+    document.getElementById('result-modal').style.display = 'none';
+}
+
+// 上傳成績
+function uploadScoreToFirebase() {
+    const finalCpm = parseInt(document.getElementById('res-cpm').innerText, 10);
+    const finalAcc = document.getElementById('res-accuracy').innerText;
     
-    const timeElapsedMin = (new Date() - typingStartTime) / 60000;
-    const finalCPM = timeElapsedMin > 0 ? Math.round(totalTypedChars / timeElapsedMin) : 0;
-    const finalAccuracy = totalTypedChars > 0 ? Math.round((totalCorrectChars / totalTypedChars) * 100) : 100;
-
-    document.getElementById('countdown-display').innerText = '🎉 測驗完成！';
-
-    alert(`🏆 打字測驗完成！\n\n速度 (CPM)：${finalCPM}\n正確率：${finalAccuracy}%\n總耗時：${(timeElapsedMin * 60).toFixed(1)} 秒`);
-
-    // 呼叫下方 Firebase Module 掛載在 window 的上傳函式
-    if (typeof window.uploadTypingScore === 'function') {
-        await window.uploadTypingScore(typingScope, finalCPM, finalAccuracy);
+    if (window.uploadTypingScore) {
+        window.uploadTypingScore(typingScope, finalCpm, finalAcc);
+        closeResultModal();
+    } else {
+        alert("⚠️ Firebase 模組尚未載入完成，請稍後再試。");
     }
 }
 </script>
@@ -2982,10 +3094,9 @@ async function finishTypingTest() {
 <script type="module">
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// 將上傳方法掛載到 window，解決跨模組存取問題
 window.uploadTypingScore = async function(mode, cpm, accuracy) {
     try {
-        const db = getFirestore(); // 自動取得已初始化的 Firebase 執行個體
+        const db = getFirestore();
         const userName = (typeof currentUser !== 'undefined' && currentUser?.displayName) 
                          ? currentUser.displayName 
                          : "匿名使用者";
