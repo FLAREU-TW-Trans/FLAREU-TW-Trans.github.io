@@ -2349,13 +2349,11 @@
            7. 單字發音引擎與 Modal 控制 (內建 Web Speech / Google API)
            ========================================== */
         function playKoreanSpeech(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'ko-KR';
-                utterance.rate = 0.8;
-                window.speechSynthesis.speak(utterance);
-            }
+            const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ko&q=${encodeURIComponent(text)}`;
+            const audio = new Audio(url);
+            audio.play().catch(error => {
+              console.error("播放 Google 語音失敗：", error);
+            });
         }
 
         function openVocabModal(word, event) {
