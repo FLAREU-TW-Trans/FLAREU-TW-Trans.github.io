@@ -2519,7 +2519,22 @@ function closeInfoModalDirect() {
 /* ==========================================
    9. 全域資料庫與狀態管理
    ========================================== */
-// 取得完整的單字陣列
+// 1. 優先宣告所有變數與狀態
+let currentVocabBatch = [];
+let currentVocabIndex = 0;
+let vocabDirection = 'chi-to-kor'; 
+let isVocabFinished = false;
+
+// 打字測驗狀態
+let typingScope = 'rand-10-words';
+let typingQueue = [];       // 存放抽出的 10 個題目 (單字或句子)
+let currentTypingIdx = 0;   // 目前進度 (0~9)
+let typingStartTime = null;
+let typingCountdownTimer = null; // 3秒倒數計時器
+let totalTypedChars = 0;    // 累積打字總字數 (算總 CPM)
+let totalCorrectChars = 0;  // 累積正確字數 (算總正確率)
+
+// 2. 輔助函數與資料庫
 function getVocabList() {
     return typeof vocabDb !== 'undefined' ? Object.values(vocabDb) : [];
 }
@@ -2590,7 +2605,7 @@ const sentenceBank = [
     `이 중에는 웃느라 입을 다물지 못하고, 손바닥이 찢어져라 손뼉을 칠 사람도 있겠지요. 그래서 '만인을 기쁘게 한다'라고 한 겁니다."`,
     `나는 깜짝 놀라 일어나서 이렇게 말했다. "과연 내 말이 맞았구나. 이 사람은 정말 관상을 유별나게 잘 보는구나! 그의 말은 좌우명과 교훈으로 삼을 만하다.`,
     `이 사람은 결코, 얼굴 모양이나 표정만을 살펴 귀티가 나면 '몸에 거북 무늬가 있어 높은 벼슬하겠고, 코가 무소뿔 모양이라 왕비가 될 상'이라 하고,`,
-    `관상이 나쁘면 '벌의 눈처럼 퉁방울눈에다, 목소리는 표범처럼 날카로워 흉악한 상'이라는 식으로 늘 하던 대로 똑같은 말만 주워섬기면서 스스로 신통하다고 떠벌리는 그런 관상쟁이가 아닌 것이다."`    ``,
+    `관상이 나쁘면 '벌의 눈처럼 퉁방울눈에다, 목소리는 표범처럼 날카로워 흉악한 상'이라는 식으로 늘 하던 대로 똑같은 말만 주워섬기면서 스스로 신통하다고 떠벌리는 그런 관상쟁이가 아닌 것이다.`
 ];
 
 const liyuArticle = `오늘 저녁 이 좁다란 방의 흰 바람벽에
@@ -2622,6 +2637,7 @@ const liyuArticle = `오늘 저녁 이 좁다란 방의 흰 바람벽에
 가난하고 외롭고 높고 쓸쓸하니 그리고 언제나 넘치는 사랑과 슬픔 속에 살도록 만드신 것이다
 초생달과 바구지꽃과 짝새와 당나귀가 그러하듯이
 그리고 또 '프랑시쓰 쨈'과 도연명과 '라이넬 마리아 릴케'가 그러하듯이`;
+  
 const woojinArticle = `어떤 관상쟁이가 있었다.
 어디서 왔는지도 알 수 없고, 따로 관상 보는 책을 읽은 것도 아니며, 관상 보는 법칙을 따르지도 않는데, 이상한 방법으로 관상을 잘 보아서 모두 그를 이상한 관상쟁이라 불렀다.
 점잖은 체면의 벼슬아치와 남녀노소 할 것 없이 앞다투어 그를 불러들이거나 찾아가 관상을 봐 달라고 하였다.
@@ -2653,21 +2669,6 @@ const woojinArticle = `어떤 관상쟁이가 있었다.
 이 사람은 결코, 얼굴 모양이나 표정만을 살펴 귀티가 나면 '몸에 거북 무늬가 있어 높은 벼슬하겠고, 코가 무소뿔 모양이라 왕비가 될 상'이라 하고, 관상이 나쁘면 '벌의 눈처럼 퉁방울눈에다, 목소리는 표범처럼 날카로워 흉악한 상'이라는 식으로 늘 하던 대로 똑같은 말만 주워섬기면서 스스로 신통하다고 떠벌리는 그런 관상쟁이가 아닌 것이다."
 그리고 집에 돌아와 그의 대답을 적어 둔다.`;
 
-// 單字測驗狀態
-let currentVocabBatch = [];
-let currentVocabIndex = 0;
-let vocabDirection = 'chi-to-kor'; // 'chi-to-kor' 或 'kor-to-chi'
-let isVocabFinished = false;
-
-// 打字測驗狀態
-let typingScope = 'rand-10-words';
-let typingQueue = [];       // 存放抽出的 10 個題目 (單字或句子)
-let currentTypingIdx = 0;   // 目前進度 (0~9)
-let typingStartTime = null;
-let typingCountdownTimer = null; // 3秒倒數計時器
-let totalTypedChars = 0;    // 累積打字總字數 (算總 CPM)
-let totalCorrectChars = 0;  // 累積正確字數 (算總正確率)
-
 /* ==========================================
    10. 單字測驗邏輯 (Anki 模式)
    ========================================== */
@@ -2687,7 +2688,6 @@ function initVocabTest() {
 
 function toggleVocabDirection(dir, btn) {
     vocabDirection = dir;
-    // 更新按鈕 active 樣式
     document.querySelectorAll('.test-mode-selector .chip-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
     
@@ -2794,7 +2794,7 @@ function prepareTypingQueue() {
 // 渲染當前題目的目標文字
 function renderCurrentTypingTarget() {
     const targetDisplay = document.getElementById('typing-target-display');
-    const progressDisplay = document.getElementById('typing-progress-display'); // 建議在 UI 加一個進度提示元件
+    const progressDisplay = document.getElementById('typing-progress-display'); 
     
     if (typingQueue.length > 0 && currentTypingIdx < typingQueue.length) {
         targetDisplay.innerText = typingQueue[currentTypingIdx];
@@ -2825,7 +2825,7 @@ function startTypingTest() {
             countdownEl.innerText = '開始打字！';
             inputArea.disabled = false;
             inputArea.focus();
-            typingStartTime = new Date(); // 真正開始計算時間
+            typingStartTime = new Date(); 
         }
     }, 1000);
 }
@@ -2833,12 +2833,10 @@ function startTypingTest() {
 // 監聽輸入框的 keydown 事件 (處理 Enter 鍵送出切換)
 document.getElementById('typing-input').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
-        // 如果是文章模式，允許正常換行，不觸發 advanceToNextTarget()
         if (typingScope === 'liyu-article' || typingScope === 'woojin-article') {
-            return; // 讓 textarea 自然換行
+            return; // 文章模式正常換行
         }
 
-        // 單字/句子模式：按下 Enter 切換下一題
         e.preventDefault();
         if (this.value.trim() !== '') {
             advanceToNextTarget();
@@ -2923,40 +2921,18 @@ async function finishTypingTest() {
 
     document.getElementById('countdown-display').innerText = '🎉 測驗完成！';
 
-    // 顯示結算彈窗或提示
     alert(`🏆 打字測驗完成！\n\n速度 (CPM)：${finalCPM}\n正確率：${finalAccuracy}%\n總耗時：${(timeElapsedMin * 60).toFixed(1)} 秒`);
 
-    // 上傳數據至 Firebase
-    await uploadTypingScoreToFirebase({
-        member: currentState.member,
-        scope: typingScope,
-        cpm: finalCPM,
-        accuracy: finalAccuracy,
-        timestamp: new Date().toISOString()
-    });
-}
-
-// Firebase 上傳函式
-async function uploadTypingScoreToFirebase(scoreData) {
-    if (typeof db === 'undefined') {
-        console.warn('Firebase db 未初始化，跳過數據上傳');
-        return;
-    }
-
-    try {
-        // 假設使用 Firebase v9+ Modular SDK
-        // import { collection, addDoc } from "firebase/firestore";
-        await firebase.firestore().collection('typing_results').add(scoreData);
-        console.log('數據成功上傳至 Firebase！', scoreData);
-    } catch (error) {
-        console.error('Firebase 上傳失敗：', error);
+    // 呼叫下方 Firebase Module 掛載在 window 的上傳函式
+    if (typeof window.uploadTypingScore === 'function') {
+        await window.uploadTypingScore(typingScope, finalCPM, finalAccuracy);
     }
 }
 </script>
 
 <script type="module" src="../../../js/firebase-init.js"></script>
 
-<!-- Firebase 成績上傳模組 (掛載至 window 供全域呼叫) -->
+<!-- Firebase 成績上傳模組 -->
 <script type="module">
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
