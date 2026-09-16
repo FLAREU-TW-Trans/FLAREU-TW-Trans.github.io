@@ -23,3 +23,40 @@ window.db = getDatabase(app);
 window.fb_ref = ref;
 window.fb_onValue = onValue;
 window.fb_runTransaction = runTransaction;
+
+// ==========================================
+// Realtime Database
+// ==========================================
+window.db = getDatabase(app);
+
+window.fb_ref = ref;
+window.fb_onValue = onValue;
+window.fb_runTransaction = runTransaction;
+
+
+// ==========================================
+// 匿名登入
+// ==========================================
+const auth = getAuth(app);
+
+window.currentFirebaseUser = null;
+
+window.firebaseAuthReady = new Promise((resolve) => {
+
+    onAuthStateChanged(auth, (user) => {
+
+        window.currentFirebaseUser = user;
+
+        if (user) {
+            console.log("Firebase Anonymous UID:", user.uid);
+            resolve(user);
+        }
+
+    });
+
+});
+
+
+signInAnonymously(auth).catch((error) => {
+    console.error("Firebase 匿名登入失敗：", error);
+});
