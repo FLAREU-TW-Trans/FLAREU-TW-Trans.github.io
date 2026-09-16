@@ -207,10 +207,7 @@ body {
 .typing-target { font-size: 20px; font-weight: bold; line-height: 1.6; color: var(--primary-dark); word-break: break-all; min-height: 32px; }
 .typing-sub-target { font-size: 15px; color: #64748b; margin-bottom: 6px; min-height: 22px; }
 
-.space-char { 
-    display: inline-block; width: 0.6em; height: 1.2em; vertical-align: middle; background-color: #f1f5f9; border-bottom: 2px solid #94a3b8;
-    border-radius: 2px; margin: 0 1px;
-}
+.space-underline { font-weight: bold; color: #64748b; margin: 0 1px; }
 
 .correct-char { color: #059669; background-color: #d1fae5; }
 .incorrect-char { color: #dc2626; background-color: #fee2e2; }
@@ -805,7 +802,7 @@ const vocabDb = {
   "흉악하다": { kor: "흉악하다", pinyin: "hyung-ak-ha-da", chi: "凶惡、殘暴", pos: "形容詞" },
   "희다": { kor: "희다", pinyin: "hui-da", chi: "白、白色", pos: "形容詞" },
   "힘": { kor: "힘", pinyin: "him", chi: "力量、精力", pos: "名詞" },
-  "힘들다": { kor: "힘들다", pinyin: "him-deul-da", chi: "辛苦、困難", pos: "形容詞" },
+  "힘들다": { kor: "힘들다", pinyin: "him-deul-da", chi: "辛苦、困難", pos: "形容詞" }
 };
 
 /* ==========================================
@@ -2808,74 +2805,53 @@ function prepareTypingQueue() {
 // 渲染當前題目的目標文字
 function renderCurrentTypingTarget() {
     const targetDisplay = document.getElementById('typing-target-display');
-    const subDisplay = document.getElementById('typing-sub-display');
     
     if (typingQueue.length > 0 && currentTypingIdx < typingQueue.length) {
         const currentItem = typingQueue[currentTypingIdx];
-        
-        // 判斷佇列存放的是物件 {kor, chi} 還是純字串
         const korText = typeof currentItem === 'object' ? currentItem.kor : currentItem;
-        const chiText = typeof currentItem === 'object' ? (currentItem.chi || '') : '';
 
-        // 預設渲染醒目空格
         let formattedHTML = "";
         for (let char of korText) {
             if (char === ' ') {
-                formattedHTML += `<span class="space-char">&nbsp;</span>`;
+                formattedHTML += `<span class="space-underline">＿</span>`;
             } else {
                 formattedHTML += char;
             }
         }
 
         targetDisplay.innerHTML = formattedHTML;
-        if (subDisplay) subDisplay.innerText = chiText;
     }
 }
 
 // 即時輸入比對與高亮渲染
 function handleTypingInput() {
-    if (!typingStartTime) return;
-
     const inputVal = document.getElementById('typing-input').value;
     const currentItem = typingQueue[currentTypingIdx] || "";
     const targetText = typeof currentItem === 'object' ? currentItem.kor : currentItem;
     const targetDisplay = document.getElementById('typing-target-display');
 
     let highlightedHTML = "";
-    let currentCorrectChars = 0;
 
     for (let i = 0; i < targetText.length; i++) {
         const targetChar = targetText[i];
         const inputChar = inputVal[i];
         const isSpace = targetChar === ' ';
-        const spaceClass = isSpace ? ' space-char' : '';
-        const displayChar = isSpace ? '&nbsp;' : targetChar;
+        const displayChar = isSpace ? '＿' : targetChar;
+        const extraClass = isSpace ? ' space-underline' : '';
 
         if (inputChar === undefined) {
             const isCurrent = (i === inputVal.length) ? ' current-char' : '';
-            highlightedHTML += `<span class="${spaceClass}${isCurrent}">${displayChar}</span>`;
+            highlightedHTML += `<span class="${extraClass}${isCurrent}">${displayChar}</span>`;
         } else if (inputChar === targetChar) {
-            highlightedHTML += `<span class="correct-char${spaceClass}">${displayChar}</span>`;
-            currentCorrectChars++;
+            highlightedHTML += `<span class="correct-char${extraClass}">${displayChar}</span>`;
         } else {
-            highlightedHTML += `<span class="incorrect-char${spaceClass}">${displayChar}</span>`;
+            highlightedHTML += `<span class="incorrect-char${extraClass}">${displayChar}</span>`;
         }
     }
 
     targetDisplay.innerHTML = highlightedHTML;
-
-    // 即時計算 CPM 與正確率
-    const timeElapsedMin = (new Date() - typingStartTime) / 60000;
-    const totalCharsSoFar = totalTypedChars + inputVal.length;
-    const totalCorrectSoFar = totalCorrectChars + currentCorrectChars;
-
-    const cpm = timeElapsedMin > 0 ? Math.round(totalCharsSoFar / timeElapsedMin) : 0;
-    const accuracy = totalCharsSoFar > 0 ? Math.round((totalCorrectSoFar / totalCharsSoFar) * 100) : 100;
-
-    document.getElementById('cpm-val').innerText = cpm;
-    document.getElementById('accuracy-val').innerText = accuracy + '%';
 }
-
+  
 // 開始測驗：觸發倒數 3 秒
 function startTypingTest() {
     prepareTypingQueue();
