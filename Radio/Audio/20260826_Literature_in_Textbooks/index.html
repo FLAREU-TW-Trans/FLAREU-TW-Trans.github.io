@@ -6,7 +6,7 @@
 <link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
 <link rel="stylesheet" href="../../../css/reaction.css">
-  
+
 <title>20260628 朗讀教科書中的文學作品</title>
 
 <style>
@@ -138,64 +138,22 @@ body {
 /* ==========================================
    6. 教學模式標示單字與語音按鈕樣式
    ========================================== */
-.sub-line {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 12px;
-}
-
-.sub-content {
-    flex: 1;
-}
+.sub-line { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+.sub-content { flex: 1; }
 
 .sentence-tts-btn {
-    background: #f1f5f9;
-    border: 1px solid #cbd5e1;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background 0.2s;
-    flex-shrink: 0;
-    margin-top: 2px;
+    background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 50%; width: 32px; height: 32px; display: inline-flex; justify-content: center;
+    align-items: center; cursor: pointer; font-size: 14px; transition: background 0.2s; flex-shrink: 0; margin-top: 2px;
 }
-.sentence-tts-btn:hover {
-    background: #e2e8f0;
-}
+.sentence-tts-btn:hover { background: #e2e8f0; }
 
 .vocab-word {
-    color: var(--primary-dark);
-    font-weight: 700;
-    cursor: pointer;
-    padding: 1px 4px 2px;
-    margin: 0 1px;
-    border-radius: 5px;
-    background: linear-gradient(
-        to top,
-        rgba(33, 33, 71, 0.10) 0%,
-        rgba(33, 33, 71, 0.10) 38%,
-        transparent 38%
-    );
-    transition:
-        color 0.18s ease,
-        background 0.18s ease,
-        box-shadow 0.18s ease;
+    color: var(--primary-dark); font-weight: 700; cursor: pointer; padding: 1px 4px 2px; margin: 0 1px; border-radius: 5px;
+    background: linear-gradient( to top, rgba(33, 33, 71, 0.10) 0%, rgba(33, 33, 71, 0.10) 38%, transparent 38% );
+    transition: color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
-
-.vocab-word:hover {
-    color: #11112f;
-    background: rgba(33, 33, 71, 0.10);
-    box-shadow: 0 2px 8px rgba(33, 33, 71, 0.08);
-}
-
-.vocab-word:active {
-    transform: translateY(1px);
-}
+.vocab-word:hover { color: #11112f; background: rgba(33, 33, 71, 0.10); box-shadow: 0 2px 8px rgba(33, 33, 71, 0.08); }
+.vocab-word:active { transform: translateY(1px); }
 
 /* ==========================================
    7. 單字與 Modal 彈窗 
@@ -206,41 +164,15 @@ body {
 }
 .modal-overlay.active { display: flex !important; }
 .modal-card {
-    background: var(--surface-white); width: 90%; max-width: 380px; border-radius: 16px; padding: 28px 24px;
-    box-shadow: 0 20px 30px rgba(33, 33, 71, 0.2); position: relative;
+    background: var(--surface-white); width: 90%; max-width: 380px; border-radius: 16px; padding: 28px 24px; box-shadow: 0 20px 30px rgba(33, 33, 71, 0.2); position: relative;
 }
 .modal-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 44px;
-    height: 44px;
-    border: none;
-    border-radius: 50%;
-    background: rgba(33, 33, 71, 0.05);
-    color: var(--text-muted);
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    z-index: 20;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-    line-height: 1;
-    box-sizing: border-box;
-    transition: background 0.2s, transform 0.15s;
+    position: absolute; top: 10px; right: 10px; width: 44px; height: 44px; border: none; border-radius: 50%; background: rgba(33, 33, 71, 0.05);
+    color: var(--text-muted); font-size: 18px; font-weight: 600; cursor: pointer; z-index: 20; display: flex; align-items: center; justify-content: center;
+    padding: 0; line-height: 1; box-sizing: border-box; transition: background 0.2s, transform 0.15s;
 }
-
-.modal-close:hover {
-    background: rgba(33, 33, 71, 0.12);
-}
-
-.modal-close:active {
-    transform: scale(0.92);
-}
+.modal-close:hover { background: rgba(33, 33, 71, 0.12); }
+.modal-close:active { transform: scale(0.92); }
 .modal-header { position: relative; display: flex; justify-content: center; align-items: center; min-height: 40px; margin-bottom: 8px; width: 100%; }
 .modal-kor { 
     position: absolute; left: 50%; transform: translateX(-50%); font-size: 28px; font-weight: bold; 
@@ -299,6 +231,10 @@ body {
 .typing-card { background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 16px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 10px; }
 .typing-target { font-size: 20px; font-weight: bold; line-height: 1.6; color: var(--primary-dark); word-break: break-all; min-height: 32px; white-space: pre-wrap; }
 .typing-sub-target { font-size: 15px; color: #64748b; margin-bottom: 6px; min-height: 22px; }
+.typing-personal-best { display: flex; justify-content: center; gap: 60px; margin: 18px 0 30px; padding: 14px 20px; }
+.typing-personal-best > div { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.typing-personal-best span { font-size: 13px; color: var(--text-muted); }
+.typing-personal-best strong { font-size: 18px; color: var(--text-main); }
 
 .correct-char { color: #059669; background-color: #d1fae5; }
 .incorrect-char { color: #dc2626; background-color: #fee2e2; }
@@ -312,43 +248,70 @@ body {
 /* ==========================================
   9. 打字測驗結算 Modal
    ========================================== */
-.result-card {
-    background: #fff;
-    padding: 24px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
+.result-card { background: #fff; padding: 24px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+.result-actions { display: flex; gap: 10px; margin-top: 20px; }
 
-.result-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.btn-upload {
-    flex: 1;
-    background: #2563eb;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-}
+.btn-upload { flex: 1; background: #2563eb; color: white; padding: 10px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
 .btn-upload:hover { background: #1d4ed8; }
+.btn-close { flex: 1; background: #94a3b8; color: white; padding: 10px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
-.btn-close {
-    flex: 1;
-    background: #94a3b8;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
+/* ==========================================
+  10. 排行榜
+   ========================================== */
+.typing-leaderboard {
+    margin: 0 0 28px;
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: rgba(33, 33, 71, 0.035);
+    border: 1px solid rgba(33, 33, 71, 0.08);
+}
+
+.leaderboard-title {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 14px;
+}
+
+.leaderboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.leaderboard-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px 8px;
+    min-height: 58px;
+}
+
+.leaderboard-item span {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.leaderboard-item strong {
+    font-size: 16px;
+    color: var(--text-main);
+}
+
+.leaderboard-percent {
+    padding-top: 12px;
+}
+
+@media (max-width: 600px) {
+    .leaderboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .typing-personal-best {
+        gap: 30px;
+    }
 }
 </style>
 </head>
@@ -491,6 +454,48 @@ body {
             </div>
         </div>
 
+        <!-- 排行榜 -->
+        <div class="typing-leaderboard">
+            <div class="leaderboard-title">
+                🏆 打字排行榜
+            </div>
+    
+            <div class="leaderboard-grid">
+    
+                <div class="leaderboard-item">
+                    <span>平均速度</span>
+                    <strong id="leaderboard-avg-cpm">—</strong>
+                </div>
+    
+                <div class="leaderboard-item">
+                    <span>平均正確率</span>
+                    <strong id="leaderboard-avg-accuracy">—</strong>
+                </div>
+    
+                <div class="leaderboard-item">
+                    <span>我的速度</span>
+                    <strong id="leaderboard-my-cpm">沒有成績</strong>
+                </div>
+    
+                <div class="leaderboard-item">
+                    <span>我的正確率</span>
+                    <strong id="leaderboard-my-accuracy">沒有成績</strong>
+                </div>
+    
+                <div class="leaderboard-item leaderboard-percent">
+                    <span>速度高於</span>
+                    <strong id="leaderboard-cpm-percent">沒有成績</strong>
+                </div>
+    
+                <div class="leaderboard-item leaderboard-percent">
+                    <span>正確率高於</span>
+                    <strong id="leaderboard-accuracy-percent">沒有成績</strong>
+                </div>
+    
+            </div>
+        </div>
+
+        <!-- 測驗即時狀態 -->
         <div class="typing-metrics">
             <div>倒數狀態：<span id="countdown-display" class="metric-val"></span></div>
             <div>速度 (CPM)：<span id="cpm-val" class="metric-val">0</span></div>
@@ -2332,6 +2337,18 @@ window.addEventListener('DOMContentLoaded', () => {
     applyStateToUI();
     loadAndRenderContent();
     if (typeof initAudioListener === 'function') initAudioListener();
+
+    displayLocalTypingBest();
+
+    if (window.firebaseAuthReady) {
+
+        window.firebaseAuthReady.then(() => {
+
+            if (window.loadTypingLeaderboard) {
+                window.loadTypingLeaderboard(typingScope);
+            }
+        });
+    }
 });
 
 function saveState() {
@@ -3037,13 +3054,26 @@ function handleVocabResult(isMastered) {
    11. 打字測驗邏輯
    ========================================== */
 function setTypingScope(scope, btn) {
+
     typingScope = scope;
+
     if (btn) {
-        btn.parentElement.querySelectorAll('.segmented-btn').forEach(b => b.classList.remove('active'));
+        btn.parentElement
+            .querySelectorAll('.segmented-btn')
+            .forEach(b => b.classList.remove('active'));
+
         btn.classList.add('active');
     }
+
     prepareTypingQueue();
+
+    // 更新個人 localStorage 最佳成績
     displayLocalTypingBest();
+
+    // 更新 Firebase 排行榜
+    if (window.loadTypingLeaderboard) {
+        window.loadTypingLeaderboard(typingScope);
+    }
 }
 
 // 預備題目佇列
@@ -3075,7 +3105,7 @@ function prepareTypingQueue() {
     }
     document.getElementById('cpm-val').innerText = '0';
     document.getElementById('accuracy-val').innerText = '100%';
-    document.getElementById('countdown-display').innerText = '請點擊開始';
+    document.getElementById('countdown-display').innerText = '';
     
     renderCurrentTypingTarget();
 }
@@ -3327,6 +3357,190 @@ function displayLocalTypingBest() {
             bestAccuracy ? `${bestAccuracy}%` : '尚無紀錄';
     }
 }
+
+/* ==========================================
+   13. 排行榜
+   ========================================== */
+function updateTypingLeaderboard(records) {
+
+    const avgCpmEl =
+        document.getElementById('leaderboard-avg-cpm');
+
+    const avgAccuracyEl =
+        document.getElementById('leaderboard-avg-accuracy');
+
+    const myCpmEl =
+        document.getElementById('leaderboard-my-cpm');
+
+    const myAccuracyEl =
+        document.getElementById('leaderboard-my-accuracy');
+
+    const cpmPercentEl =
+        document.getElementById('leaderboard-cpm-percent');
+
+    const accuracyPercentEl =
+        document.getElementById('leaderboard-accuracy-percent');
+
+
+    // 沒有任何排行榜資料
+    if (!records || records.length === 0) {
+
+        avgCpmEl.innerText = '—';
+        avgAccuracyEl.innerText = '—';
+
+        myCpmEl.innerText = '沒有成績';
+        myAccuracyEl.innerText = '沒有成績';
+
+        cpmPercentEl.innerText = '沒有成績';
+        accuracyPercentEl.innerText = '沒有成績';
+
+        return;
+    }
+
+
+    // ==========================
+    // 平均速度
+    // ==========================
+    const avgCpm =
+        records.reduce((sum, item) => sum + item.cpm, 0)
+        / records.length;
+
+    avgCpmEl.innerText =
+        `${Math.round(avgCpm)} CPM`;
+
+
+    // ==========================
+    // 平均正確率
+    // ==========================
+    const avgAccuracy =
+        records.reduce(
+            (sum, item) => sum + item.accuracy,
+            0
+        ) / records.length;
+
+    avgAccuracyEl.innerText =
+        `${Math.round(avgAccuracy)}%`;
+
+
+    // ==========================
+    // 找出自己的 UID
+    // ==========================
+    const myUid =
+        window.currentFirebaseUser?.uid;
+
+
+    if (!myUid) {
+
+        myCpmEl.innerText = '沒有成績';
+        myAccuracyEl.innerText = '沒有成績';
+
+        cpmPercentEl.innerText = '沒有成績';
+        accuracyPercentEl.innerText = '沒有成績';
+
+        return;
+    }
+
+
+    const myRecords = records.filter(item => {
+        return item.uid === myUid;
+    });
+
+
+    // ==========================
+    // 自己沒有上傳過成績
+    // ==========================
+    if (myRecords.length === 0) {
+
+        myCpmEl.innerText = '沒有成績';
+        myAccuracyEl.innerText = '沒有成績';
+
+        cpmPercentEl.innerText = '沒有成績';
+        accuracyPercentEl.innerText = '沒有成績';
+
+        return;
+    }
+
+
+    // ==========================
+    // 自己的最高速度
+    // ==========================
+    const myBestCpm =
+        Math.max(...myRecords.map(item => item.cpm));
+
+
+    // ==========================
+    // 自己的最高正確率
+    // ==========================
+    const myBestAccuracy =
+        Math.max(...myRecords.map(item => item.accuracy));
+
+
+    myCpmEl.innerText =
+        `${myBestCpm} CPM`;
+
+    myAccuracyEl.innerText =
+        `${myBestAccuracy}%`;
+
+
+    // ==========================
+    // 速度高於多少使用者
+    // ==========================
+    const cpmLowerCount =
+        records.filter(item => {
+            return item.uid !== myUid &&
+                   item.cpm < myBestCpm;
+        }).length;
+
+
+    const otherUsers =
+        new Set(
+            records
+                .filter(item => item.uid !== myUid)
+                .map(item => item.uid)
+        ).size;
+
+
+    if (otherUsers > 0) {
+
+        const cpmPercent =
+            Math.round(
+                (cpmLowerCount / otherUsers) * 100
+            );
+
+        cpmPercentEl.innerText =
+            `${cpmPercent}%`;
+    } else {
+
+        cpmPercentEl.innerText =
+            '暫無其他使用者';
+    }
+
+
+    // ==========================
+    // 正確率高於多少使用者
+    // ==========================
+    const accuracyLowerCount =
+        records.filter(item => {
+            return item.uid !== myUid &&
+                   item.accuracy < myBestAccuracy;
+        }).length;
+
+
+    if (otherUsers > 0) {
+
+        const accuracyPercent =
+            Math.round(
+                (accuracyLowerCount / otherUsers) * 100
+            );
+
+        accuracyPercentEl.innerText =
+            `${accuracyPercent}%`;
+    } else {
+
+        accuracyPercentEl.innerText =
+            '暫無其他使用者';
+    }
+}
 </script>
 
 <script type="module" src="../../../js/firebase-init.js"></script>
@@ -3335,7 +3549,8 @@ function displayLocalTypingBest() {
 <script type="module">
 import {
     push,
-    set
+    set,
+    onValue
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 window.uploadTypingScore = async function(mode, cpm, accuracy) {
@@ -3372,6 +3587,41 @@ window.uploadTypingScore = async function(mode, cpm, accuracy) {
         alert(`上傳失敗：${e.message}`);
         return false;
     }
+};
+
+window.loadTypingLeaderboard = function(mode) {
+
+    if (!window.db || !window.fb_ref) {
+        console.warn("Firebase 尚未初始化");
+        return;
+    }
+
+    const leaderboardRef =
+        window.fb_ref(window.db, "typing_leaderboard");
+
+    onValue(leaderboardRef, (snapshot) => {
+
+        const data = snapshot.val();
+
+        if (!data) {
+            updateTypingLeaderboard([]);
+            return;
+        }
+
+        const records = Object.values(data).filter(item => {
+            return item &&
+                   item.mode === mode &&
+                   typeof item.cpm === 'number' &&
+                   typeof item.accuracy === 'number';
+        });
+
+        updateTypingLeaderboard(records);
+
+    }, (error) => {
+
+        console.error("排行榜讀取失敗：", error);
+
+    });
 };
 </script>
 
