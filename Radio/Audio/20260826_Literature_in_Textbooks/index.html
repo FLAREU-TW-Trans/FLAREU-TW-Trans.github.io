@@ -2222,7 +2222,9 @@
           // 支援 {原型|文章出現的詞} 與 {單一詞彙}
           return text.replace(/\{([^}|]+)(?:\|([^}]+))?\}/g, (match, key, rawWord) => {
               const displayWord = rawWord || key; // 若沒給 rawWord，就顯示 key
-              if (vocabDb[key]) {
+
+              // 只有在「完整全文模式 (full)」且單字庫中有資料時才渲染成可點擊的單字標籤
+              if (currentState.mode === 'full' && vocabDb[key]) {
                   return `<span class="vocab-word" onclick="openVocabModal('${key}', event)">${displayWord}</span>`;
               }
               return displayWord;
