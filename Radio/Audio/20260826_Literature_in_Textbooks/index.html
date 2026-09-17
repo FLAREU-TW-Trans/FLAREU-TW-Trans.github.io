@@ -2696,7 +2696,7 @@ function playKoreanWord(text) {
 
     // 判斷：若單字有設定自訂音檔檔名，優先讀取本地 MP3 
     if (vocabInfo && vocabInfo.audio) {
-        url = `./audio/words/${vocabInfo.audio}`; 
+        url = `./words/${vocabInfo.audio}`; 
     } else {
         // 沒有自訂音檔時，繼續使用有道 API 線上發音
         url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(cleanText)}&le=ko`;
