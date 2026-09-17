@@ -2749,10 +2749,12 @@ function playKoreanWord(text) {
     });
 }
 
-// 整句：使用 Google Translate TTS 語音
+// 整句：使用 NAVER / Papago 韓語發音介面
 function playKoreanSentence(text) {
     const cleanText = cleanKoreanText(text);
-    const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ko&q=${encodeURIComponent(cleanText)}`;
+    
+    // NAVER Papago 語音 API 介面
+    const url = `https://papago.naver.com/apis/tts/makeID?pitch=0&speaker=kyuri&speed=0&text=${encodeURIComponent(cleanText)}`;
 
     if (currentTtsAudio) {
         currentTtsAudio.pause();
@@ -2760,10 +2762,16 @@ function playKoreanSentence(text) {
     }
 
     currentTtsAudio = new Audio(url);
-    currentTtsAudio.playbackRate = 0.8;
+    currentTtsAudio.playbackRate = 0.85; // 控制播放速度
 
     currentTtsAudio.play().catch(error => {
-        console.error("整句語音播放失敗：", error);
+        console.warn("NAVER 語音播放受阻，備用切換至有道引擎...", error);
+        
+        // 備用方案：若 NAVER 被請求限制，自動退回使用有道長句引擎
+        const fallbackUrl = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(cleanText)}&le=ko`;
+        currentTtsAudio = new Audio(fallbackUrl);
+        currentTtsAudio.playbackRate = 0.85;
+        currentTtsAudio.play().catch(e => console.error("備用整句語音播放失敗：", e));
     });
 }
 
