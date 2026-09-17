@@ -922,7 +922,7 @@ const vocabDb = {
   "프로그램": { kor: "프로그램", pinyin: "pheu-ro-geu-raem", chi: "節目、程序", pos: "名詞" },
   "하늘": { kor: "하늘", pinyin: "ha-neul", chi: "天空", pos: "名詞" },
   "하지만": { kor: "하지만", pinyin: "ha-ji-man", chi: "但是", pos: "連詞" },
-  "학교": { kor: "학교", pinyin: "hak-gyo", chi: "學校", pos: "名詞" },
+  "학교": { kor: "학교", pinyin: "hak-gyo", chi: "學校", pos: "名詞", audio: "001.mp3" },
   "학창": { kor: "학창", pinyin: "hak-chang", chi: "求學時期、學生時代", pos: "名詞" },
   "한국": { kor: "한국", pinyin: "han-guk", chi: "韓國", pos: "名詞" },
   "함께": { kor: "함께", pinyin: "ham-kke", chi: "一起", pos: "副詞" },
@@ -2685,12 +2685,22 @@ function cleanKoreanText(text) {
     });
 }
 
-// 單字：
+// 單字：大部分使用有道，發音不自然則使用 MP3
 function playKoreanWord(text) {
     const cleanText = cleanKoreanText(text);
 
-    // Google Translate 免費 TTS 接口 (client=tw)
-    const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=ko&client=tw-ob`;
+    // 取得該單字在 vocabDb 中的設定資訊
+    const vocabInfo = vocabDb[cleanText] || vocabDb[text];
+
+    let url = "";
+
+    // 判斷：若單字有設定自訂音檔檔名，優先讀取本地 MP3 
+    if (vocabInfo && vocabInfo.audio) {
+        url = `./audio/words/${vocabInfo.audio}`; 
+    } else {
+        // 沒有自訂音檔時，繼續使用有道 API 線上發音
+        url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(cleanText)}&le=ko`;
+    }
 
     if (currentTtsAudio) {
         currentTtsAudio.pause();
@@ -2698,20 +2708,13 @@ function playKoreanWord(text) {
     }
 
     currentTtsAudio = new Audio(url);
-    currentTtsAudio.playbackRate = 1.0; 
+    
+    // 如果是線上發音速度維持原本設定，本地真人 MP3 建議使用 1.0 原速
+    currentTtsAudio.playbackRate = (vocabInfo && vocabInfo.audio) ? 1.0 : 0.8;
 
     currentTtsAudio.play().catch(error => {
-        console.warn("Google 單字語音播放失敗，切換至備用方案：", error);
-        fallbackToYoudaoWord(cleanText);
+        console.error("單字語音播放失敗：", error);
     });
-}
-
-// 備用方案：有道
-function fallbackToYoudaoWord(cleanText) {
-    const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(cleanText)}&le=ko`;
-    currentTtsAudio = new Audio(url);
-    currentTtsAudio.playbackRate = 1.0;
-    currentTtsAudio.play();
 }
 
 // 整句：直接播放本地 MP3 音檔
