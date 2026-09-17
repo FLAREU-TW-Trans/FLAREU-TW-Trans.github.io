@@ -258,128 +258,29 @@ body {
 /* ==========================================
   10. 排行榜
    ========================================== */
-.typing-leaderboard {
-    margin: 18px 0 30px;
-    padding: 0;
-    border-radius: 14px;
-    background: rgba(33, 33, 71, 0.035);
-    border: 1px solid rgba(33, 33, 71, 0.08);
-    overflow: hidden;
-}
-.leaderboard-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    min-height: 52px;
-    padding: 0 50px;
-}
-.leaderboard-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text-main);
-    text-align: center;
-}
-
-/* 收合按鈕 */
+.typing-leaderboard { margin: 18px 0 30px; padding: 0; border-radius: 14px; background: rgba(33, 33, 71, 0.035); border: 1px solid rgba(33, 33, 71, 0.08); overflow: hidden; }
+.leaderboard-header { display: flex; align-items: center; justify-content: center; position: relative; min-height: 52px; padding: 0 50px; }
+.leaderboard-title { font-size: 15px; font-weight: 700; color: var(--text-main); text-align: center; }
 .leaderboard-toggle {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-
-    width: 32px;
-    height: 32px;
-
-    border: none;
-    border-radius: 50%;
-
-    background: rgba(33, 33, 71, 0.06);
-    color: var(--text-muted);
-
-    font-size: 20px;
-    line-height: 1;
-
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    transition:
-        background 0.2s,
-        transform 0.15s;
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; border: none; border-radius: 50%; justify-content: center;
+    background: rgba(33, 33, 71, 0.06); color: var(--text-muted); font-size: 20px; line-height: 1; cursor: pointer; display: flex; align-items: center;
+    transition: background 0.2s, transform 0.15s;
 }
-.leaderboard-toggle:hover {
-    background: rgba(33, 33, 71, 0.12);
-}
-.leaderboard-toggle:active {
-    transform: translateY(-50%) scale(0.9);
-}
-
-/* 排行榜內容 */
-.leaderboard-content {
-    max-height: 500px;
-    opacity: 1;
-    overflow: hidden;
-
-    transition:
-        max-height 0.3s ease,
-        opacity 0.2s ease;
-}
-.leaderboard-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-
-    padding: 0 18px 18px;
-}
-.leaderboard-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    min-height: 62px;
-    padding: 10px 8px;
-
-    gap: 5px;
-}
-.leaderboard-item span {
-    font-size: 12px;
-    color: var(--text-muted);
-}
-.leaderboard-item strong {
-    font-size: 16px;
-    color: var(--text-main);
-}
-
-/* 百分比資料 */
-.leaderboard-percent strong {
-    font-size: 15px;
-}
-
-/* 排行榜縮小狀態 */
-.typing-leaderboard.collapsed .leaderboard-content {
-    max-height: 0;
-    opacity: 0;
-}
-.typing-leaderboard.collapsed .leaderboard-header {
-    min-height: 48px;
-}
-.typing-leaderboard.collapsed .leaderboard-toggle {
-    font-size: 20px;
-}
+.leaderboard-toggle:hover { background: rgba(33, 33, 71, 0.12); }
+.leaderboard-toggle:active { transform: translateY(-50%) scale(0.9); }
+.leaderboard-content { max-height: 500px; opacity: 1; overflow: hidden; transition: max-height 0.3s ease, opacity 0.2s ease; }
+.leaderboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 18px 18px; }
+.leaderboard-item { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 62px; padding: 10px 8px; gap: 5px; }
+.leaderboard-item span { font-size: 12px; color: var(--text-muted); }
+.leaderboard-item strong { font-size: 16px; color: var(--text-main); }
+.leaderboard-percent strong { font-size: 15px; }
+.typing-leaderboard.collapsed .leaderboard-content { max-height: 0; opacity: 0; }
+.typing-leaderboard.collapsed .leaderboard-header { min-height: 48px; }
+.typing-leaderboard.collapsed .leaderboard-toggle { font-size: 20px; }
 
 @media (max-width: 600px) {
-
-    .leaderboard-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .leaderboard-item {
-        min-height: 58px;
-    }
+    .leaderboard-grid { grid-template-columns: repeat(2, 1fr); }
+    .leaderboard-item { min-height: 58px; }
 }
 </style>
 </head>
@@ -403,7 +304,7 @@ body {
     <!-- 整合控制面板 -->
     <div class="control-panel">
         <!-- 第一層：成員切換 -->
-        <div class="segmented-row">
+        <div class="segmented-row" id="member-selector-row">
             <button class="segmented-btn" data-member="liyu" onclick="switchMember('liyu')">立于</button>
             <button class="segmented-btn" data-member="woojin" onclick="switchMember('woojin')">玗進</button>
         </div>
@@ -417,7 +318,7 @@ body {
         </div>
 
         <!-- 第三層：語言切換 -->
-        <div class="lang-bar">
+        <div class="lang-bar" id="lang-bar-row">
             <span>語言顯示</span>
             <div class="option-group">
                 <button class="chip-btn" data-lang="all" onclick="switchLang('all')">雙語</button>
@@ -427,7 +328,7 @@ body {
         </div>
 
         <!-- 第四層：字體大小調節 -->
-        <div class="font-size-bar">
+        <div class="font-size-bar font-size-row">
             <span>韓文大小</span>
             <div class="option-group">
                 <button class="chip-btn" data-kor-size="16px" onclick="setKorFontSize('16px')">S</button>
@@ -437,7 +338,7 @@ body {
             </div>
         </div>
 
-        <div class="font-size-bar">
+        <div class="font-size-bar font-size-row">
             <span>中文大小</span>
             <div class="option-group">
                 <button class="chip-btn" data-chi-size="14px" onclick="setChiFontSize('14px')">S</button>
@@ -478,7 +379,7 @@ body {
         </div>
         
         <div class="flashcard-body">
-            <div class="vocab-prompt" id="vocab-test-prompt">點擊中譯韓/韓譯中開始測驗</div>
+            <div class="vocab-prompt" id="vocab-test-prompt">點擊中譯韓/韓譯中即隨機抽取十個單字開始測驗</div>
             
             <div class="vocab-answer-box" id="vocab-test-answer" style="display: none;">
                 <div class="answer-kor" id="vocab-ans-kor"></div>
@@ -2487,6 +2388,27 @@ function applyStateToUI() {
         btn.classList.toggle('active', btn.dataset.lang === currentState.lang);
     });
 
+   // 判斷當前是否屬於動態逐句或教學模式
+    const isReadingMode = currentState.mode === 'dynamic' || currentState.mode === 'full';
+
+    // 控制「成員切換」面板顯示/隱藏
+    const memberRow = document.getElementById('member-selector-row');
+    if (memberRow) {
+        memberRow.style.display = isReadingMode ? 'flex' : 'none';
+    }
+
+    // 控制「語言切換」面板顯示/隱藏
+    const langBar = document.getElementById('lang-bar-row');
+    if (langBar) {
+        langBar.style.display = isReadingMode ? 'flex' : 'none';
+    }
+
+    // 控制「字體大小調節」面板顯示/隱藏
+    const fontSizeBars = document.querySelectorAll('.font-size-row');
+    fontSizeBars.forEach(bar => {
+        bar.style.display = isReadingMode ? 'flex' : 'none';
+    });
+
     const dynamicControls = document.getElementById('dynamic-controls');
     const subtitleBox = document.getElementById('subtitle-box');
     const vocabBox = document.getElementById('vocab-test-box');
@@ -2798,7 +2720,7 @@ function adjustTime(seconds) {
 }
 
 /* ==========================================
-   8. 單字發音引擎與 Modal 控制 (內建有道語音播放 API)
+   8. 單字發音引擎與 Modal 控制
    ========================================== */
 let currentTtsAudio = null;
 
@@ -2808,7 +2730,7 @@ function cleanKoreanText(text) {
     });
 }
 
-// 單字：繼續使用 Youdao
+// 單字：使用有道
 function playKoreanWord(text) {
     const cleanText = cleanKoreanText(text);
 
@@ -2827,18 +2749,22 @@ function playKoreanWord(text) {
     });
 }
 
-// 整句：使用瀏覽器內建韓文語音
+// 整句：使用 Google Translate TTS 語音
 function playKoreanSentence(text) {
     const cleanText = cleanKoreanText(text);
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ko&q=${encodeURIComponent(cleanText)}`;
 
-    window.speechSynthesis.cancel();
+    if (currentTtsAudio) {
+        currentTtsAudio.pause();
+        currentTtsAudio.currentTime = 0;
+    }
 
-    const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = 'ko-KR';
-    utterance.rate = 0.8;
-    utterance.pitch = 1;
+    currentTtsAudio = new Audio(url);
+    currentTtsAudio.playbackRate = 0.8;
 
-    window.speechSynthesis.speak(utterance);
+    currentTtsAudio.play().catch(error => {
+        console.error("整句語音播放失敗：", error);
+    });
 }
 
 function openVocabModal(word, event) {
@@ -2946,7 +2872,8 @@ const sentenceBank = [
     `초생달과 바구지꽃과 짝새와 당나귀가 그러하듯이`,
     `그리고 또 '프랑시쓰 쨈'과 도연명과 '라이넬 마리아 릴케'가 그러하듯이`,
     `어떤 관상쟁이가 있었다.`,
-    `어디서 왔는지도 알 수 없고, 따로 관상 보는 책을 읽은 것도 아니며, 관상 보는 법칙을 따르지도 않는데, 이상한 방법으로 관상을 잘 보아서 모두 그를 이상한 관상쟁이라 불렀다.`,
+    `어디서 왔는지도 알 수 없고, 따로 관상 보는 책을 읽은 것도 아니며, 관상 보는 법칙을 따르지도 않는데, `,
+    `이상한 방법으로 관상을 잘 보아서 모두 그를 이상한 관상쟁이라 불렀다.`,
     `점잖은 체면의 벼슬아치와 남녀노소 할 것 없이 앞다투어 그를 불러들이거나 찾아가 관상을 봐 달라고 하였다.`,
     `그 관상쟁이는 부유하고 신분이 높으며 살찌고 얼굴에 기름이 흐르는 사람의 관상을 보고는 이렇게 말했다.`,
     `"당신의 모습이 매우 수척해 보이니 당신만큼 천한 족속도 없겠소."`,
@@ -2958,29 +2885,46 @@ const sentenceBank = [
     `세상에서 너그럽고 어질다고 일컫는 사람의 관상을 보고는 말했다. "만인의 마음을 아프게 하리라."`,
     `당시 사람들이 대단히 잔인하다 일컫는 사람의 관상을 보고는 말했다. "만인의 마음을 즐겁게 하리라."`,
     `그의 관상은 거의 이런 식이었다.`,
-    `다만 길흉화복이 어떻게 일어나는 것인지에 대해서는 잘 말할 줄 모를 뿐만 아니라, 손님들의 처지나 상황 따위는 모두 잘 맞히지 못하였다.`,
+    `다만 길흉화복이 어떻게 일어나는 것인지에 대해서는 잘 말할 줄 모를 뿐만 아니라, `,
+    `손님들의 처지나 상황 따위는 모두 잘 맞히지 못하였다.`,
     `그러자 여러 사람들은 그를 사기꾼이라 떠들어 대며 잡아다 심문하여 거짓말한 죄를 다스려야 한다고 하였다.`,
     `나는 홀로 사람들을 말리면서 이렇게 말했다.`,
-    `"대체로 말에는 처음에는 귀에 거슬리지만 나중에는 순순히 받아들여지는 말도 있고, 겉으로 듣기에는 얄팍한 얘기 같지만 속으로는 깊고 먼 뜻을 품고 있는 말도 있소.`,
-    `그도 역시 눈이 있는 사람인데, 어찌 살찐 사람이며 여윈 사람, 눈먼 사람인 줄 몰라서, 살찐 사람더러 여위었다 하고 여윈 사람더러 살졌다 하며 눈먼 사람더러 눈이 밝다 했겠소? 그는 반드시 관상을 특별히 잘 보는 사람일 거요."`,
+    `"대체로 말에는 처음에는 귀에 거슬리지만 나중에는 순순히 받아들여지는 말도 있고, `,
+    `겉으로 듣기에는 얄팍한 얘기 같지만 속으로는 깊고 먼 뜻을 품고 있는 말도 있소.`,
+    `그도 역시 눈이 있는 사람인데, 어찌 살찐 사람이며 여윈 사람, 눈먼 사람인 줄 몰라서,`,
+    `살찐 사람더러 여위었다 하고 여윈 사람더러 살졌다 하며 눈먼 사람더러 눈이 밝다 했겠소?`,
+    `그는 반드시 관상을 특별히 잘 보는 사람일 거요."`,
     `나는 목욕하고 옷매무새를 단정히 하여 그 관상쟁이가 사는 곳에 찾아갔다.`,
-    `그리고 그의 곁에 있는 사람들을 모두 물러가게 하고는 그에게 이렇게 물어보았다. "당신이 이러이러한 사람들의 관상을 보고 '이러이러하다'라고 말한 것은 어째서요?"`,
-    `그는 이렇게 대답했다. "부유하고 신분이 높으면, 거만하고 남을 업신여기는 마음이 자랍니다. 그리하여 죄가 가득 차면 하늘이 반드시 그 사람을 거꾸러뜨려 장차 겨죽도 못 먹을 때가 오게 됩니다.`,
+    `그리고 그의 곁에 있는 사람들을 모두 물러가게 하고는 그에게 이렇게 물어보았다.`,
+    `"당신이 이러이러한 사람들의 관상을 보고 '이러이러하다'라고 말한 것은 어째서요?"`,
+    `그는 이렇게 대답했다. "부유하고 신분이 높으면, 거만하고 남을 업신여기는 마음이 자랍니다.`,
+    `그리하여 죄가 가득 차면 하늘이 반드시 그 사람을 거꾸러뜨려 장차 겨죽도 못 먹을 때가 오게 됩니다.`,
     `그러니 '여위었다'라고 한 것이고, 앞으로 보잘것없는 비천한 사나이가 될 테니 '당신의 족속이 천할 것이다'라고 한 겁니다.`,
-    `가난하고 신분이 낮으면, 뜻을 굽히고 자신을 낮추어 걱정하고 두려워하며, 반성하고 수양하는 마음이 있게 됩니다. 그러다 막힌 운수가 끝나면 반드시 운수가 트이게 되는 법이지요.`,
-    `그러니 육식을 하며 부귀하게 살 징조가 보여 '살쪘다'라고 한 것이고, 앞으로 만 석의 봉급을 받고 다섯 대의 수레를 굴릴 만큼 존귀하게 될 테니 '당신의 족속이 귀할 것이다'라고 한 겁니다.`,
+    `가난하고 신분이 낮으면, 뜻을 굽히고 자신을 낮추어 걱정하고 두려워하며, 반성하고 수양하는 마음이 있게 됩니다.`,
+    `그러다 막힌 운수가 끝나면 반드시 운수가 트이게 되는 법이지요.`,
+    `그러니 육식을 하며 부귀하게 살 징조가 보여 '살쪘다'라고 한 것이고,`,
+    `앞으로 만 석의 봉급을 받고 다섯 대의 수레를 굴릴 만큼 존귀하게 될 테니 '당신의 족속이 귀할 것이다'라고 한 겁니다.`,
     `요염한 자태와 아름다운 얼굴을 엿보다가는 위험을 건드리기 쉽고, 진귀하고 좋은 보배를 보면 욕심이 생깁니다.`,
-    `그러니 사람의 마음을 혹하게 하고 사람의 바른 마음을 구부러뜨리는 것은 눈이라 하겠습니다. 눈에 보이는 대로 따르다가 생각도 못 한 치욕을 당하게 되니 이 어찌 눈먼 것이라 하지 않겠습니까?`,
-    `그렇지만 장님은 마음이 맑아 욕심도 위험도 없으니 몸을 온전히 지킬 수 있고 치욕을 당할 일도 없습니다. 이런 점은 현명한 사람이나 깨달은 사람보다 낫다고 하겠기에 '눈이 밝다'라고 한 겁니다.`,
-    `대체로 민첩한 사람은 용맹을 좋아하는데, 용맹한 이는 다른 많은 사람을 깔보기가 쉽습니다. 그러다 결국에는 자객이나 악당의 우두머리나 되었다가, 무관에게 잡히고 옥에 갇혀 감시를 받겠지요.`,
-    `발에는 차꼬를 차고 목에는 큰칼을 썼으니 아무리 달아나려 한들 그럴 수 있겠습니까? 그래서 '절름발이라 걸을 수 없다'라고 한 겁니다.`,
-    `그리고 빼어난 미모라는 것은, 음탕하고 사치스러운 자가 보면 귀한 구슬처럼 고와 보이겠지만 정직하고 순박한 사람이 보면 진흙처럼 흉해 보이는 법입니다. 그래서 '아름답기도 하고 못나기도 하다'라고 한 것이지요.`,
-    `한편 어질다는 사람이 죽으면 사람들이 북적북적 모여 그를 그리며 눈물을 흘리고 마치 어머니를 잃은 어린 아기처럼 슬퍼할 것입니다. 그래서 '만인의 마음을 아프게 한다'라고 한 겁니다.`,
+    `그러니 사람의 마음을 혹하게 하고 사람의 바른 마음을 구부러뜨리는 것은 눈이라 하겠습니다.`,
+    `눈에 보이는 대로 따르다가 생각도 못 한 치욕을 당하게 되니 이 어찌 눈먼 것이라 하지 않겠습니까?`,
+    `그렇지만 장님은 마음이 맑아 욕심도 위험도 없으니 몸을 온전히 지킬 수 있고 치욕을 당할 일도 없습니다.`,
+    `이런 점은 현명한 사람이나 깨달은 사람보다 낫다고 하겠기에 '눈이 밝다'라고 한 겁니다.`,
+    `대체로 민첩한 사람은 용맹을 좋아하는데, 용맹한 이는 다른 많은 사람을 깔보기가 쉽습니다.`,
+    `그러다 결국에는 자객이나 악당의 우두머리나 되었다가, 무관에게 잡히고 옥에 갇혀 감시를 받겠지요.`,
+    `발에는 차꼬를 차고 목에는 큰칼을 썼으니 아무리 달아나려 한들 그럴 수 있겠습니까?`,
+    `그래서 '절름발이라 걸을 수 없다'라고 한 겁니다.`,
+    `그리고 빼어난 미모라는 것은, 음탕하고 사치스러운 자가 보면 귀한 구슬처럼 고와 보이겠지만 정직하고 순박한 사람이 보면 진흙처럼 흉해 보이는 법입니다.`,
+    `그래서 '아름답기도 하고 못나기도 하다'라고 한 것이지요.`,
+    `한편 어질다는 사람이 죽으면 사람들이 북적북적 모여 그를 그리며 눈물을 흘리고 마치 어머니를 잃은 어린 아기처럼 슬퍼할 것입니다.`,
+    `그래서 '만인의 마음을 아프게 한다'라고 한 겁니다.`,
     `반면에 몹시 잔인한 사람이 죽으면, 길거리마다 노래를 주고받고 양고기 안주에 술을 차려 놓고 축하하게 될 것입니다.`,
     `이 중에는 웃느라 입을 다물지 못하고, 손바닥이 찢어져라 손뼉을 칠 사람도 있겠지요. 그래서 '만인을 기쁘게 한다'라고 한 겁니다."`,
-    `나는 깜짝 놀라 일어나서 이렇게 말했다. "과연 내 말이 맞았구나. 이 사람은 정말 관상을 유별나게 잘 보는구나! 그의 말은 좌우명과 교훈으로 삼을 만하다.`,
+    `나는 깜짝 놀라 일어나서 이렇게 말했다. "과연 내 말이 맞았구나.`,
+    `이 사람은 정말 관상을 유별나게 잘 보는구나! 그의 말은 좌우명과 교훈으로 삼을 만하다.`,
     `이 사람은 결코, 얼굴 모양이나 표정만을 살펴 귀티가 나면 '몸에 거북 무늬가 있어 높은 벼슬하겠고, 코가 무소뿔 모양이라 왕비가 될 상'이라 하고,`,
-    `관상이 나쁘면 '벌의 눈처럼 퉁방울눈에다, 목소리는 표범처럼 날카로워 흉악한 상'이라는 식으로 늘 하던 대로 똑같은 말만 주워섬기면서 스스로 신통하다고 떠벌리는 그런 관상쟁이가 아닌 것이다.`
+    `관상이 나쁘면 '벌의 눈처럼 퉁방울눈에다,`,
+    `목소리는 표범처럼 날카로워 흉악한 상'이라는 식으로 늘 하던 대로 똑같은 말만 주워섬기면서 스스로 신통하다고 떠벌리는 그런 관상쟁이가 아닌 것이다.`,
+    `그리고 집에 돌아와 그의 대답을 적어 둔다.`,
 ];
 
 const liyuArticle = `오늘 저녁 이 좁다란 방의 흰 바람벽에
@@ -3014,7 +2958,8 @@ const liyuArticle = `오늘 저녁 이 좁다란 방의 흰 바람벽에
 그리고 또 '프랑시쓰 쨈'과 도연명과 '라이넬 마리아 릴케'가 그러하듯이`;
   
 const woojinArticle = `어떤 관상쟁이가 있었다.
-어디서 왔는지도 알 수 없고, 따로 관상 보는 책을 읽은 것도 아니며, 관상 보는 법칙을 따르지도 않는데, 이상한 방법으로 관상을 잘 보아서 모두 그를 이상한 관상쟁이라 불렀다.
+어디서 왔는지도 알 수 없고, 따로 관상 보는 책을 읽은 것도 아니며, 관상 보는 법칙을 따르지도 않는데,
+이상한 방법으로 관상을 잘 보아서 모두 그를 이상한 관상쟁이라 불렀다.
 점잖은 체면의 벼슬아치와 남녀노소 할 것 없이 앞다투어 그를 불러들이거나 찾아가 관상을 봐 달라고 하였다.
 그 관상쟁이는 부유하고 신분이 높으며 살찌고 얼굴에 기름이 흐르는 사람의 관상을 보고는 이렇게 말했다.
 "당신의 모습이 매우 수척해 보이니 당신만큼 천한 족속도 없겠소."
@@ -3026,22 +2971,50 @@ const woojinArticle = `어떤 관상쟁이가 있었다.
 세상에서 너그럽고 어질다고 일컫는 사람의 관상을 보고는 말했다. "만인의 마음을 아프게 하리라."
 당시 사람들이 대단히 잔인하다 일컫는 사람의 관상을 보고는 말했다. "만인의 마음을 즐겁게 하리라."
 그의 관상은 거의 이런 식이었다.
-다만 길흉화복이 어떻게 일어나는 것인지에 대해서는 잘 말할 줄 모를 뿐만 아니라, 손님들의 처지나 상황 따위는 모두 잘 맞히지 못하였다.
+다만 길흉화복이 어떻게 일어나는 것인지에 대해서는 잘 말할 줄 모를 뿐만 아니라,
+손님들의 처지나 상황 따위는 모두 잘 맞히지 못하였다.
 그러자 여러 사람들은 그를 사기꾼이라 떠들어 대며 잡아다 심문하여 거짓말한 죄를 다스려야 한다고 하였다.
 나는 홀로 사람들을 말리면서 이렇게 말했다.
-"대체로 말에는 처음에는 귀에 거슬리지만 나중에는 순순히 받아들여지는 말도 있고, 겉으로 듣기에는 얄팍한 얘기 같지만 속으로는 깊고 먼 뜻을 품고 있는 말도 있소. 그도 역시 눈이 있는 사람인데, 어찌 살찐 사람이며 여윈 사람, 눈먼 사람인 줄 몰라서, 살찐 사람더러 여위었다 하고 여윈 사람더러 살졌다 하며 눈먼 사람더러 눈이 밝다 했겠소? 그는 반드시 관상을 특별히 잘 보는 사람일 거요."
+"대체로 말에는 처음에는 귀에 거슬리지만 나중에는 순순히 받아들여지는 말도 있고,
+겉으로 듣기에는 얄팍한 얘기 같지만 속으로는 깊고 먼 뜻을 품고 있는 말도 있소.
+그도 역시 눈이 있는 사람인데, 어찌 살찐 사람이며 여윈 사람, 눈먼 사람인 줄 몰라서,
+살찐 사람더러 여위었다 하고 여윈 사람더러 살졌다 하며 눈먼 사람더러 눈이 밝다 했겠소?
+그는 반드시 관상을 특별히 잘 보는 사람일 거요."
 나는 목욕하고 옷매무새를 단정히 하여 그 관상쟁이가 사는 곳에 찾아갔다.
-그리고 그의 곁에 있는 사람들을 모두 물러가게 하고는 그에게 이렇게 물어보았다. "당신이 이러이러한 사람들의 관상을 보고 '이러이러하다'라고 말한 것은 어째서요?"
-그는 이렇게 대답했다. "부유하고 신분이 높으면, 거만하고 남을 업신여기는 마음이 자랍니다. 그리하여 죄가 가득 차면 하늘이 반드시 그 사람을 거꾸러뜨려 장차 겨죽도 못 먹을 때가 오게 됩니다. 그러니 '여위었다'라고 한 것이고, 앞으로 보잘것없는 비천한 사나이가 될 테니 '당신의 족속이 천할 것이다'라고 한 겁니다.
-가난하고 신분이 낮으면, 뜻을 굽히고 자신을 낮추어 걱정하고 두려워하며, 반성하고 수양하는 마음이 있게 됩니다. 그러다 막힌 운수가 끝나면 반드시 운수가 트이게 되는 법이지요. 그러니 육식을 하며 부귀하게 살 징조가 보여 '살쪘다'라고 한 것이고, 앞으로 만 석의 봉급을 받고 다섯 대의 수레를 굴릴 만큼 존귀하게 될 테니 '당신의 족속이 귀할 것이다'라고 한 겁니다.
-요염한 자태와 아름다운 얼굴을 엿보다가는 위험을 건드리기 쉽고, 진귀하고 좋은 보배를 보면 욕심이 생깁니다. 그러니 사람의 마음을 혹하게 하고 사람의 바른 마음을 구부러뜨리는 것은 눈이라 하겠습니다. 눈에 보이는 대로 따르다가 생각도 못 한 치욕을 당하게 되니 이 어찌 눈먼 것이라 하지 않겠습니까?
-그렇지만 장님은 마음이 맑아 욕심도 위험도 없으니 몸을 온전히 지킬 수 있고 치욕을 당할 일도 없습니다. 이런 점은 현명한 사람이나 깨달은 사람보다 낫다고 하겠기에 '눈이 밝다'라고 한 겁니다.
-대체로 민첩한 사람은 용맹을 좋아하는데, 용맹한 이는 다른 많은 사람을 깔보기가 쉽습니다. 그러다 결국에는 자객이나 악당의 우두머리나 되었다가, 무관에게 잡히고 옥에 갇혀 감시를 받겠지요. 발에는 차꼬를 차고 목에는 큰칼을 썼으니 아무리 달아나려 한들 그럴 수 있겠습니까? 그래서 '절름발이라 걸을 수 없다'라고 한 겁니다.
-그리고 빼어난 미모라는 것은, 음탕하고 사치스러운 자가 보면 귀한 구슬처럼 고와 보이겠지만 정직하고 순박한 사람이 보면 진흙처럼 흉해 보이는 법입니다. 그래서 '아름답기도 하고 못나기도 하다'라고 한 것이지요.
-한편 어질다는 사람이 죽으면 사람들이 북적북적 모여 그를 그리며 눈물을 흘리고 마치 어머니를 잃은 어린 아기처럼 슬퍼할 것입니다. 그래서 '만인의 마음을 아프게 한다'라고 한 겁니다.
-반면에 몹시 잔인한 사람이 죽으면, 길거리마다 노래를 주고받고 양고기 안주에 술을 차려 놓고 축하하게 될 것입니다. 이 중에는 웃느라 입을 다물지 못하고, 손바닥이 찢어져라 손뼉을 칠 사람도 있겠지요. 그래서 '만인을 기쁘게 한다'라고 한 겁니다."
-나는 깜짝 놀라 일어나서 이렇게 말했다. "과연 내 말이 맞았구나. 이 사람은 정말 관상을 유별나게 잘 보는구나! 그의 말은 좌우명과 교훈으로 삼을 만하다.
-이 사람은 결코, 얼굴 모양이나 표정만을 살펴 귀티가 나면 '몸에 거북 무늬가 있어 높은 벼슬하겠고, 코가 무소뿔 모양이라 왕비가 될 상'이라 하고, 관상이 나쁘면 '벌의 눈처럼 퉁방울눈에다, 목소리는 표범처럼 날카로워 흉악한 상'이라는 식으로 늘 하던 대로 똑같은 말만 주워섬기면서 스스로 신통하다고 떠벌리는 그런 관상쟁이가 아닌 것이다."
+그리고 그의 곁에 있는 사람들을 모두 물러가게 하고는 그에게 이렇게 물어보았다.
+"당신이 이러이러한 사람들의 관상을 보고 '이러이러하다'라고 말한 것은 어째서요?"
+그는 이렇게 대답했다.
+"부유하고 신분이 높으면, 거만하고 남을 업신여기는 마음이 자랍니다.
+그리하여 죄가 가득 차면 하늘이 반드시 그 사람을 거꾸러뜨려 장차 겨죽도 못 먹을 때가 오게 됩니다.
+그러니 '여위었다'라고 한 것이고, 앞으로 보잘것없는 비천한 사나이가 될 테니 '당신의 족속이 천할 것이다'라고 한 겁니다.
+가난하고 신분이 낮으면, 뜻을 굽히고 자신을 낮추어 걱정하고 두려워하며, 반성하고 수양하는 마음이 있게 됩니다.
+그러다 막힌 운수가 끝나면 반드시 운수가 트이게 되는 법이지요.
+그러니 육식을 하며 부귀하게 살 징조가 보여 '살쪘다'라고 한 것이고,
+앞으로 만 석의 봉급을 받고 다섯 대의 수레를 굴릴 만큼 존귀하게 될 테니 '당신의 족속이 귀할 것이다'라고 한 겁니다.
+요염한 자태와 아름다운 얼굴을 엿보다가는 위험을 건드리기 쉽고, 진귀하고 좋은 보배를 보면 욕심이 생깁니다.
+그러니 사람의 마음을 혹하게 하고 사람의 바른 마음을 구부러뜨리는 것은 눈이라 하겠습니다.
+눈에 보이는 대로 따르다가 생각도 못 한 치욕을 당하게 되니 이 어찌 눈먼 것이라 하지 않겠습니까?
+그렇지만 장님은 마음이 맑아 욕심도 위험도 없으니 몸을 온전히 지킬 수 있고 치욕을 당할 일도 없습니다.
+이런 점은 현명한 사람이나 깨달은 사람보다 낫다고 하겠기에 '눈이 밝다'라고 한 겁니다.
+대체로 민첩한 사람은 용맹을 좋아하는데, 용맹한 이는 다른 많은 사람을 깔보기가 쉽습니다.
+그러다 결국에는 자객이나 악당의 우두머리나 되었다가, 무관에게 잡히고 옥에 갇혀 감시를 받겠지요.
+발에는 차꼬를 차고 목에는 큰칼을 썼으니 아무리 달아나려 한들 그럴 수 있겠습니까?
+그래서 '절름발이라 걸을 수 없다'라고 한 겁니다.
+그리고 빼어난 미모라는 것은,
+음탕하고 사치스러운 자가 보면 귀한 구슬처럼 고와 보이겠지만 정직하고 순박한 사람이 보면 진흙처럼 흉해 보이는 법입니다.
+그래서 '아름답기도 하고 못나기도 하다'라고 한 것이지요.
+한편 어질다는 사람이 죽으면 사람들이 북적북적 모여 그를 그리며 눈물을 흘리고 마치 어머니를 잃은 어린 아기처럼 슬퍼할 것입니다.
+그래서 '만인의 마음을 아프게 한다'라고 한 겁니다.
+반면에 몹시 잔인한 사람이 죽으면, 길거리마다 노래를 주고받고 양고기 안주에 술을 차려 놓고 축하하게 될 것입니다.
+이 중에는 웃느라 입을 다물지 못하고, 손바닥이 찢어져라 손뼉을 칠 사람도 있겠지요.
+그래서 '만인을 기쁘게 한다'라고 한 겁니다."
+나는 깜짝 놀라 일어나서 이렇게 말했다.
+"과연 내 말이 맞았구나. 이 사람은 정말 관상을 유별나게 잘 보는구나!
+그의 말은 좌우명과 교훈으로 삼을 만하다.
+이 사람은 결코, 얼굴 모양이나 표정만을 살펴 귀티가 나면 
+'몸에 거북 무늬가 있어 높은 벼슬하겠고, 코가 무소뿔 모양이라 왕비가 될 상'이라 하고,
+관상이 나쁘면 '벌의 눈처럼 퉁방울눈에다, 목소리는 표범처럼 날카로워 흉악한 상'이라는 식으로 
+늘 하던 대로 똑같은 말만 주워섬기면서 스스로 신통하다고 떠벌리는 그런 관상쟁이가 아닌 것이다."
 그리고 집에 돌아와 그의 대답을 적어 둔다.`;
 
 /* ==========================================
@@ -3375,11 +3348,8 @@ async function uploadScoreToFirebase() {
    ========================================== */
 function updateLocalTypingBest(cpm, accuracy) {
 
-    const cpmKey =
-        `typing_best_cpm_${typingScope}`;
-
-    const accuracyKey =
-        `typing_best_accuracy_${typingScope}`;
+    const cpmKey = `typing_best_cpm_${typingScope}`;
+    const accuracyKey = `typing_best_accuracy_${typingScope}`;
 
     const oldBestCpm = Number(
         localStorage.getItem(cpmKey) || 0
@@ -3403,16 +3373,12 @@ function updateLocalTypingBest(cpm, accuracy) {
    ========================================== */
 function toggleTypingLeaderboard() {
 
-    const leaderboard =
-        document.getElementById('typing-leaderboard');
-
-    const toggleBtn =
-        leaderboard.querySelector('.leaderboard-toggle');
+    const leaderboard = document.getElementById('typing-leaderboard');
+    const toggleBtn = leaderboard.querySelector('.leaderboard-toggle');
 
     if (!leaderboard) return;
 
-    const isCollapsed =
-        leaderboard.classList.toggle('collapsed');
+    const isCollapsed = leaderboard.classList.toggle('collapsed');
 
     if (isCollapsed) {
         toggleBtn.innerText = '+';
@@ -3425,28 +3391,14 @@ function toggleTypingLeaderboard() {
 
 function updateTypingLeaderboard(records) {
 
-    const avgCpmEl =
-        document.getElementById('leaderboard-avg-cpm');
+    const avgCpmEl = document.getElementById('leaderboard-avg-cpm');
+    const avgAccuracyEl = document.getElementById('leaderboard-avg-accuracy');
+    const myCpmEl = document.getElementById('leaderboard-my-cpm');
+    const myAccuracyEl = document.getElementById('leaderboard-my-accuracy');
+    const cpmPercentEl = document.getElementById('leaderboard-cpm-percent');
+    const accuracyPercentEl = document.getElementById('leaderboard-accuracy-percent');
 
-    const avgAccuracyEl =
-        document.getElementById('leaderboard-avg-accuracy');
-
-    const myCpmEl =
-        document.getElementById('leaderboard-my-cpm');
-
-    const myAccuracyEl =
-        document.getElementById('leaderboard-my-accuracy');
-
-    const cpmPercentEl =
-        document.getElementById('leaderboard-cpm-percent');
-
-    const accuracyPercentEl =
-        document.getElementById('leaderboard-accuracy-percent');
-
-
-    // ==========================================
     // 沒有任何排行榜資料
-    // ==========================================
     if (!records || records.length === 0) {
 
         avgCpmEl.innerText = '—';
@@ -3461,11 +3413,7 @@ function updateTypingLeaderboard(records) {
         return;
     }
 
-
-    // ==========================================
-    // 將資料整理成「每個 UID 一人」
     // 每個 UID 只保留自己的最佳 CPM / 正確率
-    // ==========================================
 
     const userBestMap = new Map();
 
@@ -3476,69 +3424,37 @@ function updateTypingLeaderboard(records) {
         const cpm = Number(item.cpm);
         const accuracy = Number(item.accuracy);
 
-        if (
-            !Number.isFinite(cpm) ||
-            !Number.isFinite(accuracy)
+        if ( !Number.isFinite(cpm) || !Number.isFinite(accuracy)
         ) {
             return;
         }
 
         if (!userBestMap.has(item.uid)) {
-
-            userBestMap.set(item.uid, {
-                uid: item.uid,
-                bestCpm: cpm,
-                bestAccuracy: accuracy
-            });
-
+            userBestMap.set(item.uid, { uid: item.uid, bestCpm: cpm, bestAccuracy: accuracy });
         } else {
 
             const user = userBestMap.get(item.uid);
 
             // 取這個 UID 的最高速度
-            if (cpm > user.bestCpm) {
-                user.bestCpm = cpm;
-            }
+            if (cpm > user.bestCpm) { user.bestCpm = cpm; }
 
             // 取這個 UID 的最高正確率
-            if (accuracy > user.bestAccuracy) {
-                user.bestAccuracy = accuracy;
-            }
+            if (accuracy > user.bestAccuracy) { user.bestAccuracy = accuracy; }
         }
     });
-
 
     // 轉成陣列
     const users = Array.from(userBestMap.values());
 
-
-    // ==========================================
-    // 計算排行榜平均值
-    //
-    // 注意：
-    // 這裡也是「每個 UID 的最佳成績」
-    // 再計算所有使用者的平均
-    // ==========================================
+    // 計算排行榜平均值(以每個 UID 的最佳成績再計算所有使用者的平均)
 
     if (users.length > 0) {
 
-        const avgCpm =
-            users.reduce(
-                (sum, user) => sum + user.bestCpm,
-                0
-            ) / users.length;
+        const avgCpm = users.reduce((sum, user) => sum + user.bestCpm, 0) / users.length;
+        const avgAccuracy = users.reduce((sum, user) => sum + user.bestAccuracy, 0) / users.length;
 
-        const avgAccuracy =
-            users.reduce(
-                (sum, user) => sum + user.bestAccuracy,
-                0
-            ) / users.length;
-
-        avgCpmEl.innerText =
-            `${Math.round(avgCpm)} CPM`;
-
-        avgAccuracyEl.innerText =
-            `${Math.round(avgAccuracy)}%`;
+        avgCpmEl.innerText = `${Math.round(avgCpm)} CPM`;
+        avgAccuracyEl.innerText = `${Math.round(avgAccuracy)}%`;
 
     } else {
 
@@ -3546,14 +3462,9 @@ function updateTypingLeaderboard(records) {
         avgAccuracyEl.innerText = '—';
     }
 
-
-    // ==========================================
     // 找出目前使用者 UID
-    // ==========================================
 
-    const myUid =
-        window.currentFirebaseUser?.uid;
-
+    const myUid = window.currentFirebaseUser?.uid;
 
     if (!myUid) {
 
@@ -3566,18 +3477,11 @@ function updateTypingLeaderboard(records) {
         return;
     }
 
-
-    // ==========================================
     // 找出自己的最佳成績
-    // ==========================================
 
-    const myRecord =
-        userBestMap.get(myUid);
+    const myRecord = userBestMap.get(myUid);
 
-
-    // ==========================================
     // 自己目前沒有 Firebase 成績
-    // ==========================================
 
     if (!myRecord) {
 
@@ -3590,88 +3494,43 @@ function updateTypingLeaderboard(records) {
         return;
     }
 
-
-    const myBestCpm =
-        myRecord.bestCpm;
-
-    const myBestAccuracy =
-        myRecord.bestAccuracy;
-
+    const myBestCpm = myRecord.bestCpm;
+    const myBestAccuracy = myRecord.bestAccuracy;
 
     // 顯示自己的最佳成績
-    myCpmEl.innerText =
-        `${myBestCpm} CPM`;
+    myCpmEl.innerText = `${myBestCpm} CPM`;
+    myAccuracyEl.innerText = `${myBestAccuracy}%`;
 
-    myAccuracyEl.innerText =
-        `${myBestAccuracy}%`;
-
-
-    // ==========================================
     // 取得其他使用者
-    // 現在 users 已經是一個 UID 一筆
-    // ==========================================
-
-    const otherUsers =
-        users.filter(user => user.uid !== myUid);
-
+    const otherUsers = users.filter(user => user.uid !== myUid);
 
     // 沒有其他使用者
     if (otherUsers.length === 0) {
 
-        cpmPercentEl.innerText =
-            '暫無其他使用者';
-
-        accuracyPercentEl.innerText =
-            '暫無其他使用者';
-
+        cpmPercentEl.innerText = '暫無其他使用者';
+        accuracyPercentEl.innerText = '暫無其他使用者';
         return;
     }
 
-
-    // ==========================================
-    // 速度：
-    // 我的最佳 CPM 高於多少其他使用者
-    // ==========================================
-
+    // 速度：我的最佳 CPM 高於多少其他使用者
     const cpmLowerCount =
         otherUsers.filter(user => {
             return user.bestCpm < myBestCpm;
         }).length;
 
+    const cpmPercent = Math.round((cpmLowerCount / otherUsers.length) * 100);
 
-    const cpmPercent =
-        Math.round(
-            (cpmLowerCount / otherUsers.length) * 100
-        );
+    cpmPercentEl.innerText = cpmPercent === 100 ? '全部其他使用者' : `${cpmPercent}%`;
 
-
-    cpmPercentEl.innerText =
-       cpmPercent === 100
-           ? '全部其他使用者'
-           : `${cpmPercent}%`;
-
-
-    // ==========================================
-    // 正確率：
-    // 我的最佳正確率高於多少其他使用者
-    // ==========================================
-
+    // 正確率：我的最佳正確率高於多少其他使用者
     const accuracyLowerCount =
         otherUsers.filter(user => {
             return user.bestAccuracy < myBestAccuracy;
         }).length;
 
+    const accuracyPercent = Math.round((accuracyLowerCount / otherUsers.length) * 100);
 
-    const accuracyPercent =
-        Math.round(
-            (accuracyLowerCount / otherUsers.length) * 100
-        );
-
-
-    accuracyPercentEl.innerText =
-       accuracyPercent === 100
-           ? '全部其他使用者'
-           : `${accuracyPercent}%`;
+    accuracyPercentEl.innerText = accuracyPercent === 100 ? '全部其他使用者' : `${accuracyPercent}%`;
 }
 </script>
 
