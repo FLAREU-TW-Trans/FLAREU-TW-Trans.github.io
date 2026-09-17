@@ -2685,11 +2685,12 @@ function cleanKoreanText(text) {
     });
 }
 
-// 單字：使用有道
+// 單字：
 function playKoreanWord(text) {
     const cleanText = cleanKoreanText(text);
 
-    const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(cleanText)}&le=ko`;
+    // Google Translate 免費 TTS 接口 (client=tw)
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=ko&client=tw-ob`;
 
     if (currentTtsAudio) {
         currentTtsAudio.pause();
@@ -2697,11 +2698,20 @@ function playKoreanWord(text) {
     }
 
     currentTtsAudio = new Audio(url);
-    currentTtsAudio.playbackRate = 0.8;
+    currentTtsAudio.playbackRate = 1.0; 
 
     currentTtsAudio.play().catch(error => {
-        console.error("單字語音播放失敗：", error);
+        console.warn("Google 單字語音播放失敗，切換至備用方案：", error);
+        fallbackToYoudaoWord(cleanText);
     });
+}
+
+// 備用方案：有道
+function fallbackToYoudaoWord(cleanText) {
+    const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(cleanText)}&le=ko`;
+    currentTtsAudio = new Audio(url);
+    currentTtsAudio.playbackRate = 1.0;
+    currentTtsAudio.play();
 }
 
 // 整句：直接播放本地 MP3 音檔
