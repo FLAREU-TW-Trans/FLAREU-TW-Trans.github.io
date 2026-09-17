@@ -658,7 +658,6 @@ const vocabDb = {
   "달아나다": { kor: "달아나다", pinyin: "dal-a-na-da", chi: "逃跑、逃走", pos: "動詞" },
   "당대": { kor: "당대", pinyin: "dang-dae", chi: "當代", pos: "名詞" },
   "당시": { kor: "당시", pinyin: "dang-si", chi: "當時", pos: "名詞" },
-  "대구": { kor: "대구", pinyin: "dae-gu", chi: "大邱 (地名)", pos: "名詞" },
   "대단히": { kor: "대단히", pinyin: "dae-dan-hi", chi: "非常、極其", pos: "副詞" },
   "대답하다": { kor: "대답하다", pinyin: "dae-dap-ha-da", chi: "回答", pos: "動詞" },
   "대화": { kor: "대화", pinyin: "dae-hwa", chi: "對話", pos: "名詞" },
@@ -713,7 +712,6 @@ const vocabDb = {
   "방법": { kor: "방법", pinyin: "bang-beop", chi: "方法", pos: "名詞" },
   "배추": { kor: "배추", pinyin: "bae-chu", chi: "大白菜", pos: "名詞" },
   "배우다": { kor: "배우다", pinyin: "bae-u-da", chi: "學習", pos: "動詞" },
-  "백석": { kor: "백석", pinyin: "baek-seok", chi: "白石 (詩人名)", pos: "名詞" },
   "벌": { kor: "벌", pinyin: "beol", chi: "蜜蜂", pos: "名詞" },
   "벌써": { kor: "벌써", pinyin: "beol-sseo", chi: "已經", pos: "副詞" },
   "범": { kor: "범", pinyin: "beom", chi: "老虎", pos: "名詞" },
@@ -819,6 +817,7 @@ const vocabDb = {
   "영감": { kor: "영감", pinyin: "yeong-gam", chi: "靈感", pos: "名詞" },
   "영상": { kor: "영상", pinyin: "yeong-sang", chi: "影片、影像", pos: "名詞" },
   "영향": { kor: "영향", pinyin: "yeong-hyang", chi: "影響", pos: "名詞" },
+  "옆": { kor: "옆", pinyin: "yeop", chi: "旁邊", pos: "名詞" },
   "얘기": { kor: "얘기", pinyin: "yae-gi", chi: "故事、話語", pos: "名詞" },
   "예술": { kor: "예술", pinyin: "ye-sul", chi: "藝術", pos: "名詞" },
   "예전": { kor: "예전", pinyin: "ye-jeon", chi: "以前、過去", pos: "名詞" },
@@ -894,6 +893,7 @@ const vocabDb = {
   "즐겁다": { kor: "즐겁다", pinyin: "jeul-geop-da", chi: "愉快、快樂", pos: "形容詞" },
   "지금": { kor: "지금", pinyin: "ji-geum", chi: "現在", pos: "名詞/副詞" },
   "지키다": { kor: "지키다", pinyin: "ji-khi-da", chi: "守護、堅守", pos: "動詞" },
+  "집": { kor: "집", pinyin: "jip", chi: "家、房子", pos: "名詞" },
   "직업": { kor: "직업", pinyin: "jig-eop", chi: "職業", pos: "名詞" },
   "진흙": { kor: "진흙", pinyin: "jin-heulk", chi: "泥巴、泥濘", pos: "名詞" },
   "진심": { kor: "진심", pinyin: "jin-sim", chi: "真心", pos: "名詞" },
@@ -2524,60 +2524,20 @@ function parseSRT(srtString) {
 function renderVocabText(text) {
     if (currentState.mode !== 'full') return text;
 
-    // 先暫時保護手動標記產生的 HTML
-    const protectedHtml = [];
-
-    let processedText = text.replace(
+    // 只解析並標示手動括號 {...} 內的單字
+    return text.replace(
         /\{([^}|]+)(?:\|([^}]+))?\}/g,
         (match, key, rawWord) => {
             const displayWord = rawWord || key;
 
+            // 如果字典裡有這個單字，包覆 span 標籤
             if (vocabDb[key]) {
-                const index = protectedHtml.length;
-
-                protectedHtml.push(
-                    `<span class="vocab-word" data-word="${key}">${displayWord}</span>`
-                );
-
-                return `___VOCAB_PROTECTED_${index}___`;
+                return `<span class="vocab-word" data-word="${key}">${displayWord}</span>`;
             }
 
             return displayWord;
         }
     );
-
-    // 自動標示單字
-    Object.keys(vocabDb)
-        .sort((a, b) => b.length - a.length)
-        .forEach(word => {
-            const reg = new RegExp(
-                word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
-                'g'
-            );
-
-            processedText = processedText.replace(
-                reg,
-                (match) => {
-                    const index = protectedHtml.length;
-
-                    protectedHtml.push(
-                        `<span class="vocab-word" data-word="${word}">${match}</span>`
-                    );
-
-                    return `___VOCAB_PROTECTED_${index}___`;
-                }
-            );
-        });
-
-    // 還原被保護的 HTML
-    protectedHtml.forEach((html, index) => {
-        processedText = processedText.replace(
-            `___VOCAB_PROTECTED_${index}___`,
-            html
-        );
-    });
-
-    return processedText;
 }
 
 /* ==========================================
