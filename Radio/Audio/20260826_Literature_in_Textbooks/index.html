@@ -2749,60 +2749,25 @@ function playKoreanWord(text) {
     });
 }
 
-// 整句：使用 NAVER / Papago 韓語發音介面
-function playKoreanSentence(text) {
-    const cleanText = cleanKoreanText(text);
+// 整句：直接播放本地 MP3 音檔
+function playKoreanSentence(index, member = currentState.member) {
+    // 補齊三位數檔名 (例如 1 -> "001", 12 -> "012")
+    const numStr = String(index).padStart(3, '0');
+    
+    // 使用相對路徑，指向目前目錄下的 member 資料夾 (例如 ./liyu/001.mp3)
+    const audioPath = `./${member}/${numStr}.mp3`;
 
     if (currentTtsAudio) {
         currentTtsAudio.pause();
         currentTtsAudio.currentTime = 0;
     }
 
-    // 方案一：使用 SoundofText API (源自 Google TTS 代理，穩定且無 CORS 限制)
-    const primaryUrl = `https://api.soundoftext.com/sounds`;
+    currentTtsAudio = new Audio(audioPath);
+    currentTtsAudio.playbackRate = 1.0; // 本地真實錄音建議用原速 1.0 播放
 
-    fetch(primaryUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            engine: 'Google',
-            data: {
-                text: cleanText,
-                voice: 'ko-KR'
-            }
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data && data.success && data.id) {
-            const audioUrl = `https://files.soundoftext.com/${data.id}.mp3`;
-            currentTtsAudio = new Audio(audioUrl);
-            currentTtsAudio.playbackRate = 0.85;
-            currentTtsAudio.play().catch(e => fallbackToNativeTTS(cleanText));
-        } else {
-            fallbackToNativeTTS(cleanText);
-        }
-    })
-    .catch(error => {
-        console.warn("第三方線上語音請求失敗，自動切換至原生語音：", error);
-        fallbackToNativeTTS(cleanText);
+    currentTtsAudio.play().catch(error => {
+        console.error(`MP3 音檔播放失敗 (${audioPath})：`, error);
     });
-}
-
-// 備用機制：使用瀏覽器原生 SpeechSynthesis
-function fallbackToNativeTTS(cleanText) {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        utterance.lang = 'ko-KR';
-        utterance.rate = 0.85;
-        utterance.pitch = 1;
-        window.speechSynthesis.speak(utterance);
-    } else {
-        console.error("目前裝置環境完全不支援語音播放。");
-    }
 }
 
 function openVocabModal(word, event) {
