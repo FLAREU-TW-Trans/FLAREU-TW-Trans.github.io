@@ -2752,27 +2752,57 @@ function playKoreanWord(text) {
 // 整句：使用 NAVER / Papago 韓語發音介面
 function playKoreanSentence(text) {
     const cleanText = cleanKoreanText(text);
-    
-    // NAVER Papago 語音 API 介面
-    const url = `https://papago.naver.com/apis/tts/makeID?pitch=0&speaker=kyuri&speed=0&text=${encodeURIComponent(cleanText)}`;
 
     if (currentTtsAudio) {
         currentTtsAudio.pause();
         currentTtsAudio.currentTime = 0;
     }
 
-    currentTtsAudio = new Audio(url);
-    currentTtsAudio.playbackRate = 0.85; // 控制播放速度
+    // 方案一：使用 SoundofText API (源自 Google TTS 代理，穩定且無 CORS 限制)
+    const primaryUrl = `https://api.soundoftext.com/sounds`;
 
-    currentTtsAudio.play().catch(error => {
-        console.warn("NAVER 語音播放受阻，備用切換至有道引擎...", error);
-        
-        // 備用方案：若 NAVER 被請求限制，自動退回使用有道長句引擎
-        const fallbackUrl = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(cleanText)}&le=ko`;
-        currentTtsAudio = new Audio(fallbackUrl);
-        currentTtsAudio.playbackRate = 0.85;
-        currentTtsAudio.play().catch(e => console.error("備用整句語音播放失敗：", e));
+    fetch(primaryUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            engine: 'Google',
+            data: {
+                text: cleanText,
+                voice: 'ko-KR'
+            }
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data && data.success && data.id) {
+            const audioUrl = `https://files.soundoftext.com/${data.id}.mp3`;
+            currentTtsAudio = new Audio(audioUrl);
+            currentTtsAudio.playbackRate = 0.85;
+            currentTtsAudio.play().catch(e => fallbackToNativeTTS(cleanText));
+        } else {
+            fallbackToNativeTTS(cleanText);
+        }
+    })
+    .catch(error => {
+        console.warn("第三方線上語音請求失敗，自動切換至原生語音：", error);
+        fallbackToNativeTTS(cleanText);
     });
+}
+
+// 備用機制：使用瀏覽器原生 SpeechSynthesis
+function fallbackToNativeTTS(cleanText) {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.lang = 'ko-KR';
+        utterance.rate = 0.85;
+        utterance.pitch = 1;
+        window.speechSynthesis.speak(utterance);
+    } else {
+        console.error("目前裝置環境完全不支援語音播放。");
+    }
 }
 
 function openVocabModal(word, event) {
