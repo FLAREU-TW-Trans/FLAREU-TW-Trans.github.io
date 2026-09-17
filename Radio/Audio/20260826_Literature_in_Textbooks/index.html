@@ -2750,11 +2750,20 @@ function playKoreanWord(text) {
 }
 
 // 整句：直接播放本地 MP3 音檔
-function playKoreanSentence(index, member = currentState.member) {
-    // 補齊三位數檔名 (例如 1 -> "001", 12 -> "012")
-    const numStr = String(index).padStart(3, '0');
+function playKoreanSentence(index, member = currentState?.member || 'liyu') {
+    // 轉為整數數字 (例如 "1" 轉為 1)
+    const lineNum = parseInt(index, 10);
+
+    // 防呆：如果傳進來的不是有效數字（例如被誤傳了韓文文字），不發送錯誤請求
+    if (isNaN(lineNum)) {
+        console.error("播放失敗：請傳入有效的句子數字編號，目前傳入值為：", index);
+        return;
+    }
+
+    // 補齊三位數檔名 (1 -> "001", 12 -> "012")
+    const numStr = String(lineNum).padStart(3, '0');
     
-    // 使用相對路徑，指向目前目錄下的 member 資料夾 (例如 ./liyu/001.mp3)
+    // 組成相對路徑 (例如 ./liyu/001.mp3)
     const audioPath = `./${member}/${numStr}.mp3`;
 
     if (currentTtsAudio) {
@@ -2763,7 +2772,7 @@ function playKoreanSentence(index, member = currentState.member) {
     }
 
     currentTtsAudio = new Audio(audioPath);
-    currentTtsAudio.playbackRate = 1.0; // 本地真實錄音建議用原速 1.0 播放
+    currentTtsAudio.playbackRate = 1.0;
 
     currentTtsAudio.play().catch(error => {
         console.error(`MP3 音檔播放失敗 (${audioPath})：`, error);
