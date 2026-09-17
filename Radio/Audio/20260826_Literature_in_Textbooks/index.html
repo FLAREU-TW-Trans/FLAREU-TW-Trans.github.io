@@ -2632,7 +2632,7 @@ function loadAndRenderContent() {
             if (ttsBtn) {
                 ttsBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    playKoreanSentence(item.kor);
+                    playKoreanSentence(idx + 1);
                 });
             }
         }
