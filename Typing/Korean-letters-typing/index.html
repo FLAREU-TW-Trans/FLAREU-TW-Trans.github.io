@@ -12,47 +12,205 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>韓文字母練習</title>
 <style>
-    * { box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background-color: #f4f7f6; color: #333; padding: 15px; }
-    .container { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 650px; text-align: center; }
-    h1 { margin-top: 0; font-size: 24px; color: #2c3e50; }
-    .layout-selector { margin-bottom: 20px; }
-    .layout-selector select { font-size: 16px; padding: 8px 16px; border-radius: 8px; border: 1px solid #ccc; outline: none; }
-    .display-card { background: #eef2f7; border-radius: 12px; padding: 20px; margin-bottom: 20px; min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .target-char { font-size: 32px; font-weight: bold; color: #2c3e50; min-height: 50px; display: flex; align-items: center; justify-content: center; }
-    .finished { font-size: 28px; color: #27ae60; }
-    .score { font-size: 16px; color: #7f8c8d; margin-top: 5px; }
-    
-    /* 鍵盤基本通用樣式 */
-    .keyboard-wrapper { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; }
-    .key-row { display: flex; justify-content: center; gap: 6px; }
-    .key { padding: 12px 6px; border: 1px solid #dcdde1; border-radius: 8px; background: #fff; font-size: 16px; cursor: pointer; user-select: none; transition: all 0.15s; flex: 1; max-width: 50px; text-align: center; }
-    .key.key-shift { max-width: 75px; background: #e0e0e0; font-size: 14px; }
-    .key.active { background: #3498db; color: white; border-color: #2980b9; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(52,152,219,0.3); }
-    .key.shift-pressed { background: #e67e22 !important; color: white !important; border-color: #d35400 !important; }
-    
-    .key.correct { background: #2ecc71 !important; color: white !important; }
-    .key.wrong { background: #e74c3c !important; color: white !important; }
+        * { 
+            box-sizing: border-box; 
+        }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            background-color: #f4f7f6; 
+            color: #333; 
+            padding: 15px; 
+        }
+        .container { 
+            background: white; 
+            padding: 25px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            width: 100%; 
+            max-width: 650px; 
+            text-align: center; 
+        }
+        h1 { 
+            margin-top: 0; 
+            font-size: 24px; 
+            color: #2c3e50; 
+        }
+        .layout-selector { 
+            margin-bottom: 20px; 
+        }
+        .layout-selector select { 
+            font-size: 16px; 
+            padding: 8px 16px; 
+            border-radius: 8px; 
+            border: 1px solid #ccc; 
+            outline: none; 
+            background-color: #fff;
+            cursor: pointer;
+        }
+        .display-card { 
+            background: #eef2f7; 
+            border-radius: 12px; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+            min-height: 120px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .target-char { 
+            font-size: 36px; 
+            font-weight: bold; 
+            color: #2c3e50; 
+            min-height: 50px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .finished { 
+            font-size: 28px; 
+            color: #27ae60; 
+        }
+        .score { 
+            font-size: 16px; 
+            color: #7f8c8d; 
+            margin-top: 5px; 
+        }
+        
+        /* 開始與重新開始按鈕 */
+        .btn-start { 
+            background-color: #2ecc71; 
+            color: white; 
+            border: none; 
+            padding: 12px 30px; 
+            font-size: 18px; 
+            font-weight: bold; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            transition: background-color 0.2s, transform 0.1s; 
+            margin-top: 10px; 
+            margin-bottom: 20px;
+        }
+        .btn-start:hover { 
+            background-color: #27ae60; 
+        }
+        .btn-start:active {
+            transform: scale(0.98);
+        }
 
-    /* 手機九宮格樣式 */
-    .keyboard-10key { max-width: 320px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
-    .row10key { display: flex; gap: 10px; justify-content: center; }
-    .key10key { flex: 1; height: 60px; font-size: 20px; font-weight: bold; border: 1px solid #dcdde1; border-radius: 12px; background: #fff; cursor: pointer; user-select: none; transition: all 0.15s; }
-    .key10key.active { background: #3498db; color: white; }
-    .key10key.correct { background: #2ecc71 !important; color: white !important; }
-    .key10key.wrong { background: #e74c3c !important; color: white !important; }
+        /* 鍵盤區域容器與間距設定 */
+        .keyboard-container {
+            margin-top: 15px;
+            width: 100%;
+        }
 
-    /* 控制 Shift 顯示：非電腦模式時隱藏 Shift 按鈕 */
-    body:not(.mode-desktop) .key-shift { display: none !important; }
+        /* 2-Set 全鍵盤樣式 */
+        .keyboard-wrapper { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px; 
+        }
+        .key-row { 
+            display: flex; 
+            justify-content: center; 
+            gap: 6px; 
+        }
+        .key { 
+            padding: 12px 6px; 
+            border: 1px solid #dcdde1; 
+            border-radius: 8px; 
+            background: #fff; 
+            font-size: 16px; 
+            cursor: pointer; 
+            user-select: none; 
+            transition: all 0.15s; 
+            flex: 1; 
+            max-width: 50px; 
+            text-align: center; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .key.key-shift { 
+            max-width: 75px; 
+            background: #e0e0e0; 
+            font-size: 14px; 
+        }
+        .key.active { 
+            background: #3498db; 
+            color: white; 
+            border-color: #2980b9; 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 8px rgba(52,152,219,0.3); 
+        }
+        .key.shift-pressed { 
+            background: #e67e22 !important; 
+            color: white !important; 
+            border-color: #d35400 !important; 
+        }
+        .key.correct { 
+            background: #2ecc71 !important; 
+            color: white !important; 
+        }
+        .key.wrong { 
+            background: #e74c3c !important; 
+            color: white !important; 
+        }
 
-    .btn-start { background-color: #2ecc71; color: white; border: none; padding: 12px 30px; font-size: 18px; font-weight: bold; border-radius: 25px; cursor: pointer; transition: background-color 0.2s; margin-top: 10px; }
-    .btn-start:hover { background-color: #27ae60; }
-</style>
+        /* 手機九宮格 (天地人) 鍵盤樣式 */
+        .keyboard-10key { 
+            max-width: 320px; 
+            margin: 0 auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            padding-top: 10px; /* 與上方按鈕拉開安全邊距 */
+        }
+        .row10key { 
+            display: flex; 
+            gap: 10px; 
+            justify-content: center; 
+        }
+        .key10key { 
+            flex: 1; 
+            height: 60px; 
+            font-size: 20px; 
+            font-weight: bold; 
+            border: 1px solid #dcdde1; 
+            border-radius: 12px; 
+            background: #fff; 
+            cursor: pointer; 
+            user-select: none; 
+            transition: all 0.15s; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .key10key.active { 
+            background: #3498db; 
+            color: white; 
+        }
+        .key10key.correct { 
+            background: #2ecc71 !important; 
+            color: white !important; 
+        }
+        .key10key.wrong { 
+            background: #e74c3c !important; 
+            color: white !important; 
+        }
+
+        /* 控制 Shift 按鈕顯示：非電腦模式時隱藏 Shift 按鈕 */
+        body:not(.mode-desktop) .key-shift { 
+            display: none !important; 
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>韓文字母練習（單字篇）</h1>
+    <h1>韓文字母練習</h1>
     
     <div class="layout-selector">
         <label for="keyboardMode">選擇鍵盤模式：</label>
@@ -70,65 +228,67 @@
 
     <button id="startBtn" class="btn-start" onclick="startGame()">開始練習</button>
 
-    <!-- 電腦 / 手機 2-Set 鍵盤 -->
-    <div id="keyboardDesktop" class="keyboard-wrapper">
-        <div class="key-row">
-            <div class="key" data-code="KeyQ" data-char="ㅂ">ㅂ</div>
-            <div class="key" data-code="KeyW" data-char="ㅈ">ㅈ</div>
-            <div class="key" data-code="KeyE" data-char="ㄷ">ㄷ</div>
-            <div class="key" data-code="KeyR" data-char="ㄱ">ㄱ</div>
-            <div class="key" data-code="KeyT" data-char="ㅅ">ㅅ</div>
-            <div class="key" data-code="KeyY" data-char="ㅛ">ㅛ</div>
-            <div class="key" data-code="KeyU" data-char="ㅕ">ㅕ</div>
-            <div class="key" data-code="KeyI" data-char="ㅑ">ㅑ</div>
-            <div class="key" data-code="KeyO" data-char="ㅐ">ㅐ</div>
-            <div class="key" data-code="KeyP" data-char="ㅔ">ㅔ</div>
+    <div class="keyboard-container">
+        <!-- 電腦 / 手機 2-Set 鍵盤 -->
+        <div id="keyboardDesktop" class="keyboard-wrapper">
+            <div class="key-row">
+                <div class="key" data-code="KeyQ" data-char="ㅂ">ㅂ</div>
+                <div class="key" data-code="KeyW" data-char="ㅈ">ㅈ</div>
+                <div class="key" data-code="KeyE" data-char="ㄷ">ㄷ</div>
+                <div class="key" data-code="KeyR" data-char="ㄱ">ㄱ</div>
+                <div class="key" data-code="KeyT" data-char="ㅅ">ㅅ</div>
+                <div class="key" data-code="KeyY" data-char="ㅛ">ㅛ</div>
+                <div class="key" data-code="KeyU" data-char="ㅕ">ㅕ</div>
+                <div class="key" data-code="KeyI" data-char="ㅑ">ㅑ</div>
+                <div class="key" data-code="KeyO" data-char="ㅐ">ㅐ</div>
+                <div class="key" data-code="KeyP" data-char="ㅔ">ㅔ</div>
+            </div>
+            <div class="key-row">
+                <div class="key" data-code="KeyA" data-char="ㅁ">ㅁ</div>
+                <div class="key" data-code="KeyS" data-char="ㄴ">ㄴ</div>
+                <div class="key" data-code="KeyD" data-char="ㅇ">ㅇ</div>
+                <div class="key" data-code="KeyF" data-char="ㄹ">ㄹ</div>
+                <div class="key" data-code="KeyG" data-char="ㅎ">ㅎ</div>
+                <div class="key" data-code="KeyH" data-char="ㅗ">ㅗ</div>
+                <div class="key" data-code="KeyJ" data-char="ㅓ">ㅓ</div>
+                <div class="key" data-code="KeyK" data-char="ㅏ">ㅏ</div>
+                <div class="key" data-code="KeyL" data-char="ㅣ">ㅣ</div>
+            </div>
+            <div class="key-row">
+                <div class="key key-shift" data-code="ShiftLeft">Shift</div>
+                <div class="key" data-code="KeyZ" data-char="ㅋ">ㅋ</div>
+                <div class="key" data-code="KeyX" data-char="ㅌ">ㅌ</div>
+                <div class="key" data-code="KeyC" data-char="ㅊ">ㅊ</div>
+                <div class="key" data-code="KeyV" data-char="ㅍ">ㅍ</div>
+                <div class="key" data-code="KeyB" data-char="ㅠ">ㅠ</div>
+                <div class="key" data-code="KeyN" data-char="ㅜ">ㅜ</div>
+                <div class="key" data-code="KeyM" data-char="ㅡ">ㅡ</div>
+                <div class="key key-shift" data-code="ShiftRight">Shift</div>
+            </div>
         </div>
-        <div class="key-row">
-            <div class="key" data-code="KeyA" data-char="ㅁ">ㅁ</div>
-            <div class="key" data-code="KeyS" data-char="ㄴ">ㄴ</div>
-            <div class="key" data-code="KeyD" data-char="ㅇ">ㅇ</div>
-            <div class="key" data-code="KeyF" data-char="ㄹ">ㄹ</div>
-            <div class="key" data-code="KeyG" data-char="ㅎ">ㅎ</div>
-            <div class="key" data-code="KeyH" data-char="ㅗ">ㅗ</div>
-            <div class="key" data-code="KeyJ" data-char="ㅓ">ㅓ</div>
-            <div class="key" data-code="KeyK" data-char="ㅏ">ㅏ</div>
-            <div class="key" data-code="KeyL" data-char="ㅣ">ㅣ</div>
-        </div>
-        <div class="key-row">
-            <div class="key key-shift" data-code="ShiftLeft">Shift</div>
-            <div class="key" data-code="KeyZ" data-char="ㅋ">ㅋ</div>
-            <div class="key" data-code="KeyX" data-char="ㅌ">ㅌ</div>
-            <div class="key" data-code="KeyC" data-char="ㅊ">ㅊ</div>
-            <div class="key" data-code="KeyV" data-char="ㅍ">ㅍ</div>
-            <div class="key" data-code="KeyB" data-char="ㅠ">ㅠ</div>
-            <div class="key" data-code="KeyN" data-char="ㅜ">ㅜ</div>
-            <div class="key" data-code="KeyM" data-char="ㅡ">ㅡ</div>
-            <div class="key key-shift" data-code="ShiftRight">Shift</div>
-        </div>
-    </div>
 
-    <!-- 手機 10Key (天地人) 鍵盤 -->
-    <div id="keyboard10Key" class="keyboard-10key" style="display: none;">
-        <div class="row10key">
-            <button class="key10key" data-10key="ㅣ">ㅣ</button>
-            <button class="key10key" data-10key="•">· (天)</button>
-            <button class="key10key" data-10key="ㅡ">ㅡ</button>
-        </div>
-        <div class="row10key">
-            <button class="key10key" data-10key="ㄱ">ㄱㅋ</button>
-            <button class="key10key" data-10key="ㄴ">ㄴㄹ</button>
-            <button class="key10key" data-10key="ㄷ">ㄷㅌ</button>
-        </div>
-        <div class="row10key">
-            <button class="key10key" data-10key="ㅂ">ㅂㅍ</button>
-            <button class="key10key" data-10key="ㅅ">ㅅㅎ</button>
-            <button class="key10key" data-10key="ㅈ">ㅈㅊ</button>
-        </div>
-        <div class="row10key">
-            <button class="key10key" data-10key="ㅇ">ㅇㅁ</button>
-            <button class="key10key" style="visibility: hidden;"></button>
-            <button class="key10key" style="visibility: hidden;"></button>
+        <!-- 手機 10Key (天地人) 鍵盤 -->
+        <div id="keyboard10Key" class="keyboard-10key" style="display: none;">
+            <div class="row10key">
+                <button class="key10key" data-10key="ㅣ">ㅣ</button>
+                <button class="key10key" data-10key="•">· (天)</button>
+                <button class="key10key" data-10key="ㅡ">ㅡ</button>
+            </div>
+            <div class="row10key">
+                <button class="key10key" data-10key="ㄱ">ㄱㅋ</button>
+                <button class="key10key" data-10key="ㄴ">ㄴㄹ</button>
+                <button class="key10key" data-10key="ㄷ">ㄷㅌ</button>
+            </div>
+            <div class="row10key">
+                <button class="key10key" data-10key="ㅂ">ㅂㅍ</button>
+                <button class="key10key" data-10key="ㅅ">ㅅㅎ</button>
+                <button class="key10key" data-10key="ㅈ">ㅈㅊ</button>
+            </div>
+            <div class="row10key">
+                <button class="key10key" data-10key="ㅇ">ㅇㅁ</button>
+                <button class="key10key" style="visibility: hidden;"></button>
+                <button class="key10key" style="visibility: hidden;"></button>
+            </div>
         </div>
     </div>
 </div>
@@ -187,7 +347,7 @@ const charList = [
 
 let quizPool = [];
 let currentQuestionIndex = 0;
-const totalQuestions = 40;
+const totalQuestions = 10; // 固定每次練習為 10 題
 let currentTarget = null;
 let currentStepIndex = 0;
 let isPlaying = false;
@@ -205,8 +365,19 @@ document.getElementById('keyboardMode').addEventListener('change', (e) => {
     if(isPlaying) highlightNextKey();
 });
 
+// 使用 Fisher-Yates 算法洗牌並抽取不重複的 N 題
+function getRandomQuestions(sourceArray, count) {
+    const shuffled = [...sourceArray];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, count);
+}
+
 function startGame() {
-    quizPool = [...charList].sort(() => Math.random() - 0.5); // 洗牌發題
+    // 從 40 題中隨機抽取 10 個完全不重複的題目
+    quizPool = getRandomQuestions(charList, totalQuestions);
     currentQuestionIndex = 0;
     isPlaying = true;
     document.getElementById('startBtn').style.display = 'none';
