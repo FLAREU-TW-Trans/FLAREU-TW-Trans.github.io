@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
+<link rel="stylesheet" href="../../../css/reaction.css">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>韓文打字教學 - 單字字母篇</title>
+    <style>
+        :root {
+            --primary-dark: rgb(33, 33, 71);
+            --bg-color: rgb(226, 232, 240);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 850px;
+            width: 90%;
+        }
+
+        .status-box {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #475569;
+        }
+
+        .target-char {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin: 15px 0;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .target-char.finished {
+            font-size: 1.8rem;
+        }
+
+        .keyboard {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 20px;
+            user-select: none;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .key {
+            width: 48px;
+            height: 52px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 2px 0 #cbd5e1;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+
+        .key .kor { font-size: 1.1rem; color: var(--primary-dark); }
+        .key .shift-kor { font-size: 0.75rem; color: #64748b; position: absolute; top: 2px; right: 4px; }
+        .key .eng { font-size: 0.65rem; color: #94a3b8; position: absolute; bottom: 2px; left: 4px; }
+
+        .key.shift-key {
+            width: 80px;
+            background-color: #e2e8f0;
+        }
+
+        .key.active {
+            background-color: #fef08a !important;
+            border-color: #eab308;
+            box-shadow: 0 0 10px rgba(234, 179, 8, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .key.correct {
+            background-color: #86efac !important;
+            border-color: #22c55e;
+            transform: translateY(1px);
+        }
+
+        .key.wrong {
+            background-color: #fca5a5 !important;
+            border-color: #ef4444;
+        }
+
+        button.start-btn {
+            padding: 10px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: white;
+            background-color: var(--primary-dark);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button.start-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>韓文打字練習 - 單個字母篇</h2>
+    
+    <div class="status-box">
+        <span id="score">第 0 / 10 題</span>
+    </div>
+
+    <div class="target-char" id="targetChar">按下開始</div>
+
+    <button class="start-btn" id="startBtn" onclick="startGame()">開始練習</button>
+
+    <div class="keyboard" id="keyboard">
+        <div class="row">
+            <div class="key" data-code="KeyQ"><span class="shift-kor">ㅃ</span><span class="kor">ㅂ</span><span class="eng">Q</span></div>
+            <div class="key" data-code="KeyW"><span class="shift-kor">ㅉ</span><span class="kor">ㅈ</span><span class="eng">W</span></div>
+            <div class="key" data-code="KeyE"><span class="shift-kor">ㄸ</span><span class="kor">ㄷ</span><span class="eng">E</span></div>
+            <div class="key" data-code="KeyR"><span class="shift-kor">ㄲ</span><span class="kor">ㄱ</span><span class="eng">R</span></div>
+            <div class="key" data-code="KeyT"><span class="shift-kor">ㅆ</span><span class="kor">ㅅ</span><span class="eng">T</span></div>
+            <div class="key" data-code="KeyY"><span class="kor">ㅛ</span><span class="eng">Y</span></div>
+            <div class="key" data-code="KeyU"><span class="kor">ㅕ</span><span class="eng">U</span></div>
+            <div class="key" data-code="KeyI"><span class="kor">ㅑ</span><span class="eng">I</span></div>
+            <div class="key" data-code="KeyO"><span class="shift-kor">ㅒ</span><span class="kor">ㅐ</span><span class="eng">O</span></div>
+            <div class="key" data-code="KeyP"><span class="shift-kor">ㅖ</span><span class="kor">ㅔ</span><span class="eng">P</span></div>
+        </div>
+        <div class="row">
+            <div class="key" data-code="KeyA"><span class="kor">ㅁ</span><span class="eng">A</span></div>
+            <div class="key" data-code="KeyS"><span class="kor">ㄴ</span><span class="eng">S</span></div>
+            <div class="key" data-code="KeyD"><span class="kor">ㅇ</span><span class="eng">D</span></div>
+            <div class="key" data-code="KeyF"><span class="kor">ㄹ</span><span class="eng">F</span></div>
+            <div class="key" data-code="KeyG"><span class="kor">ㅎ</span><span class="eng">G</span></div>
+            <div class="key" data-code="KeyH"><span class="kor">ㅗ</span><span class="eng">H</span></div>
+            <div class="key" data-code="KeyJ"><span class="kor">ㅓ</span><span class="eng">J</span></div>
+            <div class="key" data-code="KeyK"><span class="kor">ㅏ</span><span class="eng">K</span></div>
+            <div class="key" data-code="KeyL"><span class="kor">ㅣ</span><span class="eng">L</span></div>
+        </div>
+        <div class="row">
+            <div class="key shift-key" data-code="ShiftLeft"><span>Shift</span></div>
+            <div class="key" data-code="KeyZ"><span class="kor">ㅋ</span><span class="eng">Z</span></div>
+            <div class="key" data-code="KeyX"><span class="kor">ㅌ</span><span class="eng">X</span></div>
+            <div class="key" data-code="KeyC"><span class="kor">ㅊ</span><span class="eng">C</span></div>
+            <div class="key" data-code="KeyV"><span class="kor">ㅍ</span><span class="eng">V</span></div>
+            <div class="key" data-code="KeyB"><span class="kor">ㅠ</span><span class="eng">B</span></div>
+            <div class="key" data-code="KeyN"><span class="kor">ㅜ</span><span class="eng">N</span></div>
+            <div class="key" data-code="KeyM"><span class="kor">ㅡ</span><span class="eng">M</span></div>
+            <div class="key shift-key" data-code="ShiftRight"><span>Shift</span></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 包含 40 個字母與複合母音的完整鍵盤映射 table
+    const charList = [
+        // 基礎母音
+        { kor: 'ㅏ', code: 'KeyK', shift: false }, { kor: 'ㅓ', code: 'KeyJ', shift: false },
+        { kor: 'ㅗ', code: 'KeyH', shift: false }, { kor: 'ㅜ', code: 'KeyN', shift: false },
+        { kor: 'ㅡ', code: 'KeyM', shift: false }, { kor: 'ㅣ', code: 'KeyL', shift: false },
+        { kor: 'ㅐ', code: 'KeyO', shift: false }, { kor: 'ㅔ', code: 'KeyP', shift: false },
+        { kor: 'ㅑ', code: 'KeyI', shift: false }, { kor: 'ㅕ', code: 'KeyU', shift: false },
+        { kor: 'ㅛ', code: 'KeyY', shift: false }, { kor: 'ㅠ', code: 'KeyB', shift: false },
+        { kor: 'ㅒ', code: 'KeyO', shift: true },  { kor: 'ㅖ', code: 'KeyP', shift: true },
+        
+        // 基礎子音
+        { kor: 'ㄱ', code: 'KeyR', shift: false }, { kor: 'ㄷ', code: 'KeyE', shift: false },
+        { kor: 'ㅂ', code: 'KeyQ', shift: false }, { kor: 'ㅈ', code: 'KeyW', shift: false },
+        { kor: 'ㅇ', code: 'KeyD', shift: false }, { kor: 'ㅋ', code: 'KeyZ', shift: false },
+        { kor: 'ㅌ', code: 'KeyX', shift: false }, { kor: 'ㅍ', code: 'KeyV', shift: false },
+        { kor: 'ㅊ', code: 'KeyC', shift: false }, { kor: 'ㅎ', code: 'KeyG', shift: false },
+        { kor: 'ㄴ', code: 'KeyS', shift: false }, { kor: 'ㄹ', code: 'KeyF', shift: false },
+        { kor: 'ㅁ', code: 'KeyA', shift: false }, { kor: 'ㅅ', code: 'KeyT', shift: false },
+
+        // 雙子音 (濃音)
+        { kor: 'ㄲ', code: 'KeyR', shift: true },  { kor: 'ㅆ', code: 'KeyT', shift: true },
+        { kor: 'ㄸ', code: 'KeyE', shift: true },  { kor: 'ㅃ', code: 'KeyQ', shift: true },
+        { kor: 'ㅉ', code: 'KeyW', shift: true },
+
+        // 複合母音 (雙組合鍵提示：引導輸入首個字母鍵)
+        { kor: 'ㅚ', code: 'KeyH', shift: false }, { kor: 'ㅟ', code: 'KeyN', shift: false },
+        { kor: 'ㅘ', code: 'KeyH', shift: false }, { kor: 'ㅙ', code: 'KeyH', shift: false },
+        { kor: 'ㅝ', code: 'KeyN', shift: false }, { kor: 'ㅞ', code: 'KeyN', shift: false },
+        { kor: 'ㅢ', code: 'KeyM', shift: false }
+    ];
+
+    let currentQuestionIndex = 0;
+    const totalQuestions = 10;
+    let currentTarget = null;
+    let isPlaying = false;
+
+    function startGame() {
+        currentQuestionIndex = 0;
+        isPlaying = true;
+        document.getElementById('startBtn').style.display = 'none';
+        nextQuestion();
+    }
+
+    function nextQuestion() {
+        clearHighlights();
+        const targetCharEl = document.getElementById('targetChar');
+
+        if (currentQuestionIndex >= totalQuestions) {
+            isPlaying = false;
+            targetCharEl.textContent = "🎉 完成練習！";
+            targetCharEl.classList.add('finished');
+            document.getElementById('score').textContent = `共完成 ${totalQuestions} 題`;
+            document.getElementById('startBtn').textContent = "再練一次";
+            document.getElementById('startBtn').style.display = 'inline-block';
+            return;
+        }
+
+        currentQuestionIndex++;
+        document.getElementById('score').textContent = `第 ${currentQuestionIndex} / ${totalQuestions} 題`;
+
+        const randomIndex = Math.floor(Math.random() * charList.length);
+        currentTarget = charList[randomIndex];
+
+        targetCharEl.classList.remove('finished');
+        targetCharEl.textContent = currentTarget.kor;
+
+        const targetKeyEl = document.querySelector(`.key[data-code="${currentTarget.code}"]`);
+        if (targetKeyEl) targetKeyEl.classList.add('active');
+
+        if (currentTarget.shift) {
+            document.querySelectorAll('.shift-key').forEach(key => key.classList.add('active'));
+        }
+    }
+
+    function clearHighlights() {
+        document.querySelectorAll('.key').forEach(key => {
+            key.classList.remove('active', 'correct', 'wrong');
+        });
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if (!isPlaying || !currentTarget) return;
+        if (e.key === 'Shift') return;
+
+        const pressedCode = e.code;
+        const isShiftPressed = e.shiftKey;
+        const pressedKeyEl = document.querySelector(`.key[data-code="${pressedCode}"]`);
+
+        if (!pressedKeyEl) return;
+
+        if (pressedCode === currentTarget.code && isShiftPressed === currentTarget.shift) {
+            clearHighlights();
+            pressedKeyEl.classList.add('correct');
+            setTimeout(() => { nextQuestion(); }, 300);
+        } else {
+            pressedKeyEl.classList.add('wrong');
+            setTimeout(() => { pressedKeyEl.classList.remove('wrong'); }, 300);
+        }
+    });
+</script>
+
+</body>
+</html>
