@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>韓文鍵盤打字練習</title>
+    <style>
+        :root {
+            --primary-dark: rgb(33, 33, 71);
+            --bg-color: rgb(226, 232, 240);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .status-box {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .target-char {
+            font-size: 5rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin: 20px 0;
+            min-height: 100px;
+        }
+
+        /* 鍵盤容器與樣式 */
+        .keyboard {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 20px;
+            user-select: none;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .key {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 2px 0 #cbd5e1;
+            transition: all 0.15s ease;
+        }
+
+        .key .kor { font-size: 1.2rem; color: var(--primary-dark); }
+        .key .eng { font-size: 0.7rem; color: #94a3b8; }
+
+        /* 提示按鍵發光 (待敲擊) */
+        .key.active {
+            background-color: #fef08a !important; /* 柔和黃色 */
+            border-color: #eab308;
+            box-shadow: 0 0 12px rgba(234, 179, 8, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* 按對時閃爍綠色 */
+        .key.correct {
+            background-color: #86efac !important; /* 綠色 */
+            border-color: #22c55e;
+            transform: translateY(1px);
+        }
+
+        /* 按錯時閃爍紅色 */
+        .key.wrong {
+            background-color: #fca5a5 !important; /* 紅色 */
+            border-color: #ef4444;
+        }
+
+        button.start-btn {
+            padding: 10px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: white;
+            background-color: var(--primary-dark);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button.start-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>韓文鍵盤基礎打字練習</h2>
+    
+    <div class="status-box">
+        <span id="score">第 0 / 10 題</span>
+    </div>
+
+    <div class="target-char" id="targetChar">按下開始</div>
+
+    <button class="start-btn" id="startBtn" onclick="startGame()">開始練習</button>
+
+    <!-- 虛擬鍵盤區域 -->
+    <div class="keyboard" id="keyboard">
+        <!-- 鍵盤第一排 -->
+        <div class="row">
+            <div class="key" data-code="KeyQ" data-kor="ㅂ"><span class="kor">ㅂ</span><span class="eng">Q</span></div>
+            <div class="key" data-code="KeyW" data-kor="ㅈ"><span class="kor">ㅈ</span><span class="eng">W</span></div>
+            <div class="key" data-code="KeyE" data-kor="ㄷ"><span class="kor">ㄷ</span><span class="eng">E</span></div>
+            <div class="key" data-code="KeyR" data-kor="ㄱ"><span class="kor">ㄱ</span><span class="eng">R</span></div>
+            <div class="key" data-code="KeyT" data-kor="ㅅ"><span class="kor">ㅅ</span><span class="eng">T</span></div>
+            <div class="key" data-code="KeyY" data-kor="ㅛ"><span class="kor">ㅛ</span><span class="eng">Y</span></div>
+            <div class="key" data-code="KeyU" data-kor="ㅕ"><span class="kor">ㅕ</span><span class="eng">U</span></div>
+            <div class="key" data-code="KeyI" data-kor="ㅑ"><span class="kor">ㅑ</span><span class="eng">I</span></div>
+            <div class="key" data-code="KeyO" data-kor="ㅐ"><span class="kor">ㅐ</span><span class="eng">O</span></div>
+            <div class="key" data-code="KeyP" data-kor="ㅔ"><span class="kor">ㅔ</span><span class="eng">P</span></div>
+        </div>
+        <!-- 鍵盤第二排 -->
+        <div class="row">
+            <div class="key" data-code="KeyA" data-kor="ㅁ"><span class="kor">ㅁ</span><span class="eng">A</span></div>
+            <div class="key" data-code="KeyS" data-kor="ㄴ"><span class="kor">ㄴ</span><span class="eng">S</span></div>
+            <div class="key" data-code="KeyD" data-kor="ㅇ"><span class="kor">ㅇ</span><span class="eng">D</span></div>
+            <div class="key" data-code="KeyF" data-kor="ㄹ"><span class="kor">ㄹ</span><span class="eng">F</span></div>
+            <div class="key" data-code="KeyG" data-kor="ㅎ"><span class="kor">ㅎ</span><span class="eng">G</span></div>
+            <div class="key" data-code="KeyH" data-kor="ㅗ"><span class="kor">ㅗ</span><span class="eng">H</span></div>
+            <div class="key" data-code="KeyJ" data-kor="ㅓ"><span class="kor">ㅓ</span><span class="eng">J</span></div>
+            <div class="key" data-code="KeyK" data-kor="ㅏ"><span class="kor">ㅏ</span><span class="eng">K</span></div>
+            <div class="key" data-code="KeyL" data-kor="ㅣ"><span class="kor">ㅣ</span><span class="eng">L</span></div>
+        </div>
+        <!-- 鍵盤第三排 -->
+        <div class="row">
+            <div class="key" data-code="KeyZ" data-kor="ㅋ"><span class="kor">ㅋ</span><span class="eng">Z</span></div>
+            <div class="key" data-code="KeyX" data-kor="ㅌ"><span class="kor">ㅌ</span><span class="eng">X</span></div>
+            <div class="key" data-code="KeyC" data-kor="ㅊ"><span class="kor">ㅊ</span><span class="eng">C</span></div>
+            <div class="key" data-code="KeyV" data-kor="ㅍ"><span class="kor">ㅍ</span><span class="eng">V</span></div>
+            <div class="key" data-code="KeyB" data-kor="ㅠ"><span class="kor">ㅠ</span><span class="eng">B</span></div>
+            <div class="key" data-code="KeyN" data-kor="ㅜ"><span class="kor">ㅜ</span><span class="eng">N</span></div>
+            <div class="key" data-code="KeyM" data-kor="ㅡ"><span class="kor">ㅡ</span><span class="eng">M</span></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 題庫：基礎韓文字母與實體鍵盤 e.code 映射
+    const charList = [
+        { kor: 'ㅂ', code: 'KeyQ' }, { kor: 'ㅈ', code: 'KeyW' }, { kor: 'ㄷ', code: 'KeyE' },
+        { kor: 'ㄱ', code: 'KeyR' }, { kor: 'ㅅ', code: 'KeyT' }, { kor: 'ㅛ', code: 'KeyY' },
+        { kor: 'ㅕ', code: 'KeyU' }, { kor: 'ㅑ', code: 'KeyI' }, { kor: 'ㅐ', code: 'KeyO' },
+        { kor: 'ㅔ', code: 'KeyP' }, { kor: 'ㅁ', code: 'KeyA' }, { kor: 'ㄴ', code: 'KeyS' },
+        { kor: 'ㅇ', code: 'KeyD' }, { kor: 'ㄹ', code: 'KeyF' }, { kor: 'ㅎ', code: 'KeyG' },
+        { kor: 'ㅗ', code: 'KeyH' }, { kor: 'ㅓ', code: 'KeyJ' }, { kor: 'ㅏ', code: 'KeyK' },
+        { kor: 'ㅣ', code: 'KeyL' }, { kor: 'ㅋ', code: 'KeyZ' }, { kor: 'ㅌ', code: 'KeyX' },
+        { kor: 'ㅊ', code: 'KeyC' }, { kor: 'ㅍ', code: 'KeyV' }, { kor: 'ㅠ', code: 'KeyB' },
+        { kor: 'ㅜ', code: 'KeyN' }, { kor: 'ㅡ', code: 'KeyM' }
+    ];
+
+    let currentQuestionIndex = 0;
+    const totalQuestions = 10;
+    let currentTarget = null;
+    let isPlaying = false;
+
+    // 開始遊戲
+    function startGame() {
+        currentQuestionIndex = 0;
+        isPlaying = true;
+        document.getElementById('startBtn').style.display = 'none';
+        nextQuestion();
+    }
+
+    // 出題邏輯
+    function nextQuestion() {
+        // 清除舊按鍵高亮
+        clearHighlights();
+
+        if (currentQuestionIndex >= totalQuestions) {
+            // 結束遊戲
+            isPlaying = false;
+            document.getElementById('targetChar').textContent = "🎉 完成練習！";
+            document.getElementById('score').textContent = `共完成 ${totalQuestions} 題`;
+            document.getElementById('startBtn').textContent = "再練一次";
+            document.getElementById('startBtn').style.display = 'inline-block';
+            return;
+        }
+
+        currentQuestionIndex++;
+        document.getElementById('score').textContent = `第 ${currentQuestionIndex} / ${totalQuestions} 題`;
+
+        // 隨機抽選一個字母
+        const randomIndex = Math.floor(Math.random() * charList.length);
+        currentTarget = charList[randomIndex];
+
+        // 顯示字母
+        document.getElementById('targetChar').textContent = currentTarget.kor;
+
+        // 亮起對應鍵盤
+        const targetKeyEl = document.querySelector(`.key[data-code="${currentTarget.code}"]`);
+        if (targetKeyEl) {
+            targetKeyEl.classList.add('active');
+        }
+    }
+
+    // 清除所有 key 樣式
+    function clearHighlights() {
+        document.querySelectorAll('.key').forEach(key => {
+            key.classList.remove('active', 'correct', 'wrong');
+        });
+    }
+
+    // 監聽使用者實體鍵盤敲擊
+    window.addEventListener('keydown', (e) => {
+        if (!isPlaying || !currentTarget) return;
+
+        // 取得使用者按下的實體按鍵 Code (例如 "KeyQ")
+        const pressedCode = e.code;
+        const pressedKeyEl = document.querySelector(`.key[data-code="${pressedCode}"]`);
+
+        // 如果按下的按鍵不在我們的練習範圍，忽略
+        if (!pressedKeyEl) return;
+
+        if (pressedCode === currentTarget.code) {
+            // 打對了：變綠色並前往下一題
+            pressedKeyEl.classList.remove('active');
+            pressedKeyEl.classList.add('correct');
+            
+            setTimeout(() => {
+                nextQuestion();
+            }, 300); // 延遲 0.3 秒跳下一題，讓使用者看到變綠色效果
+        } else {
+            // 打錯了：閃爍紅色提示
+            pressedKeyEl.classList.add('wrong');
+            setTimeout(() => {
+                pressedKeyEl.classList.remove('wrong');
+            }, 300);
+        }
+    });
+</script>
+
+</body>
+</html>
