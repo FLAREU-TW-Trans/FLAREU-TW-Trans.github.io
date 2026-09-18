@@ -149,7 +149,7 @@ const vowels = [
     { char: 'ㅣ', vIdx: 20, keys: [{ code: 'KeyL', shift: false }] }
 ];
 
-// 按鍵與字母對照表
+// 按鍵與韓文單個字母之對照表
 const keyMap = {
     'KeyQ': { false: 'ㅂ', true: 'ㅃ' }, 'KeyW': { false: 'ㅈ', true: 'ㅉ' },
     'KeyE': { false: 'ㄷ', true: 'ㄸ' }, 'KeyR': { false: 'ㄱ', true: 'ㄲ' },
@@ -166,14 +166,18 @@ const keyMap = {
     'KeyN': { false: 'ㅜ', true: 'ㅜ' }, 'KeyM': { false: 'ㅡ', true: 'ㅡ' }
 };
 
-// 複合母音組合映射表
+// 複合母音對照表 (用於將兩個按鍵的母音合成為正確的 Unicode 中聲索引)
 const compoundVowels = {
-    'ㅗㅏ': 9, 'ㅗㅐ': 10, 'ㅗㅣ': 11,
-    'ㅜㅓ': 14, 'ㅜㅔ': 15, 'ㅜㅣ': 16,
-    'ㅡㅣ': 19
+    'ㅗㅏ': 9,  // ㅘ
+    'ㅗㅐ': 10, // ㅙ
+    'ㅗㅣ': 11, // ㅚ
+    'ㅜㅓ': 14, // ㅝ
+    'ㅜㅔ': 15, // ㅞ
+    'ㅜㅣ': 16, // ㅟ
+    'ㅡㅣ': 19  // ㅢ
 };
 
-// 生成 399 個拼音題目
+// 生成 399 個拼音題目庫
 const allSyllables = [];
 initialConsonants.forEach((init, iIdx) => {
     vowels.forEach((vow) => {
@@ -192,7 +196,7 @@ const totalQuestions = 10;
 let currentTarget = null;
 let currentStepIndex = 0;
 let isPlaying = false;
-let userTypedHistory = []; // 紀錄使用者敲擊的字母序列
+let userCorrectHistory = []; // 只記錄「打對」的字母
 
 function startGame() {
     currentQuestionIndex = 0;
@@ -203,7 +207,7 @@ function startGame() {
 
 function nextQuestion() {
     clearHighlights();
-    userTypedHistory = [];
+    userCorrectHistory = [];
     document.getElementById('typedPreview').textContent = "";
     const targetCharEl = document.getElementById('targetChar');
 
@@ -249,42 +253,38 @@ function clearHighlights() {
     });
 }
 
-// 根據輸入歷史即時組字
+// 根據目前已打對的字母進行實時拼音合成顯示
 function updatePreviewDisplay() {
-    if (userTypedHistory.length === 0) {
+    if (userCorrectHistory.length === 0) {
         document.getElementById('typedPreview').textContent = "";
         return;
     }
 
-    const firstChar = userTypedHistory[0];
-    const initialObj = initialConsonants.find(item => item.char === firstChar);
-
-    if (!initialObj) {
-        // 第一個字不是有效初聲，直接顯示輸入的字
-        document.getElementById('typedPreview').textContent = userTypedHistory.join('');
+    // 只有一個字母時（代表剛打對初聲），直接顯示該子音
+    if (userCorrectHistory.length === 1) {
+        document.getElementById('typedPreview').textContent = userCorrectHistory[0];
         return;
     }
 
-    if (userTypedHistory.length === 1) {
-        document.getElementById('typedPreview').textContent = firstChar;
-        return;
-    }
+    // 當包含 2 個以上字母時，嘗試進行「初聲 + 中聲」組字
+    const firstChar = userCorrectHistory[0];
+    const vowelChars = userCorrectHistory.slice(1).join('');
 
-    // 嘗試合成母音
-    const vowelChars = userTypedHistory.slice(1).join('');
+    const iIdx = initialConsonants.findIndex(item => item.char === firstChar);
     let matchedVowelObj = vowels.find(v => v.char === vowelChars);
 
+    // 處理複合母音的情況
     if (!matchedVowelObj && compoundVowels[vowelChars] !== undefined) {
         const vIdx = compoundVowels[vowelChars];
         matchedVowelObj = vowels.find(v => v.vIdx === vIdx);
     }
 
-    if (matchedVowelObj) {
-        const iIdx = initialConsonants.findIndex(item => item.char === firstChar);
+    if (iIdx !== -1 && matchedVowelObj) {
+        // 利用 Unicode 韓文公式計算對應的完整拼音字形
         const unicode = 0xAC00 + (iIdx * 21 * 28) + (matchedVowelObj.vIdx * 28);
         document.getElementById('typedPreview').textContent = String.fromCharCode(unicode);
     } else {
-        document.getElementById('typedPreview').textContent = userTypedHistory.join('');
+        document.getElementById('typedPreview').textContent = userCorrectHistory.join('');
     }
 }
 
@@ -299,13 +299,16 @@ window.addEventListener('keydown', (e) => {
 
     if (!pressedKeyEl || !keyMap[pressedCode]) return;
 
-    // 取得當前按下的韓文字母並記錄
-    const charTyped = keyMap[pressedCode][isShiftPressed];
-    userTypedHistory.push(charTyped);
-    updatePreviewDisplay();
-
+    // 判斷敲擊是否正確
     if (pressedCode === expectedStep.code && isShiftPressed === expectedStep.shift) {
+        // 打對記錄該字母並更新預覽顯示
+        const correctChar = keyMap[pressedCode][isShiftPressed];
+        userCorrectHistory.push(correctChar);
+        updatePreviewDisplay();
+
         currentStepIndex++;
+        
+        // 判斷該題是否已經全部完成
         if (currentStepIndex >= currentTarget.sequence.length) {
             clearHighlights();
             pressedKeyEl.classList.add('correct');
@@ -314,6 +317,7 @@ window.addEventListener('keydown', (e) => {
             highlightNextKey();
         }
     } else {
+        // 打錯只觸發鍵盤紅框閃爍警示，不更新或顯示錯誤字母
         pressedKeyEl.classList.add('wrong');
         setTimeout(() => {
             pressedKeyEl.classList.remove('wrong');
