@@ -196,6 +196,7 @@ initialConsonants.forEach((init, iIdx) => {
     });
 });
 
+let quizPool = [];
 let currentQuestionIndex = 0;
 const totalQuestions = 10;
 let currentTarget = null;
@@ -212,7 +213,17 @@ document.getElementById('keyboardMode').addEventListener('change', (e) => {
     if(isPlaying) highlightNextKey();
 });
 
+function getRandomQuestions(sourceArray, count) {
+    const shuffled = [...sourceArray];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, count);
+}
+
 function startGame() {
+    quizPool = getRandomQuestions(allSyllables, totalQuestions);
     currentQuestionIndex = 0;
     isPlaying = true;
     document.getElementById('startBtn').style.display = 'none';
@@ -225,7 +236,7 @@ function nextQuestion() {
     document.getElementById('typedPreview').textContent = "";
     const targetCharEl = document.getElementById('targetChar');
 
-    if (currentQuestionIndex >= totalQuestions) {
+    if (currentQuestionIndex >= totalQuestions || quizPool.length === 0) {
         isPlaying = false;
         targetCharEl.textContent = "🎉 完成練習！";
         targetCharEl.classList.add('finished');
@@ -238,8 +249,7 @@ function nextQuestion() {
     currentQuestionIndex++;
     document.getElementById('score').textContent = `第 ${currentQuestionIndex} / ${totalQuestions} 題`;
 
-    const randomIndex = Math.floor(Math.random() * allSyllables.length);
-    currentTarget = allSyllables[randomIndex];
+    currentTarget = quizPool.pop();
     currentStepIndex = 0;
 
     targetCharEl.classList.remove('finished');
