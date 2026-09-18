@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
+<link rel="stylesheet" href="../../../css/reaction.css">
+  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>韓文打字教學 - 399全拼音篇</title>
+    <style>
+        :root {
+            --primary-dark: rgb(33, 33, 71);
+            --bg-color: rgb(226, 232, 240);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 850px;
+            width: 90%;
+        }
+
+        .status-box {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #475569;
+        }
+
+        .target-char {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin: 10px 0;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .target-char.finished {
+            font-size: 1.8rem;
+        }
+
+        .typed-preview {
+            font-size: 1.5rem;
+            height: 30px;
+            color: #2563eb;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .keyboard {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 20px;
+            user-select: none;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .key {
+            width: 48px;
+            height: 52px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 2px 0 #cbd5e1;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+
+        .key .kor { font-size: 1.1rem; color: var(--primary-dark); }
+        .key .shift-kor { font-size: 0.75rem; color: #64748b; position: absolute; top: 2px; right: 4px; }
+        .key .eng { font-size: 0.65rem; color: #94a3b8; position: absolute; bottom: 2px; left: 4px; }
+
+        .key.shift-key { width: 80px; background-color: #e2e8f0; }
+
+        .key.active {
+            background-color: #fef08a !important;
+            border-color: #eab308;
+            box-shadow: 0 0 10px rgba(234, 179, 8, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .key.correct {
+            background-color: #86efac !important;
+            border-color: #22c55e;
+            transform: translateY(1px);
+        }
+
+        .key.wrong {
+            background-color: #fca5a5 !important;
+            border-color: #ef4444;
+        }
+
+        button.start-btn {
+            padding: 10px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: white;
+            background-color: var(--primary-dark);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button.start-btn:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>韓文打字教學 - 399全拼音篇</h2>
+    
+    <div class="status-box">
+        <span id="score">第 0 / 10 題</span>
+    </div>
+
+    <div class="target-char" id="targetChar">按下開始</div>
+    <div class="typed-preview" id="typedPreview"></div>
+
+    <button class="start-btn" id="startBtn" onclick="startGame()">開始練習</button>
+
+    <div class="keyboard" id="keyboard">
+        <div class="row">
+            <div class="key" data-code="KeyQ"><span class="shift-kor">ㅃ</span><span class="kor">ㅂ</span><span class="eng">Q</span></div>
+            <div class="key" data-code="KeyW"><span class="shift-kor">ㅉ</span><span class="kor">ㅈ</span><span class="eng">W</span></div>
+            <div class="key" data-code="KeyE"><span class="shift-kor">ㄸ</span><span class="kor">ㄷ</span><span class="eng">E</span></div>
+            <div class="key" data-code="KeyR"><span class="shift-kor">ㄲ</span><span class="kor">ㄱ</span><span class="eng">R</span></div>
+            <div class="key" data-code="KeyT"><span class="shift-kor">ㅆ</span><span class="kor">ㅅ</span><span class="eng">T</span></div>
+            <div class="key" data-code="KeyY"><span class="kor">ㅛ</span><span class="eng">Y</span></div>
+            <div class="key" data-code="KeyU"><span class="kor">ㅕ</span><span class="eng">U</span></div>
+            <div class="key" data-code="KeyI"><span class="kor">ㅑ</span><span class="eng">I</span></div>
+            <div class="key" data-code="KeyO"><span class="shift-kor">ㅒ</span><span class="kor">ㅐ</span><span class="eng">O</span></div>
+            <div class="key" data-code="KeyP"><span class="shift-kor">ㅖ</span><span class="kor">ㅔ</span><span class="eng">P</span></div>
+        </div>
+        <div class="row">
+            <div class="key" data-code="KeyA"><span class="kor">ㅁ</span><span class="eng">A</span></div>
+            <div class="key" data-code="KeyS"><span class="kor">ㄴ</span><span class="eng">S</span></div>
+            <div class="key" data-code="KeyD"><span class="kor">ㅇ</span><span class="eng">D</span></div>
+            <div class="key" data-code="KeyF"><span class="kor">ㄹ</span><span class="eng">F</span></div>
+            <div class="key" data-code="KeyG"><span class="kor">ㅎ</span><span class="eng">G</span></div>
+            <div class="key" data-code="KeyH"><span class="kor">ㅗ</span><span class="eng">H</span></div>
+            <div class="key" data-code="KeyJ"><span class="kor">ㅓ</span><span class="eng">J</span></div>
+            <div class="key" data-code="KeyK"><span class="kor">ㅏ</span><span class="eng">K</span></div>
+            <div class="key" data-code="KeyL"><span class="kor">ㅣ</span><span class="eng">L</span></div>
+        </div>
+        <div class="row">
+            <div class="key shift-key" data-code="ShiftLeft"><span>Shift</span></div>
+            <div class="key" data-code="KeyZ"><span class="kor">ㅋ</span><span class="eng">Z</span></div>
+            <div class="key" data-code="KeyX"><span class="kor">ㅌ</span><span class="eng">X</span></div>
+            <div class="key" data-code="KeyC"><span class="kor">ㅊ</span><span class="eng">C</span></div>
+            <div class="key" data-code="KeyV"><span class="kor">ㅍ</span><span class="eng">V</span></div>
+            <div class="key" data-code="KeyB"><span class="kor">ㅠ</span><span class="eng">B</span></div>
+            <div class="key" data-code="KeyN"><span class="kor">ㅜ</span><span class="eng">N</span></div>
+            <div class="key" data-code="KeyM"><span class="kor">ㅡ</span><span class="eng">M</span></div>
+            <div class="key shift-key" data-code="ShiftRight"><span>Shift</span></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 19 個初聲字母及其鍵盤代碼
+    const initialConsonants = [
+        { char: 'ㄱ', code: 'KeyR', shift: false }, { kor: 'ㄲ', code: 'KeyR', shift: true },
+        { char: 'ㄴ', code: 'KeyS', shift: false }, { char: 'ㄷ', code: 'KeyE', shift: false },
+        { char: 'ㄸ', code: 'KeyE', shift: true },  { char: 'ㄹ', code: 'KeyF', shift: false },
+        { char: 'ㅁ', code: 'KeyA', shift: false }, { char: 'ㅂ', code: 'KeyQ', shift: false },
+        { char: 'ㅃ', code: 'KeyQ', shift: true },  { char: 'ㅅ', code: 'KeyT', shift: false },
+        { char: 'ㅆ', code: 'KeyT', shift: true },  { char: 'ㅇ', code: 'KeyD', shift: false },
+        { char: 'ㅈ', code: 'KeyW', shift: false }, { char: 'ㅉ', code: 'KeyW', shift: true },
+        { char: 'ㅊ', code: 'KeyC', shift: false }, { char: 'ㅋ', code: 'KeyZ', shift: false },
+        { char: 'ㅌ', code: 'KeyX', shift: false }, { char: 'ㅍ', code: 'KeyV', shift: false },
+        { char: 'ㅎ', code: 'KeyG', shift: false }
+    ];
+
+    // 21 個中聲字母及其按鍵序列 (部分複合母音需連續敲擊 2 個鍵)
+    const vowels = [
+        { char: 'ㅏ', keys: [{ code: 'KeyK', shift: false }] },
+        { char: 'ㅐ', keys: [{ code: 'KeyO', shift: false }] },
+        { char: 'ㅑ', keys: [{ code: 'KeyI', shift: false }] },
+        { char: 'ㅒ', keys: [{ code: 'KeyO', shift: true }] },
+        { char: 'ㅓ', keys: [{ code: 'KeyJ', shift: false }] },
+        { char: 'ㅔ', keys: [{ code: 'KeyP', shift: false }] },
+        { char: 'ㅕ', keys: [{ code: 'KeyU', shift: false }] },
+        { char: 'ㅖ', keys: [{ code: 'KeyP', shift: true }] },
+        { char: 'ㅗ', keys: [{ code: 'KeyH', shift: false }] },
+        { char: 'ㅘ', keys: [{ code: 'KeyH', shift: false }, { code: 'KeyK', shift: false }] },
+        { char: 'ㅙ', keys: [{ code: 'KeyH', shift: false }, { code: 'KeyO', shift: false }] },
+        { char: 'ㅚ', keys: [{ code: 'KeyH', shift: false }, { code: 'KeyL', shift: false }] },
+        { char: 'ㅛ', keys: [{ code: 'KeyY', shift: false }] },
+        { char: 'ㅜ', keys: [{ code: 'KeyN', shift: false }] },
+        { char: 'ㅝ', keys: [{ code: 'KeyN', shift: false }, { code: 'KeyJ', shift: false }] },
+        { char: 'ㅞ', keys: [{ code: 'KeyN', shift: false }, { code: 'KeyP', shift: false }] },
+        { char: 'ㅟ', keys: [{ code: 'KeyN', shift: false }, { code: 'KeyL', shift: false }] },
+        { char: 'ㅠ', keys: [{ code: 'KeyB', shift: false }] },
+        { char: 'ㅡ', keys: [{ code: 'KeyM', shift: false }] },
+        { char: 'ㅢ', keys: [{ code: 'KeyM', shift: false }, { code: 'KeyL', shift: false }] },
+        { char: 'ㅣ', keys: [{ code: 'KeyL', shift: false }] }
+    ];
+
+    // 自動生成 19 x 21 = 399 個韓文雙拼組字
+    const allSyllables = [];
+    initialConsonants.forEach((init, iIdx) => {
+        vowels.forEach((vow, vIdx) => {
+            const unicode = 0xAC00 + (iIdx * 21 * 28) + (vIdx * 28);
+            const hangulChar = String.fromCharCode(unicode);
+            const keySequence = [
+                { code: init.code, shift: init.shift },
+                ...vow.keys
+            ];
+            allSyllables.push({
+                char: hangulChar,
+                sequence: keySequence
+            });
+        });
+    });
+
+    let currentQuestionIndex = 0;
+    const totalQuestions = 10;
+    let currentTarget = null;
+    let currentStepIndex = 0;
+    let isPlaying = false;
+
+    function startGame() {
+        currentQuestionIndex = 0;
+        isPlaying = true;
+        document.getElementById('startBtn').style.display = 'none';
+        nextQuestion();
+    }
+
+    function nextQuestion() {
+        clearHighlights();
+        document.getElementById('typedPreview').textContent = "";
+        const targetCharEl = document.getElementById('targetChar');
+
+        if (currentQuestionIndex >= totalQuestions) {
+            isPlaying = false;
+            targetCharEl.textContent = "🎉 完成練習！";
+            targetCharEl.classList.add('finished');
+            document.getElementById('score').textContent = `共完成 ${totalQuestions} 題`;
+            document.getElementById('startBtn').textContent = "再練一次";
+            document.getElementById('startBtn').style.display = 'inline-block';
+            return;
+        }
+
+        currentQuestionIndex++;
+        document.getElementById('score').textContent = `第 ${currentQuestionIndex} / ${totalQuestions} 題`;
+
+        const randomIndex = Math.floor(Math.random() * allSyllables.length);
+        currentTarget = allSyllables[randomIndex];
+        currentStepIndex = 0;
+
+        targetCharEl.classList.remove('finished');
+        targetCharEl.textContent = currentTarget.char;
+
+        highlightNextKey();
+    }
+
+    // 發光提示當前步驟需要輸入的按鍵
+    function highlightNextKey() {
+        clearHighlights();
+        if (currentStepIndex < currentTarget.sequence.length) {
+            const step = currentTarget.sequence[currentStepIndex];
+            const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
+            if (targetKeyEl) targetKeyEl.classList.add('active');
+
+            if (step.shift) {
+                document.querySelectorAll('.shift-key').forEach(key => key.classList.add('active'));
+            }
+        }
+    }
+
+    function clearHighlights() {
+        document.querySelectorAll('.key').forEach(key => {
+            key.classList.remove('active', 'correct', 'wrong');
+        });
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if (!isPlaying || !currentTarget) return;
+        if (e.key === 'Shift') return;
+
+        const pressedCode = e.code;
+        const isShiftPressed = e.shiftKey;
+        const expectedStep = currentTarget.sequence[currentStepIndex];
+        const pressedKeyEl = document.querySelector(`.key[data-code="${pressedCode}"]`);
+
+        if (!pressedKeyEl) return;
+
+        if (pressedCode === expectedStep.code && isShiftPressed === expectedStep.shift) {
+            currentStepIndex++;
+            if (currentStepIndex >= currentTarget.sequence.length) {
+                // 音節全部步驟輸入完成
+                clearHighlights();
+                pressedKeyEl.classList.add('correct');
+                document.getElementById('typedPreview').textContent = currentTarget.char;
+                setTimeout(() => { nextQuestion(); }, 300);
+            } else {
+                // 進入音節的下一步驟（例如打完聲母後提示韻母）
+                highlightNextKey();
+            }
+        } else {
+            pressedKeyEl.classList.add('wrong');
+            setTimeout(() => {
+                pressedKeyEl.classList.remove('wrong');
+                highlightNextKey();
+            }, 300);
+        }
+    });
+</script>
+
+</body>
+</html>
