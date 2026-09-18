@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>韓文字母練習</title>
-    <style>
+<style>
     * { box-sizing: border-box; }
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background-color: #f4f7f6; color: #333; padding: 15px; }
     .container { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 650px; text-align: center; }
@@ -41,6 +41,9 @@
     .key10key.active { background: #3498db; color: white; }
     .key10key.correct { background: #2ecc71 !important; color: white !important; }
     .key10key.wrong { background: #e74c3c !important; color: white !important; }
+
+    /* 控制 Shift 顯示：非電腦模式時隱藏 Shift 按鈕 */
+    body:not(.mode-desktop) .key-shift { display: none !important; }
 
     .btn-start { background-color: #2ecc71; color: white; border: none; padding: 12px 30px; font-size: 18px; font-weight: bold; border-radius: 25px; cursor: pointer; transition: background-color 0.2s; margin-top: 10px; }
     .btn-start:hover { background-color: #27ae60; }
@@ -193,6 +196,10 @@ let currentMode = 'desktop';
 // 鍵盤模式切換控制
 document.getElementById('keyboardMode').addEventListener('change', (e) => {
     currentMode = e.target.value;
+    
+    // 更新 body class 以切換 CSS 控制 Shift 按鈕顯隱
+    document.body.className = `mode-${currentMode}`;
+
     document.getElementById('keyboardDesktop').style.display = currentMode === 'mobile-10key' ? 'none' : 'flex';
     document.getElementById('keyboard10Key').style.display = currentMode === 'mobile-10key' ? 'flex' : 'none';
     if(isPlaying) highlightNextKey();
@@ -247,8 +254,8 @@ function highlightNextKey() {
         const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
         if (targetKeyEl) targetKeyEl.classList.add('active');
 
-        // 如果該字母需要按 Shift (雙子音 / 複合母音)，提示按 Shift 鍵
-        if (step.shift) {
+        // 只有電腦模式下且該字母需要按 Shift 時，才提示按 Shift 鍵
+        if (currentMode === 'desktop' && step.shift) {
             document.querySelectorAll('.key-shift').forEach(sKey => sKey.classList.add('active'));
         }
     }
