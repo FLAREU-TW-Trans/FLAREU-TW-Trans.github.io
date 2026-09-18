@@ -12,144 +12,159 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>韓文打字教學 - 399全拼音篇</title>
     <style>
-        :root { --primary-dark: rgb(33, 33, 71); --bg-color: rgb(226, 232, 240); }
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background-color: #f4f7f6; color: #333; padding: 15px; }
+        .container { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 650px; text-align: center; }
+        h1 { margin-top: 0; font-size: 24px; color: #2c3e50; }
+        .layout-selector { margin-bottom: 20px; }
+        .layout-selector select { font-size: 16px; padding: 8px 16px; border-radius: 8px; border: 1px solid #ccc; outline: none; }
+        .display-card { background: #eef2f7; border-radius: 12px; padding: 20px; margin-bottom: 20px; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .target-char { font-size: 56px; font-weight: bold; color: #2c3e50; }
+        .typed-preview { font-size: 32px; color: #e67e22; min-height: 40px; margin-top: 5px; font-weight: 600; }
+        .finished { font-size: 28px; color: #27ae60; }
+        .score { font-size: 16px; color: #7f8c8d; margin-top: 5px; }
+        
+        /* 鍵盤佈局 */
+        .keyboard-wrapper { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; }
+        .key-row { display: flex; justify-content: center; gap: 6px; }
+        .key { padding: 12px 10px; border: 1px solid #dcdde1; border-radius: 8px; background: #fff; font-size: 18px; cursor: pointer; user-select: none; transition: all 0.15s; flex: 1; max-width: 50px; }
+        .key.active { background: #3498db; color: white; border-color: #2980b9; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(52,152,219,0.3); }
+        .key.correct { background: #2ecc71 !important; color: white !important; }
+        .key.wrong { background: #e74c3c !important; color: white !important; }
 
-        body {
-            font-family: Arial, sans-serif; background-color: var(--bg-color); color: var(--primary-dark); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; min-height: 100vh; margin: 0;
-        }
+        /* 手機九宮格佈局 */
+        .keyboard-10key { max-width: 320px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+        .row10key { display: flex; gap: 10px; justify-content: center; }
+        .key10key { flex: 1; height: 60px; font-size: 20px; font-weight: bold; border: 1px solid #dcdde1; border-radius: 12px; background: #fff; cursor: pointer; user-select: none; transition: all 0.15s; }
+        .key10key.active { background: #3498db; color: white; }
+        .key10key.correct { background: #2ecc71 !important; color: white !important; }
+        .key10key.wrong { background: #e74c3c !important; color: white !important; }
 
-        .container {
-            background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            text-align: center; max-width: 850px; width: 90%;
-        }
-
-        .status-box { font-size: 1.1rem; margin-bottom: 10px; color: #475569; }
-
-        .target-char {
-            font-size: 4rem; font-weight: bold; color: var(--primary-dark); margin: 10px 0; min-height: 90px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .target-char.finished { font-size: 1.8rem; }
-
-        .typed-preview { font-size: 1.5rem; height: 30px; color: #2563eb; margin-bottom: 10px; font-weight: bold; }
-
-        .keyboard { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; user-select: none; }
-
-        .row { display: flex; justify-content: center; gap: 6px; }
-
-        .key {
-            width: 48px; height: 52px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f8fafc; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; font-weight: bold; box-shadow: 0 2px 0 #cbd5e1; transition: all 0.15s ease; position: relative;
-        }
-        .key .kor { font-size: 1.1rem; color: var(--primary-dark); }
-        .key .shift-kor { font-size: 0.75rem; color: #64748b; position: absolute; top: 2px; right: 4px; }
-        .key .eng { font-size: 0.65rem; color: #94a3b8; position: absolute; bottom: 2px; left: 4px; }
-        .key.shift-key { width: 80px; background-color: #e2e8f0; }
-        .key.active { background-color: #fef08a !important; border-color: #eab308; box-shadow: 0 0 10px rgba(234, 179, 8, 0.7); transform: translateY(-2px); }
-        .key.correct { background-color: #86efac !important; border-color: #22c55e; transform: translateY(1px); }
-        .key.wrong { background-color: #fca5a5 !important; border-color: #ef4444; }
-
-        button.start-btn {
-            padding: 10px 24px; font-size: 1.1rem; font-weight: bold; color: white; background-color: var(--primary-dark); border: none; border-radius: 6px;
-            cursor: pointer; transition: background 0.2s;
-        }
-        button.start-btn:hover { opacity: 0.9; }
+        .btn-start { background-color: #2ecc71; color: white; border: none; padding: 12px 30px; font-size: 18px; font-weight: bold; border-radius: 25px; cursor: pointer; transition: background-color 0.2s; margin-top: 10px; }
+        .btn-start:hover { background-color: #27ae60; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>韓文打字教學 - 399全拼音篇</h2>
+    <h1>韓文 399 全拼音練習</h1>
     
-    <div class="status-box">
-        <span id="score">第 0 / 10 題</span>
+    <div class="layout-selector">
+        <label for="keyboardMode">選擇鍵盤模式：</label>
+        <select id="keyboardMode">
+            <option value="desktop">電腦 2-Set 鍵盤</option>
+            <option value="mobile-2set">手機 2-Set 全鍵盤</option>
+            <option value="mobile-10key">手機九宮格 (天·地·人)</option>
+        </select>
     </div>
 
-    <div class="target-char" id="targetChar">按下開始</div>
-    <div class="typed-preview" id="typedPreview"></div>
+    <div class="display-card">
+        <div id="targetChar" class="target-char">準備好了嗎？</div>
+        <div id="typedPreview" class="typed-preview"></div>
+        <div id="score" class="score">按下「開始練習」開始</div>
+    </div>
 
-    <button class="start-btn" id="startBtn" onclick="startGame()">開始練習</button>
+    <button id="startBtn" class="btn-start" onclick="startGame()">開始練習</button>
 
-    <div class="keyboard" id="keyboard">
-        <div class="row">
-            <div class="key" data-code="KeyQ"><span class="shift-kor">ㅃ</span><span class="kor">ㅂ</span><span class="eng">Q</span></div>
-            <div class="key" data-code="KeyW"><span class="shift-kor">ㅉ</span><span class="kor">ㅈ</span><span class="eng">W</span></div>
-            <div class="key" data-code="KeyE"><span class="shift-kor">ㄸ</span><span class="kor">ㄷ</span><span class="eng">E</span></div>
-            <div class="key" data-code="KeyR"><span class="shift-kor">ㄲ</span><span class="kor">ㄱ</span><span class="eng">R</span></div>
-            <div class="key" data-code="KeyT"><span class="shift-kor">ㅆ</span><span class="kor">ㅅ</span><span class="eng">T</span></div>
-            <div class="key" data-code="KeyY"><span class="kor">ㅛ</span><span class="eng">Y</span></div>
-            <div class="key" data-code="KeyU"><span class="kor">ㅕ</span><span class="eng">U</span></div>
-            <div class="key" data-code="KeyI"><span class="kor">ㅑ</span><span class="eng">I</span></div>
-            <div class="key" data-code="KeyO"><span class="shift-kor">ㅒ</span><span class="kor">ㅐ</span><span class="eng">O</span></div>
-            <div class="key" data-code="KeyP"><span class="shift-kor">ㅖ</span><span class="kor">ㅔ</span><span class="eng">P</span></div>
+    <!-- 電腦 / 手機 2-Set 鍵盤 -->
+    <div id="keyboardDesktop" class="keyboard-wrapper">
+        <div class="key-row">
+            <div class="key" data-code="KeyQ" data-char="ㅂ">ㅂ</div>
+            <div class="key" data-code="KeyW" data-char="ㅈ">ㅈ</div>
+            <div class="key" data-code="KeyE" data-char="ㄷ">ㄷ</div>
+            <div class="key" data-code="KeyR" data-char="ㄱ">ㄱ</div>
+            <div class="key" data-code="KeyT" data-char="ㅅ">ㅅ</div>
+            <div class="key" data-code="KeyY" data-char="ㅛ">ㅛ</div>
+            <div class="key" data-code="KeyU" data-char="ㅕ">ㅕ</div>
+            <div class="key" data-code="KeyI" data-char="ㅑ">ㅑ</div>
+            <div class="key" data-code="KeyO" data-char="ㅐ">ㅐ</div>
+            <div class="key" data-code="KeyP" data-char="ㅔ">ㅔ</div>
         </div>
-        <div class="row">
-            <div class="key" data-code="KeyA"><span class="kor">ㅁ</span><span class="eng">A</span></div>
-            <div class="key" data-code="KeyS"><span class="kor">ㄴ</span><span class="eng">S</span></div>
-            <div class="key" data-code="KeyD"><span class="kor">ㅇ</span><span class="eng">D</span></div>
-            <div class="key" data-code="KeyF"><span class="kor">ㄹ</span><span class="eng">F</span></div>
-            <div class="key" data-code="KeyG"><span class="kor">ㅎ</span><span class="eng">G</span></div>
-            <div class="key" data-code="KeyH"><span class="kor">ㅗ</span><span class="eng">H</span></div>
-            <div class="key" data-code="KeyJ"><span class="kor">ㅓ</span><span class="eng">J</span></div>
-            <div class="key" data-code="KeyK"><span class="kor">ㅏ</span><span class="eng">K</span></div>
-            <div class="key" data-code="KeyL"><span class="kor">ㅣ</span><span class="eng">L</span></div>
+        <div class="key-row">
+            <div class="key" data-code="KeyA" data-char="ㅁ">ㅁ</div>
+            <div class="key" data-code="KeyS" data-char="ㄴ">ㄴ</div>
+            <div class="key" data-code="KeyD" data-char="ㅇ">ㅇ</div>
+            <div class="key" data-code="KeyF" data-char="ㄹ">ㄹ</div>
+            <div class="key" data-code="KeyG" data-char="ㅎ">ㅎ</div>
+            <div class="key" data-code="KeyH" data-char="ㅗ">ㅗ</div>
+            <div class="key" data-code="KeyJ" data-char="ㅓ">ㅓ</div>
+            <div class="key" data-code="KeyK" data-char="ㅏ">ㅏ</div>
+            <div class="key" data-code="KeyL" data-char="ㅣ">ㅣ</div>
         </div>
-        <div class="row">
-            <div class="key shift-key" data-code="ShiftLeft"><span>Shift</span></div>
-            <div class="key" data-code="KeyZ"><span class="kor">ㅋ</span><span class="eng">Z</span></div>
-            <div class="key" data-code="KeyX"><span class="kor">ㅌ</span><span class="eng">X</span></div>
-            <div class="key" data-code="KeyC"><span class="kor">ㅊ</span><span class="eng">C</span></div>
-            <div class="key" data-code="KeyV"><span class="kor">ㅍ</span><span class="eng">V</span></div>
-            <div class="key" data-code="KeyB"><span class="kor">ㅠ</span><span class="eng">B</span></div>
-            <div class="key" data-code="KeyN"><span class="kor">ㅜ</span><span class="eng">N</span></div>
-            <div class="key" data-code="KeyM"><span class="kor">ㅡ</span><span class="eng">M</span></div>
-            <div class="key shift-key" data-code="ShiftRight"><span>Shift</span></div>
+        <div class="key-row">
+            <div class="key" data-code="KeyZ" data-char="ㅋ">ㅋ</div>
+            <div class="key" data-code="KeyX" data-char="ㅌ">ㅌ</div>
+            <div class="key" data-code="KeyC" data-char="ㅊ">ㅊ</div>
+            <div class="key" data-code="KeyV" data-char="ㅍ">ㅍ</div>
+            <div class="key" data-code="KeyB" data-char="ㅠ">ㅠ</div>
+            <div class="key" data-code="KeyN" data-char="ㅜ">ㅜ</div>
+            <div class="key" data-code="KeyM" data-char="ㅡ">ㅡ</div>
+        </div>
+    </div>
+
+    <!-- 手機 10Key (天地人) 鍵盤 -->
+    <div id="keyboard10Key" class="keyboard-10key" style="display: none;">
+        <div class="row10key">
+            <button class="key10key" data-10key="ㅣ">ㅣ</button>
+            <button class="key10key" data-10key="•">· (天)</button>
+            <button class="key10key" data-10key="ㅡ">ㅡ</button>
+        </div>
+        <div class="row10key">
+            <button class="key10key" data-10key="ㄱ">ㄱㅋ</button>
+            <button class="key10key" data-10key="ㄴ">ㄴㄹ</button>
+            <button class="key10key" data-10key="ㄷ">ㄷㅌ</button>
+        </div>
+        <div class="row10key">
+            <button class="key10key" data-10key="ㅂ">ㅂㅍ</button>
+            <button class="key10key" data-10key="ㅅ">ㅅㅎ</button>
+            <button class="key10key" data-10key="ㅈ">ㅈㅊ</button>
+        </div>
+        <div class="row10key">
+            <button class="key10key" data-10key="ㅇ">ㅇㅁ</button>
+            <button class="key10key" style="visibility: hidden;"></button>
+            <button class="key10key" style="visibility: hidden;"></button>
         </div>
     </div>
 </div>
 
 <script>
-// 19 個初聲字母及其鍵盤代碼
 const initialConsonants = [
-    { char: 'ㄱ', code: 'KeyR', shift: false }, { char: 'ㄲ', code: 'KeyR', shift: true },
-    { char: 'ㄴ', code: 'KeyS', shift: false }, { char: 'ㄷ', code: 'KeyE', shift: false },
-    { char: 'ㄸ', code: 'KeyE', shift: true },  { char: 'ㄹ', code: 'KeyF', shift: false },
-    { char: 'ㅁ', code: 'KeyA', shift: false }, { char: 'ㅂ', code: 'KeyQ', shift: false },
-    { char: 'ㅃ', code: 'KeyQ', shift: true },  { char: 'ㅅ', code: 'KeyT', shift: false },
-    { char: 'ㅆ', code: 'KeyT', shift: true },  { char: 'ㅇ', code: 'KeyD', shift: false },
-    { char: 'ㅈ', code: 'KeyW', shift: false }, { char: 'ㅉ', code: 'KeyW', shift: true },
-    { char: 'ㅊ', code: 'KeyC', shift: false }, { char: 'ㅋ', code: 'KeyZ', shift: false },
-    { char: 'ㅌ', code: 'KeyX', shift: false }, { char: 'ㅍ', code: 'KeyV', shift: false },
-    { char: 'ㅎ', code: 'KeyG', shift: false }
+    { char: 'ㄱ', code: 'KeyR', shift: false, key10: ['ㄱ'] }, { char: 'ㄲ', code: 'KeyR', shift: true, key10: ['ㄱ','ㄱ'] },
+    { char: 'ㄴ', code: 'KeyS', shift: false, key10: ['ㄴ'] }, { char: 'ㄷ', code: 'KeyE', shift: false, key10: ['ㄷ'] },
+    { char: 'ㄸ', code: 'KeyE', shift: true, key10: ['ㄷ','ㄷ'] }, { char: 'ㄹ', code: 'KeyF', shift: false, key10: ['ㄴ','ㄴ'] },
+    { char: 'ㅁ', code: 'KeyA', shift: false, key10: ['ㅇ','ㅇ'] }, { char: 'ㅂ', code: 'KeyQ', shift: false, key10: ['ㅂ'] },
+    { char: 'ㅃ', code: 'KeyQ', shift: true, key10: ['ㅂ','ㅂ'] }, { char: 'ㅅ', code: 'KeyT', shift: false, key10: ['ㅅ'] },
+    { char: 'ㅆ', code: 'KeyT', shift: true, key10: ['ㅅ','ㅅ'] }, { char: 'ㅇ', code: 'KeyD', shift: false, key10: ['ㅇ'] },
+    { char: 'ㅈ', code: 'KeyW', shift: false, key10: ['ㅈ'] }, { char: 'ㅉ', code: 'KeyW', shift: true, key10: ['ㅈ','ㅈ'] },
+    { char: 'ㅊ', code: 'KeyC', shift: false, key10: ['ㅈ','ㅈ'] }, { char: 'ㅋ', code: 'KeyZ', shift: false, key10: ['ㄱ','ㄱ'] },
+    { char: 'ㅌ', code: 'KeyX', shift: false, key10: ['ㄷ','ㄷ'] }, { char: 'ㅍ', code: 'KeyV', shift: false, key10: ['ㅂ','ㅂ'] },
+    { char: 'ㅎ', code: 'KeyG', shift: false, key10: ['ㅅ','ㅅ'] }
 ];
 
-// 21 個中聲字母及其按鍵序列
 const vowels = [
-    { char: 'ㅏ', vIdx: 0, keys: [{ code: 'KeyK', shift: false }] },
-    { char: 'ㅐ', vIdx: 1, keys: [{ code: 'KeyO', shift: false }] },
-    { char: 'ㅑ', vIdx: 2, keys: [{ code: 'KeyI', shift: false }] },
-    { char: 'ㅒ', vIdx: 3, keys: [{ code: 'KeyO', shift: true }] },
-    { char: 'ㅓ', vIdx: 4, keys: [{ code: 'KeyJ', shift: false }] },
-    { char: 'ㅔ', vIdx: 5, keys: [{ code: 'KeyP', shift: false }] },
-    { char: 'ㅕ', vIdx: 6, keys: [{ code: 'KeyU', shift: false }] },
-    { char: 'ㅖ', vIdx: 7, keys: [{ code: 'KeyP', shift: true }] },
-    { char: 'ㅗ', vIdx: 8, keys: [{ code: 'KeyH', shift: false }] },
-    { char: 'ㅘ', vIdx: 9, keys: [{ code: 'KeyH', shift: false }, { code: 'KeyK', shift: false }] },
-    { char: 'ㅙ', vIdx: 10, keys: [{ code: 'KeyH', shift: false }, { code: 'KeyO', shift: false }] },
-    { char: 'ㅚ', vIdx: 11, keys: [{ code: 'KeyH', shift: false }, { code: 'KeyL', shift: false }] },
-    { char: 'ㅛ', vIdx: 12, keys: [{ code: 'KeyY', shift: false }] },
-    { char: 'ㅜ', vIdx: 13, keys: [{ code: 'KeyN', shift: false }] },
-    { char: 'ㅝ', vIdx: 14, keys: [{ code: 'KeyN', shift: false }, { code: 'KeyJ', shift: false }] },
-    { char: 'ㅞ', vIdx: 15, keys: [{ code: 'KeyN', shift: false }, { code: 'KeyP', shift: false }] },
-    { char: 'ㅟ', vIdx: 16, keys: [{ code: 'KeyN', shift: false }, { code: 'KeyL', shift: false }] },
-    { char: 'ㅠ', vIdx: 17, keys: [{ code: 'KeyB', shift: false }] },
-    { char: 'ㅡ', vIdx: 18, keys: [{ code: 'KeyM', shift: false }] },
-    { char: 'ㅢ', vIdx: 19, keys: [{ code: 'KeyM', shift: false }, { code: 'KeyL', shift: false }] },
-    { char: 'ㅣ', vIdx: 20, keys: [{ code: 'KeyL', shift: false }] }
+    { char: 'ㅏ', vIdx: 0, keys: [{ code: 'KeyK', shift: false, char: 'ㅏ', key10: ['ㅣ','•'] }] },
+    { char: 'ㅐ', vIdx: 1, keys: [{ code: 'KeyO', shift: false, char: 'ㅐ', key10: ['ㅣ','•','ㅣ'] }] },
+    { char: 'ㅑ', vIdx: 2, keys: [{ code: 'KeyI', shift: false, char: 'ㅑ', key10: ['ㅣ','•','•'] }] },
+    { char: 'ㅒ', vIdx: 3, keys: [{ code: 'KeyO', shift: true, char: 'ㅒ', key10: ['ㅣ','•','•','ㅣ'] }] },
+    { char: 'ㅓ', vIdx: 4, keys: [{ code: 'KeyJ', shift: false, char: 'ㅓ', key10: ['•','ㅣ'] }] },
+    { char: 'ㅔ', vIdx: 5, keys: [{ code: 'KeyP', shift: false, char: 'ㅔ', key10: ['•','ㅣ','ㅣ'] }] },
+    { char: 'ㅕ', vIdx: 6, keys: [{ code: 'KeyU', shift: false, char: 'ㅕ', key10: ['•','•','ㅣ'] }] },
+    { char: 'ㅖ', vIdx: 7, keys: [{ code: 'KeyP', shift: true, char: 'ㅖ', key10: ['•','•','ㅣ','ㅣ'] }] },
+    { char: 'ㅗ', vIdx: 8, keys: [{ code: 'KeyH', shift: false, char: 'ㅗ', key10: ['•','ㅡ'] }] },
+    { char: 'ㅘ', vIdx: 9, keys: [{ code: 'KeyH', shift: false, char: 'ㅗ', key10: ['•','ㅡ'] }, { code: 'KeyK', shift: false, char: 'ㅏ', key10: ['ㅣ','•'] }] },
+    { char: 'ㅙ', vIdx: 10, keys: [{ code: 'KeyH', shift: false, char: 'ㅗ', key10: ['•','ㅡ'] }, { code: 'KeyO', shift: false, char: 'ㅐ', key10: ['ㅣ','•','ㅣ'] }] },
+    { char: 'ㅚ', vIdx: 11, keys: [{ code: 'KeyH', shift: false, char: 'ㅗ', key10: ['•','ㅡ'] }, { code: 'KeyL', shift: false, char: 'ㅣ', key10: ['ㅣ'] }] },
+    { char: 'ㅛ', vIdx: 12, keys: [{ code: 'KeyY', shift: false, char: 'ㅛ', key10: ['•','•','ㅡ'] }] },
+    { char: 'ㅜ', vIdx: 13, keys: [{ code: 'KeyN', shift: false, char: 'ㅜ', key10: ['ㅡ','•'] }] },
+    { char: 'ㅝ', vIdx: 14, keys: [{ code: 'KeyN', shift: false, char: 'ㅜ', key10: ['ㅡ','•'] }, { code: 'KeyJ', shift: false, char: 'ㅓ', key10: ['•','ㅣ'] }] },
+    { char: 'ㅞ', vIdx: 15, keys: [{ code: 'KeyN', shift: false, char: 'ㅜ', key10: ['ㅡ','•'] }, { code: 'KeyP', shift: false, char: 'ㅔ', key10: ['•','ㅣ','ㅣ'] }] },
+    { char: 'ㅟ', vIdx: 16, keys: [{ code: 'KeyN', shift: false, char: 'ㅜ', key10: ['ㅡ','•'] }, { code: 'KeyL', shift: false, char: 'ㅣ', key10: ['ㅣ'] }] },
+    { char: 'ㅠ', vIdx: 17, keys: [{ code: 'KeyB', shift: false, char: 'ㅠ', key10: ['ㅡ','•','•'] }] },
+    { char: 'ㅡ', vIdx: 18, keys: [{ code: 'KeyM', shift: false, char: 'ㅡ', key10: ['ㅡ'] }] },
+    { char: 'ㅢ', vIdx: 19, keys: [{ code: 'KeyM', shift: false, char: 'ㅡ', key10: ['ㅡ'] }, { code: 'KeyL', shift: false, char: 'ㅣ', key10: ['ㅣ'] }] },
+    { char: 'ㅣ', vIdx: 20, keys: [{ code: 'KeyL', shift: false, char: 'ㅣ', key10: ['ㅣ'] }] }
 ];
 
-// 按鍵與韓文單個字母之對照表
 const keyMap = {
     'KeyQ': { false: 'ㅂ', true: 'ㅃ' }, 'KeyW': { false: 'ㅈ', true: 'ㅉ' },
     'KeyE': { false: 'ㄷ', true: 'ㄸ' }, 'KeyR': { false: 'ㄱ', true: 'ㄲ' },
@@ -166,18 +181,9 @@ const keyMap = {
     'KeyN': { false: 'ㅜ', true: 'ㅜ' }, 'KeyM': { false: 'ㅡ', true: 'ㅡ' }
 };
 
-// 複合母音對照表 (用於將兩個按鍵的母音合成為正確的 Unicode 中聲索引)
-const compoundVowels = {
-    'ㅗㅏ': 9,  // ㅘ
-    'ㅗㅐ': 10, // ㅙ
-    'ㅗㅣ': 11, // ㅚ
-    'ㅜㅓ': 14, // ㅝ
-    'ㅜㅔ': 15, // ㅞ
-    'ㅜㅣ': 16, // ㅟ
-    'ㅡㅣ': 19  // ㅢ
-};
+const compoundVowels = { 'ㅗㅏ': 9, 'ㅗㅐ': 10, 'ㅗㅣ': 11, 'ㅜㅓ': 14, 'ㅜㅔ': 15, 'ㅜㅣ': 16, 'ㅡㅣ': 19 };
 
-// 生成 399 個拼音題目庫
+// 生成 399 個題目
 const allSyllables = [];
 initialConsonants.forEach((init, iIdx) => {
     vowels.forEach((vow) => {
@@ -186,7 +192,10 @@ initialConsonants.forEach((init, iIdx) => {
             char: String.fromCharCode(unicode),
             iIdx: iIdx,
             vIdx: vow.vIdx,
-            sequence: [{ code: init.code, shift: init.shift }, ...vow.keys]
+            sequence: [
+                { code: init.code, shift: init.shift, char: init.char, key10: init.key10 },
+                ...vow.keys
+            ]
         });
     });
 });
@@ -196,7 +205,15 @@ const totalQuestions = 10;
 let currentTarget = null;
 let currentStepIndex = 0;
 let isPlaying = false;
-let userCorrectHistory = []; // 只記錄「打對」的字母
+let userCorrectHistory = [];
+let currentMode = 'desktop';
+
+document.getElementById('keyboardMode').addEventListener('change', (e) => {
+    currentMode = e.target.value;
+    document.getElementById('keyboardDesktop').style.display = currentMode === 'mobile-10key' ? 'none' : 'flex';
+    document.getElementById('keyboard10Key').style.display = currentMode === 'mobile-10key' ? 'flex' : 'none';
+    if(isPlaying) highlightNextKey();
+});
 
 function startGame() {
     currentQuestionIndex = 0;
@@ -236,51 +253,49 @@ function nextQuestion() {
 
 function highlightNextKey() {
     clearHighlights();
-    if (currentStepIndex < currentTarget.sequence.length) {
-        const step = currentTarget.sequence[currentStepIndex];
+    if (currentStepIndex >= currentTarget.sequence.length) return;
+
+    const step = currentTarget.sequence[currentStepIndex];
+
+    if (currentMode === 'mobile-10key') {
+        const expected10KeyChar = step.key10[0];
+        const targetBtn = document.querySelector(`.key10key[data-10key="${expected10KeyChar}"]`);
+        if (targetBtn) targetBtn.classList.add('active');
+    } else {
         const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
         if (targetKeyEl) targetKeyEl.classList.add('active');
-
-        if (step.shift) {
-            document.querySelectorAll('.shift-key').forEach(key => key.classList.add('active'));
-        }
     }
 }
 
 function clearHighlights() {
-    document.querySelectorAll('.key').forEach(key => {
+    document.querySelectorAll('.key, .key10key').forEach(key => {
         key.classList.remove('active', 'correct', 'wrong');
     });
 }
 
-// 根據目前已打對的字母進行實時拼音合成顯示
 function updatePreviewDisplay() {
     if (userCorrectHistory.length === 0) {
         document.getElementById('typedPreview').textContent = "";
         return;
     }
 
-    // 只有一個字母時（代表剛打對初聲），直接顯示該子音
     if (userCorrectHistory.length === 1) {
         document.getElementById('typedPreview').textContent = userCorrectHistory[0];
         return;
     }
 
-    // 當包含 2 個以上字母時，嘗試進行「初聲 + 中聲」組字
     const firstChar = userCorrectHistory[0];
     const vowelChars = userCorrectHistory.slice(1).join('');
 
     const iIdx = initialConsonants.findIndex(item => item.char === firstChar);
     let matchedVowelObj = vowels.find(v => v.char === vowelChars);
 
-    // 處理複合母音的情況
     if (!matchedVowelObj && compoundVowels[vowelChars] !== undefined) {
         const vIdx = compoundVowels[vowelChars];
         matchedVowelObj = vowels.find(v => v.vIdx === vIdx);
     }
 
     if (iIdx !== -1 && matchedVowelObj) {
-        // 利用 Unicode 韓文公式計算對應的完整拼音字形
         const unicode = 0xAC00 + (iIdx * 21 * 28) + (matchedVowelObj.vIdx * 28);
         document.getElementById('typedPreview').textContent = String.fromCharCode(unicode);
     } else {
@@ -288,44 +303,62 @@ function updatePreviewDisplay() {
     }
 }
 
-window.addEventListener('keydown', (e) => {
+function processInput(inputObj) {
     if (!isPlaying || !currentTarget) return;
-    if (e.key === 'Shift') return;
-
-    const pressedCode = e.code;
-    const isShiftPressed = e.shiftKey;
     const expectedStep = currentTarget.sequence[currentStepIndex];
-    const pressedKeyEl = document.querySelector(`.key[data-code="${pressedCode}"]`);
+    let isCorrect = false;
 
-    if (!pressedKeyEl || !keyMap[pressedCode]) return;
+    if (currentMode === 'mobile-10key') {
+        if (inputObj.char10 === expectedStep.key10[0]) {
+            isCorrect = true;
+        }
+    } else {
+        if (inputObj.code === expectedStep.code && inputObj.shift === expectedStep.shift) {
+            isCorrect = true;
+        }
+    }
 
-    // 判斷敲擊是否正確
-    if (pressedCode === expectedStep.code && isShiftPressed === expectedStep.shift) {
-        // 打對記錄該字母並更新預覽顯示
-        const correctChar = keyMap[pressedCode][isShiftPressed];
-        userCorrectHistory.push(correctChar);
+    if (isCorrect) {
+        if (inputObj.element) inputObj.element.classList.add('correct');
+        userCorrectHistory.push(expectedStep.char);
         updatePreviewDisplay();
 
         currentStepIndex++;
-        
-        // 判斷該題是否已經全部完成
         if (currentStepIndex >= currentTarget.sequence.length) {
-            clearHighlights();
-            pressedKeyEl.classList.add('correct');
             setTimeout(() => { nextQuestion(); }, 400);
         } else {
-            highlightNextKey();
+            setTimeout(() => { highlightNextKey(); }, 200);
         }
     } else {
-        // 打錯只觸發鍵盤紅框閃爍警示，不更新或顯示錯誤字母
-        pressedKeyEl.classList.add('wrong');
-        setTimeout(() => {
-            pressedKeyEl.classList.remove('wrong');
-            highlightNextKey();
-        }, 300);
+        if (inputObj.element) {
+            inputObj.element.classList.add('wrong');
+            setTimeout(() => {
+                inputObj.element.classList.remove('wrong');
+                highlightNextKey();
+            }, 300);
+        }
     }
+}
+
+window.addEventListener('keydown', (e) => {
+    if (currentMode === 'mobile-10key' || e.key === 'Shift') return;
+    const keyEl = document.querySelector(`.key[data-code="${e.code}"]`);
+    processInput({ code: e.code, shift: e.shiftKey, element: keyEl });
+});
+
+document.querySelectorAll('.key').forEach(keyEl => {
+    keyEl.addEventListener('click', () => {
+        const code = keyEl.getAttribute('data-code');
+        processInput({ code: code, shift: false, element: keyEl });
+    });
+});
+
+document.querySelectorAll('.key10key').forEach(keyEl => {
+    keyEl.addEventListener('click', () => {
+        const char10 = keyEl.getAttribute('data-10key');
+        if (char10) processInput({ char10: char10, element: keyEl });
+    });
 });
 </script>
-
 </body>
 </html>
