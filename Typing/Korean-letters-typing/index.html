@@ -51,7 +51,13 @@
         width: 100%; max-width: 280px; font-size: 20px; padding: 8px 12px; text-align: center; border: 2px solid #3498db;
         border-radius: 8px; outline: none;
     }
-    body.mode-mobile-2set .key-shift, body.mode-mobile-10key .key-shift { display: none !important; }
+    body.mode-mobile-2set .key-shift:not(.mobile-2set-shift),
+    body.mode-mobile-10key .key-shift { display: none !important; }
+    body.mode-mobile-2set .mobile-2set-shift { display: block !important; }
+    .mobile-2set-shift { display: none; }
+    .mobile-2set-shift.selected {
+        background: #e67e22 !important; color: white !important; border-color: #d35400 !important;
+    }
     body.mode-mobile-10key .btn-start { margin-bottom: 25px; }
 </style>
 </head>
@@ -107,6 +113,7 @@
             <div class="key" data-code="KeyL" data-char="ㅣ">ㅣ</div>
         </div>
         <div class="key-row">
+            <div class="key key-shift mobile-2set-shift" id="mobile2SetShift" data-code="MobileShift" aria-label="向上箭頭">↑</div>
             <div class="key key-shift" data-code="ShiftLeft">Shift</div>
             <div class="key" data-code="KeyZ" data-char="ㅋ">ㅋ</div>
             <div class="key" data-code="KeyX" data-char="ㅌ">ㅌ</div>
@@ -204,10 +211,27 @@ let currentStepIndex = 0;
 let current10KeySubIndex = 0;
 let isPlaying = false;
 let currentMode = 'desktop';
+let mobile2SetShiftSelected = false;
+
+// 手機 2-Set 的獨立「向上箭頭」狀態
+function resetMobile2SetShift() {
+    mobile2SetShiftSelected = false;
+    const shiftKey = document.getElementById('mobile2SetShift');
+    if (shiftKey) shiftKey.classList.remove('selected', 'active', 'correct', 'wrong');
+}
+
+function setMobile2SetShiftSelected(selected) {
+    mobile2SetShiftSelected = selected;
+    const shiftKey = document.getElementById('mobile2SetShift');
+    if (!shiftKey) return;
+    shiftKey.classList.toggle('selected', selected);
+    shiftKey.classList.toggle('active', selected);
+}
 
 // 鍵盤模式切換控制
 document.getElementById('keyboardMode').addEventListener('change', (e) => {
     currentMode = e.target.value;
+    resetMobile2SetShift();
     document.body.className = `mode-${currentMode}`;
 
     const mobileInputContainer = document.getElementById('mobileInputContainer');
@@ -232,13 +256,6 @@ document.getElementById('mobileInput').addEventListener('input', (e) => {
     // 取得使用者打出的字元
     const charEntered = inputVal.slice(-1);
     
-    // 如果輸入法的字元剛好就是目標字元
-    if (charEntered === currentTarget.kor) {
-        e.target.value = '';
-        completeQuestion();
-        return;
-    }
-
     e.target.value = ''; // 清空輸入框
 
     // 否則依照字母逐個進行比對
@@ -281,6 +298,8 @@ function startGame() {
 
 function nextQuestion() {
     clearHighlights();
+    current10KeySubIndex = 0;
+    resetMobile2SetShift();
     const targetCharEl = document.getElementById('targetChar');
 
     if (currentQuestionIndex >= totalQuestions || quizPool.length === 0) {
@@ -307,14 +326,22 @@ function nextQuestion() {
 
 function highlightNextKey() {
     clearHighlights();
-    if (currentStepIndex >= currentTarget.sequence.length) return;
+    if (!currentTarget || currentStepIndex >= currentTarget.sequence.length) return;
 
     const step = currentTarget.sequence[currentStepIndex];
 
     if (currentMode === 'mobile-10key') {
-        const expected10KeyChar = step.key10[0];
+        const expected10KeyChar = step.key10[current10KeySubIndex];
         const targetBtn = document.querySelector(`.key10key[data-10key="${expected10KeyChar}"]`);
         if (targetBtn) targetBtn.classList.add('active');
+    } else if (currentMode === 'mobile-2set') {
+        if (step.shift && !mobile2SetShiftSelected) {
+            const shiftKey = document.getElementById('mobile2SetShift');
+            if (shiftKey) shiftKey.classList.add('active');
+        } else {
+            const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
+            if (targetKeyEl) targetKeyEl.classList.add('active');
+        }
     } else {
         const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
         if (targetKeyEl) targetKeyEl.classList.add('active');
@@ -333,18 +360,33 @@ function clearHighlights() {
 
 function completeQuestion() {
     currentStepIndex = currentTarget.sequence.length;
+    if (currentMode === 'mobile-2set') resetMobile2SetShift();
     setTimeout(() => { nextQuestion(); }, 250);
 }
 
 function processInput(inputObj) {
     if (!isPlaying || !currentTarget) return;
     const expectedStep = currentTarget.sequence[currentStepIndex];
+    if (!expectedStep) return;
+
     let isCorrect = false;
 
     if (currentMode === 'mobile-10key') {
         const expectedChar = expectedStep.key10[current10KeySubIndex];
         if (inputObj.char10 === expectedChar) {
             isCorrect = true;
+        }
+    } else if (currentMode === 'mobile-2set') {
+        if (expectedStep.shift) {
+            if (inputObj.mobileShift === true && !mobile2SetShiftSelected) {
+                isCorrect = true;
+            } else if (mobile2SetShiftSelected &&
+                       inputObj.code === expectedStep.code &&
+                       inputObj.shift === true) {
+                isCorrect = true;
+            }
+        } else {
+            isCorrect = inputObj.code === expectedStep.code && inputObj.shift === false;
         }
     } else {
         if (inputObj.code === expectedStep.code && inputObj.shift === expectedStep.shift) {
@@ -354,20 +396,32 @@ function processInput(inputObj) {
 
     if (isCorrect) {
         if (inputObj.element) inputObj.element.classList.add('correct');
-        
+
         if (currentMode === 'mobile-10key') {
             current10KeySubIndex++;
-            // 當前步驟的所有點擊都完成了
+
             if (current10KeySubIndex >= expectedStep.key10.length) {
                 current10KeySubIndex = 0;
+                currentStepIndex++;
+            }
+        } else if (currentMode === 'mobile-2set') {
+            if (expectedStep.shift) {
+                if (inputObj.mobileShift === true) {
+                    setMobile2SetShiftSelected(true);
+                } else {
+                    // 已選取箭頭後，輸入真正字母才完成這個步驟。
+                    currentStepIndex++;
+                }
+            } else {
                 currentStepIndex++;
             }
         } else {
             currentStepIndex++;
         }
 
-        // 判斷是否完成整題
         if (currentStepIndex >= currentTarget.sequence.length) {
+            // 每題結束時，手機 2-Set 向上箭頭一定取消選取。
+            if (currentMode === 'mobile-2set') resetMobile2SetShift();
             setTimeout(() => { nextQuestion(); }, 250);
         } else {
             setTimeout(() => { highlightNextKey(); }, 150);
@@ -385,7 +439,7 @@ function processInput(inputObj) {
 
 // 實體鍵盤事件
 window.addEventListener('keydown', (e) => {
-    if (currentMode === 'mobile-10key') return;
+    if (currentMode === 'mobile-10key' || currentMode === 'mobile-2set') return;
 
     if (e.key === 'Shift') {
         document.querySelectorAll('.key-shift').forEach(sKey => sKey.classList.add('shift-pressed'));
@@ -397,6 +451,7 @@ window.addEventListener('keydown', (e) => {
 });
 
 window.addEventListener('keyup', (e) => {
+    if (currentMode !== 'desktop') return;
     if (e.key === 'Shift') {
         document.querySelectorAll('.key-shift').forEach(sKey => sKey.classList.remove('shift-pressed'));
     }
