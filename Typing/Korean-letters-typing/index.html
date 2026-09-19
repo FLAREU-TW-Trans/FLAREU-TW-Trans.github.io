@@ -107,7 +107,7 @@
             <div class="key" data-code="KeyL" data-char="ㅣ">ㅣ</div>
         </div>
         <div class="key-row">
-            <div class="key key-shift" id="shiftLeftBtn" data-code="ShiftLeft">↑</div>
+            <div class="key key-shift" data-code="ShiftLeft">Shift</div>
             <div class="key" data-code="KeyZ" data-char="ㅋ">ㅋ</div>
             <div class="key" data-code="KeyX" data-char="ㅌ">ㅌ</div>
             <div class="key" data-code="KeyC" data-char="ㅊ">ㅊ</div>
@@ -115,7 +115,7 @@
             <div class="key" data-code="KeyB" data-char="ㅠ">ㅠ</div>
             <div class="key" data-code="KeyN" data-char="ㅜ">ㅜ</div>
             <div class="key" data-code="KeyM" data-char="ㅡ">ㅡ</div>
-            <div class="key key-shift" id="shiftRightBtn" data-code="ShiftRight">↑</div>
+            <div class="key key-shift" data-code="ShiftRight">Shift</div>
         </div>
     </div>
 
@@ -204,7 +204,6 @@ let currentStepIndex = 0;
 let current10KeySubIndex = 0;
 let isPlaying = false;
 let currentMode = 'desktop';
-let isMobileShiftActive = false;
 
 // 鍵盤模式切換控制
 document.getElementById('keyboardMode').addEventListener('change', (e) => {
@@ -215,20 +214,14 @@ document.getElementById('keyboardMode').addEventListener('change', (e) => {
     document.getElementById('keyboardDesktop').style.display = currentMode === 'mobile-10key' ? 'none' : 'flex';
     document.getElementById('keyboard10Key').style.display = currentMode === 'mobile-10key' ? 'flex' : 'none';
 
-    // 關閉手機 Shift
-    deactivateMobileShift();
-
+    // 手機模式顯示輸入框，電腦模式隱藏
     if (currentMode === 'mobile-2set' || currentMode === 'mobile-10key') {
         mobileInputContainer.style.display = 'block';
     } else {
         mobileInputContainer.style.display = 'none';
     }
 
-    if (isPlaying) {
-        currentStepIndex = 0;
-        current10KeySubIndex = 0;
-        highlightNextKey();
-    }
+    if (isPlaying) highlightNextKey();
 });
 
 // 監聽手機輸入框輸入事件 (IME 直接打字)
@@ -236,24 +229,35 @@ document.getElementById('mobileInput').addEventListener('input', (e) => {
     const inputVal = e.target.value;
     if (!inputVal || !isPlaying) return;
 
+    // 取得使用者打出的字元
     const charEntered = inputVal.slice(-1);
-    e.target.value = ''; // 立即清空輸入框，避免系統直接合成組合字通過驗證
+    
+    // 如果輸入法的字元剛好就是目標字元
+    if (charEntered === currentTarget.kor) {
+        e.target.value = '';
+        completeQuestion();
+        return;
+    }
 
+    e.target.value = ''; // 清空輸入框
+
+    // 否則依照字母逐個進行比對
     let targetEl = null;
+    let codeMatched = null;
 
     if (currentMode === 'mobile-10key') {
+        // 相容不同輸入法產生的點號
         const normalizedChar = (charEntered === '•' || charEntered === '·') ? '·' : charEntered;
         targetEl = document.querySelector(`.key10key[data-10key="${normalizedChar}"]`);
         processInput({ char10: normalizedChar, element: targetEl });
     } else {
         targetEl = document.querySelector(`.key[data-char="${charEntered}"]`);
-        let codeMatched = targetEl ? targetEl.getAttribute('data-code') : null;
-        
-        // 如果是用實體/系統鍵盤打入的雙子音或雙母音，視為已經帶有 Shift
-        const isDoubleChar = ['ㅃ','ㅉ','ㄸ','ㄲ','ㅆ','ㅒ','ㅖ'].includes(charEntered);
-        const hasShift = isMobileShiftActive || isDoubleChar;
-
-        processInput({ code: codeMatched, shift: hasShift, element: targetEl });
+        if (targetEl) {
+            codeMatched = targetEl.getAttribute('data-code');
+        }
+        const expectedStep = currentTarget?.sequence[currentStepIndex];
+        const isShift = expectedStep ? expectedStep.shift : false;
+        processInput({ code: codeMatched, shift: isShift, element: targetEl });
     }
 });
 
@@ -275,13 +279,7 @@ function startGame() {
     nextQuestion();
 }
 
-function deactivateMobileShift() {
-    isMobileShiftActive = false;
-    document.querySelectorAll('.key-shift').forEach(sKey => sKey.classList.remove('shift-pressed', 'active'));
-}
-
 function nextQuestion() {
-    deactivateMobileShift(); // 每次進下一題自動取消 Shift/向上箭頭
     clearHighlights();
     const targetCharEl = document.getElementById('targetChar');
 
@@ -300,7 +298,6 @@ function nextQuestion() {
 
     currentTarget = quizPool.pop();
     currentStepIndex = 0;
-    current10KeySubIndex = 0;
 
     targetCharEl.classList.remove('finished');
     targetCharEl.textContent = currentTarget.kor;
@@ -310,21 +307,20 @@ function nextQuestion() {
 
 function highlightNextKey() {
     clearHighlights();
-    if (!currentTarget || currentStepIndex >= currentTarget.sequence.length) return;
+    if (currentStepIndex >= currentTarget.sequence.length) return;
 
     const step = currentTarget.sequence[currentStepIndex];
 
     if (currentMode === 'mobile-10key') {
-        const expected10KeyChar = step.key10[current10KeySubIndex];
+        const expected10KeyChar = step.key10[0];
         const targetBtn = document.querySelector(`.key10key[data-10key="${expected10KeyChar}"]`);
         if (targetBtn) targetBtn.classList.add('active');
     } else {
-        // 手機 2-Set 模式或電腦模式：如果需要 Shift 且目前沒按，先提示/點亮向上箭頭
-        if (step.shift && !isMobileShiftActive) {
+        const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
+        if (targetKeyEl) targetKeyEl.classList.add('active');
+
+        if (currentMode === 'desktop' && step.shift) {
             document.querySelectorAll('.key-shift').forEach(sKey => sKey.classList.add('active'));
-        } else {
-            const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
-            if (targetKeyEl) targetKeyEl.classList.add('active');
         }
     }
 }
@@ -333,9 +329,11 @@ function clearHighlights() {
     document.querySelectorAll('.key, .key10key').forEach(key => {
         key.classList.remove('active', 'correct', 'wrong');
     });
-    if (isMobileShiftActive) {
-        document.querySelectorAll('.key-shift').forEach(sKey => sKey.classList.add('shift-pressed'));
-    }
+}
+
+function completeQuestion() {
+    currentStepIndex = currentTarget.sequence.length;
+    setTimeout(() => { nextQuestion(); }, 250);
 }
 
 function processInput(inputObj) {
@@ -357,11 +355,9 @@ function processInput(inputObj) {
     if (isCorrect) {
         if (inputObj.element) inputObj.element.classList.add('correct');
         
-        // 成功輸入一個步驟後，自動重設向上箭頭狀態
-        deactivateMobileShift();
-
         if (currentMode === 'mobile-10key') {
             current10KeySubIndex++;
+            // 當前步驟的所有點擊都完成了
             if (current10KeySubIndex >= expectedStep.key10.length) {
                 current10KeySubIndex = 0;
                 currentStepIndex++;
@@ -410,20 +406,12 @@ window.addEventListener('keyup', (e) => {
 document.querySelectorAll('.key').forEach(keyEl => {
     keyEl.addEventListener('click', () => {
         const code = keyEl.getAttribute('data-code');
+        if (code === 'ShiftLeft' || code === 'ShiftRight') return;
         
-        // 點擊左下角向上箭頭 (Shift 鍵)
-        if (code === 'ShiftLeft' || code === 'ShiftRight') {
-            isMobileShiftActive = !isMobileShiftActive;
-            if (isMobileShiftActive) {
-                document.querySelectorAll('.key-shift').forEach(sKey => sKey.classList.add('shift-pressed'));
-            } else {
-                document.querySelectorAll('.key-shift').forEach(sKey => sKey.classList.remove('shift-pressed'));
-            }
-            highlightNextKey();
-            return;
-        }
+        const expectedStep = currentTarget?.sequence[currentStepIndex];
+        const isShiftNeeded = expectedStep ? expectedStep.shift : false;
         
-        processInput({ code: code, shift: isMobileShiftActive, element: keyEl });
+        processInput({ code: code, shift: isShiftNeeded, element: keyEl });
     });
 });
 
