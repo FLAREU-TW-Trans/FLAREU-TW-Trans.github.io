@@ -61,37 +61,15 @@
     body.mode-mobile-10key .btn-start { margin-bottom: 25px; }
     #keyboard10Key .key10key { position: relative; }
 
-#keyboard10Key .key10key .key-order-badge {
-    position: absolute;
-    top: 3px;
-    right: 4px;
-    z-index: 2;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 18px;
-    min-height: 18px;
-    padding: 1px 4px;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.72);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 1.1;
-    white-space: nowrap;
-    pointer-events: none;
-    box-sizing: border-box;
-}
+    #keyboard10Key .key10key .key-order-badge {
+        position: absolute; top: 3px; right: 4px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; min-width: 18px; min-height: 18px;
+        padding: 1px 4px; border-radius: 10px; background: rgba(0, 0, 0, 0.72); color: #fff; font-size: 11px; font-weight: 700; line-height: 1.1;
+        white-space: nowrap; pointer-events: none; box-sizing: border-box;
+    }
 
-/* 九宮格本題所有需要使用的按鍵都高亮 */
-#keyboard10Key .key10key.sequence-required {
-    outline: 2px solid currentColor;
-}
-
-/* 目前輪到的按鍵再加一層醒目提示 */
-#keyboard10Key .key10key.sequence-current {
-    transform: scale(1.04);
-}
+    #keyboard10Key .key10key.sequence-required { outline: 2px solid currentColor; }
+    #keyboard10Key .key10key.sequence-current { transform: scale(1.04);}
+    
     @media (max-width: 700px) {
         body { padding: 8px; }
         .container { padding: 12px; border-radius: 12px; }
@@ -300,20 +278,70 @@ document.getElementById('keyboardMode').addEventListener('change', (e) => {
     if (isPlaying) highlightNextKey();
 });
 
+// 清空手機輸入框；只在換題、重新開始或切換模式時使用。
+function clearMobileInput() {
+    const mobileInput = document.getElementById('mobileInput');
+    if (mobileInput) mobileInput.value = '';
+}
+
+// 判斷本題是否屬於「完成輸入後，直接拿輸入框內容與題目比較」的特殊手機題型。
+function isMobile2SetShiftQuestion() {
+    return currentMode === 'mobile-2set' &&
+        !!currentTarget &&
+        currentTarget.sequence.some(step => step.shift === true);
+}
+
+function isMobile10KeyDotQuestion() {
+    return currentMode === 'mobile-10key' &&
+        !!currentTarget &&
+        currentTarget.sequence.some(step =>
+            (step.key10 || []).some(char10 => normalize10KeyChar(char10) === '·')
+        );
+}
+
+// 以輸入框完整內容判斷特殊手機題型是否完成。
+function checkMobileInputTarget(inputEl) {
+    if (!isPlaying || !currentTarget || !inputEl) return false;
+    if (!isMobile2SetShiftQuestion() && !isMobile10KeyDotQuestion()) return false;
+
+    const inputVal = inputEl.value;
+    if (!inputVal) return false;
+
+    const normalizedInput = inputVal.normalize('NFC');
+    const normalizedTarget = currentTarget.kor.normalize('NFC');
+
+    if (normalizedInput === normalizedTarget) {
+        nextQuestion();
+        return true;
+    }
+
+    return false;
+}
+
 // 監聽手機輸入框輸入事件
 document.getElementById('mobileInput').addEventListener('input', (e) => {
     if (!isPlaying || !currentTarget) {
-        e.target.value = '';
         return;
     }
 
     const inputVal = e.target.value;
     if (!inputVal) return;
 
-    const charEntered = inputVal.slice(-1);
-    e.target.value = '';
-
     // =========================================================
+    // 特殊題型：直接以輸入框目前的「完整韓文字母」與題目比較。
+    // 1. 手機 2-Set 需要 ↑ 的題目：例如 ㄲ、ㄸ、ㅃ、ㅆ、ㅉ
+    // 2. 手機九宮格需要「· (天)」的題目：例如 ㅏ、ㅐ、ㅑ、ㅘ 等
+    // 手機 IME 在完成輸入後會把結果放在輸入框，因此不再拆成 ↑ / · 的中間步驟。
+    // 組字期間先保留輸入內容，不提前判定；compositionend 會再檢查一次。
+    // =========================================================
+    if (isMobile2SetShiftQuestion() || isMobile10KeyDotQuestion()) {
+        if (!e.isComposing) checkMobileInputTarget(e.target);
+        return;
+    }
+
+    // 不再清空輸入框，讓使用者可以看到目前已輸入的字母。
+    const charEntered = inputVal.slice(-1);
+
     if (currentMode === 'mobile-10key') {
         const char10 = normalize10KeyChar(charEntered);
 
@@ -390,6 +418,11 @@ document.getElementById('mobileInput').addEventListener('input', (e) => {
     });
 });
 
+// 部分手機 IME 會在組字完成時才送出 compositionend，因此再檢查一次
+document.getElementById('mobileInput').addEventListener('compositionend', (e) => {
+    checkMobileInputTarget(e.target);
+});
+
 // 抽取不重複的題目
 function getRandomQuestions(sourceArray, count) {
     const shuffled = [...sourceArray];
@@ -404,12 +437,14 @@ function startGame() {
     quizPool = getRandomQuestions(charList, totalQuestions);
     currentQuestionIndex = 0;
     isPlaying = true;
+    clearMobileInput();
     document.getElementById('startBtn').style.display = 'none';
     nextQuestion();
 }
 
 function nextQuestion() {
     clearHighlights();
+    clearMobileInput();
     current10KeySubIndex = 0;
     resetMobile2SetShift();
     const targetCharEl = document.getElementById('targetChar');
