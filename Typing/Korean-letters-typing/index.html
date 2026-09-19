@@ -18,7 +18,6 @@
     .display-card { background: #eef2f7; border-radius: 12px; padding: 20px; margin-bottom: 20px; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     
     .target-char { font-size: 32px; font-weight: bold; color: #2c3e50; }
-    .typed-preview { font-size: 32px; color: #e67e22; min-height: 40px; margin-top: 5px; font-weight: 600; }
     .finished { font-size: 28px; color: #27ae60; }
     .score { font-size: 16px; color: #7f8c8d; margin-top: 5px; }
     
@@ -72,7 +71,6 @@
 
     <div class="display-card">
         <div id="targetChar" class="target-char">準備好了嗎？</div>
-        <div id="typedPreview" class="typed-preview"></div>
         <div id="score" class="score">按下「開始練習」開始</div>
     </div>
 
@@ -150,28 +148,28 @@
 // 共 40 個韓文基礎字母完整題庫
 const charList = [
     // --- 單母音 (10) ---
-    { kor: 'ㅏ', sequence: [{ code: 'KeyK', shift: false, key10: ['ㅣ', '•'] }] },
-    { kor: 'ㅓ', sequence: [{ code: 'KeyJ', shift: false, key10: ['•', 'ㅣ'] }] },
-    { kor: 'ㅗ', sequence: [{ code: 'KeyH', shift: false, key10: ['•', 'ㅡ'] }] },
-    { kor: 'ㅜ', sequence: [{ code: 'KeyN', shift: false, key10: ['ㅡ', '•'] }] },
+    { kor: 'ㅏ', sequence: [{ code: 'KeyK', shift: false, key10: ['ㅣ', '·'] }] },
+    { kor: 'ㅓ', sequence: [{ code: 'KeyJ', shift: false, key10: ['·', 'ㅣ'] }] },
+    { kor: 'ㅗ', sequence: [{ code: 'KeyH', shift: false, key10: ['·', 'ㅡ'] }] },
+    { kor: 'ㅜ', sequence: [{ code: 'KeyN', shift: false, key10: ['ㅡ', '·'] }] },
     { kor: 'ㅡ', sequence: [{ code: 'KeyM', shift: false, key10: ['ㅡ'] }] },
     { kor: 'ㅣ', sequence: [{ code: 'KeyL', shift: false, key10: ['ㅣ'] }] },
-    { kor: 'ㅐ', sequence: [{ code: 'KeyO', shift: false, key10: ['ㅣ', '•', 'ㅣ'] }] },
-    { kor: 'ㅔ', sequence: [{ code: 'KeyP', shift: false, key10: ['•', 'ㅣ', 'ㅣ'] }] },
-    { kor: 'ㅑ', sequence: [{ code: 'KeyI', shift: false, key10: ['ㅣ', '•', '•'] }] },
-    { kor: 'ㅕ', sequence: [{ code: 'KeyU', shift: false, key10: ['•', '•', 'ㅣ'] }] },
+    { kor: 'ㅐ', sequence: [{ code: 'KeyO', shift: false, key10: ['ㅣ', '·', 'ㅣ'] }] },
+    { kor: 'ㅔ', sequence: [{ code: 'KeyP', shift: false, key10: ['·', 'ㅣ', 'ㅣ'] }] },
+    { kor: 'ㅑ', sequence: [{ code: 'KeyI', shift: false, key10: ['ㅣ', '·', '·'] }] },
+    { kor: 'ㅕ', sequence: [{ code: 'KeyU', shift: false, key10: ['·', '·', 'ㅣ'] }] },
 
     // --- 複合母音 (11) ---
-    { kor: 'ㅛ', sequence: [{ code: 'KeyY', shift: false, key10: ['•', '•', 'ㅡ'] }] },
-    { kor: 'ㅠ', sequence: [{ code: 'KeyB', shift: false, key10: ['ㅡ', '•', '•'] }] },
-    { kor: 'ㅒ', sequence: [{ code: 'KeyO', shift: true,  key10: ['ㅣ', '•', '•', 'ㅣ'] }] },
-    { kor: 'ㅖ', sequence: [{ code: 'KeyP', shift: true,  key10: ['•', '•', 'ㅣ', 'ㅣ'] }] },
-    { kor: 'ㅘ', sequence: [{ code: 'KeyH', shift: false, key10: ['•', 'ㅡ'] }, { code: 'KeyK', shift: false, key10: ['ㅣ', '•'] }] },
-    { kor: 'ㅙ', sequence: [{ code: 'KeyH', shift: false, key10: ['•', 'ㅡ'] }, { code: 'KeyO', shift: false, key10: ['ㅣ', '•', 'ㅣ'] }] },
-    { kor: 'ㅚ', sequence: [{ code: 'KeyH', shift: false, key10: ['•', 'ㅡ'] }, { code: 'KeyL', shift: false, key10: ['ㅣ'] }] },
-    { kor: 'ㅝ', sequence: [{ code: 'KeyN', shift: false, key10: ['ㅡ', '•'] }, { code: 'KeyJ', shift: false, key10: ['•', 'ㅣ'] }] },
-    { kor: 'ㅞ', sequence: [{ code: 'KeyN', shift: false, key10: ['ㅡ', '•'] }, { code: 'KeyP', shift: false, key10: ['•', 'ㅣ', 'ㅣ'] }] },
-    { kor: 'ㅟ', sequence: [{ code: 'KeyN', shift: false, key10: ['ㅡ', '•'] }, { code: 'KeyL', shift: false, key10: ['ㅣ'] }] },
+    { kor: 'ㅛ', sequence: [{ code: 'KeyY', shift: false, key10: ['·', '·', 'ㅡ'] }] },
+    { kor: 'ㅠ', sequence: [{ code: 'KeyB', shift: false, key10: ['ㅡ', '·', '·'] }] },
+    { kor: 'ㅒ', sequence: [{ code: 'KeyO', shift: true,  key10: ['ㅣ', '·', '·', 'ㅣ'] }] },
+    { kor: 'ㅖ', sequence: [{ code: 'KeyP', shift: true,  key10: ['·', '·', 'ㅣ', 'ㅣ'] }] },
+    { kor: 'ㅘ', sequence: [{ code: 'KeyH', shift: false, key10: ['·', 'ㅡ'] }, { code: 'KeyK', shift: false, key10: ['ㅣ', '·'] }] },
+    { kor: 'ㅙ', sequence: [{ code: 'KeyH', shift: false, key10: ['·', 'ㅡ'] }, { code: 'KeyO', shift: false, key10: ['ㅣ', '·', 'ㅣ'] }] },
+    { kor: 'ㅚ', sequence: [{ code: 'KeyH', shift: false, key10: ['·', 'ㅡ'] }, { code: 'KeyL', shift: false, key10: ['ㅣ'] }] },
+    { kor: 'ㅝ', sequence: [{ code: 'KeyN', shift: false, key10: ['ㅡ', '·'] }, { code: 'KeyJ', shift: false, key10: ['·', 'ㅣ'] }] },
+    { kor: 'ㅞ', sequence: [{ code: 'KeyN', shift: false, key10: ['ㅡ', '·'] }, { code: 'KeyP', shift: false, key10: ['·', 'ㅣ', 'ㅣ'] }] },
+    { kor: 'ㅟ', sequence: [{ code: 'KeyN', shift: false, key10: ['ㅡ', '·'] }, { code: 'KeyL', shift: false, key10: ['ㅣ'] }] },
     { kor: 'ㅢ', sequence: [{ code: 'KeyM', shift: false, key10: ['ㅡ'] }, { code: 'KeyL', shift: false, key10: ['ㅣ'] }] },
 
     // --- 單子音 (14) ---
@@ -203,6 +201,7 @@ let currentQuestionIndex = 0;
 const totalQuestions = 10; 
 let currentTarget = null;
 let currentStepIndex = 0;
+let current10KeySubIndex = 0;
 let isPlaying = false;
 let currentMode = 'desktop';
 
@@ -230,17 +229,27 @@ document.getElementById('mobileInput').addEventListener('input', (e) => {
     const inputVal = e.target.value;
     if (!inputVal || !isPlaying) return;
 
-    // 取得最後輸入的字元
+    // 取得使用者打出的字元
     const charEntered = inputVal.slice(-1);
-    e.target.value = ''; // 清空輸入框保持流暢
+    
+    // 如果輸入法的字元剛好就是目標字元
+    if (charEntered === currentTarget.kor) {
+        e.target.value = '';
+        completeQuestion();
+        return;
+    }
 
-    // 尋找對應的實體/畫面按鍵
+    e.target.value = ''; // 清空輸入框
+
+    // 否則依照字母逐個進行比對
     let targetEl = null;
     let codeMatched = null;
 
     if (currentMode === 'mobile-10key') {
-        targetEl = document.querySelector(`.key10key[data-10key="${charEntered}"]`);
-        processInput({ char10: charEntered, element: targetEl });
+        // 相容不同輸入法產生的點號
+        const normalizedChar = (charEntered === '•' || charEntered === '·') ? '·' : charEntered;
+        targetEl = document.querySelector(`.key10key[data-10key="${normalizedChar}"]`);
+        processInput({ char10: normalizedChar, element: targetEl });
     } else {
         targetEl = document.querySelector(`.key[data-char="${charEntered}"]`);
         if (targetEl) {
@@ -322,13 +331,19 @@ function clearHighlights() {
     });
 }
 
+function completeQuestion() {
+    currentStepIndex = currentTarget.sequence.length;
+    setTimeout(() => { nextQuestion(); }, 250);
+}
+
 function processInput(inputObj) {
     if (!isPlaying || !currentTarget) return;
     const expectedStep = currentTarget.sequence[currentStepIndex];
     let isCorrect = false;
 
     if (currentMode === 'mobile-10key') {
-        if (inputObj.char10 === expectedStep.key10[0]) {
+        const expectedChar = expectedStep.key10[current10KeySubIndex];
+        if (inputObj.char10 === expectedChar) {
             isCorrect = true;
         }
     } else {
@@ -339,11 +354,23 @@ function processInput(inputObj) {
 
     if (isCorrect) {
         if (inputObj.element) inputObj.element.classList.add('correct');
-        currentStepIndex++;
+        
+        if (currentMode === 'mobile-10key') {
+            current10KeySubIndex++;
+            // 當前步驟的所有點擊都完成了
+            if (current10KeySubIndex >= expectedStep.key10.length) {
+                current10KeySubIndex = 0;
+                currentStepIndex++;
+            }
+        } else {
+            currentStepIndex++;
+        }
+
+        // 判斷是否完成整題
         if (currentStepIndex >= currentTarget.sequence.length) {
             setTimeout(() => { nextQuestion(); }, 250);
         } else {
-            setTimeout(() => { highlightNextKey(); }, 200);
+            setTimeout(() => { highlightNextKey(); }, 150);
         }
     } else {
         if (inputObj.element) {
