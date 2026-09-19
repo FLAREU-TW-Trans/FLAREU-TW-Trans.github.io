@@ -51,7 +51,6 @@
         width: 100%; max-width: 280px; font-size: 20px; padding: 8px 12px; text-align: center; border: 2px solid #3498db;
         border-radius: 8px; outline: none;
     }
-    /* 手機模式隱藏電腦左右 Shift；手機 2-Set 使用獨立的向上箭頭按鍵，避免影響電腦 2-Set */
     body.mode-mobile-2set .key-shift:not(.mobile-2set-shift),
     body.mode-mobile-10key .key-shift { display: none !important; }
     body.mode-mobile-2set .mobile-2set-shift { display: block !important; }
@@ -65,12 +64,7 @@
         .container { padding: 12px; border-radius: 12px; }
         h1 { font-size: 20px; margin-bottom: 8px; }
         .layout-selector { margin-bottom: 10px; gap: 5px; }
-        .display-card {
-            min-height: 72px;
-            padding: 8px 12px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-        }
+        .display-card { min-height: 72px; padding: 8px 12px; margin-bottom: 10px; border-radius: 10px; }
         .target-char { font-size: 28px; }
         .finished { font-size: 24px; }
         .score { font-size: 13px; margin-top: 2px; }
@@ -84,7 +78,6 @@
         .key10key { height: 54px; font-size: 18px; border-radius: 10px; }
         .btn-start { padding: 9px 24px; font-size: 16px; margin-top: 6px; }
     }
-
 </style>
 </head>
 <body>
@@ -239,8 +232,7 @@ let isPlaying = false;
 let currentMode = 'desktop';
 let mobile2SetShiftSelected = false;
 
-// 手機 2-Set 的獨立「向上箭頭」狀態。
-// 注意：電腦 2-Set 的 Shift 邏輯完全不使用這個狀態，因此不會改動電腦鍵盤的操作。
+// 手機 2-Set 的「向上箭頭」狀態
 function resetMobile2SetShift() {
     mobile2SetShiftSelected = false;
     const shiftKey = document.getElementById('mobile2SetShift');
@@ -295,10 +287,57 @@ document.getElementById('mobileInput').addEventListener('input', (e) => {
         return;
     }
 
+    const doubledToBase = {
+        'ㄲ': 'ㄱ',
+        'ㄸ': 'ㄷ',
+        'ㅃ': 'ㅂ',
+        'ㅆ': 'ㅅ',
+        'ㅉ': 'ㅈ'
+    };
+
+    if (currentMode === 'mobile-2set' && doubledToBase[charEntered]) {
+        const baseChar = doubledToBase[charEntered];
+        const baseEl = document.querySelector(
+            `.key[data-char="${CSS.escape(baseChar)}"]`
+        );
+        const baseCode = baseEl ? baseEl.getAttribute('data-code') : null;
+
+        const expectedStep = currentTarget.sequence[currentStepIndex];
+        if (
+            expectedStep &&
+            expectedStep.shift &&
+            expectedStep.code === baseCode &&
+            !mobile2SetShiftSelected
+        ) {
+            const shiftEl = document.getElementById('mobile2SetShift');
+
+            processInput({
+                mobileShift: true,
+                element: shiftEl
+            });
+
+            setTimeout(() => {
+                if (
+                    isPlaying &&
+                    currentMode === 'mobile-2set' &&
+                    currentTarget &&
+                    currentTarget.sequence[currentStepIndex]?.code === baseCode &&
+                    mobile2SetShiftSelected
+                ) {
+                    processInput({
+                        code: baseCode,
+                        shift: true,
+                        element: baseEl
+                    });
+                }
+            }, 20);
+            return;
+        }
+    }
+
     const targetEl = document.querySelector(`.key[data-char="${CSS.escape(charEntered)}"]`);
     const codeMatched = targetEl ? targetEl.getAttribute('data-code') : null;
 
-    // 手機2-Set的系統鍵盤輸入也必須遵守目前題目的逐步狀態。
     processInput({
         code: codeMatched,
         shift: mobile2SetShiftSelected,
@@ -353,7 +392,7 @@ function nextQuestion() {
 }
 
 function normalize10KeyChar(char) {
-    return (char === '•' || char === '·') ? '·' : char;
+    return (char === '•' || char === '·' || char === '.' || char === '．') ? '·' : char;
 }
 
 function highlightNextKey() {
@@ -382,7 +421,6 @@ function highlightNextKey() {
         return;
     }
 
-    // 電腦2-Set：以下維持原本的顯示方式。
     const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
     if (targetKeyEl) targetKeyEl.classList.add('active');
 
@@ -415,12 +453,10 @@ function processInput(inputObj) {
         const expectedChar = normalize10KeyChar(expectedStep.key10[current10KeySubIndex]);
         const enteredChar = normalize10KeyChar(inputObj.char10);
 
-        // 每一次按鍵都是獨立一步；不允許只按到第一個字就算完成。
         if (enteredChar === expectedChar) {
             isCorrect = true;
         }
     } else if (currentMode === 'mobile-2set') {
-        // 手機2-Set：需要Shift的題目一定要先按 ↑。
         if (expectedStep.shift) {
             if (!mobile2SetShiftSelected && inputObj.mobileShift === true) {
                 isCorrect = true;
@@ -433,7 +469,6 @@ function processInput(inputObj) {
             isCorrect = inputObj.code === expectedStep.code && inputObj.shift === false;
         }
     } else {
-        // 電腦2-Set：保持原本的 code + shift 判定。
         isCorrect =
             inputObj.code === expectedStep.code &&
             inputObj.shift === expectedStep.shift;
@@ -451,7 +486,6 @@ function processInput(inputObj) {
             }
         } else if (currentMode === 'mobile-2set') {
             if (expectedStep.shift && inputObj.mobileShift === true) {
-                // 只完成 ↑ 這一步；接下來才亮字母。
                 setMobile2SetShiftSelected(true);
             } else {
                 currentStepIndex++;
@@ -526,7 +560,6 @@ document.querySelectorAll('.key').forEach(keyEl => {
                 element: keyEl
             });
         } else {
-            // 電腦2-Set保持原本畫面按鍵邏輯。
             processInput({
                 code: code,
                 shift: isShiftNeeded,
