@@ -279,13 +279,13 @@ document.getElementById('keyboardMode').addEventListener('change', (e) => {
     if (isPlaying) highlightNextKey();
 });
 
-// 清空手機輸入框；只在換題、重新開始或切換模式時使用。
+// 清空手機輸入框
 function clearMobileInput() {
     const mobileInput = document.getElementById('mobileInput');
     if (mobileInput) mobileInput.value = '';
 }
 
-// 手機模式一律以輸入框內容作為答案，按 Enter 後才判定。
+// 手機模式一律以輸入框內容作為答案，按 Enter 後才判定
 function checkMobileInputTarget(inputEl) {
     if (!isPlaying || !currentTarget || !inputEl) return false;
     if (currentMode !== 'mobile-2set' && currentMode !== 'mobile-10key') return false;
@@ -297,7 +297,6 @@ function checkMobileInputTarget(inputEl) {
     const normalizedTarget = currentTarget.kor.normalize('NFC');
 
     if (normalizedInput === normalizedTarget) {
-        // 答案正確：只有按下 Enter 後才進入下一題。
         nextQuestion();
         return true;
     }
@@ -312,13 +311,12 @@ function checkMobileInputTarget(inputEl) {
 
 const mobileInputEl = document.getElementById('mobileInput');
 
-// 手機輸入：只顯示使用者目前輸入的內容，不在 input 事件中判題。
+// 手機輸入只顯示使用者目前輸入的內容
 mobileInputEl.addEventListener('input', (e) => {
     if (!isPlaying || !currentTarget) return;
-    // 刻意不清空、不判定，直到使用者按 Enter。
 });
 
-// 手機模式按 Enter 才提交目前輸入內容。
+// 手機模式按 Enter 才提交目前輸入內容
 mobileInputEl.addEventListener('keydown', (e) => {
     if (!isPlaying || !currentTarget) return;
     if (currentMode !== 'mobile-2set' && currentMode !== 'mobile-10key') return;
@@ -330,7 +328,7 @@ mobileInputEl.addEventListener('keydown', (e) => {
 });
 
 // 部分手機 IME 會在組字完成時送出 compositionend；這裡只保留輸入內容，
-// 不在 compositionend 時自動判題，仍然必須由使用者按 Enter 提交。
+// 不在 compositionend 時自動判題，仍然必須由使用者按 Enter 提交
 mobileInputEl.addEventListener('compositionend', () => {
     // intentionally no auto-submit
 });
@@ -406,7 +404,6 @@ function update10KeyOrderHints() {
 
     if (currentMode !== 'mobile-10key' || !currentTarget) return;
 
-    // 把本題所有九宮格按鍵需求攤平成完整輸入順序。
     const flattenedSequence = [];
     currentTarget.sequence.forEach((step) => {
         (step.key10 || []).forEach((char10) => {
@@ -449,7 +446,6 @@ function highlightNextKey() {
     const step = currentTarget.sequence[currentStepIndex];
 
     if (currentMode === 'mobile-10key') {
-        // 本題所有需要輸入的按鍵都同時高亮，並在按鍵上標示完整輸入順序。
         update10KeyOrderHints();
 
         const expected10KeyChar = normalize10KeyChar(step.key10[current10KeySubIndex]);
@@ -467,7 +463,6 @@ function highlightNextKey() {
 
     if (currentMode === 'mobile-2set') {
         if (step.shift) {
-            // 需要 ↑ 的題目：↑ 和對應字母一開始就同時高亮。
             const shiftKey = document.getElementById('mobile2SetShift');
             const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
 
@@ -480,7 +475,6 @@ function highlightNextKey() {
         return;
     }
 
-    // 電腦2-Set：以下維持原本的顯示方式。
     const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
     if (targetKeyEl) targetKeyEl.classList.add('active');
 
@@ -513,12 +507,10 @@ function processInput(inputObj) {
         const expectedChar = normalize10KeyChar(expectedStep.key10[current10KeySubIndex]);
         const enteredChar = normalize10KeyChar(inputObj.char10);
 
-        // 每一次按鍵都是獨立一步；不允許只按到第一個字就算完成。
         if (enteredChar === expectedChar) {
             isCorrect = true;
         }
     } else if (currentMode === 'mobile-2set') {
-        // 手機2-Set：需要Shift的題目一定要先按 ↑。
         if (expectedStep.shift) {
             if (!mobile2SetShiftSelected && inputObj.mobileShift === true) {
                 isCorrect = true;
@@ -531,7 +523,6 @@ function processInput(inputObj) {
             isCorrect = inputObj.code === expectedStep.code && inputObj.shift === false;
         }
     } else {
-        // 電腦2-Set：保持原本的 code + shift 判定。
         isCorrect =
             inputObj.code === expectedStep.code &&
             inputObj.shift === expectedStep.shift;
@@ -549,7 +540,6 @@ function processInput(inputObj) {
             }
         } else if (currentMode === 'mobile-2set') {
             if (expectedStep.shift && inputObj.mobileShift === true) {
-                // 只完成 ↑ 這一步；接下來才亮字母。
                 setMobile2SetShiftSelected(true);
             } else {
                 currentStepIndex++;
@@ -561,7 +551,6 @@ function processInput(inputObj) {
         if (currentStepIndex >= currentTarget.sequence.length) {
             if (currentMode === 'mobile-2set') resetMobile2SetShift();
 
-            // 手機模式答對完整序列後直接進入下一題，不再停留 250ms。
             if (currentMode === 'mobile-2set' || currentMode === 'mobile-10key') {
                 nextQuestion();
             } else {
@@ -581,8 +570,6 @@ function processInput(inputObj) {
 
 // 實體鍵盤事件
 window.addEventListener('keydown', (e) => {
-    // 手機虛擬鍵盤通常不會把自己的 ↑ / . 按鍵當成網頁 keydown，
-    // 因此手機模式主要依 mobileInput 的 input 事件判斷。
     if (currentMode === 'mobile-10key' || currentMode === 'mobile-2set') return;
 
     if (e.key === 'Shift') {
@@ -632,7 +619,6 @@ document.querySelectorAll('.key').forEach(keyEl => {
                 element: keyEl
             });
         } else {
-            // 電腦2-Set保持原本畫面按鍵邏輯。
             processInput({
                 code: code,
                 shift: isShiftNeeded,
