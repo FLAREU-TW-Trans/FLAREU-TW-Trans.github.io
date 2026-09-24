@@ -469,35 +469,48 @@ function highlightNextKey() {
     }
 
     if (currentMode === 'mobile-2set') {
-        // 判斷當前題目是否為「複母音」
-        const isCompoundVowel = compoundVowelIndexes.includes(currentTarget.vIdx);
-        
-        // 判斷目前進度是否已進入母音階段 (比對 step.char 是否屬於母音鍵)
-        // 或是直接計算: 若初聲是 shift 鍵(佔 1 步)，初聲結束為 stepIdx >= 1，否則為 stepIdx >= 1
-        // 最穩健的方法是過濾出 sequence 中屬於母音步驟 (key10 或 char 屬於母音) 進行高亮
-        const isVowelStep = step.char && 'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ'.includes(step.char);
 
-        if (isCompoundVowel && isVowelStep) {
-            // 找出 sequence 中所有母音步驟並將對應按鍵高亮
-            currentTarget.sequence.forEach(s => {
-                if ('ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ'.includes(s.char)) {
-                    const keyEl = document.querySelector(`.key[data-code="${s.code}"]`);
-                    if (keyEl) keyEl.classList.add('active');
+        const initialStep = currentTarget.sequence[0];
+
+        if (initialStep) {
+            const initialKeyEl = document.querySelector(
+                `.key[data-code="${initialStep.code}"]`
+            );
+
+            if (initialKeyEl) {
+                initialKeyEl.classList.add('active');
+            }
+
+            if (initialStep.shift) {
+                const shiftKey =
+                    document.getElementById('mobile2SetShift');
+
+                if (shiftKey) {
+                    shiftKey.classList.add('active');
                 }
-            });
-            return;
+            }
         }
 
-        if (step.shift) {
-            const shiftKey = document.getElementById('mobile2SetShift');
-            const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
+        currentTarget.sequence.slice(1).forEach(vStep => {
 
-            if (shiftKey) shiftKey.classList.add('active');
-            if (targetKeyEl) targetKeyEl.classList.add('active');
-        } else {
-            const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
-            if (targetKeyEl) targetKeyEl.classList.add('active');
-        }
+            const vowelKeyEl = document.querySelector(
+                `.key[data-code="${vStep.code}"]`
+            );
+
+            if (vowelKeyEl) {
+                vowelKeyEl.classList.add('active');
+            }
+
+            if (vStep.shift) {
+                const shiftKey =
+                    document.getElementById('mobile2SetShift');
+
+                if (shiftKey) {
+                    shiftKey.classList.add('active');
+                }
+            }
+        });
+
         return;
     }
 
