@@ -61,10 +61,10 @@ body {
 /* ==========================================
    3. 使用說明彈窗
    ========================================== */
-.modal-card { background: var(--surface-white); width: 90vw !important; max-width: 1200px !important; border-radius: 16px; padding: 30px 28px; box-shadow: 0 20px 30px rgba(33, 33, 71, 0.2); position: relative; }
+.info-modal-card { background: var(--surface-white); width: 90vw; max-width: 800px; border-radius: 16px; padding: 30px 28px; box-shadow: 0 20px 30px rgba(33, 33, 71, 0.2); position: relative; }
 .info-tabs { display: flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 10px; margin: 15px 0; }
 .info-tab-btn {
-    flex: 1; padding: 10px 4px; border: none; background: transparent; color: #64748b; font-size: 15px; font-weight: 600; border-radius: 6px;
+    flex: 1; padding: 10px 4px; border: none; background: transparent; color: #64748b; font-size: 16px; font-weight: 600; border-radius: 6px;
     cursor: pointer; transition: all 0.2s ease; white-space: nowrap;
 }
 .info-tab-btn.active { background-color: var(--primary-dark); color: #ffffff; font-weight: 700; box-shadow: 0 2px 5px rgba(33, 33, 71, 0.2); }
@@ -80,7 +80,7 @@ body {
 .info-link { color: #2563eb; text-decoration: underline; font-weight: 600; }
    
 @media (max-width: 600px) {
-    .modal-card { width: 95%; max-width: 100%; padding: 24px 18px; }
+    .info-modal-card { width: 95%; max-width: 100%; padding: 24px 18px; }
     .info-tab-btn { padding: 8px 2px; font-size: 13px; }
     .info-tab-content { font-size: 14px; }
     .info-subtext { font-size: 12px; }
@@ -518,7 +518,7 @@ body {
 
 <!-- 說明提示彈窗 -->
 <div class="modal-overlay" id="info-modal" onclick="closeInfoModal(event)">
-  <div class="modal-card">
+  <div class="info-modal-card">
     <button class="modal-close" onclick="closeInfoModalDirect()">✕</button>
     
     <div class="modal-header">
