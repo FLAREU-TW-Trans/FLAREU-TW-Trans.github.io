@@ -484,12 +484,12 @@ body {
                      </div>
          
                      <div class="leaderboard-item leaderboard-percent">
-                         <span>速度高於</span>
+                         <span>速度百分位</span>
                          <strong id="leaderboard-cpm-percent">沒有成績</strong>
                      </div>
          
                      <div class="leaderboard-item leaderboard-percent">
-                         <span>正確率高於</span>
+                         <span>正確率百分位</span>
                          <strong id="leaderboard-accuracy-percent">沒有成績</strong>
                      </div>
          
@@ -555,8 +555,8 @@ body {
       <!-- 標籤 3：模式二 & 三 (教學與測驗) -->
       <div id="tab-mode2" class="tab-pane">
         <ul class="info-list">
-          <li><b>教學模式：</b>音檔皆標記初中階韓文單字的詞性、中文與發音，方便學習。</li>
-          <li><b>單字測驗：</b>收錄教學模式中約 360 個單字。點擊「中譯韓」或「韓譯中」可隨機抽取十個單字測驗（成績不予記錄，歡迎隨時練習）。</li>
+          <li><b>教學模式：</b>每個單字字卡皆標記該韓文單字的詞性、中文與發音，方便學習。</li>
+          <li><b>單字測驗：</b>收錄教學模式中約 360 個初中階韓文單字。點擊「中譯韓」或「韓譯中」可隨機抽取十個單字測驗（成績不予記錄，歡迎隨時練習）。</li>
         </ul>
       </div>
 
@@ -3573,36 +3573,34 @@ function updateTypingLeaderboard(records) {
     myCpmEl.innerText = `${myBestCpm} CPM`;
     myAccuracyEl.innerText = `${myBestAccuracy}%`;
 
-    // 取得其他使用者
-    const otherUsers = users.filter(user => user.uid !== myUid);
+    const totalUsers = users.length;
 
-    // 沒有其他使用者
-    if (otherUsers.length === 0) {
-
-        cpmPercentEl.innerText = '暫無其他使用者';
-        accuracyPercentEl.innerText = '暫無其他使用者';
-        return;
-    }
-
-    // 速度：我的最佳 CPM 高於多少其他使用者
-    const cpmLowerCount =
-        otherUsers.filter(user => {
-            return user.bestCpm < myBestCpm;
-        }).length;
-
-    const cpmPercent = Math.round((cpmLowerCount / otherUsers.length) * 100);
-
-    cpmPercentEl.innerText = cpmPercent === 100 ? '全部其他使用者' : `${cpmPercent}%`;
-
-    // 正確率：我的最佳正確率高於多少其他使用者
-    const accuracyLowerCount =
-        otherUsers.filter(user => {
-            return user.bestAccuracy < myBestAccuracy;
-        }).length;
-
-    const accuracyPercent = Math.round((accuracyLowerCount / otherUsers.length) * 100);
-
-    accuracyPercentEl.innerText = accuracyPercent === 100 ? '全部其他使用者' : `${accuracyPercent}%`;
+     if (totalUsers === 0) {
+         cpmPercentEl.innerText = '沒有使用者資料';
+         accuracyPercentEl.innerText = '沒有使用者資料';
+         return;
+     }
+   
+     // 速度百分位
+     const cpmPercentileCount =
+         users.filter(user => {
+             return user.bestCpm <= myBestCpm;
+         }).length;
+   
+     const cpmPercentile =
+         Math.round((cpmPercentileCount / totalUsers) * 100);
+   
+     // 正確率百分位
+     const accuracyPercentileCount =
+         users.filter(user => {
+             return user.bestAccuracy <= myBestAccuracy;
+         }).length;
+   
+     const accuracyPercentile =
+         Math.round((accuracyPercentileCount / totalUsers) * 100);
+   
+     cpmPercentEl.innerText = `第 ${cpmPercentile} 百分位`;
+     accuracyPercentEl.innerText = `第 ${accuracyPercentile} 百分位`;
 }
 </script>
 
