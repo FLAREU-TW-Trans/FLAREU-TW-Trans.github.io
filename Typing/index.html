@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
+<link rel="stylesheet" href="../../../css/reaction.css">
+<title>韓文拼音練習</title>
+  
+<style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background-color: #f4f7f6; color: #333; padding: 15px; }
+    .container { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 650px; text-align: center; }
+    h1 { margin-top: 0; font-size: 24px; color: #2c3e50; }
+    .layout-selector { margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .layout-selector select { font-size: 16px; padding: 8px 16px; border-radius: 8px; border: 1px solid #ccc; outline: none; }
+    .display-card { background: #eef2f7; border-radius: 12px; padding: 20px; margin-bottom: 20px; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    
+    .target-char { font-size: 32px; font-weight: bold; color: #2c3e50; }
+    .finished { font-size: 28px; color: #27ae60; }
+    .score { font-size: 16px; color: #7f8c8d; margin-top: 5px; }
+    
+    /* 鍵盤佈局 */
+    .keyboard-wrapper { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; }
+    .key-row { display: flex; justify-content: center; gap: 6px; }
+    .key { 
+        padding: 10px 2px; border: 1px solid #dcdde1; border-radius: 6px; background: #fff; font-size: 16px; cursor: pointer; user-select: none; 
+        transition: all 0.15s; flex: 1; min-width: 0; max-width: 45px; text-align: center; 
+    }
+    .key.key-shift { max-width: 75px; background: #e0e0e0; font-size: 14px; font-weight: bold; }
+    .key.active { background: #3498db; color: white; border-color: #2980b9; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(52,152,219,0.3); }
+    .key.shift-pressed { background: #e67e22 !important; color: white !important; border-color: #d35400 !important; }
+    .key.correct { background: #2ecc71 !important; color: white !important; }
+    .key.wrong { background: #e74c3c !important; color: white !important; }
+
+    /* 手機九宮格佈局 */
+    .keyboard-10key { max-width: 320px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+    .row10key { display: flex; gap: 10px; justify-content: center; }
+    .key10key { flex: 1; height: 60px; font-size: 20px; font-weight: bold; border: 1px solid #dcdde1; border-radius: 12px; background: #fff; cursor: pointer; user-select: none; transition: all 0.15s; }
+    .key10key.active { background: #3498db; color: white; }
+    .key10key.correct { background: #2ecc71 !important; color: white !important; }
+    .key10key.wrong { background: #e74c3c !important; color: white !important; }
+
+    .btn-start { background-color: #2ecc71; color: white; border: none; padding: 12px 30px; font-size: 18px; font-weight: bold; border-radius: 25px; cursor: pointer; transition: background-color 0.2s; margin-top: 10px; }
+    .btn-start:hover { background-color: #27ae60; }
+
+    /* 手機 2set佈局 */
+    .sequence-order {
+        position: absolute; top: -8px; right: -8px; width: 20px; height: 20px; min-width: 20px; display: flex; align-items: center; justify-content: center;
+        background: #000; color: #fff; border: 2px solid #fff; border-radius: 50%; font-size: 11px; font-weight: bold; line-height: 1; pointer-events: none;
+        z-index: 10; box-sizing: border-box;
+    }
+
+    /* 手機模式 */
+    .mobile-input-container { display: none; margin-bottom: 15px; }
+    .mobile-input-container input {
+        width: 100%; max-width: 280px; font-size: 20px; padding: 8px 12px; text-align: center; border: 2px solid #3498db;
+        border-radius: 8px; outline: none; transition: border-color 0.2s;
+    }
+    .mobile-input-container input.input-wrong {
+        border-color: #e74c3c;
+    }
+    body.mode-mobile-2set .key-shift:not(.mobile-2set-shift),
+    body.mode-mobile-10key .key-shift { display: none !important; }
+    body.mode-mobile-2set .mobile-2set-shift { display: block !important; }
+    .mobile-2set-shift { display: none; max-width: 75px; background: #e0e0e0; font-size: 14px; font-weight: bold; }
+    .mobile-2set-shift.selected {
+        background: #e67e22 !important; color: white !important; border-color: #d35400 !important;
+    }
+    body.mode-mobile-10key .btn-start { margin-bottom: 25px; }
+    #keyboard10Key .key10key { position: relative; }
+    #keyboard10Key .key10key .key-order-badge {
+        position: absolute; top: 3px; right: 4px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; min-width: 18px; min-height: 18px;
+        padding: 1px 4px; border-radius: 10px; background: rgba(0, 0, 0, 0.72); color: #fff; font-size: 11px; font-weight: 700; line-height: 1.1;
+        white-space: nowrap; pointer-events: none; box-sizing: border-box;
+    }
+
+    #keyboard10Key .key10key.sequence-required { outline: 2px solid currentColor; }
+    #keyboard10Key .key10key.sequence-current { transform: scale(1.04);}
+    
+    @media (max-width: 700px) {
+        body { padding: 8px; }
+        .container { padding: 12px; border-radius: 12px; }
+        h1 { font-size: 20px; margin-bottom: 8px; }
+        .layout-selector { margin-bottom: 10px; gap: 5px; }
+        .display-card { min-height: 72px; padding: 8px 12px; margin-bottom: 10px; border-radius: 10px; }
+        .target-char { font-size: 28px; }
+        .finished { font-size: 24px; }
+        .score { font-size: 13px; margin-top: 2px; }
+        .mobile-input-container { margin-bottom: 8px; }
+        .keyboard-wrapper { margin-top: 8px; gap: 5px; }
+        .key-row { gap: 4px; }
+        .key { padding: 8px 1px; font-size: 15px; }
+        .key.key-shift { max-width: 58px; font-size: 13px; }
+        .keyboard-10key { max-width: 300px; gap: 6px; }
+        .row10key { gap: 6px; }
+        .key10key { height: 54px; font-size: 18px; border-radius: 10px; }
+        .btn-start { padding: 9px 24px; font-size: 16px; margin-top: 6px; }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1 id="pageTitle">韓文字母練習</h1>
+
+    <!-- 練習模式切換 -->
+    <div class="layout-selector">
+        <label for="practiceMode">選擇練習模式：</label>
+        <select id="practiceMode">
+            <option value="alphabet" selected>韓文字母練習</option>
+            <option value="syllable">韓文拼音練習</option>
+        </select>
+    </div>
+
+    <!-- 鍵盤模式切換 -->
+    <div class="layout-selector">
+        <label for="keyboardMode">選擇鍵盤模式：</label>
+        <select id="keyboardMode">
+            <option value="desktop">電腦 2-Set 鍵盤</option>
+            <option value="mobile-2set">手機 2-Set 全鍵盤</option>
+            <option value="mobile-10key">手機九宮格 (天·地·人)</option>
+        </select>
+    </div>
+
+    <div class="display-card">
+        <div id="targetChar" class="target-char">準備好了嗎？</div>
+        <div id="score" class="score">按下「開始練習」開始</div>
+    </div>
+
+    <!-- 手機模式下顯示的隱藏式實體/系統鍵盤輸入框 -->
+    <div id="mobileInputContainer" class="mobile-input-container">
+        <input type="text" id="mobileInput" placeholder="點擊此處輸入韓文，按 Enter 提交" autocomplete="off">
+    </div>
+
+    <button id="startBtn" class="btn-start" onclick="startGame()">開始練習</button>
+
+    <!-- 電腦 / 手機 2-Set 鍵盤 -->
+    <div id="keyboardDesktop" class="keyboard-wrapper">
+        <div class="key-row">
+            <div class="key" data-code="KeyQ" data-char="ㅂ">ㅂ</div>
+            <div class="key" data-code="KeyW" data-char="ㅈ">ㅈ</div>
+            <div class="key" data-code="KeyE" data-char="ㄷ">ㄷ</div>
+            <div class="key" data-code="KeyR" data-char="ㄱ">ㄱ</div>
+            <div class="key" data-code="KeyT" data-char="ㅅ">ㅅ</div>
+            <div class="key" data-code="KeyY" data-char="ㅛ">ㅛ</div>
+            <div class="key" data-code="KeyU" data-char="ㅕ">ㅕ</div>
+            <div class="key" data-code="KeyI" data-char="ㅑ">ㅑ</div>
+            <div class="key" data-code="KeyO" data-char="ㅐ">ㅐ</div>
+            <div class="key" data-code="KeyP" data-char="ㅔ">ㅔ</div>
+        </div>
+        <div class="key-row">
+            <div class="key" data-code="KeyA" data-char="ㅁ">ㅁ</div>
+            <div class="key" data-code="KeyS" data-char="ㄴ">ㄴ</div>
+            <div class="key" data-code="KeyD" data-char="ㅇ">ㅇ</div>
+            <div class="key" data-code="KeyF" data-char="ㄹ">ㄹ</div>
+            <div class="key" data-code="KeyG" data-char="ㅎ">ㅎ</div>
+            <div class="key" data-code="KeyH" data-char="ㅗ">ㅗ</div>
+            <div class="key" data-code="KeyJ" data-char="ㅓ">ㅓ</div>
+            <div class="key" data-code="KeyK" data-char="ㅏ">ㅏ</div>
+            <div class="key" data-code="KeyL" data-char="ㅣ">ㅣ</div>
+        </div>
+        <div class="key-row">
+            <div class="key key-shift mobile-2set-shift" id="mobile2SetShift" data-code="MobileShift" aria-label="向上箭頭">↑</div>
+            <div class="key key-shift" data-code="ShiftLeft">Shift</div>
+            <div class="key" data-code="KeyZ" data-char="ㅋ">ㅋ</div>
+            <div class="key" data-code="KeyX" data-char="ㅌ">ㅌ</div>
+            <div class="key" data-code="KeyC" data-char="ㅊ">ㅊ</div>
+            <div class="key" data-code="KeyV" data-char="ㅍ">ㅍ</div>
+            <div class="key" data-code="KeyB" data-char="ㅠ">ㅠ</div>
+            <div class="key" data-code="KeyN" data-char="ㅜ">ㅜ</div>
+            <div class="key" data-code="KeyM" data-char="ㅡ">ㅡ</div>
+            <div class="key key-shift" data-code="ShiftRight">Shift</div>
+        </div>
+    </div>
+
+    <!-- 手機 10Key (天地人) 鍵盤 -->
+    <div id="keyboard10Key" class="keyboard-10key" style="display: none;">
+        <div class="row10key">
+            <button class="key10key" data-10key="ㅣ">ㅣ</button>
+            <button class="key10key" data-10key="•">· (天)</button>
+            <button class="key10key" data-10key="ㅡ">ㅡ</button>
+        </div>
+        <div class="row10key">
+            <button class="key10key" data-10key="ㄱ">ㄱㅋ</button>
+            <button class="key10key" data-10key="ㄴ">ㄴㄹ</button>
+            <button class="key10key" data-10key="ㄷ">ㄷㅌ</button>
+        </div>
+        <div class="row10key">
+            <button class="key10key" data-10key="ㅂ">ㅂㅍ</button>
+            <button class="key10key" data-10key="ㅅ">ㅅㅎ</button>
+            <button class="key10key" data-10key="ㅈ">ㅈㅊ</button>
+        </div>
+        <div class="row10key">
+            <button class="key10key" data-10key="ㅇ">ㅇㅁ</button>
+            <button class="key10key" style="visibility: hidden;"></button>
+            <button class="key10key" style="visibility: hidden;"></button>
+        </div>
+    </div>
+</div>
+  
+<script>
+// ==================== 韓文字母練習題庫（40 個） ====================
+const alphabetQuestions = [
+    // --- 單母音 (10) ---
+    { char: 'ㅏ', sequence: [{ code: 'KeyK', shift: false, key10: ['ㅣ', '·'] }] },
+    { char: 'ㅓ', sequence: [{ code: 'KeyJ', shift: false, key10: ['·', 'ㅣ'] }] },
+    { char: 'ㅗ', sequence: [{ code: 'KeyH', shift: false, key10: ['·', 'ㅡ'] }] },
+    { char: 'ㅜ', sequence: [{ code: 'KeyN', shift: false, key10: ['ㅡ', '·'] }] },
+    { char: 'ㅡ', sequence: [{ code: 'KeyM', shift: false, key10: ['ㅡ'] }] },
+    { char: 'ㅣ', sequence: [{ code: 'KeyL', shift: false, key10: ['ㅣ'] }] },
+    { char: 'ㅐ', sequence: [{ code: 'KeyO', shift: false, key10: ['ㅣ', '·', 'ㅣ'] }] },
+    { char: 'ㅔ', sequence: [{ code: 'KeyP', shift: false, key10: ['·', 'ㅣ', 'ㅣ'] }] },
+    { char: 'ㅑ', sequence: [{ code: 'KeyI', shift: false, key10: ['ㅣ', '·', '·'] }] },
+    { char: 'ㅕ', sequence: [{ code: 'KeyU', shift: false, key10: ['·', '·', 'ㅣ'] }] },
+
+    // --- 複合母音 (11) ---
+    { char: 'ㅛ', sequence: [{ code: 'KeyY', shift: false, key10: ['·', '·', 'ㅡ'] }] },
+    { char: 'ㅠ', sequence: [{ code: 'KeyB', shift: false, key10: ['ㅡ', '·', '·'] }] },
+    { char: 'ㅒ', sequence: [{ code: 'KeyO', shift: true, key10: ['ㅣ', '·', '·', 'ㅣ'] }] },
+    { char: 'ㅖ', sequence: [{ code: 'KeyP', shift: true, key10: ['·', '·', 'ㅣ', 'ㅣ'] }] },
+    { char: 'ㅘ', sequence: [{ code: 'KeyH', shift: false, key10: ['·', 'ㅡ'] }, { code: 'KeyK', shift: false, key10: ['ㅣ', '·'] }] },
+    { char: 'ㅙ', sequence: [{ code: 'KeyH', shift: false, key10: ['·', 'ㅡ'] }, { code: 'KeyO', shift: false, key10: ['ㅣ', '·', 'ㅣ'] }] },
+    { char: 'ㅚ', sequence: [{ code: 'KeyH', shift: false, key10: ['·', 'ㅡ'] }, { code: 'KeyL', shift: false, key10: ['ㅣ'] }] },
+    { char: 'ㅝ', sequence: [{ code: 'KeyN', shift: false, key10: ['ㅡ', '·'] }, { code: 'KeyJ', shift: false, key10: ['·', 'ㅣ'] }] },
+    { char: 'ㅞ', sequence: [{ code: 'KeyN', shift: false, key10: ['ㅡ', '·'] }, { code: 'KeyP', shift: false, key10: ['·', 'ㅣ', 'ㅣ'] }] },
+    { char: 'ㅟ', sequence: [{ code: 'KeyN', shift: false, key10: ['ㅡ', '·'] }, { code: 'KeyL', shift: false, key10: ['ㅣ'] }] },
+    { char: 'ㅢ', sequence: [{ code: 'KeyM', shift: false, key10: ['ㅡ'] }, { code: 'KeyL', shift: false, key10: ['ㅣ'] }] },
+
+    // --- 單子音 (14) ---
+    { char: 'ㄱ', sequence: [{ code: 'KeyR', shift: false, key10: ['ㄱ'] }] },
+    { char: 'ㄴ', sequence: [{ code: 'KeyS', shift: false, key10: ['ㄴ'] }] },
+    { char: 'ㄷ', sequence: [{ code: 'KeyE', shift: false, key10: ['ㄷ'] }] },
+    { char: 'ㄹ', sequence: [{ code: 'KeyF', shift: false, key10: ['ㄴ', 'ㄴ'] }] },
+    { char: 'ㅁ', sequence: [{ code: 'KeyA', shift: false, key10: ['ㅇ', 'ㅇ'] }] },
+    { char: 'ㅂ', sequence: [{ code: 'KeyQ', shift: false, key10: ['ㅂ'] }] },
+    { char: 'ㅅ', sequence: [{ code: 'KeyT', shift: false, key10: ['ㅅ'] }] },
+    { char: 'ㅇ', sequence: [{ code: 'KeyD', shift: false, key10: ['ㅇ'] }] },
+    { char: 'ㅈ', sequence: [{ code: 'KeyW', shift: false, key10: ['ㅈ'] }] },
+    { char: 'ㅊ', sequence: [{ code: 'KeyC', shift: false, key10: ['ㅈ', 'ㅈ'] }] },
+    { char: 'ㅋ', sequence: [{ code: 'KeyZ', shift: false, key10: ['ㄱ', 'ㄱ'] }] },
+    { char: 'ㅌ', sequence: [{ code: 'KeyX', shift: false, key10: ['ㄷ', 'ㄷ'] }] },
+    { char: 'ㅍ', sequence: [{ code: 'KeyV', shift: false, key10: ['ㅂ', 'ㅂ'] }] },
+    { char: 'ㅎ', sequence: [{ code: 'KeyG', shift: false, key10: ['ㅅ', 'ㅅ'] }] },
+
+    // --- 雙子音 (5) ---
+    { char: 'ㄲ', sequence: [{ code: 'KeyR', shift: true, key10: ['ㄱ', 'ㄱ', 'ㄱ'] }] },
+    { char: 'ㄸ', sequence: [{ code: 'KeyE', shift: true, key10: ['ㄷ', 'ㄷ', 'ㄷ'] }] },
+    { char: 'ㅃ', sequence: [{ code: 'KeyQ', shift: true, key10: ['ㅂ', 'ㅂ', 'ㅂ'] }] },
+    { char: 'ㅆ', sequence: [{ code: 'KeyT', shift: true, key10: ['ㅅ', 'ㅅ', 'ㅅ'] }] },
+    { char: 'ㅉ', sequence: [{ code: 'KeyW', shift: true, key10: ['ㅈ', 'ㅈ', 'ㅈ'] }] }
+];
+
+const initialConsonants = [
+    { char: 'ㄱ', code: 'KeyR', shift: false, key10: ['ㄱ'] }, { char: 'ㄲ', code: 'KeyR', shift: true, key10: ['ㄱ','ㄱ','ㄱ'] },
+    { char: 'ㄴ', code: 'KeyS', shift: false, key10: ['ㄴ'] }, { char: 'ㄷ', code: 'KeyE', shift: false, key10: ['ㄷ'] },
+    { char: 'ㄸ', code: 'KeyE', shift: true, key10: ['ㄷ','ㄷ','ㄷ'] }, { char: 'ㄹ', code: 'KeyF', shift: false, key10: ['ㄴ','ㄴ'] },
+    { char: 'ㅁ', code: 'KeyA', shift: false, key10: ['ㅇ','ㅇ'] }, { char: 'ㅂ', code: 'KeyQ', shift: false, key10: ['ㅂ'] },
+    { char: 'ㅃ', code: 'KeyQ', shift: true, key10: ['ㅂ','ㅂ','ㅂ'] }, { char: 'ㅅ', code: 'KeyT', shift: false, key10: ['ㅅ'] },
+    { char: 'ㅆ', code: 'KeyT', shift: true, key10: ['ㅅ','ㅅ','ㅅ'] }, { char: 'ㅇ', code: 'KeyD', shift: false, key10: ['ㅇ'] },
+    { char: 'ㅈ', code: 'KeyW', shift: false, key10: ['ㅈ'] }, { char: 'ㅉ', code: 'KeyW', shift: true, key10: ['ㅈ','ㅈ','ㅈ'] },
+    { char: 'ㅊ', code: 'KeyC', shift: false, key10: ['ㅈ','ㅈ'] }, { char: 'ㅋ', code: 'KeyZ', shift: false, key10: ['ㄱ','ㄱ'] },
+    { char: 'ㅌ', code: 'KeyX', shift: false, key10: ['ㄷ','ㄷ'] }, { char: 'ㅍ', code: 'KeyV', shift: false, key10: ['ㅂ','ㅂ'] },
+    { char: 'ㅎ', code: 'KeyG', shift: false, key10: ['ㅅ','ㅅ'] }
+];
+
+const vowels = [
+    { char: 'ㅏ', vIdx: 0, keys: [{ code: 'KeyK', shift: false, char: 'ㅏ', key10: ['ㅣ','•'] }] },
+    { char: 'ㅐ', vIdx: 1, keys: [{ code: 'KeyO', shift: false, char: 'ㅐ', key10: ['ㅣ','•','ㅣ'] }] },
+    { char: 'ㅑ', vIdx: 2, keys: [{ code: 'KeyI', shift: false, char: 'ㅑ', key10: ['ㅣ','•','•'] }] },
+    { char: 'ㅒ', vIdx: 3, keys: [{ code: 'KeyO', shift: true, char: 'ㅒ', key10: ['ㅣ','•','•','ㅣ'] }] },
+    { char: 'ㅓ', vIdx: 4, keys: [{ code: 'KeyJ', shift: false, char: 'ㅓ', key10: ['•','ㅣ'] }] },
+    { char: 'ㅔ', vIdx: 5, keys: [{ code: 'KeyP', shift: false, char: 'ㅔ', key10: ['•','ㅣ','ㅣ'] }] },
+    { char: 'ㅕ', vIdx: 6, keys: [{ code: 'KeyU', shift: false, char: 'ㅕ', key10: ['•','•','ㅣ'] }] },
+    { char: 'ㅖ', vIdx: 7, keys: [{ code: 'KeyP', shift: true, char: 'ㅖ', key10: ['•','•','ㅣ','ㅣ'] }] },
+    { char: 'ㅗ', vIdx: 8, keys: [{ code: 'KeyH', shift: false, char: 'ㅗ', key10: ['•','ㅡ'] }] },
+    { char: 'ㅘ', vIdx: 9, keys: [{ code: 'KeyH', shift: false, char: 'ㅗ', key10: ['•','ㅡ'] }, { code: 'KeyK', shift: false, char: 'ㅏ', key10: ['ㅣ','•'] }] },
+    { char: 'ㅙ', vIdx: 10, keys: [{ code: 'KeyH', shift: false, char: 'ㅗ', key10: ['•','ㅡ'] }, { code: 'KeyO', shift: false, char: 'ㅐ', key10: ['ㅣ','•','ㅣ'] }] },
+    { char: 'ㅚ', vIdx: 11, keys: [{ code: 'KeyH', shift: false, char: 'ㅗ', key10: ['•','ㅡ'] }, { code: 'KeyL', shift: false, char: 'ㅣ', key10: ['ㅣ'] }] },
+    { char: 'ㅛ', vIdx: 12, keys: [{ code: 'KeyY', shift: false, char: 'ㅛ', key10: ['•','•','ㅡ'] }] },
+    { char: 'ㅜ', vIdx: 13, keys: [{ code: 'KeyN', shift: false, char: 'ㅜ', key10: ['ㅡ','•'] }] },
+    { char: 'ㅝ', vIdx: 14, keys: [{ code: 'KeyN', shift: false, char: 'ㅜ', key10: ['ㅡ','•'] }, { code: 'KeyJ', shift: false, char: 'ㅓ', key10: ['•','ㅣ'] }] },
+    { char: 'ㅞ', vIdx: 15, keys: [{ code: 'KeyN', shift: false, char: 'ㅜ', key10: ['ㅡ','•'] }, { code: 'KeyP', shift: false, char: 'ㅔ', key10: ['•','ㅣ','ㅣ'] }] },
+    { char: 'ㅟ', vIdx: 16, keys: [{ code: 'KeyN', shift: false, char: 'ㅜ', key10: ['ㅡ','•'] }, { code: 'KeyL', shift: false, char: 'ㅣ', key10: ['ㅣ'] }] },
+    { char: 'ㅠ', vIdx: 17, keys: [{ code: 'KeyB', shift: false, char: 'ㅠ', key10: ['ㅡ','•','•'] }] },
+    { char: 'ㅡ', vIdx: 18, keys: [{ code: 'KeyM', shift: false, char: 'ㅡ', key10: ['ㅡ'] }] },
+    { char: 'ㅢ', vIdx: 19, keys: [{ code: 'KeyM', shift: false, char: 'ㅡ', key10: ['ㅡ'] }, { code: 'KeyL', shift: false, char: 'ㅣ', key10: ['ㅣ'] }] },
+    { char: 'ㅣ', vIdx: 20, keys: [{ code: 'KeyL', shift: false, char: 'ㅣ', key10: ['ㅣ'] }] }
+];
+
+const compoundVowels = { 'ㅗㅏ': 9, 'ㅗㅐ': 10, 'ㅗㅣ': 11, 'ㅜㅓ': 14, 'ㅜㅔ': 15, 'ㅜㅣ': 16, 'ㅡㅣ': 19 };
+
+// 生成 399 個題目
+const allSyllables = [];
+initialConsonants.forEach((init, iIdx) => {
+    vowels.forEach((vow) => {
+        const unicode = 0xAC00 + (iIdx * 21 * 28) + (vow.vIdx * 28);
+        allSyllables.push({
+            char: String.fromCharCode(unicode),
+            iIdx: iIdx,
+            vIdx: vow.vIdx,
+            sequence: [
+                { code: init.code, shift: init.shift, char: init.char, key10: init.key10 },
+                ...vow.keys
+            ]
+        });
+    });
+});
+
+let quizPool = [];
+let currentQuestionIndex = 0;
+const totalQuestions = 10; 
+let currentTarget = null;
+let currentStepIndex = 0;
+let current10KeySubIndex = 0;
+let isPlaying = false;
+let currentMode = 'desktop';
+let currentPracticeMode = 'alphabet';
+let mobile2SetShiftSelected = false;
+
+// 手機 2-Set 的「向上箭頭」狀態
+function resetMobile2SetShift() {
+    mobile2SetShiftSelected = false;
+    const shiftKey = document.getElementById('mobile2SetShift');
+    if (shiftKey) shiftKey.classList.remove('selected', 'active', 'correct', 'wrong');
+}
+
+function setMobile2SetShiftSelected(selected) {
+    mobile2SetShiftSelected = selected;
+    const shiftKey = document.getElementById('mobile2SetShift');
+    if (!shiftKey) return;
+    shiftKey.classList.toggle('selected', selected);
+    shiftKey.classList.toggle('active', selected);
+}
+
+// 練習模式切換控制
+document.getElementById('practiceMode').addEventListener('change', (e) => {
+    currentPracticeMode = e.target.value;
+
+    // 切換模式時重新開始，避免沿用上一個模式的題目與進度
+    isPlaying = false;
+    quizPool = [];
+    currentQuestionIndex = 0;
+    currentTarget = null;
+    currentStepIndex = 0;
+    current10KeySubIndex = 0;
+
+    resetMobile2SetShift();
+    clear10KeyOrderHints();
+    clearMobileInput();
+    clearHighlights();
+
+    const pageTitle = document.getElementById('pageTitle');
+    const targetCharEl = document.getElementById('targetChar');
+    const scoreEl = document.getElementById('score');
+    const startBtn = document.getElementById('startBtn');
+
+    pageTitle.textContent = currentPracticeMode === 'alphabet'
+        ? '韓文字母練習'
+        : '韓文拼音練習';
+
+    targetCharEl.textContent = '準備好了嗎？';
+    targetCharEl.classList.remove('finished');
+    scoreEl.textContent = '按下「開始練習」開始';
+    startBtn.textContent = '開始練習';
+    startBtn.style.display = 'inline-block';
+
+    document.title = pageTitle.textContent;
+});
+
+// 鍵盤模式切換控制
+document.getElementById('keyboardMode').addEventListener('change', (e) => {
+    currentMode = e.target.value;
+    resetMobile2SetShift();
+    clear10KeyOrderHints();
+    clearMobileInput();
+    document.body.className = `mode-${currentMode}`;
+
+    const mobileInputContainer = document.getElementById('mobileInputContainer');
+    document.getElementById('keyboardDesktop').style.display = currentMode === 'mobile-10key' ? 'none' : 'flex';
+    document.getElementById('keyboard10Key').style.display = currentMode === 'mobile-10key' ? 'flex' : 'none';
+
+    // 手機模式顯示輸入框，電腦模式隱藏
+    if (currentMode === 'mobile-2set' || currentMode === 'mobile-10key') {
+        mobileInputContainer.style.display = 'block';
+    } else {
+        mobileInputContainer.style.display = 'none';
+    }
+
+    if (isPlaying) highlightNextKey();
+});
+
+// 清空手機輸入框；只在換題、重新開始或切換模式時使用
+function clearMobileInput() {
+    const mobileInput = document.getElementById('mobileInput');
+    if (mobileInput) mobileInput.value = '';
+}
+
+// 手機模式一律以輸入框內容作為答案，按 Enter 後才判定
+function checkMobileInputTarget(inputEl) {
+    if (!isPlaying || !currentTarget || !inputEl) return false;
+    if (currentMode !== 'mobile-2set' && currentMode !== 'mobile-10key') return false;
+
+    const inputVal = inputEl.value;
+    if (!inputVal) return false;
+
+    const normalizedInput = inputVal.normalize('NFC');
+    const normalizedTarget = currentTarget.char.normalize('NFC');
+
+    if (normalizedInput === normalizedTarget) {
+        // 答案正確：只有按下 Enter 後才進入下一題
+        nextQuestion();
+        return true;
+    }
+
+    // 答案錯誤：保留輸入框內容，讓使用者可以修改後再次按 Enter
+    inputEl.classList.remove('input-wrong');
+    void inputEl.offsetWidth;
+    inputEl.classList.add('input-wrong');
+    setTimeout(() => inputEl.classList.remove('input-wrong'), 300);
+    return false;
+}
+
+const mobileInputEl = document.getElementById('mobileInput');
+
+// 手機輸入只顯示使用者目前輸入的內容，不在 input 事件中判題
+mobileInputEl.addEventListener('input', (e) => {
+    if (!isPlaying || !currentTarget) return;
+});
+
+// 手機模式按 Enter 才提交目前輸入內容
+mobileInputEl.addEventListener('keydown', (e) => {
+    if (!isPlaying || !currentTarget) return;
+    if (currentMode !== 'mobile-2set' && currentMode !== 'mobile-10key') return;
+
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        checkMobileInputTarget(mobileInputEl);
+    }
+});
+
+mobileInputEl.addEventListener('compositionend', () => {});
+
+// 抽取不重複的題目
+function getRandomQuestions(sourceArray, count) {
+    const shuffled = [...sourceArray];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, count);
+}
+
+function startGame() {
+    const questionSource = currentPracticeMode === 'alphabet'
+        ? alphabetQuestions
+        : allSyllables;
+
+    quizPool = getRandomQuestions(questionSource, totalQuestions);
+    currentQuestionIndex = 0;
+    isPlaying = true;
+    clearMobileInput();
+    document.getElementById('startBtn').style.display = 'none';
+    nextQuestion();
+}
+
+function nextQuestion() {
+    clearHighlights();
+    clearMobileInput();
+    current10KeySubIndex = 0;
+    resetMobile2SetShift();
+    const targetCharEl = document.getElementById('targetChar');
+
+    if (currentQuestionIndex >= totalQuestions || quizPool.length === 0) {
+        isPlaying = false;
+        clear10KeyOrderHints();
+        targetCharEl.textContent = "🎉 完成練習！";
+        targetCharEl.classList.add('finished');
+        document.getElementById('score').textContent = `共完成 ${currentQuestionIndex} / ${totalQuestions} 題`;
+        document.getElementById('startBtn').textContent = "再練一次";
+        document.getElementById('startBtn').style.display = 'inline-block';
+        return;
+    }
+
+    currentQuestionIndex++;
+    document.getElementById('score').textContent = `第 ${currentQuestionIndex} / ${totalQuestions} 題`;
+
+    currentTarget = quizPool.pop();
+    currentStepIndex = 0;
+
+    targetCharEl.classList.remove('finished');
+    targetCharEl.textContent = currentTarget.char;
+
+    highlightNextKey();
+}
+
+function normalize10KeyChar(char) {
+    return (char === '•' || char === '·' || char === '.' || char === '．') ? '·' : char;
+}
+
+function clear10KeyOrderHints() {
+    document.querySelectorAll('.key10key').forEach(key => {
+        key.classList.remove('sequence-required', 'sequence-current');
+
+        const badge = key.querySelector('.key-order-badge');
+        if (badge) badge.remove();
+
+        key.removeAttribute('data-input-order');
+        key.removeAttribute('aria-label');
+    });
+}
+
+function update10KeyOrderHints() {
+    clear10KeyOrderHints();
+
+    if (currentMode !== 'mobile-10key' || !currentTarget) return;
+
+    const flattenedSequence = [];
+    currentTarget.sequence.forEach((step) => {
+        (step.key10 || []).forEach((char10) => {
+            flattenedSequence.push(normalize10KeyChar(char10));
+        });
+    });
+
+    const orderMap = new Map();
+
+    flattenedSequence.forEach((char10, index) => {
+        if (!orderMap.has(char10)) orderMap.set(char10, []);
+        orderMap.get(char10).push(index + 1);
+    });
+
+    document.querySelectorAll('.key10key').forEach((key) => {
+        const char10 = normalize10KeyChar(key.getAttribute('data-10key'));
+        const orders = orderMap.get(char10);
+
+        if (!orders) return;
+
+        key.classList.add('sequence-required');
+        key.setAttribute('data-input-order', orders.join(' → '));
+        key.setAttribute(
+            'aria-label',
+            `${key.textContent.trim()}，輸入順序：${orders.join('、')}`
+        );
+
+        const badge = document.createElement('span');
+        badge.className = 'key-order-badge';
+        badge.textContent = orders.join(' → ');
+        badge.setAttribute('aria-hidden', 'true');
+        key.appendChild(badge);
+    });
+}
+
+// 定義所有複母音的 vIdx 索引 (ㅘ, ㅙ, ㅚ, ㅝ, ㅞ, ㅟ, ㅢ)
+const compoundVowelIndexes = [9, 10, 11, 14, 15, 16, 19];
+  
+function highlightNextKey() {
+    clearHighlights();
+    if (!currentTarget || currentStepIndex >= currentTarget.sequence.length) return;
+
+    const step = currentTarget.sequence[currentStepIndex];
+
+    if (currentMode === 'mobile-10key') {
+        update10KeyOrderHints();
+
+        const expected10KeyChar = normalize10KeyChar(step.key10[current10KeySubIndex]);
+        const currentBtn = Array.from(document.querySelectorAll('.key10key')).find(
+            btn => normalize10KeyChar(btn.getAttribute('data-10key')) === expected10KeyChar
+        );
+
+        document.querySelectorAll('.key10key.sequence-required').forEach(btn => {
+            btn.classList.add('active');
+        });
+
+        if (currentBtn) currentBtn.classList.add('sequence-current');
+        return;
+    }
+
+    if (currentMode === 'mobile-2set') {
+
+        const mobile2SetSequence = [];
+
+        currentTarget.sequence.forEach(step => {
+
+            if (step.shift) {
+                mobile2SetSequence.push({
+                    type: 'shift',
+                    code: null
+                });
+            }
+
+            mobile2SetSequence.push({
+                type: 'key',
+                code: step.code
+            });
+        });
+
+        mobile2SetSequence.forEach((item, index) => {
+
+            let keyEl = null;
+        
+            if (item.type === 'shift') {
+                keyEl = document.getElementById('mobile2SetShift');
+            } else {
+                keyEl = document.querySelector(
+                    `.key[data-code="${item.code}"]`
+                );
+            }
+        
+            if (!keyEl) return;
+        
+            keyEl.classList.add('active');
+            keyEl.classList.add('sequence-required');
+        
+            // 計算這個按鍵之前已經出現過幾次
+            const existingOrders = keyEl.querySelectorAll('.sequence-order');
+            const repeatIndex = existingOrders.length;
+        
+            const orderEl = document.createElement('span');
+            orderEl.className = 'sequence-order';
+            orderEl.textContent = index + 1;
+        
+            // 同一個按鍵重複出現時，順序圓圈往右排列
+            orderEl.style.right = `${-8 + repeatIndex * 22}px`;
+        
+            keyEl.appendChild(orderEl);
+        });
+
+        if (step.shift && !mobile2SetShiftSelected) {
+            const shiftKey = document.getElementById('mobile2SetShift');
+            if (shiftKey) {
+                shiftKey.classList.add('sequence-current');
+            }
+        } else {
+            const targetKeyEl = document.querySelector(
+                `.key[data-code="${step.code}"]`
+            );
+            if (targetKeyEl) {
+                targetKeyEl.classList.add('sequence-current');
+            }
+        }
+
+        return;
+    }
+
+    const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
+    if (targetKeyEl) targetKeyEl.classList.add('active');
+
+    if (currentMode === 'desktop' && step.shift) {
+        document.querySelectorAll('.key-shift').forEach(sKey => sKey.classList.add('active'));
+    }
+}
+
+function clearHighlights() {
+    document.querySelectorAll('.key, .key10key').forEach(key => {
+        key.classList.remove('active', 'correct', 'wrong', 'sequence-current');
+    });
+    document.querySelectorAll('.sequence-order').forEach(orderEl => {
+        orderEl.remove();
+    });
+}
+
+function processInput(inputObj) {
+    if (!isPlaying || !currentTarget) return;
+
+    const expectedStep = currentTarget.sequence[currentStepIndex];
+    if (!expectedStep) return;
+
+    let isCorrect = false;
+
+    if (currentMode === 'mobile-10key') {
+        const expectedChar = normalize10KeyChar(expectedStep.key10[current10KeySubIndex]);
+        const enteredChar = normalize10KeyChar(inputObj.char10);
+
+        if (enteredChar === expectedChar) {
+            isCorrect = true;
+        }
+    } else if (currentMode === 'mobile-2set') {
+        if (expectedStep.shift) {
+            if (!mobile2SetShiftSelected && inputObj.mobileShift === true) {
+                isCorrect = true;
+            } else if (mobile2SetShiftSelected &&
+                       inputObj.code === expectedStep.code &&
+                       inputObj.shift === true) {
+                isCorrect = true;
+            }
+        } else {
+            isCorrect = inputObj.code === expectedStep.code && inputObj.shift === false;
+        }
+    } else {
+        isCorrect =
+            inputObj.code === expectedStep.code &&
+            inputObj.shift === expectedStep.shift;
+    }
+
+    if (isCorrect) {
+        if (inputObj.element) inputObj.element.classList.add('correct');
+
+        if (currentMode === 'mobile-10key') {
+            current10KeySubIndex++;
+
+            if (current10KeySubIndex >= expectedStep.key10.length) {
+                current10KeySubIndex = 0;
+                currentStepIndex++;
+            }
+        } else if (currentMode === 'mobile-2set') {
+            if (expectedStep.shift && inputObj.mobileShift === true) {
+                setMobile2SetShiftSelected(true);
+            } else {
+                currentStepIndex++;
+            }
+        } else {
+            currentStepIndex++;
+        }
+
+        if (currentStepIndex >= currentTarget.sequence.length) {
+            if (currentMode === 'mobile-2set') resetMobile2SetShift();
+
+            if (currentMode === 'mobile-2set' || currentMode === 'mobile-10key') {
+                nextQuestion();
+            } else {
+                setTimeout(() => { nextQuestion(); }, 250);
+            }
+        } else {
+            setTimeout(() => { highlightNextKey(); }, 150);
+        }
+    } else if (inputObj.element) {
+        inputObj.element.classList.add('wrong');
+        setTimeout(() => {
+            inputObj.element.classList.remove('wrong');
+            highlightNextKey();
+        }, 300);
+    }
+}
+
+// 實體鍵盤事件
+window.addEventListener('keydown', (e) => {
+    if (currentMode === 'mobile-10key' || currentMode === 'mobile-2set') return;
+
+    if (e.key === 'Shift') {
+        document.querySelectorAll('.key-shift').forEach(sKey => sKey.classList.add('shift-pressed'));
+        return;
+    }
+
+    const keyEl = document.querySelector(`.key[data-code="${e.code}"]`);
+    processInput({ code: e.code, shift: e.shiftKey, element: keyEl });
+});
+
+window.addEventListener('keyup', (e) => {
+    if (currentMode !== 'desktop') return;
+    if (e.key === 'Shift') {
+        document.querySelectorAll('.key-shift').forEach(sKey => sKey.classList.remove('shift-pressed'));
+    }
+});
+
+// 螢幕按鈕點擊事件
+document.querySelectorAll('.key').forEach(keyEl => {
+    keyEl.addEventListener('click', () => {
+        if (!isPlaying || !currentTarget) return;
+
+        if (keyEl.id === 'mobile2SetShift') {
+            if (currentMode !== 'mobile-2set') return;
+
+            const expectedStep = currentTarget.sequence[currentStepIndex];
+            if (expectedStep?.shift && !mobile2SetShiftSelected) {
+                processInput({
+                    mobileShift: true,
+                    element: keyEl
+                });
+            }
+            return;
+        }
+
+        const code = keyEl.getAttribute('data-code');
+        if (code === 'ShiftLeft' || code === 'ShiftRight') return;
+
+        const expectedStep = currentTarget.sequence[currentStepIndex];
+        const isShiftNeeded = expectedStep ? expectedStep.shift : false;
+
+        if (currentMode === 'mobile-2set') {
+            processInput({
+                code: code,
+                shift: mobile2SetShiftSelected,
+                element: keyEl
+            });
+        } else {
+            processInput({
+                code: code,
+                shift: isShiftNeeded,
+                element: keyEl
+            });
+        }
+    });
+});
+
+document.querySelectorAll('.key10key').forEach(keyEl => {
+    keyEl.addEventListener('click', () => {
+        if (!isPlaying || currentMode !== 'mobile-10key') return;
+
+        const char10 = keyEl.getAttribute('data-10key');
+        if (char10) {
+            processInput({
+                char10: normalize10KeyChar(char10),
+                element: keyEl
+            });
+        }
+    });
+});
+</script>
+</body>
+</html>
