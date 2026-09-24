@@ -185,13 +185,13 @@
   
 <script>
 const initialConsonants = [
-    { char: 'ㄱ', code: 'KeyR', shift: false, key10: ['ㄱ'] }, { char: 'ㄲ', code: 'KeyR', shift: true, key10: ['ㄱ','ㄱ'] },
+    { char: 'ㄱ', code: 'KeyR', shift: false, key10: ['ㄱ'] }, { char: 'ㄲ', code: 'KeyR', shift: true, key10: ['ㄱ','ㄱ','ㄱ'] },
     { char: 'ㄴ', code: 'KeyS', shift: false, key10: ['ㄴ'] }, { char: 'ㄷ', code: 'KeyE', shift: false, key10: ['ㄷ'] },
-    { char: 'ㄸ', code: 'KeyE', shift: true, key10: ['ㄷ','ㄷ'] }, { char: 'ㄹ', code: 'KeyF', shift: false, key10: ['ㄴ','ㄴ'] },
+    { char: 'ㄸ', code: 'KeyE', shift: true, key10: ['ㄷ','ㄷ','ㄷ'] }, { char: 'ㄹ', code: 'KeyF', shift: false, key10: ['ㄴ','ㄴ'] },
     { char: 'ㅁ', code: 'KeyA', shift: false, key10: ['ㅇ','ㅇ'] }, { char: 'ㅂ', code: 'KeyQ', shift: false, key10: ['ㅂ'] },
-    { char: 'ㅃ', code: 'KeyQ', shift: true, key10: ['ㅂ','ㅂ'] }, { char: 'ㅅ', code: 'KeyT', shift: false, key10: ['ㅅ'] },
-    { char: 'ㅆ', code: 'KeyT', shift: true, key10: ['ㅅ','ㅅ'] }, { char: 'ㅇ', code: 'KeyD', shift: false, key10: ['ㅇ'] },
-    { char: 'ㅈ', code: 'KeyW', shift: false, key10: ['ㅈ'] }, { char: 'ㅉ', code: 'KeyW', shift: true, key10: ['ㅈ','ㅈ'] },
+    { char: 'ㅃ', code: 'KeyQ', shift: true, key10: ['ㅂ','ㅂ','ㅂ'] }, { char: 'ㅅ', code: 'KeyT', shift: false, key10: ['ㅅ'] },
+    { char: 'ㅆ', code: 'KeyT', shift: true, key10: ['ㅅ','ㅅ','ㅅ'] }, { char: 'ㅇ', code: 'KeyD', shift: false, key10: ['ㅇ'] },
+    { char: 'ㅈ', code: 'KeyW', shift: false, key10: ['ㅈ'] }, { char: 'ㅉ', code: 'KeyW', shift: true, key10: ['ㅈ','ㅈ','ㅈ'] },
     { char: 'ㅊ', code: 'KeyC', shift: false, key10: ['ㅈ','ㅈ'] }, { char: 'ㅋ', code: 'KeyZ', shift: false, key10: ['ㄱ','ㄱ'] },
     { char: 'ㅌ', code: 'KeyX', shift: false, key10: ['ㄷ','ㄷ'] }, { char: 'ㅍ', code: 'KeyV', shift: false, key10: ['ㅂ','ㅂ'] },
     { char: 'ㅎ', code: 'KeyG', shift: false, key10: ['ㅅ','ㅅ'] }
@@ -466,6 +466,18 @@ function highlightNextKey() {
     }
 
     if (currentMode === 'mobile-2set') {
+
+        const isCompoundVowel = currentTarget.sequence.length === 3;
+        const isVowelStep = currentStepIndex >= 1;
+
+        if (isCompoundVowel && isVowelStep) {
+            currentTarget.sequence.slice(1).forEach(vStep => {
+                const keyEl = document.querySelector(`.key[data-code="${vStep.code}"]`);
+                if (keyEl) keyEl.classList.add('active');
+            });
+            return;
+        }
+      
         if (step.shift) {
             const shiftKey = document.getElementById('mobile2SetShift');
             const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
