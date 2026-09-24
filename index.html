@@ -780,6 +780,7 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
             <h3>選擇播出月份</h3>
             <div class="month-grid">
                 <button class="time-btn active" data-time="all" onclick="selectMonth('all')">全部時間</button>
+                <button class="time-btn" data-time="2026-09" onclick="selectMonth('2026-09')">2026 09月</button>
                 <button class="time-btn" data-time="2026-08" onclick="selectMonth('2026-08')">2026 08月</button>
                 <button class="time-btn" data-time="2026-07" onclick="selectMonth('2026-07')">2026 07月</button>
                 <button class="time-btn" data-time="2026-06" onclick="selectMonth('2026-06')">2026 06月</button>
@@ -808,14 +809,14 @@ body.theme-dark .sns-divider { color: rgba(255, 255, 255, 0.1); }
 </header>
 
 <div class="news-board">
-    <a href="" class="news-item">
-        <span class="news-tag tag-new">更新</span> [電台] 9/24 新翻譯即將完成
+    <a href="https://flareu-tw-trans.github.io/Radio/Audio/20260826_Literature_in_Textbooks/" class="news-item">
+        <span class="news-tag tag-new">更新</span> [電台] 9/24 朗讀教科書中的文學作品 已完成
     </a>
     <a href="https://flareu-tw-trans.github.io/Live/THE_SHOW/20260915/" class="news-item">
         <span class="news-tag tag-new">更新</span> [直播] 9/18 0915 THE SHOW MC TALK 已完成
     </a>
-    <a href="https://flareu-tw-trans.github.io/" class="news-item">
-        <span class="news-tag tag-note">公告</span> ✨新功能即將開發完成✨
+    <a href="https://flareu-tw-trans.github.io/Typing/" class="news-item">
+        <span class="news-tag tag-note">公告</span> ✨韓文打字練習開發完成✨
     </a>
 </div>
 
@@ -1510,6 +1511,20 @@ const videoData = [
         img: 'images/20260601_AIreport_VOL.16.webp',
         desc: '完整電台｜中文翻譯',
         credit: '翻譯：西卡<br>字幕製作：西卡',
+        isNew: false,
+        cast: []
+    },
+    {
+        id: 'r8',
+        dbId: '20260628_Literature_in_Textbooks',
+        category: 'radio',
+        date: '2026-06-28',
+        updatedAt: '2026-09-24',
+        title: '20260628 朗讀教科書中的文學作品',
+        link: 'https://flareu-tw-trans.github.io/Radio/Audio/20260826_Literature_in_Textbooks/',
+        img: 'images/20260628_Literature_in_Textbooks.jpg',
+        desc: '朗讀詩詞｜中文翻譯｜單字教學&測驗｜打字練習',
+        credit: '翻譯：西卡<br>開發：西卡<br>校對：Lepus',
         isNew: true,
         cast: []
     },
