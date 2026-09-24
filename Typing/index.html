@@ -10,13 +10,18 @@
   
 <style>
     * { box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background-color: #f4f7f6; color: #333; padding: 15px; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background-color: #f4f7f6; color: #333; padding: 8px; }
     .container { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 650px; text-align: center; }
     h1 { margin-top: 0; font-size: 24px; color: #2c3e50; }
-    .layout-selector { margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .layout-selector select { font-size: 16px; padding: 8px 16px; border-radius: 8px; border: 1px solid #ccc; outline: none; }
-    .display-card { background: #eef2f7; border-radius: 12px; padding: 20px; margin-bottom: 20px; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    
+    /* 選擇器區域壓縮 */
+    .layout-selector { margin-bottom: 6px; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 6px; }
+    .layout-selector label { font-size: 13px; }
+    .layout-selector select { font-size: 13px; padding: 4px 8px; border-radius: 6px; border: 1px solid #ccc; outline: none; }
+    /* 展示卡片高度壓縮 */
+    .display-card { 
+        background: #eef2f7; border-radius: 10px; padding: 8px; margin-bottom: 8px; 
+        min-height: 54px; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+    }
     .target-char { font-size: 32px; font-weight: bold; color: #2c3e50; }
     .finished { font-size: 28px; color: #27ae60; }
     .score { font-size: 16px; color: #7f8c8d; margin-top: 5px; }
@@ -37,7 +42,7 @@
     /* 手機九宮格佈局 */
     .keyboard-10key { max-width: 320px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
     .row10key { display: flex; gap: 10px; justify-content: center; }
-    .key10key { flex: 1; height: 60px; font-size: 20px; font-weight: bold; border: 1px solid #dcdde1; border-radius: 12px; background: #fff; cursor: pointer; user-select: none; transition: all 0.15s; }
+    .key10key { flex: 1; height: 44px; font-size: 20px; font-weight: bold; border: 1px solid #dcdde1; border-radius: 12px; background: #fff; cursor: pointer; user-select: none; transition: all 0.15s; }
     .key10key.active { background: #3498db; color: white; }
     .key10key.correct { background: #2ecc71 !important; color: white !important; }
     .key10key.wrong { background: #e74c3c !important; color: white !important; }
@@ -97,6 +102,16 @@
         .row10key { gap: 6px; }
         .key10key { height: 54px; font-size: 18px; border-radius: 10px; }
         .btn-start { padding: 9px 24px; font-size: 16px; margin-top: 6px; }
+    }
+
+    @media (max-height: 667px) {
+        body { padding: 4px; }
+        .container { padding: 8px 12px; }
+        h1 { font-size: 16px; margin-bottom: 4px; }
+        .display-card { min-height: 44px; padding: 4px; margin-bottom: 4px; }
+        .target-char { font-size: 20px; }
+        .key10key { height: 38px; font-size: 14px; }
+        .key { padding: 4px 1px; font-size: 12px; }
     }
 </style>
 </head>
@@ -193,8 +208,8 @@
             <button class="key10key" data-10key="ㅈ">ㅈㅊ</button>
         </div>
         <div class="row10key">
-            <button class="key10key" data-10key="ㅇ">ㅇㅁ</button>
             <button class="key10key" style="visibility: hidden;"></button>
+            <button class="key10key" data-10key="ㅇ">ㅇㅁ</button>
             <button class="key10key" style="visibility: hidden;"></button>
         </div>
     </div>
