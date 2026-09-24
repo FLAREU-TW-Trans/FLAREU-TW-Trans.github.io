@@ -462,16 +462,26 @@ function highlightNextKey() {
     }
 
     if (currentMode === 'mobile-2set') {
-        if (step.shift) {
-            const shiftKey = document.getElementById('mobile2SetShift');
-            const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
+        // 1. 高亮這道題目所需的所有按鍵（包含複母音的所有零件與 Shift）
+        currentTarget.sequence.forEach(s => {
+            if (s.shift) {
+                const shiftKey = document.getElementById('mobile2SetShift');
+                if (shiftKey) shiftKey.classList.add('active');
+            }
+            const keyEl = document.querySelector(`.key[data-code="${s.code}"]`);
+            if (keyEl) keyEl.classList.add('active');
+        });
 
-            if (shiftKey) shiftKey.classList.add('active');
-            if (targetKeyEl) targetKeyEl.classList.add('active');
+        // 2. 特別標示「當前步驟」需要按的按鍵
+        if (step.shift && !mobile2SetShiftSelected) {
+            // 如果當前步驟需要 Shift 且使用者尚未按下 Shift
+            const shiftKey = document.getElementById('mobile2SetShift');
+            if (shiftKey) shiftKey.classList.add('sequence-current');
         } else {
-            const targetKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
-            if (targetKeyEl) targetKeyEl.classList.add('active');
+            const currentKeyEl = document.querySelector(`.key[data-code="${step.code}"]`);
+            if (currentKeyEl) currentKeyEl.classList.add('sequence-current');
         }
+
         return;
     }
 
