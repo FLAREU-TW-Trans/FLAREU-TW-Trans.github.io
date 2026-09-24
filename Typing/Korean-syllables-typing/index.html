@@ -527,16 +527,13 @@ function highlightNextKey() {
 
         if (step.shift && !mobile2SetShiftSelected) {
             const shiftKey = document.getElementById('mobile2SetShift');
-
             if (shiftKey) {
                 shiftKey.classList.add('sequence-current');
             }
-
         } else {
             const targetKeyEl = document.querySelector(
                 `.key[data-code="${step.code}"]`
             );
-
             if (targetKeyEl) {
                 targetKeyEl.classList.add('sequence-current');
             }
@@ -556,6 +553,9 @@ function highlightNextKey() {
 function clearHighlights() {
     document.querySelectorAll('.key, .key10key').forEach(key => {
         key.classList.remove('active', 'correct', 'wrong', 'sequence-current');
+    });
+    document.querySelectorAll('.sequence-order').forEach(orderEl => {
+        orderEl.remove();
     });
 }
 
