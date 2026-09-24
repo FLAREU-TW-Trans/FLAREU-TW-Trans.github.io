@@ -3255,16 +3255,8 @@ function advanceToNextTarget() {
 
     currentTypingIdx++;
 
-    // 清空輸入框並重置 IME 組字狀態
     if (inputArea) {
-        inputArea.value = '';
-        // 透過 blur -> focus 重置輸入法狀態，防止殘留組字
-        inputArea.blur();
-        setTimeout(() => {
-            if (currentTypingIdx < typingQueue.length) {
-                inputArea.focus();
-            }
-        }, 10);
+        inputArea.value = ''; // 同步清空輸入框
     }
 
     if (currentTypingIdx < typingQueue.length) {
