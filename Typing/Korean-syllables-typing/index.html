@@ -497,7 +497,7 @@ function highlightNextKey() {
         mobile2SetSequence.forEach((item, index) => {
 
             let keyEl = null;
-
+        
             if (item.type === 'shift') {
                 keyEl = document.getElementById('mobile2SetShift');
             } else {
@@ -505,15 +505,23 @@ function highlightNextKey() {
                     `.key[data-code="${item.code}"]`
                 );
             }
-
+        
             if (!keyEl) return;
-
+        
             keyEl.classList.add('active');
             keyEl.classList.add('sequence-required');
-
+        
+            // 計算這個按鍵之前已經出現過幾次
+            const existingOrders = keyEl.querySelectorAll('.sequence-order');
+            const repeatIndex = existingOrders.length;
+        
             const orderEl = document.createElement('span');
             orderEl.className = 'sequence-order';
             orderEl.textContent = index + 1;
+        
+            // 同一個按鍵重複出現時，順序圓圈往右排列
+            orderEl.style.right = `${-8 + repeatIndex * 22}px`;
+        
             keyEl.appendChild(orderEl);
         });
 
