@@ -3132,9 +3132,14 @@ function prepareTypingQueue() {
 
 // 渲染當前題目目標
 function renderCurrentTypingTarget() {
+    const inputArea = document.getElementById('typing-input');
+    if (inputArea) {
+        inputArea.value = ''; // 確保進入新題目時輸入框為空
+    }
+
     if (typingQueue.length === 0) return;
     targetSentence = typingQueue[currentTypingIdx] || '';
-    renderTypingDisplay('');
+    renderTypingDisplay(''); // 以空字串初始化顯示
 }
   
 // 渲染當前題目的目標文字
@@ -3190,6 +3195,8 @@ function startTypingTest() {
 
 // 監聽輸入框的 keydown 事件 (處理 Enter 鍵送出切換)
 document.getElementById('typing-input').addEventListener('keydown', function(e) {
+    if (e.isComposing) return;
+   
     if (e.key === 'Enter') {
         e.preventDefault();
         if (this.value.trim() !== '') {
@@ -3237,7 +3244,7 @@ function updateTypingMetrics(typedText) {
 function advanceToNextTarget() {
     const inputArea = document.getElementById('typing-input');
     const targetText = typingQueue[currentTypingIdx];
-    const inputVal = inputArea.value;
+    const inputVal = inputArea ? inputArea.value : '';
 
     totalTypedChars += inputVal.length;
     let correctCount = 0;
@@ -3246,8 +3253,19 @@ function advanceToNextTarget() {
     }
     totalCorrectChars += correctCount;
 
-    inputArea.value = '';
     currentTypingIdx++;
+
+    // 清空輸入框並重置 IME 組字狀態
+    if (inputArea) {
+        inputArea.value = '';
+        // 透過 blur -> focus 重置輸入法狀態，防止殘留組字
+        inputArea.blur();
+        setTimeout(() => {
+            if (currentTypingIdx < typingQueue.length) {
+                inputArea.focus();
+            }
+        }, 10);
+    }
 
     if (currentTypingIdx < typingQueue.length) {
         renderCurrentTypingTarget();
