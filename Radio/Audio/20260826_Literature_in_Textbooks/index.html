@@ -59,7 +59,27 @@ body {
 .container { max-width: 760px; margin: 28px auto 0; padding: 0 16px; }
 
 /* ==========================================
-   3. 控制面板 & 按鈕 
+   3. 使用說明彈窗
+   ========================================== */
+.info-tabs { display: flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 10px; margin: 15px 0; }
+.info-tab-btn {
+    flex: 1; padding: 6px 2px; border: none; background: transparent; color: #64748b; font-size: 13px; font-weight: 600; border-radius: 6px;
+    cursor: pointer; transition: all 0.2s ease; white-space: nowrap;
+}
+.info-tab-btn.active { background-color: var(--primary-dark); color: #ffffff; font-weight: 700; box-shadow: 0 2px 5px rgba(33, 33, 71, 0.2); }
+.info-tab-content { min-height: 160px; text-align: left; font-size: 14px; color: #4b5563; line-height: 1.6; }
+
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+.info-list { list-style: none; padding-left: 0; }
+.info-list li { margin-bottom: 10px; position: relative; }
+.info-list.num-list { list-style: decimal; padding-left: 20px; }
+.info-subtext { font-size: 12px; color: #6b7280; display: block; margin-top: 2px; }
+.info-link { color: #2563eb; text-decoration: underline; font-weight: 600; }
+
+/* ==========================================
+   4. 控制面板 & 按鈕 
    ========================================== */
 .control-panel {
     background: var(--surface-white); border-radius: var(--border-radius); padding: 16px; box-shadow: var(--shadow-soft);
@@ -97,7 +117,7 @@ body {
 }
 
 /* ==========================================
-   4. 動態逐句控制區塊
+   5. 動態逐句控制區塊
    ========================================== */
 .audio-card {
     background: var(--surface-white); border-radius: var(--border-radius); padding: 18px 20px; box-shadow: var(--shadow-soft); margin-bottom: 20px;
@@ -120,7 +140,7 @@ body {
 .time-btn:active { background: var(--primary-dark); color: #fff; transform: scale(0.94); box-shadow: 0 1px 3px rgba(33, 33, 71, 0.25); }
 
 /* ==========================================
-   5. 字幕顯示區與動態大小
+   6. 字幕顯示區與動態大小
    ========================================== */
 .subtitle-card {
     background: var(--surface-white); border-radius: var(--border-radius); padding: 24px; box-shadow: var(--shadow-soft); min-height: 320px; max-height: 520px; overflow-y: auto;
@@ -136,7 +156,7 @@ body {
 .hide-chi .chi-text { display: none !important; }
 
 /* ==========================================
-   6. 教學模式標示單字與語音按鈕樣式
+   7. 教學模式標示單字與語音按鈕樣式
    ========================================== */
 .sub-line { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
 .sub-content { flex: 1; }
@@ -156,7 +176,7 @@ body {
 .vocab-word:active { transform: translateY(1px); }
 
 /* ==========================================
-   7. 單字與 Modal 彈窗 
+   8. 單字與 Modal 彈窗 
    ========================================== */
 .modal-overlay {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(33, 33, 71, 0.4); display: none;
@@ -190,7 +210,7 @@ body {
 }
 
 /* ==========================================
-  8. 單字測驗與打字測驗
+  9. 單字測驗與打字測驗
    ========================================== */
 .test-card { background: var(--surface-white); border-radius: var(--border-radius); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow-soft); width: 100%; }
 .test-header {
@@ -246,7 +266,7 @@ body {
 .typing-input-field:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2); }
 
 /* ==========================================
-  9. 打字測驗結算 Modal
+  10. 打字測驗結算 Modal
    ========================================== */
 .result-card { background: #fff; padding: 24px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
 .result-actions { display: flex; gap: 10px; margin-top: 20px; }
@@ -256,7 +276,7 @@ body {
 .btn-close { flex: 1; background: #94a3b8; color: white; padding: 10px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
 /* ==========================================
-  10. 排行榜
+  11. 排行榜
    ========================================== */
 .typing-leaderboard { margin: 18px 0 30px; padding: 0; border-radius: 14px; background: rgba(33, 33, 71, 0.035); border: 1px solid rgba(33, 33, 71, 0.08); overflow: hidden; }
 .leaderboard-header { display: flex; align-items: center; justify-content: center; position: relative; min-height: 52px; padding: 0 50px; }
@@ -492,18 +512,58 @@ body {
 <div class="modal-overlay" id="info-modal" onclick="closeInfoModal(event)">
   <div class="modal-card">
     <button class="modal-close" onclick="closeInfoModalDirect()">✕</button>
+    
     <div class="modal-header">
-        <span class="modal-kor">💡 動態同步與版本說明</span>
+      <span class="modal-kor">💡 使用說明</span>
     </div>
-    <div class="modal-chi" style="text-align: left; font-size: 14px; margin-bottom: 20px; color: #4b5563; line-height: 1.6;">
-        <p style="margin-bottom: 12px;">
-            1. <b>動態同步功能：</b>請點擊上方<b>「🎧 官方網站收聽」</b>開啟官方網頁並播放音訊，再點擊本頁面的<b>「▶ 開始動態同步」</b>按鈕搭配字幕觀看。
-        </p>
-        <p style="margin-bottom: 0;">
-            2. <b>詩詞版本說明：</b>立于朗讀白石的詩詞《有一面白牆》現存有多個版本，部分單字略有不同。本站顯示之內文為<b>納木維基 (나무위키)</b> 上記載的版本，僅供學習與參考。
-        </p>
+
+    <!-- 分頁標籤列 -->
+    <div class="info-tabs">
+      <button class="info-tab-btn active" onclick="switchInfoTab('tab-source', this)">收錄作品</button>
+      <button class="info-tab-btn" onclick="switchInfoTab('tab-mode1', this)">動態逐句</button>
+      <button class="info-tab-btn" onclick="switchInfoTab('tab-mode2', this)">教學與單字</button>
+      <button class="info-tab-btn" onclick="switchInfoTab('tab-mode4', this)">打字練習</button>
     </div>
-    <button class="audio-play-btn" onclick="closeInfoModalDirect()">我知道了</button>
+
+    <!-- 標籤內容區 -->
+    <div class="info-tab-content">
+      <!-- 標籤 1：作品來源 -->
+      <div id="tab-source" class="tab-pane active">
+        <p>本站收錄之文章源自於<b>立于</b>與<b>玗進</b>在함께학교官方網站上朗讀的詩詞：</p>
+        <ul class="info-list">
+          <li><b>立于朗讀：</b>白石《有一面白牆》<br><span class="info-subtext">※ 現存多個版本，部分單字略有不同，本站顯示之內文為<b>納木維基 (나무위키)</b>記載版本。</span></li>
+          <li><b>玗進朗讀：</b>李奎報《奇怪的觀相師》</li>
+        </ul>
+      </div>
+
+      <!-- 標籤 2：模式一 (動態逐句) -->
+      <div id="tab-mode1" class="tab-pane">
+        <ol class="info-list num-list">
+          <li>請點擊頁面上方<b>「🎧 官方網站收聽」</b>開啟官方網頁並收聽朗讀音檔。</li>
+          <li>返回本頁面點擊<b>「▶ 開始動態同步」</b>，搭配逐字稿觀看並自行調整顯示時間。</li>
+        </ol>
+      </div>
+
+      <!-- 標籤 3：模式二 & 三 (教學與測驗) -->
+      <div id="tab-mode2" class="tab-pane">
+        <ul class="info-list">
+          <li><b>教學模式：</b>音檔皆標記初中階韓文單字的詞性、中文與發音，方便學習。</li>
+          <li><b>單字測驗：</b>收錄教學模式中約 360 個單字。點擊「中譯韓」或「韓譯中」可隨機抽取十個單字測驗（成績不予記錄，歡迎隨時練習）。</li>
+        </ul>
+      </div>
+
+      <!-- 標籤 4：模式四 (打字測驗) -->
+      <div id="tab-mode4" class="tab-pane">
+        <ul class="info-list">
+          <li><b>打字練習：</b>若無打字經驗，可前往 <a href="https://flareu-tw-trans.github.io/Typing/" target="_blank" class="info-link">打字練習網站</a>。</li>
+          <li><b>測驗模式：</b>包含單字10題 / 句子10題 / 立于文章 / 玗進文章共 4 種模式。</li>
+          <li><b>操作說明：</b>點擊「開始打字」後有 3 秒倒數，倒數結束開啟輸入框，輸入完畢請按 <b>Enter 鍵</b>換題。</li>
+          <li><b>成績紀錄：</b>完成後可選擇是否上傳成績，成績僅儲存在本地 localStorage 與翻譯站資料庫（僅紀錄打字速度與正確率，不記錄個人隱私）。點擊 <b>-</b> 按鈕可折疊排行榜視窗。</li>
+        </ul>
+      </div>
+    </div>
+
+    <button class="audio-play-btn" style="margin-top: 15px;" onclick="closeInfoModalDirect()">我知道了</button>
   </div>
 </div>
 
@@ -2347,6 +2407,22 @@ function switchLang(lang) {
     saveState();
     applyStateToUI();
     applyLangDisplay();
+}
+
+function switchInfoTab(tabId, btnElement) {
+    // 隱藏所有 tab-pane
+    document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.remove('active');
+    });
+    
+    // 移除所有按鈕 active
+    document.querySelectorAll('.info-tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // 顯示目標 pane 並高亮目前按鈕
+    document.getElementById(tabId).classList.add('active');
+    btnElement.classList.add('active');
 }
 
 function setKorFontSize(size) {
