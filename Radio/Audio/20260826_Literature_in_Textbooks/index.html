@@ -3219,7 +3219,9 @@ function handleTypingInput() {
 
     // 當完全打對時，自動切換至下一題
     if (typedText === targetSentence) {
-        advanceToNextTarget();
+        requestAnimationFrame(() => {
+            advanceToNextTarget();
+        });
     }
 }
 
