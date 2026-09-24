@@ -511,28 +511,11 @@ function highlightNextKey() {
             keyEl.classList.add('active');
             keyEl.classList.add('sequence-required');
 
-            let orderEl = keyEl.querySelector('.sequence-order');
-
-            if (!orderEl) {
-                orderEl = document.createElement('span');
-                orderEl.className = 'sequence-order';
-                keyEl.appendChild(orderEl);
-            }
-
+            const orderEl = document.createElement('span');
+            orderEl.className = 'sequence-order';
             orderEl.textContent = index + 1;
+            keyEl.appendChild(orderEl);
         });
-
-        let currentSequenceIndex = 0;
-
-        for (let i = 0; i < currentStepIndex; i++) {
-            const previousStep = currentTarget.sequence[i];
-
-            if (previousStep.shift) {
-                currentSequenceIndex += 2;
-            } else {
-                currentSequenceIndex += 1;
-            }
-        }
 
         if (step.shift && !mobile2SetShiftSelected) {
             const shiftKey = document.getElementById('mobile2SetShift');
