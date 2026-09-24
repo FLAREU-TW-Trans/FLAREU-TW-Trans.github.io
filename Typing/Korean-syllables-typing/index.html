@@ -45,6 +45,12 @@
     .btn-start { background-color: #2ecc71; color: white; border: none; padding: 12px 30px; font-size: 18px; font-weight: bold; border-radius: 25px; cursor: pointer; transition: background-color 0.2s; margin-top: 10px; }
     .btn-start:hover { background-color: #27ae60; }
 
+    /* 手機 2set佈局 */
+    .sequence-order {
+        position: absolute; top: 3px; right: 5px; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;
+        border-radius: 50%; font-size: 11px; font-weight: bold; line-height: 1; pointer-events: none;
+    }
+
     /* 手機模式 */
     .mobile-input-container { display: none; margin-bottom: 15px; }
     .mobile-input-container input {
@@ -470,46 +476,79 @@ function highlightNextKey() {
 
     if (currentMode === 'mobile-2set') {
 
-        const initialStep = currentTarget.sequence[0];
+        const mobile2SetSequence = [];
 
-        if (initialStep) {
-            const initialKeyEl = document.querySelector(
-                `.key[data-code="${initialStep.code}"]`
-            );
+        currentTarget.sequence.forEach(step => {
 
-            if (initialKeyEl) {
-                initialKeyEl.classList.add('active');
+            if (step.shift) {
+                mobile2SetSequence.push({
+                    type: 'shift',
+                    code: null
+                });
             }
 
-            if (initialStep.shift) {
-                const shiftKey =
-                    document.getElementById('mobile2SetShift');
+            mobile2SetSequence.push({
+                type: 'key',
+                code: step.code
+            });
+        });
 
-                if (shiftKey) {
-                    shiftKey.classList.add('active');
-                }
+        mobile2SetSequence.forEach((item, index) => {
+
+            let keyEl = null;
+
+            if (item.type === 'shift') {
+                keyEl = document.getElementById('mobile2SetShift');
+            } else {
+                keyEl = document.querySelector(
+                    `.key[data-code="${item.code}"]`
+                );
+            }
+
+            if (!keyEl) return;
+
+            keyEl.classList.add('active');
+            keyEl.classList.add('sequence-required');
+
+            let orderEl = keyEl.querySelector('.sequence-order');
+
+            if (!orderEl) {
+                orderEl = document.createElement('span');
+                orderEl.className = 'sequence-order';
+                keyEl.appendChild(orderEl);
+            }
+
+            orderEl.textContent = index + 1;
+        });
+
+        let currentSequenceIndex = 0;
+
+        for (let i = 0; i < currentStepIndex; i++) {
+            const previousStep = currentTarget.sequence[i];
+
+            if (previousStep.shift) {
+                currentSequenceIndex += 2;
+            } else {
+                currentSequenceIndex += 1;
             }
         }
 
-        currentTarget.sequence.slice(1).forEach(vStep => {
+        if (step.shift && !mobile2SetShiftSelected) {
+            const shiftKey = document.getElementById('mobile2SetShift');
 
-            const vowelKeyEl = document.querySelector(
-                `.key[data-code="${vStep.code}"]`
+            if (shiftKey) {
+                shiftKey.classList.add('sequence-current');
+            }
+
+        } else {
+            const targetKeyEl = document.querySelector(
+                `.key[data-code="${step.code}"]`
             );
 
-            if (vowelKeyEl) {
-                vowelKeyEl.classList.add('active');
+            if (targetKeyEl) {
+                targetKeyEl.classList.add('sequence-current');
             }
-
-            if (vStep.shift) {
-                const shiftKey =
-                    document.getElementById('mobile2SetShift');
-
-                if (shiftKey) {
-                    shiftKey.classList.add('active');
-                }
-            }
-        });
+        }
 
         return;
     }
