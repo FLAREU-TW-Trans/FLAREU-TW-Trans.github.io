@@ -14,26 +14,28 @@
        1. 色彩變數與基礎設定 (黃色系主題)
        ==================== */
     :root { 
-        /* 淺色黃色系 */
-        --bg-body: #FFFCF5; --bg-content: #FFFFFF; --text-main: #3D352D; --text-sub: #7A6F62; --border-line: #F4E8D1;
-        --btn-bg: #F3C623; --btn-hover: #D8AD1A; --btn-text: #2C2416; --intro-bg: #FFF8E7; --intro-border: #FBE6B3; --intro-text: #4A3F33; 
-        --section-bg: #FFF3CD; --section-text: #856404;      
-        --tab-bg: #FFFFFF; --tab-border: #F4E8D1; --tab-text: #A09383; --tab-active-text: #D8AD1A; --tab-active-border: #F3C623;
-        --home-btn-bg: #FFF8E7; --home-btn-hover: #FBE6B3; --theme-btn-bg: #F0F0F0; --theme-btn-text: #666; --theme-btn-active: #FFFFFF;     
-        --reaction-text-shadow: none; --emoji-btn-active-border: #F3C623; --emoji-btn-active-text: #3D352D; --emoji-btn-bg-hover: rgba(243, 198, 35, 0.1); 
-        --emoji-btn-default-bg: rgba(0, 0, 0, 0.02); --emoji-btn-default-border: #E8E1D5; --emoji-btn-default-text: #8E8579; --subtitle-size: 22px; 
+        /* 淺色模式：以奶油白/黃搭配高級沉穩的藍色 */
+        --bg-body: #FFFCF7; --bg-content: #FFFFFF; --text-main: #2C3540; --text-sub: #607085; --border-line: #E2EBF5;
+        --btn-bg: rgb(18,103,196); --btn-hover: rgb(14,84,160); --btn-text: #FFFFFF; 
+        --intro-bg: rgb(254,244,149); --intro-border: #F7EAA1; --intro-text: #3D3A1B; 
+        --section-bg: #EAF3FE; --section-text: rgb(18,103,196);     
+        --tab-bg: #FFFFFF; --tab-border: #E2EBF5; --tab-text: #8293A8; --tab-active-text: rgb(18,103,196); --tab-active-border: rgb(18,103,196);
+        --home-btn-bg: rgb(254,244,149); --home-btn-hover: #F2E4A5; --theme-btn-bg: #EDF3F9; --theme-btn-text: #5A6D82; --theme-btn-active: #FFFFFF;     
+        --reaction-text-shadow: none; --emoji-btn-active-border: rgb(18,103,196); --emoji-btn-active-text: #2C3540; --emoji-btn-bg-hover: rgba(18, 103, 196, 0.1); 
+        --emoji-btn-default-bg: rgba(0, 0, 0, 0.02); --emoji-btn-default-border: #DCE6F2; --emoji-btn-default-text: #7A8B9E; --subtitle-size: 22px; 
     }
 
     [data-theme="dark"] {
         /* 深色模式 */
-        --bg-body: #161512; --bg-content: #22201D; --text-main: #EAE6DF; --text-sub: #A69E93; --border-line: #3D3A35;
-        --btn-bg: #CFA61E; --btn-hover: #F3C623; --btn-text: #161512; --intro-bg: #2C2924; --intro-border: #4A453A; --intro-text: #D4CDAC; 
-        --section-bg: #332D20; --section-text: #E8CC78;     
-        --tab-bg: #22201D; --tab-border: #3D3A35; --tab-text: #888; --tab-active-text: #E8CC78; --tab-active-border: #CFA61E;       
-        --home-btn-bg: #33302A; --home-btn-hover: #444038; --theme-btn-bg: #2A2A2A; --theme-btn-text: #999; --theme-btn-active: #111;
+        --bg-body: #12161C; --bg-content: #1B222B; --text-main: #E2EBF5; --text-sub: #9FB2C7; --border-line: #293544;
+        --btn-bg: rgb(18,103,196); --btn-hover: rgb(56,143,232); --btn-text: #FFFFFF; 
+        --intro-bg: #26271E; --intro-border: #3D3B24; --intro-text: rgb(254,244,149); 
+        --section-bg: #1A2836; --section-text: rgb(120,185,252);     
+        --tab-bg: #1B222B; --tab-border: #293544; --tab-text: #7C91A8; --tab-active-text: rgb(120,185,252); --tab-active-border: rgb(18,103,196);        
+        --home-btn-bg: #2B2F25; --home-btn-hover: #383D30; --theme-btn-bg: #242E3A; --theme-btn-text: #9FB2C7; --theme-btn-active: #12161C;
         --reaction-text-shadow: 0px 1px 3px rgba(0,0,0,0.8);
-        --emoji-btn-active-border: #E8CC78; --emoji-btn-active-text: #F8F5EE; --emoji-btn-bg-hover: rgba(255, 255, 255, 0.08); 
-        --emoji-btn-default-bg: rgba(255, 255, 255, 0.05); --emoji-btn-default-border: #444; --emoji-btn-default-text: #AAA;
+        --emoji-btn-active-border: rgb(120,185,252); --emoji-btn-active-text: #F8F9FA; --emoji-btn-bg-hover: rgba(255, 255, 255, 0.08); 
+        --emoji-btn-default-bg: rgba(255, 255, 255, 0.05); --emoji-btn-default-border: #334254; --emoji-btn-default-text: #A1B4C9;
     }
 
     html, body { 
@@ -75,7 +77,7 @@
        ==================== */
     .article-container { padding: 0 25px; text-align: left; }
     
-    .btn-article { display: block; background-color: var(--btn-bg); color: var(--btn-text); text-align: center; padding: 14px 20px; margin: 20px 0; border-radius: 12px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 10px rgba(243, 198, 35, 0.2); transition: transform 0.2s; }
+    .btn-article { display: block; background-color: var(--btn-bg); color: var(--btn-text); text-align: center; padding: 14px 20px; margin: 25px 0; border-radius: 12px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 10px rgba(18, 103, 196, 0.2); transition: transform 0.2s; }
     .btn-article:hover { transform: translateY(-2px); }
 
     .intro-text { font-size: 1.05rem; line-height: 1.8; color: var(--intro-text); padding: 25px; background-color: var(--intro-bg); border-radius: 12px; border: 1px solid var(--intro-border); margin-bottom: 30px; }
@@ -87,13 +89,13 @@
     .qa-block { margin-bottom: 35px; }
     .question { font-size: 1.15rem; font-weight: 700; color: var(--section-text); margin-bottom: 12px; line-height: 1.6; }
     .answer { font-size: 1.05rem; line-height: 1.8; color: var(--text-main); margin-bottom: 10px; padding-left: 5px; }
-    .speaker { font-weight: 700; color: var(--text-main); background: var(--intro-border); padding: 2px 8px; border-radius: 4px; font-size: 0.95rem; margin-right: 5px; display: inline-block; margin-bottom: 4px;}
+    .speaker { font-weight: 700; color: var(--text-main); background: var(--intro-bg); border: 1px solid var(--intro-border); padding: 2px 8px; border-radius: 4px; font-size: 0.95rem; margin-right: 5px; display: inline-block; margin-bottom: 4px;}
 
     .highlight-quote { font-size: 1.15rem; font-style: italic; font-weight: 600; color: var(--section-text); text-align: center; margin: 40px 10px; padding: 25px; border-top: 2px dashed var(--intro-border); border-bottom: 2px dashed var(--intro-border); line-height: 1.7; background: var(--intro-bg); border-radius: 16px; }
     .quote-author { display: block; font-size: 0.95rem; font-style: normal; font-weight: bold; margin-top: 15px; color: var(--text-sub); }
 
-    hr.divider { border: 0; height: 1px; background: var(--intro-border); margin: 40px 0; }
-
+    hr.divider { border: 0; height: 1px; background: var(--border-line); margin: 40px 0; }
+  
     /* ==================== 
        4. 影片區塊與字幕樣式
        ==================== */
@@ -149,7 +151,7 @@
     /* ==================== 
        6. 表情牆修復 (下方靜態表情)
        ==================== */
-    .unified-reaction-box { background-color: var(--section-bg) !important; border-radius: 16px; margin: 30px 20px; padding: 25px; text-align: center; border: 1px solid var(--intro-border); box-sizing: border-box; display: flex; flex-direction: column; align-items: center; }
+    .unified-reaction-box { background-color: var(--section-bg) !important; border-radius: 16px; margin: 30px 20px; padding: 25px; text-align: center; border: 1px solid var(--border-line); box-sizing: border-box; display: flex; flex-direction: column; align-items: center; }
     .reaction-section { text-align: center !important; width: 100%; background: transparent !important; height: auto !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; }
     .reaction-wall { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 15px; background: transparent !important;}
 
@@ -189,6 +191,106 @@
             <a href="https://news.mtn.co.kr/news-detail/2026101214434847453" target="_blank" class="btn-article">
                 👉 點此開啟 MTN 官方文章看原文報導
             </a>
+
+            <div class="intro-text">
+                <h3>在現今流行多名成員的偶像市場中以雙人組合生存下來［MTN 訪談］</h3>
+                <p>男團 <strong>FLARE U</strong> 於14日以迷你專輯《LOVEHOOD》回歸。</p>
+                <p>這個由台灣籍成員<strong>崔立于</strong>與韓國籍成員<strong>姜玗進</strong>組成的雙人組合，因參加去年播出的 Mnet 選秀節目《BOYS II PLANET》而受到大眾關注。</p>
+                <p>他們於5月發行了迷你一輯《YOUTH ERROR》正式出道，這次將展開出道後首次的回歸活動。</p>
+            </div>
+
+            <p>如果說迷你一輯《YOUTH ERROR》描繪的是兩名不完美的青春少年相遇，並逐漸找到屬於自己的光芒的過程，那麼這次的新專輯則刻畫了一名少年意識到，自己這份突然湧上心頭的情感原來就是愛情，並經歷這段耀眼情感季節的故事。</p>
+            <p>在專輯發行前夕，兩位成員接受了 MTN 的訪問。兩人帶著燦爛的笑容打了招呼，也表達了對接下來活動的期待。</p>
+
+            <div class="qa-block">
+                <div class="answer"><span class="speaker">崔立于</span>「這是我們出道後的第一次回歸嘛。這次的專輯展現了不同以往的一面，所以我很好奇粉絲們看到我們這次的回歸後會有什麼感受。而且因為我們真的很努力準備，很想趕快讓大家看到。」</div>
+            </div>
+
+            <div class="qa-block">
+                <div class="answer"><span class="speaker">姜玗進</span>「因為這也是我第一次回歸，所以我深深地覺得，自己應該要展現出更好的成果才行。緊張的同時也很期待。這次的歌曲我覺得更棒了，希望粉絲們也能非常喜歡。」</div>
+            </div>
+
+            <p>這張讓兩位成員如此有自信地向大家介紹的專輯，描繪了一名少年初次面對全新情感時的時光。</p>
+            <p>尤其是主打歌<strong>《너의 계절이 찾아와 (Bloom)》</strong>，是一首將抒情人聲旋律、復古卻又溫暖的音色融為一體的合成器流行樂（Synth-pop）歌曲。</p>
+
+            <div class="qa-block">
+                <div class="answer"><span class="speaker">姜玗進</span>「這張專輯的核心主題是愛。裡面描繪了第一次發現愛這種情感，並逐漸成長的故事。其實我第一次聽到主打歌時，並沒有立刻產生出『就是這首歌了』那種強烈的感覺。但是在我以客觀角度反覆聽了很久之後，就覺得這首歌既能延續上一張專輯明亮的氛圍，又能展現出不同的感覺。」</div>
+            </div>
+
+            <div class="qa-block">
+                <div class="answer"><span class="speaker">崔立于</span>「聽著〈너의 계절이 찾아와 (Bloom)〉，會發現樂團的編曲音色隨著歌曲推進而逐漸堆疊，讓人產生情緒越來越澎湃的感覺。個人來說，我從第一次聽到這首歌時就很喜歡，因此當時就希望能以這首歌做為主打歌。」</div>
+            </div>
+
+            <p>在舞蹈編排上也更加用心。他們以青春的情感為核心設計表演，同時也投入了許多心力，希望呈現出比前一張作品更加成熟、進步的一面。</p>
+
+            <div class="qa-block">
+                <div class="answer"><span class="speaker">崔立于</span>「上一張專輯的表演風格比較可愛，但這次有很多舞蹈動作是以優美、漂亮的線條為主。我們在表演上花了很多心思，而且在努力的過程中，感覺自己也成長了不少。這次預計會呈現很多以畫面感為主的設計。其中還有玗進在我的手上寫字的動作，我們打算每次上音樂節目時都換成不同的字，大家應該也會覺得很有趣。」</div>
+            </div>
+
+            <p>當然，最重要的部分莫過於兩位成員之間的默契。</p>
+            <p>就這一點而言，他們兩人的化學反應早已廣為人知。因為早在參加《BOYS II PLANET》時，他們就展現出了與眾不同的團隊默契。隨著兩人組團持續活動的過程中，彼此之間的羈絆也變得更加深厚。</p>
+
+            <div class="qa-block">
+                <div class="answer"><span class="speaker">姜玗進</span>「我們本來感情就很好，所以感覺沒有什麼再變得更好的空間了。現在就是維持在最高點的狀態。其實我們兩個的個性完全相反。立于哥的 MBTI 是 INFJ，而我是 ENTP。剛開始的時候，確實因為個性差異產生了一些摩擦，但實際上一起生活、聊了各種各樣的事情之後，我覺得哥哥和我都逐漸學會配合彼此了。」</div>
+            </div>
+
+            <p>雙人組合的形式，是 FLARE U 獨有且鮮明的差異化特色。</p>
+            <p>不過，在以多人成員偶像團體為主流的 K-pop 市場中，雙人組合也可能在舞台呈現、表演編排等方面面臨不同的考量。</p>
+            <p>即便如此，兩人並沒有把重點放在成員人數帶來的限制或壓力上，而是更加珍惜能夠彼此陪伴、共同打造舞台這件事。</p>
+
+            <div class="qa-block">
+                <div class="answer"><span class="speaker">姜玗進</span>「我從來沒有因為只有兩個人而覺得有所不足。只要和哥哥在一起，就會有一種獲得很多能量的感覺。站上舞台時，或許會有人擔心畫面看起來比較空，但我認為舞者們也是我們團隊的一員。」</div>
+            </div>
+
+            <div class="qa-block">
+                <div class="answer"><span class="speaker">崔立于</span>「我之前有以 Solo 身分出道過嘛。當時獨自站上舞台時，多虧了粉絲們帶給我的能量才足以充分填滿整個舞台。所以後來和玗進一起組團活動，我反而沒有太大的擔憂。而且我們也會和舞者們一起登台，整體的氣氛也很好。」</div>
+            </div>
+
+            <p>如同珍惜身邊的隊友，粉絲們的應援對他們而言也同樣珍貴，令人難以忘懷。</p>
+            <p>雖然距離出道至今才短短五個月，但兩人對於那些難忘的時刻，依然記憶猶新。</p>
+
+            <div class="qa-block">
+                <div class="answer"><span class="speaker">崔立于</span>「因為現在還處於出道初期，所有的記憶都還歷歷在目。特別是我們曾經去高雄參加音樂節，那是我們第一次在那麼大的場地向大家展示舞台。高雄同時也是我的故鄉，所以現場的反應也很好。我當時真的很享受那個舞台。另外，還有一件讓我很感謝的事。因為我是外國人，所以沒想到會有這麼多韓國粉絲為我應援。但在活動過程中，我真的逐漸感受到大家的支持。大家好像都在跟我說，要對自己有信心，而這真的給了我很大的幫助。」</div>
+            </div>
+
+            <div class="qa-block">
+                <div class="answer"><span class="speaker">姜玗進</span>「出道後第一次上音樂節目的時候，我完全沒有想過粉絲們會在台下非常大聲地為我們應援。那一刻感覺到死都不會忘記。」</div>
+            </div>
+
+            <p>他們還有很多尚未展現的面貌。</p>
+            <p>其中，兩人最希望呈現的，是以平靜的方式訴說屬於他們自己的故事。他們不只希望透過華麗的表演與明亮的活力吸引大家，也希望透過能長久留在粉絲們心中的歌曲與大家相見。從兩人各自選出崇拜的歌手中，也能窺見他們對音樂的追求與方向。</p>
+
+            <div class="qa-block">
+                <div class="answer"><span class="speaker">姜玗進</span>「我真的很想成為像已故的金光石前輩、李茂珍前輩，以及 AKMU 前輩們那樣的音樂人。前輩們都有屬於他們的音樂理念，而他們的音樂所散發出的能量，正是我非常喜歡的類型，所以我覺得他們真的很帥氣。」</div>
+            </div>
+
+            <div class="qa-block">
+                <div class="answer"><span class="speaker">崔立于</span>「因為我很清楚自己想做什麼，也喜歡對未來自己想成為什麼樣的人制定計劃，所以我很尊敬那些會親自負責專輯製作、決定專輯概念的前輩。像是 (G)I-DLE 的小娟前輩那樣，對自己想做的事情有明確想法的人。」</div>
+            </div>
+
+            <p>首先，他們希望能透過這張專輯取得有意義的成果。</p>
+            <p>尤其是兩人都非常希望獲得更多與粉絲見面的機會。</p>
+
+            <div class="qa-block">
+                <div class="answer"><span class="speaker">姜玗進</span>「我想試著拿下音樂節目的一位。尤其是立于哥現在還擔任《THE SHOW》的主持人嘛。如果他在節目中親口唸出我們團體的名字，宣布我們拿下一位，大概會哭出來吧？感覺會非常感動。」</div>
+            </div>
+
+            <div class="qa-block">
+                <div class="answer"><span class="speaker">崔立于</span>「發行這張專輯之後，我們累積的歌曲大概就有12到13首了。我希望能用這些歌曲，創造和粉絲們見面的機會，就像粉絲見面會那樣。我真的很想創造出與粉絲們相聚的機會。」</div>
+            </div>
+
+            <p>除了短期的活動成果之外，兩人也對未來有著自己的想像。</p>
+            <p>在迎來首次回歸的當下，他們一方面期待向大家展現嶄新的一面，另一方面也更加期待未來能共同累積的時光。</p>
+
+            <div class="highlight-quote">
+                「我的夢想，也是我的目標，就是一直唱歌，直到生命的最後一刻。另外還有一件事，就是工作時難免會遇到產生動搖、不知所措的時候嘛。但每當那種時候，我靜下心來想一想，就會發現自己好像忘記了當初為什麼開始做這件事。所以，我希望自己能經常思考當初為什麼出發、最初的動機是什麼。我的目標就是不忘初心。」
+                <span class="quote-author">—— 姜玗進</span>
+            </div>
+
+            <div class="highlight-quote">
+                「因為我是從海外來的，所以我也不知道自己能夠持續活動多久。我和粉絲們一起度過的時間，可能很長，也可能很短，但我希望這段時光能夠讓大家感到幸福。即使有一天一切都結束了，我也希望這段經歷能成為人生漫長旅途中一段珍貴的回憶。」
+                <span class="quote-author">—— 崔立于</span>
+            </div>
 
         </div>
     </div>
