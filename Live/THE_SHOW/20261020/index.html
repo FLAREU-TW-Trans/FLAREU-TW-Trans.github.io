@@ -362,6 +362,10 @@
         </div>
       </div>
 
+      <div class="chapter-row" style="visibility: hidden; pointer-events: none;">
+          <button class="chapter-btn"><span>佔位</span></button>
+      </div>
+
       <div id="video-wrapper-2" class="video-responsive-wrapper">
         <div id="player-container-video2"></div>
         <div id="subtitle-video2" class="subtitle-overlay"></div>
@@ -417,15 +421,6 @@
       btnElement.classList.add('active');
 
       initVideo(tabId);
-
-      setTimeout(() => {
-          window.dispatchEvent(new Event('resize'));
-          // 如果播放器物件存在，也呼叫其重整大小的方法（若有支援）
-          const vData = videoData[tabId];
-          if (vData && vData.player && typeof vData.player.setSize === 'function') {
-              vData.player.setSize('100%', '100%');
-          }
-      }, 50);
     }
 
     /* 時間軸跳轉函式 */
