@@ -7,7 +7,7 @@
 <link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
 <link rel="stylesheet" href="../../../css/reaction.css">
   
-<title>20261020 THE SHOW MC TALK</title>
+<title>20261020 THE SHOW翻譯合輯</title>
 
 <style>
 body {
@@ -23,6 +23,41 @@ html, body {
     height: 100%;
     width: 100%;
     margin: 0;
+}
+
+/* 頂部導覽頁籤列 (切換不同的翻譯影片) */
+.video-tabs-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 10px 5px 10px;
+    background: #1a1a1a;
+    border-bottom: 1px solid #333;
+}
+.video-tab-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #aaa;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.video-tab-btn.active {
+    background: #3498db;
+    color: #fff;
+    border-color: #2980b9;
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.4);
+}
+
+/* 內容面板預設隱藏，active 時顯示 */
+.video-panel {
+    display: none;
+}
+.video-panel.active {
+    display: block;
 }
 
 /* 章節按鈕容器 */
@@ -58,6 +93,11 @@ html, body {
 </head>
 
 <body>
+<div class="video-tabs-row">
+    <button class="video-tab-btn active" onclick="switchVideoTab('tab1', this)">20261020 THE SHOW MC TALK</button>
+    <button class="video-tab-btn" onclick="switchVideoTab('tab2', this)">20261023 JJaeLiView BEHIND</button>
+</div>
+
 <div id="controls">
     <div class="control-row">
         <button onclick="toggleBarrageDisplay()" id="barrage-toggle-btn">即時表情：開</button>
@@ -88,35 +128,44 @@ html, body {
     </div>
 </div>
 
-<h2>20261020 THE SHOW MC TALK</h2>
+<!-- ================= THE SHOW MC TALK ================= -->
+<div id="tab1" class="video-panel active">
+    <h2>20261020 THE SHOW MC TALK</h2>
 
-<div class="chapter-row">
-    <button class="chapter-btn" onclick="seekToTime(0)">
-        <span class="chapter-time">00:00</span>
-        <span class="chapter-title">part1</span>
-    </button>
-    <button class="chapter-btn" onclick="seekToTime(141)">
-        <span class="chapter-time">02:21</span>
-        <span class="chapter-title">part2 訪問團體:MODYSSEY</span>
-    </button>
-    <button class="chapter-btn" onclick="seekToTime(271)">
-        <span class="chapter-time">04:31</span>
-        <span class="chapter-title">part3 訪問團體:KO1KEYZ</span>
-    </button>
-    <button class="chapter-btn" onclick="seekToTime(393)">
-        <span class="chapter-time">06:32</span>
-        <span class="chapter-title">part4 訪問團體:FLARE U</span>
-    </button>
-    <button class="chapter-btn" onclick="seekToTime(765)">
-        <span class="chapter-time">12:45</span>
-        <span class="chapter-title">part5</span>
-    </button>
-    <button class="chapter-btn" onclick="seekToTime(925)">
-        <span class="chapter-time">15:25</span>
-        <span class="chapter-title">結尾頒獎</span>
-    </button>
+    <div class="chapter-row">
+        <button class="chapter-btn" onclick="seekToTime(0)">
+            <span class="chapter-time">00:00</span>
+            <span class="chapter-title">part1</span>
+        </button>
+        <button class="chapter-btn" onclick="seekToTime(141)">
+            <span class="chapter-time">02:21</span>
+            <span class="chapter-title">part2 訪問團體:MODYSSEY</span>
+        </button>
+        <button class="chapter-btn" onclick="seekToTime(271)">
+            <span class="chapter-time">04:31</span>
+            <span class="chapter-title">part3 訪問團體:KO1KEYZ</span>
+        </button>
+        <button class="chapter-btn" onclick="seekToTime(393)">
+            <span class="chapter-time">06:32</span>
+            <span class="chapter-title">part4 訪問團體:FLARE U</span>
+        </button>
+        <button class="chapter-btn" onclick="seekToTime(765)">
+            <span class="chapter-time">12:45</span>
+            <span class="chapter-title">part5</span>
+        </button>
+        <button class="chapter-btn" onclick="seekToTime(925)">
+            <span class="chapter-time">15:25</span>
+            <span class="chapter-title">結尾頒獎</span>
+        </button>
+    </div>
 </div>
 
+<!-- ================= JJaeLiView BEHIND ================= -->
+<div id="tab2" class="video-panel">
+    <h2>20261023 JJaeLiView BEHIND</h2>
+</div>
+
+<!-- 共用的播放器與字幕外框 -->
 <div id="video-wrapper">
     <div id="player"></div>
     <div id="subtitle">字幕載入中...</div>
@@ -141,9 +190,48 @@ html, body {
 </div>
 
 <script>
-/* 影片ID和SRT文件 */
-const MY_VIDEO_ID = "VgDyxZBHMtA"; 
-const MY_SRT_FILE = "20261020_THESHOW_MC_TALK.srt";
+/* 定義各個影片的 ID 與對應的 SRT 檔案 */
+const videoConfigs = {
+    'tab1': {
+        videoId: "VgDyxZBHMtA",
+        srtFile: "20261020_THESHOW_MC_TALK.srt"
+    },
+    'tab2': {
+        videoId: "mh6LjWd123k", 
+        srtFile: "20261023_JJaeLiView_BEHIND.srt"
+    }
+};
+
+/* 預設載入的第一個影片 */
+let MY_VIDEO_ID = videoConfigs['tab1'].videoId;
+let MY_SRT_FILE = videoConfigs['tab1'].srtFile;
+
+/* 切換翻譯影片分頁 */
+function switchVideoTab(tabKey, btnElement) {
+    // 1. 切換上方按鈕 active 狀態
+    document.querySelectorAll('.video-tab-btn').forEach(btn => btn.classList.remove('active'));
+    btnElement.classList.add('active');
+
+    // 2. 切換下方對應的內容面板 (顯示/隱藏章節列)
+    document.querySelectorAll('.video-panel').forEach(panel => panel.classList.remove('active'));
+    document.getElementById(tabKey).classList.add('active');
+
+    // 3. 更新當前影片與字幕設定
+    const config = videoConfigs[tabKey];
+    MY_VIDEO_ID = config.videoId;
+    MY_SRT_FILE = config.srtFile;
+
+    // 4. 如果核心播放器支援切換影片，直接載入新影片
+    if (window.player && typeof window.player.loadVideoById === 'function') {
+        window.player.loadVideoById(MY_VIDEO_ID);
+    } else if (typeof loadVideoConfig === 'function') {
+        // 相容 core-player.js 內建的重新載入函式
+        loadVideoConfig(MY_VIDEO_ID, MY_SRT_FILE);
+    } else {
+        // 若初始化尚未完成，重新整理或重新初始化頁面
+        location.reload();
+    }
+}
 
 /* 字幕大小設定 */
 function changeSubtitleSize(delta) {
