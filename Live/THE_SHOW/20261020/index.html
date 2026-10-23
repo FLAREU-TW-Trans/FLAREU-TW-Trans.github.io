@@ -46,13 +46,13 @@
       --bg-body: #1a1c1a; --bg-content: #242624; --text-main: #e0e2e0; --text-sub: #a0a8a0; --border-line: #3d403d;
       
       /* 按鈕通用 */
-      --btn-bg: #3b76b6; --btn-hover: #2d5d92; --btn-text: #ffffff;
+      --btn-bg: #6385a6; --btn-hover: #506f8c; --btn-text: #ffffff;
       
       /* 首頁與淺深色切換按鈕 */
       --home-btn-bg: #3a3b3c; --home-btn-hover: #4a4b4c; --theme-btn-bg: #333333; --theme-btn-text: #aaaaaa; --theme-btn-active: #1e1e1e;
       
       /* 分頁標籤 (Tabs) */
-      --tab-bg: #242624; --tab-border: #3d403d; --tab-text: #888; --tab-active-text: #a7c4a7; --tab-active-border: #52796f;
+      --tab-bg: #242624; --tab-border: #3d403d; --tab-text: #888; --tab-active-text: #506f8c; --tab-active-border: #6385a6; 
       
       /* 影片控制區與字幕 */
       --video-controls-bg: #2b2d31; --video-controls-border: #3d403d; --video-submenu-bg: #242624;
@@ -417,6 +417,15 @@
       btnElement.classList.add('active');
 
       initVideo(tabId);
+
+      setTimeout(() => {
+          window.dispatchEvent(new Event('resize'));
+          // 如果播放器物件存在，也呼叫其重整大小的方法（若有支援）
+          const vData = videoData[tabId];
+          if (vData && vData.player && typeof vData.player.setSize === 'function') {
+              vData.player.setSize('100%', '100%');
+          }
+      }, 50);
     }
 
     /* 時間軸跳轉函式 */
