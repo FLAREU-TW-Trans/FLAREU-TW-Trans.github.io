@@ -165,65 +165,41 @@
     /* ==================== 
        7. 手機橫向全螢幕
        ==================== */
-    @media (pointer: coarse) {
-        :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay { 
-            bottom: calc(18% + env(safe-area-inset-bottom)) !important;
-            width: 90vw !important;
-            max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px) !important;
-        }
-        
-        :fullscreen .video-responsive-wrapper, :-webkit-full-screen .video-responsive-wrapper {
-            width: 100vw !important; 
-            height: 100vh !important; 
-            max-width: none !important; 
-            margin: 0 !important; 
-            padding-bottom: 0 !important;
-        }
-
-        /* 偽全螢幕 (iPhone Safari) */
+    @media (pointer: coarse) and (orientation: landscape) {
+        /* 1. 全螢幕容器完整鋪滿整個畫面 */
+        :fullscreen .video-responsive-wrapper, 
+        :-webkit-full-screen .video-responsive-wrapper,
         .pseudo-fullscreen {
-            position: fixed !important; top: 0 !important; left: 0 !important;
-            width: 100vw !important; height: 100vh !important; height: 100dvh !important;
-            z-index: 2147483647 !important; background: #000 !important; margin: 0 !important; padding: 0 !important;
-            display: flex !important; align-items: center; justify-content: center;
-            padding-left: env(safe-area-inset-left) !important; padding-right: env(safe-area-inset-right) !important;
-        }
-        
-        /* 確保偽全螢幕下的 iframe 採用彈性置中，不被強行撐破 */
-        .pseudo-fullscreen iframe { 
-            width: 100% !important; 
-            height: 100% !important; 
+            width: 100vw !important;
+            height: 100vh !important;
             max-height: 100vh !important;
-        }
-        
-        .pseudo-fullscreen .subtitle-overlay { 
-            width: min(88vw, 88%) !important; 
-            max-width: 88vw !important; 
-            bottom: calc(15% + env(safe-area-inset-bottom)) !important; 
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            background: #000 !important;
+            padding-bottom: 0 !important;
+            margin: 0 !important;
+            z-index: 2147483646 !important;
         }
 
-        /* 針對手機橫向全螢幕時的控制列與時間軸空間修正 */
-        @media screen and (orientation: landscape) {
-            :fullscreen .video-responsive-wrapper, :-webkit-full-screen .video-responsive-wrapper,
-            .pseudo-fullscreen {
-                width: 100vw !important;
-                height: 100vh !important;
-                max-height: 100vh !important;
-            }
-            
-            /* 讓 YouTube iframe 在橫向時上下留白（限制 max-height），讓出底部給時間軸 */
-            :fullscreen iframe, :-webkit-full-screen iframe, .pseudo-fullscreen iframe {
-                width: 100% !important;
-                height: 100% !important;
-                max-height: 82vh !important; /* 保留底部空間，讓 YouTube 官方時間軸完整露出來 */
-                margin: auto !important;
-                box-sizing: border-box;
-            }
+        /* 2. 讓 YouTube iframe 完整填滿全螢幕，時間軸就會自然貼齊螢幕最底部 */
+        :fullscreen .video-responsive-wrapper iframe, 
+        :-webkit-full-screen .video-responsive-wrapper iframe,
+        .pseudo-fullscreen iframe {
+            width: 100% !important;
+            height: 100% !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+        }
 
-            /* 讓橫向全螢幕時的字幕向上提升，避免壓到時間軸或超出畫面 */
-            :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay, .pseudo-fullscreen .subtitle-overlay {
-                bottom: calc(20% + env(safe-area-inset-bottom)) !important; 
-            }
+        /* 3. 調整橫向全螢幕時的字幕高度：拉高到 15%~18%，確保在時間軸上方清晰可見 */
+        :fullscreen .subtitle-overlay, 
+        :-webkit-full-screen .subtitle-overlay,
+        .pseudo-fullscreen .subtitle-overlay {
+            bottom: 16% !important; /* 調整這個數值可以上下移動字幕 */
+            width: 85vw !important;
+            z-index: 2147483647 !important;
         }
     }
 </style>
