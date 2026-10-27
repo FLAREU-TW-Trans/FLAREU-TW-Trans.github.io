@@ -166,36 +166,50 @@
        7. 手機橫向全螢幕適配修正
        ==================== */
     @media (pointer: coarse) and (orientation: landscape) {
-        /* 當手機橫向全螢幕時，限制影片包裝器高度，避免播放器控制列（時間軸）掉出畫面 */
+        /* 1. 全螢幕容器強制鋪滿整個畫面，採用 Flex 置中確保內部元素不亂跑 */
         :fullscreen .video-responsive-wrapper, 
-        :-webkit-full-screen .video-responsive-wrapper {
+        :-webkit-full-screen .video-responsive-wrapper,
+        .pseudo-fullscreen {
             width: 100vw !important;
             height: 100vh !important;
             max-height: 100vh !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
             background: #000 !important;
             padding-bottom: 0 !important;
+            margin: 0 !important;
+            z-index: 2147483646 !important;
         }
 
-        /* 讓內部的 YouTube 影片維持正確比例並在畫面中置中，留出底部控制條空間 */
+        /* 2. 讓內部的 YouTube 影片維持 16:9 比例，並強制留出底部空間給 YouTube 控制列（時間軸） */
         :fullscreen .video-responsive-wrapper iframe, 
-        :-webkit-full-screen .video-responsive-wrapper iframe {
+        :-webkit-full-screen .video-responsive-wrapper iframe,
+        .pseudo-fullscreen iframe {
             position: relative !important;
-            width: auto !important;
+            width: 100% !important;
             height: 100% !important;
-            aspect-ratio: 16 / 9;
-            max-width: 100vw !important;
-            max-height: 85vh !important; /* 保留底部約 15% 空間給 YouTube 原始時間軸 */
+            max-width: calc(100vh * (16 / 9)) !important; /* 限制最大寬度以符合 16:9 */
+            max-height: 82vh !important; /* 留出底部大約 18% 給 YouTube 控制列與時間軸，絕對看得見 */
             margin: auto !important;
         }
 
-        /* 調整橫向全螢幕時的字幕高度，避免被壓在最底部或被時間軸遮擋 */
+        /* 3. 調整橫向全螢幕時的字幕位置，固定在影片上方、時間軸下方之間 */
         :fullscreen .subtitle-overlay, 
-        :-webkit-full-screen .subtitle-overlay {
-            bottom: 18% !important; /* 往上提，確保橫向看得見 */
+        :-webkit-full-screen .subtitle-overlay,
+        .pseudo-fullscreen .subtitle-overlay {
+            bottom: 20% !important; /* 完美懸浮在時間軸上方，不被遮擋 */
             width: 80vw !important;
+            z-index: 2147483647 !important;
+        }
+        
+        /* 4. 確保全螢幕下的退出按鈕與表情按鈕不會被吃掉 */
+        :fullscreen #emoji-trigger-btn, :-webkit-full-screen #emoji-trigger-btn, .pseudo-fullscreen #emoji-trigger-btn {
+            bottom: 20px !important;
+            right: 20px !important;
         }
     }
 </style>
