@@ -503,16 +503,17 @@
         if (isFS || isPseudo) {
             exitFullscreenMode(wrapperId);
         } else {
-            const isIPhone = /iPhone|iPod/.test(navigator.userAgent);
+            const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             const req = wrapper.requestFullscreen || wrapper.webkitRequestFullscreen;
 
-            if (req && !isIPhone) {
+            if (req && !isIOS) {
                 req.call(wrapper).then(() => {
                     setTimeout(() => showExitBtn(exitBtn), 100);
                 }).catch(() => {
                     enterPseudoFullscreen(wrapper, exitBtn);
                 });
             } else {
+                // iPhone 或不支援的環境直接走偽全螢幕
                 enterPseudoFullscreen(wrapper, exitBtn);
             }
         }
