@@ -7,12 +7,12 @@
 <link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
 <link rel="stylesheet" href="../../css/reaction.css">
   
-<title>20261020 THESHOW影片合輯</title>
+<title>完唱大作戰</title>
 
 <script>
     const savedTheme = localStorage.getItem('pageTheme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
-    window.MY_VIDEO_ID = "20261020_THESHOW";
+    window.MY_VIDEO_ID = "20261016_Pop-K";
   </script>
 
   <style>
@@ -277,7 +277,7 @@
 <div class="content-wrapper">
 
     <header class="header">
-      <h1>20261020 THE SHOW影片合輯</h1>
+      <h1>完唱大作戰</h1>
 
       <div class="controls-wrapper">
         <a href="/" class="home-btn">🏠 首頁</a> 
@@ -297,7 +297,7 @@
     <div id="tab-video1" class="tab-content active">
       <div class="video-controls-bar video-controls-first">
       <div class="actions-group">
-          <p>THE SHOW MC TALK</p>
+          <p>完整節目</p>
           <button class="fullscreen-btn" onclick="triggerFullscreen('video-wrapper-1')">全螢幕</button>
           <div id="subtitle-controls">
             <button onclick="changeSubtitleSize(-0.1, 'subtitle-video1')">A−</button>
@@ -305,34 +305,6 @@
             <button onclick="changeSubtitleSize(0.1, 'subtitle-video1')">A＋</button>
           </div>
         </div>
-      </div>
-
-      <!-- 時間軸按鈕列 -->
-      <div class="chapter-row">
-          <button class="chapter-btn" onclick="seekToTime('tab-video1', 0)">
-              <span class="chapter-time">00:00</span>
-              <span class="chapter-title">part1</span>
-          </button>
-          <button class="chapter-btn" onclick="seekToTime('tab-video1', 141)">
-              <span class="chapter-time">02:21</span>
-              <span class="chapter-title">part2 訪問團體:MODYSSEY</span>
-          </button>
-          <button class="chapter-btn" onclick="seekToTime('tab-video1', 271)">
-              <span class="chapter-time">04:31</span>
-              <span class="chapter-title">part3 訪問團體:KO1KEYZ</span>
-          </button>
-          <button class="chapter-btn" onclick="seekToTime('tab-video1', 393)">
-              <span class="chapter-time">06:32</span>
-              <span class="chapter-title">part4 訪問團體:FLARE U</span>
-          </button>
-          <button class="chapter-btn" onclick="seekToTime('tab-video1', 765)">
-              <span class="chapter-time">12:45</span>
-              <span class="chapter-title">part5</span>
-          </button>
-          <button class="chapter-btn" onclick="seekToTime('tab-video1', 925)">
-              <span class="chapter-time">15:25</span>
-              <span class="chapter-title">結尾頒獎</span>
-          </button>
       </div>
 
       <div id="video-wrapper-1" class="video-responsive-wrapper">
@@ -352,7 +324,7 @@
     <div id="tab-video2" class="tab-content">
       <div class="video-controls-bar">
         <div class="actions-group">
-          <p>JJaeLiView BEHIND</p>
+          <p>完唱LIVE</p>
           <button class="fullscreen-btn" onclick="triggerFullscreen('video-wrapper-2')">全螢幕</button>
           <div id="subtitle-controls">
             <button onclick="changeSubtitleSize(-0.1, 'subtitle-video2')">A−</button>
@@ -360,33 +332,6 @@
             <button onclick="changeSubtitleSize(0.1, 'subtitle-video2')">A＋</button>
           </div>
         </div>
-      </div>
-
-      <div class="chapter-row" style="visibility: hidden; pointer-events: none;">
-          <button class="chapter-btn" onclick="seekToTime('tab-video1', 0)">
-              <span class="chapter-time">00:00</span>
-              <span class="chapter-title">part1</span>
-          </button>
-          <button class="chapter-btn" onclick="seekToTime('tab-video1', 141)">
-              <span class="chapter-time">02:21</span>
-              <span class="chapter-title">part2 訪問團體:MODYSSEY</span>
-          </button>
-          <button class="chapter-btn" onclick="seekToTime('tab-video1', 271)">
-              <span class="chapter-time">04:31</span>
-              <span class="chapter-title">part3 訪問團體:KO1KEYZ</span>
-          </button>
-          <button class="chapter-btn" onclick="seekToTime('tab-video1', 393)">
-              <span class="chapter-time">06:32</span>
-              <span class="chapter-title">part4 訪問團體:FLARE U</span>
-          </button>
-          <button class="chapter-btn" onclick="seekToTime('tab-video1', 765)">
-              <span class="chapter-time">12:45</span>
-              <span class="chapter-title">part5</span>
-          </button>
-          <button class="chapter-btn" onclick="seekToTime('tab-video1', 925)">
-              <span class="chapter-time">15:25</span>
-              <span class="chapter-title">結尾頒獎</span>
-          </button>
       </div>
 
       <div id="video-wrapper-2" class="video-responsive-wrapper">
@@ -415,8 +360,8 @@
     
     // 影片資料 - 🌟 ID 必須跟上面的 HTML 一模一樣，影片才生得出來！
     const videoData = {
-        'tab-video1': { id: 'VgDyxZBHMtA', srt: '20261020_THESHOW_MC_TALK.srt', player: null, subEl: 'subtitle-video1', container: 'player-container-video1', interval: null },
-        'tab-video2': { id: 'mh6LjWd123k', srt: '20261023_JJaeLiView_BEHIND.srt', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null }
+        'tab-video1': { id: 'FHnc2PBDlAM', srt: '20261016_Pop-K.srt', player: null, subEl: 'subtitle-video1', container: 'player-container-video1', interval: null },
+        'tab-video2': { id: 'T9CfW2e0uos', srt: '20261016_Pop-K2.srt', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null }
     };
 
     function updateButtonUI(theme) {
@@ -444,17 +389,6 @@
       btnElement.classList.add('active');
 
       initVideo(tabId);
-    }
-
-    /* 時間軸跳轉函式 */
-    function seekToTime(tabId, seconds) {
-        const vData = videoData[tabId];
-        if (vData && vData.player && typeof vData.player.seekTo === 'function') {
-            vData.player.seekTo(seconds, true);
-            vData.player.playVideo();
-        } else {
-            console.warn("YouTube Player 尚未準備就緒或尚未載入");
-        }
     }
 
     // 安全載入 YouTube 播放器
