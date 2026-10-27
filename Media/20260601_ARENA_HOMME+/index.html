@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant" data-theme="light">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -7,74 +7,75 @@
 <link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
 <link rel="stylesheet" href="../../css/reaction.css">
   
-<title>ARENA HOMME+企劃合輯</title>
+<title>[ARENA HOMME+企劃合輯] 我們FLARE U都不會哭，反而很會說話呢</title>
 
 <style>
-    /* ==================== 
-       1. 色彩變數與基礎設定 (黃色系主題)
-       ==================== */
-    :root { 
-        /* 淺色黃色系 */
-        --bg-body: #FFFCF5; --bg-content: #FFFFFF; --text-main: #3D352D; --text-sub: #7A6F62; --border-line: #F4E8D1;
-        --btn-bg: #F3C623; --btn-hover: #D8AD1A; --btn-text: #2C2416; --intro-bg: #FFF8E7; --intro-border: #FBE6B3; --intro-text: #4A3F33; 
-        --section-bg: #FFF3CD; --section-text: #856404;      
-        --tab-bg: #FFFFFF; --tab-border: #F4E8D1; --tab-text: #A09383; --tab-active-text: #D8AD1A; --tab-active-border: #F3C623;
-        --home-btn-bg: #FFF8E7; --home-btn-hover: #FBE6B3; --theme-btn-bg: #F0F0F0; --theme-btn-text: #666; --theme-btn-active: #FFFFFF;     
-        --reaction-text-shadow: none; --emoji-btn-active-border: #F3C623; --emoji-btn-active-text: #3D352D; --emoji-btn-bg-hover: rgba(243, 198, 35, 0.1); 
-        --emoji-btn-default-bg: rgba(0, 0, 0, 0.02); --emoji-btn-default-border: #E8E1D5; --emoji-btn-default-text: #8E8579; --subtitle-size: 22px; 
+body {
+    margin: 0;
+    background: #111;
+    color: #fff;
+    font-family: Arial, "Noto Sans TC", sans-serif;
+    text-align: center;
+}
+
+html, body {
+    background: #000 !important; /* 強制全黑 */
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+/* ==================== 
+  採訪文章彈出視窗 (Modal) 樣式
+  ==================== */
+    .article-modal-overlay {
+        display: none; /* 預設隱藏 */
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 2147483650; /* 確保在最上層（高於全螢幕） */
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(3px);
     }
 
-    [data-theme="dark"] {
-        /* 深色模式 */
-        --bg-body: #161512; --bg-content: #22201D; --text-main: #EAE6DF; --text-sub: #A69E93; --border-line: #3D3A35;
-        --btn-bg: #CFA61E; --btn-hover: #F3C623; --btn-text: #161512; --intro-bg: #2C2924; --intro-border: #4A453A; --intro-text: #D4CDAC; 
-        --section-bg: #332D20; --section-text: #E8CC78;     
-        --tab-bg: #22201D; --tab-border: #3D3A35; --tab-text: #888; --tab-active-text: #E8CC78; --tab-active-border: #CFA61E;       
-        --home-btn-bg: #33302A; --home-btn-hover: #444038; --theme-btn-bg: #2A2A2A; --theme-btn-text: #999; --theme-btn-active: #111;
-        --reaction-text-shadow: 0px 1px 3px rgba(0,0,0,0.8);
-        --emoji-btn-active-border: #E8CC78; --emoji-btn-active-text: #F8F5EE; --emoji-btn-bg-hover: rgba(255, 255, 255, 0.08); 
-        --emoji-btn-default-bg: rgba(255, 255, 255, 0.05); --emoji-btn-default-border: #444; --emoji-btn-default-text: #AAA;
+    .article-modal-content {
+        position: relative;
+        background: var(--bg-content, #fff);
+        color: var(--text-main, #3D352D);
+        width: 90%;
+        max-width: 750px;
+        height: 85vh; /* 限制高度可滾動 */
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        overflow-y: auto; /* 超出內容可上下滾動 */
+        padding: 40px 20px 20px 20px;
+        box-sizing: border-box;
     }
 
-    html, body { 
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
-        background-color: var(--bg-body); color: var(--text-main); margin: 0; padding: 0; 
-        overflow-x: hidden; height: auto; -webkit-text-size-adjust: 100%;
-        display: flex; justify-content: center; 
-        transition: background-color 0.3s ease, color 0.3s ease; 
+    .close-modal-btn {
+        position: absolute;
+        top: 15px; right: 20px;
+        background: rgba(0,0,0,0.1);
+        border: none;
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-main);
+        transition: background 0.2s;
+    }
+    .close-modal-btn:hover {
+        background: rgba(0,0,0,0.2);
     }
 
-    .content-wrapper { 
-        max-width: 800px; width: 100%; background: var(--bg-content); min-height: 100vh; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding-bottom: 40px; transition: all 0.3s ease; 
-    }
-
-    /* ==================== 
-       2. 版面與導覽列
-       ==================== */
-    .header { background-color: var(--bg-content); padding: 30px 20px 0 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
-    .header h1 { font-size: 1.4rem; margin: 0; font-weight: 800; color: var(--text-main); line-height: 1.4; letter-spacing: 0.5px; }
-
-    .controls-wrapper { display: flex; gap: 12px; align-items: center; margin-top: 15px; margin-bottom: 20px; }
-    .home-btn { background-color: var(--home-btn-bg); color: var(--text-main); text-decoration: none; padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; transition: background 0.2s; }
-    .home-btn:hover { background-color: var(--home-btn-hover); }
-    
-    .theme-toggle-group { display: inline-flex; background-color: var(--theme-btn-bg); border-radius: 24px; padding: 4px; }
-    .theme-btn { background: none; border: none; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; color: var(--theme-btn-text); cursor: pointer; font-weight: bold; transition: all 0.2s; }
-    .theme-btn.active { background-color: var(--theme-btn-active); color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-
-    .tabs-container { display: flex; width: 100%; border-bottom: 2px solid var(--tab-border); background-color: var(--tab-bg); }
-    .tab-btn { flex: 1; background: none; border: none; padding: 16px 10px; font-size: 1.05rem; font-weight: bold; color: var(--tab-text); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
-    .tab-btn.active { color: var(--tab-active-text); border-bottom: 3px solid var(--tab-active-border); }
-
-    .tab-content { display: none; animation: fadeIn 0.4s ease; }
-    .tab-content.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* ==================== 
-       3. 文章文字排版
-       ==================== */
-    .article-container { padding: 0 25px; text-align: left; }
-    
+    /* 文章排版樣式 */
+    .article-container { padding: 0 15px; text-align: left; }
     .btn-article { display: block; background-color: var(--btn-bg); color: var(--btn-text); text-align: center; padding: 14px 20px; margin: 20px 0; border-radius: 12px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 10px rgba(243, 198, 35, 0.2); transition: transform 0.2s; }
     .btn-article:hover { transform: translateY(-2px); }
 
@@ -94,141 +95,70 @@
 
     hr.divider { border: 0; height: 1px; background: var(--intro-border); margin: 40px 0; }
 
-    /* ==================== 
-       4. 影片區塊與字幕樣式
-       ==================== */
-    .video-controls-bar { background: var(--bg-content); padding: 15px; display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; border-bottom: 1px solid var(--border-line); }
-    .video-controls-bar button { background: var(--btn-bg); color: var(--btn-text); border: none; padding: 8px 18px; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease; }
-    .video-controls-bar button:hover { background: var(--btn-hover); transform: translateY(-1px); }
-
-    .video-responsive-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; transition: all 0.3s ease; }
-    .video-responsive-wrapper iframe { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; display: block; }
-
-    .subtitle-overlay { position: absolute; left: 50%; transform: translateX(-50%); bottom: 8%; width: 90vw; max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px); padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); box-sizing: border-box; z-index: 100; pointer-events: none; display: flex; justify-content: center; text-align: center; }
-    .subtitle-overlay span { display: block; width: 100%; max-width: 100%; padding: 0.25em 0.7em; background: rgba(0,0,0,0.72); border-radius: 8px; color: rgba(255,255,255,0.96); font-size: var(--subtitle-size); line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; text-shadow: 0 2px 4px rgba(0,0,0,.5); backdrop-filter: blur(2px); box-sizing: border-box; }
-    
-    @media (min-width: 1024px) { .subtitle-overlay { font-size: 28px; line-height: 1.7; } }
-
-    /* ==================== 
-       5. 彈幕與即時表情樣式
-       ==================== */
-    .control-group-wrapper { display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.03); padding: 5px 12px; border-radius: 20px; }
-    .barrage-control { display: flex; align-items: center; gap: 5px; color: var(--text-main); font-weight: 600; font-size: 0.85rem; white-space: nowrap; }
-    .barrage-control input[type="range"] { accent-color: var(--btn-bg); cursor: pointer; max-width: 70px; }
-    
-    /* 彈幕層 */
-    #barrage-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; overflow: hidden; }
-    
-    /* 觸發表情的按鈕 */
-    #emoji-trigger-btn {
-        position: absolute; bottom: 15px; right: 15px; z-index: 60;
-        background: rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.8);
-        border-radius: 50%; width: 45px; height: 45px; font-size: 24px;
-        display: flex; justify-content: center; align-items: center;
-        cursor: pointer; transition: transform 0.2s; padding: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-    }
-    #emoji-trigger-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.8); }
-
-    /* 表情抽屜面板 */
-    #emoji-drawer {
-        position: absolute; bottom: 70px; right: 15px; z-index: 60;
-        background: rgba(20,20,20,0.8); border-radius: 12px; padding: 10px;
-        display: none; flex-wrap: wrap; gap: 8px; max-width: 200px; 
-        backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2);
-    }
-
-    /* 退出全螢幕按鈕 */
-    .exit-fs-btn-global {
-        display: none; opacity: 0; position: fixed !important; top: 20px !important; right: 20px !important; 
-        width: 50px !important; height: 50px !important; background: rgba(0, 0, 0, 0.6) !important; 
-        border: 1px solid rgba(255, 255, 255, 0.3) !important; border-radius: 50%; color: white !important; 
-        z-index: 2147483647 !important; cursor: pointer; align-items: center; justify-content: center; padding: 0;
-    }
-    .exit-fs-btn-global svg { width: 28px; height: 28px; stroke: currentColor; stroke-width: 2.5; fill: none; }
-
-    /* ==================== 
-       6. 表情牆修復 (下方靜態表情)
-       ==================== */
-    .unified-reaction-box { background-color: var(--section-bg) !important; border-radius: 16px; margin: 30px 20px; padding: 25px; text-align: center; border: 1px solid var(--intro-border); box-sizing: border-box; display: flex; flex-direction: column; align-items: center; }
-    .reaction-section { text-align: center !important; width: 100%; background: transparent !important; height: auto !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; }
-    .reaction-wall { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 15px; background: transparent !important;}
-
-    .unified-reaction-box .emoji-btn:not(.active) { background-color: var(--emoji-btn-default-bg) !important; border: 1px solid var(--emoji-btn-default-border) !important; transition: all 0.2s ease; transform: scale(1) translateY(0) !important; box-shadow: none !important; }
-    .unified-reaction-box p, .unified-reaction-box span { color: var(--text-main) !important; font-size: 1.05rem !important; text-shadow: var(--reaction-text-shadow) !important; box-shadow: none !important; }
-    .unified-reaction-box .emoji-btn { background-color: transparent !important; border: 1px solid var(--border-line) !important; transition: all 0.2s ease; }
-    .unified-reaction-box .emoji-btn span { color: var(--text-sub) !important; text-shadow: none !important; }
-    .unified-reaction-box .emoji-btn:hover { background-color: var(--emoji-btn-bg-hover) !important; }
-    .unified-reaction-box .emoji-btn.active { background-color: transparent !important; border: 2px solid var(--emoji-btn-active-border) !important; transform: scale(1.05) translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important; }
-    .unified-reaction-box .emoji-btn.active span { color: var(--emoji-btn-active-text) !important; font-weight: bold !important; }
-    #reaction-title { color: var(--text-main) !important; font-weight: bold !important; margin-bottom: 20px !important; text-shadow: var(--reaction-text-shadow) !important; }
-
-    /* ==================== 
-       7. 手機橫向全螢幕
-       ==================== */
-    @media (pointer: coarse) and (orientation: landscape) {
-        /* 1. 全螢幕容器鋪滿畫面，並使用 flex 置中內部元素 */
-        :fullscreen .video-responsive-wrapper, 
-        :-webkit-full-screen .video-responsive-wrapper,
-        .pseudo-fullscreen {
-            width: 100vw !important;
-            height: 100vh !important;
-            max-height: 100vh !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            background: #000 !important;
-            padding-bottom: 0 !important;
-            margin: 0 !important;
-            z-index: 2147483646 !important;
-        }
-
-        /* 2. 讓 YouTube iframe 高度縮至 88vh 並且置中，讓 YouTube 官方時間軸完整浮上來 */
-        :fullscreen .video-responsive-wrapper iframe, 
-        :-webkit-full-screen .video-responsive-wrapper iframe,
-        .pseudo-fullscreen iframe {
-            width: 100% !important;
-            height: 88vh !important; /* 留出底部空間，使時間軸不再沉底 */
-            max-width: calc(88vh * (16 / 9)) !important;
-            position: relative !important;
-            margin: auto !important;
-        }
-
-        /* 3. 將字幕大幅往上提（拉高到 30%），確保懸浮在時間軸上方清晰可見 */
-        :fullscreen .subtitle-overlay, 
-        :-webkit-full-screen .subtitle-overlay,
-        .pseudo-fullscreen .subtitle-overlay {
-            bottom: 30% !important; /* 向上提高，避開 YouTube 控制列與時間軸 */
-            width: 80vw !important;
-            z-index: 2147483647 !important;
-        }
-    }
 </style>
 </head>
 
 <body>
-<div class="content-wrapper">
+<div id="controls">
+    <div class="control-row">
+        <button onclick="toggleBarrageDisplay()" id="barrage-toggle-btn">即時表情：開</button>
 
-    <header class="header">
-      <h1>ARENA HOMME+企劃合輯</h1>
-
-      <div class="controls-wrapper">
-        <a href="/" class="home-btn">🏠 首頁</a> 
-        <div class="theme-toggle-group">
-          <button class="theme-btn active" id="btn-light" onclick="switchTheme('light')">☀️ 淺色</button>
-          <button class="theme-btn" id="btn-dark" onclick="switchTheme('dark')">🌙 深色</button>
+        <div class="control-group barrage-control">
+            <span>大小</span>
+            <input type="range" id="barrage-size-slider" min="16" max="60" value="24" oninput="updateBarrageSize(this.value)">
         </div>
-      </div>
 
-      <div class="tabs-container">
-        <button class="tab-btn active" onclick="openTab('tab-pictorial', this)">📸 文章</button>
-        <button class="tab-btn" onclick="openTab('tab-video', this)">🎬 影片</button>
-      </div>
-    </header>
+        <div class="control-group barrage-control">
+            <span>範圍</span>
+            <input type="range" id="barrage-height-slider" min="10" max="100" value="40" oninput="updateBarrageHeight(this.value)">
+            <span id="height-val">40%</span>
+        </div>
 
-    <div id="tab-pictorial" class="tab-content active">
+        <div class="control-group barrage-control">
+            <span>速度</span>
+            <input type="range" id="barrage-speed-slider" min="3" max="10" step="1" value="5" oninput="updateBarrageSpeed(this.value)">
+        </div>
+
+        <div class="control-group">
+            <button class="sub-btn" onclick="changeSubtitleSize(-0.1)">A−</button>
+            <span>字幕</span>
+            <button class="sub-btn" onclick="changeSubtitleSize(0.1)">A＋</button>
+        </div>
+        <button id="open-article-btn" onclick="toggleArticleModal(true)" style="background: var(--btn-bg); color: var(--btn-text); border: none; padding: 6px 14px; border-radius: 20px; font-weight: bold; cursor: pointer;">📖 採訪文章</button>
+        <button id="home-btn" onclick="window.location.href='/'">首頁</button>
+        <button id="fs-btn">進入全螢幕</button>
+    </div>
+</div>
+
+<h2>[ARENA HOMME+企劃合輯] 我們FLARE U都不會哭，反而很會說話呢</h2>
+
+<div id="video-wrapper">
+    <div id="player"></div>
+    <div id="subtitle">字幕載入中...</div>
+    <div id="barrage-container"></div>
+
+    <button id="emoji-trigger-btn" onclick="toggleEmojiDrawer(event)">😊</button>
+
+    <div id="emoji-drawer"></div>
+    
+    <button id="exit-fs-btn" title="退出全螢幕" style="display: none; opacity: 0;">
+        <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+    </button>
+</div>
+
+<div class="reaction-section">
+    <p id="reaction-title">覺得這部翻譯影片如何？點個表情吧！</p>
+    <div class="reaction-wall"></div>
+    <br>
+</div>
+
+<div id="article-modal" class="article-modal-overlay" onclick="handleModalOutsideClick(event)">
+    <div class="article-modal-content">
+        <button class="close-modal-btn" onclick="toggleArticleModal(false)">✕</button>
+        
         <div class="article-container">
             <a href="https://www.arenakorea.com/news/articleView.html?idxno=71519" target="_blank" class="btn-article">
                 👉 點此開啟 ARENA HOMME+ 官方原文看照片
@@ -572,96 +502,37 @@
 
         </div>
     </div>
-
-    <div id="tab-video" class="tab-content">
-        <div id="controls" class="video-controls-bar">
-            <div class="control-group-wrapper">
-                <button class="sub-btn" onclick="changeSubtitleSize(-0.1)">A−</button>
-                <span style="font-weight: bold; color: var(--text-main); font-size: 14px;">字幕</span>
-                <button class="sub-btn" onclick="changeSubtitleSize(0.1)">A＋</button>
-            </div>
-            
-            <button onclick="toggleBarrageDisplay()" id="barrage-toggle-btn">即時表情：開</button>
-            
-            <div class="control-group-wrapper">
-                <div class="barrage-control">
-                    <span>大小</span>
-                    <input type="range" id="barrage-size-slider" min="16" max="60" value="24" oninput="updateBarrageSize(this.value)">
-                </div>
-                <div class="barrage-control">
-                    <span>範圍</span>
-                    <input type="range" id="barrage-height-slider" min="10" max="100" value="40" oninput="document.getElementById('height-val').innerText = this.value + '%'; document.getElementById('barrage-container').style.height = this.value + '%'; if(typeof updateBarrageHeight === 'function') updateBarrageHeight(this.value);">
-                    <span id="height-val">40%</span>
-                </div>
-                <div class="barrage-control">
-                    <span>速度</span>
-                    <input type="range" id="barrage-speed-slider" min="3" max="10" step="1" value="5" oninput="updateBarrageSpeed(this.value)">
-                </div>
-            </div>
-
-            <button id="fs-btn">進入全螢幕</button>
-        </div>
-
-        <div id="video-wrapper" class="video-responsive-wrapper">
-            <div id="player"></div>
-            <div id="subtitle" class="subtitle-overlay"><span>字幕載入中...</span></div>
-            
-            <div id="barrage-container"></div>
-            
-            <button id="emoji-trigger-btn" onclick="toggleEmojiDrawer(event)">😊</button>
-            
-            <div id="emoji-drawer"></div>
-            
-            <button id="exit-fs-btn" class="exit-fs-btn-global" title="退出全螢幕">
-                <svg viewBox="0 0 24 24">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-        </div>
-    </div>
-
-    <div class="unified-reaction-box">
-        <div class="reaction-section">
-            <p id="reaction-title">覺得這篇翻譯專訪/影片如何？點個表情吧！</p>
-            <div class="reaction-wall"></div>
-        </div>
-    </div>
-
 </div>
 
 <script>
-    /* 影片ID和SRT文件設定 */
-    const MY_VIDEO_ID = "XaNjbQ2JM54"; 
-    const MY_SRT_FILE = "20260601_ARENA_HOMME+.srt";
+/* 影片ID和SRT文件 */
+const MY_VIDEO_ID = "XaNjbQ2JM54"; 
+const MY_SRT_FILE = "20260601_ARENA_HOMME+.srt";
 
-    /* 字幕大小設定 */
-    function changeSubtitleSize(delta) {
+/* ===== 字幕大小設定 ===== */
+function changeSubtitleSize(delta) {
         if (typeof coreChangeSubtitleSize === "function") coreChangeSubtitleSize(delta);
-    }
+}
 
-    /* 分頁切換功能 */
-    function openTab(tabId, btnElement) {
-        document.querySelectorAll('.tab-content').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        document.getElementById(tabId).classList.add('active');
-        btnElement.classList.add('active');
+/* ===== 採訪文章彈出視窗控制 ===== */
+function toggleArticleModal(show) {
+    const modal = document.getElementById('article-modal');
+    if (show) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // 打開視窗時鎖定背景滾動
+    } else {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // 關閉視窗時恢復背景滾動
     }
+}
 
-    /* 主題切換功能 */
-    function switchTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        document.getElementById('btn-light').classList.remove('active');
-        document.getElementById('btn-dark').classList.remove('active');
-        document.getElementById('btn-' + theme).classList.add('active');
+/* 點擊彈出視窗以外的灰色半透明區域時自動關閉 */
+function handleModalOutsideClick(event) {
+    const modalContent = document.querySelector('.article-modal-content');
+    if (!modalContent.contains(event.target)) {
+        toggleArticleModal(false);
     }
-
-    /* 紀錄即時表情範圍 */
-    document.getElementById('barrage-container').style.height = document.getElementById('barrage-height-slider').value + '%';
+}
 </script>
     
 <script type="module" src="../../js/firebase-init.js"></script>
