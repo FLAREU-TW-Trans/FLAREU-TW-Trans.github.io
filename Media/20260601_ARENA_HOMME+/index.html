@@ -166,7 +166,7 @@
        7. 手機橫向全螢幕
        ==================== */
     @media (pointer: coarse) and (orientation: landscape) {
-        /* 1. 全螢幕容器完整鋪滿整個畫面 */
+        /* 1. 全螢幕容器鋪滿畫面，並使用 flex 置中內部元素 */
         :fullscreen .video-responsive-wrapper, 
         :-webkit-full-screen .video-responsive-wrapper,
         .pseudo-fullscreen {
@@ -176,29 +176,32 @@
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
             background: #000 !important;
             padding-bottom: 0 !important;
             margin: 0 !important;
             z-index: 2147483646 !important;
         }
 
-        /* 2. 讓 YouTube iframe 完整填滿全螢幕，時間軸就會自然貼齊螢幕最底部 */
+        /* 2. 讓 YouTube iframe 高度縮至 88vh 並且置中，讓 YouTube 官方時間軸完整浮上來 */
         :fullscreen .video-responsive-wrapper iframe, 
         :-webkit-full-screen .video-responsive-wrapper iframe,
         .pseudo-fullscreen iframe {
             width: 100% !important;
-            height: 100% !important;
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
+            height: 88vh !important; /* 留出底部空間，使時間軸不再沉底 */
+            max-width: calc(88vh * (16 / 9)) !important;
+            position: relative !important;
+            margin: auto !important;
         }
 
-        /* 3. 調整橫向全螢幕時的字幕高度：拉高到 15%~18%，確保在時間軸上方清晰可見 */
+        /* 3. 將字幕大幅往上提（拉高到 30%），確保懸浮在時間軸上方清晰可見 */
         :fullscreen .subtitle-overlay, 
         :-webkit-full-screen .subtitle-overlay,
         .pseudo-fullscreen .subtitle-overlay {
-            bottom: 16% !important; /* 調整這個數值可以上下移動字幕 */
-            width: 85vw !important;
+            bottom: 30% !important; /* 向上提高，避開 YouTube 控制列與時間軸 */
+            width: 80vw !important;
             z-index: 2147483647 !important;
         }
     }
