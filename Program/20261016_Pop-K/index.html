@@ -205,6 +205,18 @@
             :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay, .pseudo-fullscreen .subtitle-overlay {
                 bottom: calc(18% + env(safe-area-inset-bottom)) !important; 
             }
+            .pseudo-fullscreen {
+            width: 100vw !important;
+            height: 100dvh !important;
+            padding: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .pseudo-fullscreen iframe {
+            width: 100% !important;
+            height: 100% !important;
+        }
         }
     }
 
