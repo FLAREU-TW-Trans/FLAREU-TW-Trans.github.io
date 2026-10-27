@@ -205,20 +205,31 @@
             :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay, .pseudo-fullscreen .subtitle-overlay {
                 bottom: calc(18% + env(safe-area-inset-bottom)) !important; 
             }
-            .pseudo-fullscreen {
-            width: 100vw !important;
-            height: 100dvh !important;
-            padding: 0 !important;
-            align-items: center !important;
-            justify-content: center !important;
-        }
-
-        .pseudo-fullscreen iframe {
-            width: 100% !important;
-            height: 100% !important;
-        }
         }
     }
+
+    /* Android / Chrome：橫向原生全螢幕 */
+@media (pointer: coarse) and (orientation: landscape) {
+    :fullscreen .video-responsive-wrapper,
+    :-webkit-full-screen .video-responsive-wrapper {
+        width: 100vw !important;
+        height: 100dvh !important;
+        max-width: none !important;
+        max-height: 100dvh !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    :fullscreen .video-responsive-wrapper iframe,
+    :-webkit-full-screen .video-responsive-wrapper iframe {
+        width: 100% !important;
+        height: 100% !important;
+        max-height: calc(100dvh - 24px) !important;
+        border: 0 !important;
+    }
+}
 
     /* 鎖死背景 */
     body.is-in-fullscreen {
