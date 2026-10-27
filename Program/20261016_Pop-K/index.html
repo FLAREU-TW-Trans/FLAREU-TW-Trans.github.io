@@ -180,12 +180,17 @@
     /* 手機版全螢幕 */
     @media (pointer: coarse) {
         :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay { 
-          bottom: calc(15% + env(safe-area-inset-bottom)) !important;
+          bottom: calc(18% + env(safe-area-inset-bottom)) !important;
           width: 90vw !important;
           max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px) !important;
         }
+        
         :fullscreen .video-responsive-wrapper, :-webkit-full-screen .video-responsive-wrapper {
-            width: 100vw; height: 100vh; max-width: none; margin: 0; padding-bottom: 0;
+            width: 100vw !important; 
+            height: 100vh !important; 
+            max-width: none !important; 
+            margin: 0 !important; 
+            padding-bottom: 0 !important;
         }
 
         /* 偽全螢幕 (iPhone Safari) */
@@ -202,34 +207,26 @@
         }
 
         @media screen and (orientation: landscape) {
+            :fullscreen .video-responsive-wrapper, :-webkit-full-screen .video-responsive-wrapper,
+            .pseudo-fullscreen {
+                /* 稍微內縮高度，保留底部給 YouTube 時間軸控制列 */
+                height: 100vw !important; /* 確保橫向比例正確 */
+                max-height: 100vh !important;
+            }
+            
+            /* 讓 YouTube iframe 內部底部留出安全距離，避免時間軸貼齊底部點不到 */
+            :fullscreen iframe, :-webkit-full-screen iframe, .pseudo-fullscreen iframe {
+                width: 100% !important;
+                height: 100% !important;
+                box-sizing: border-box;
+                padding-bottom: 25px; /* 往下留白，讓出時間軸的觸控空間 */
+            }
+
             :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay, .pseudo-fullscreen .subtitle-overlay {
-                bottom: calc(18% + env(safe-area-inset-bottom)) !important; 
+                bottom: calc(22% + env(safe-area-inset-bottom)) !important; 
             }
         }
     }
-
-    /* Android / Chrome：橫向原生全螢幕 */
-@media (pointer: coarse) and (orientation: landscape) {
-    :fullscreen .video-responsive-wrapper,
-    :-webkit-full-screen .video-responsive-wrapper {
-        width: 100vw !important;
-        height: 100dvh !important;
-        max-width: none !important;
-        max-height: 100dvh !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-
-    :fullscreen .video-responsive-wrapper iframe,
-    :-webkit-full-screen .video-responsive-wrapper iframe {
-        width: 100% !important;
-        height: 100% !important;
-        max-height: calc(100dvh - 24px) !important;
-        border: 0 !important;
-    }
-}
 
     /* 鎖死背景 */
     body.is-in-fullscreen {
