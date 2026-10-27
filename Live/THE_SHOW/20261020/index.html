@@ -201,9 +201,24 @@
             width: min(88vw, 88%) !important; max-width: 88vw !important; bottom: calc(15% + env(safe-area-inset-bottom)) !important; 
         }
 
+        /* 針對 Android 橫向全螢幕時的控制列與時間軸空間修正 */
         @media screen and (orientation: landscape) {
+            :fullscreen .video-responsive-wrapper, :-webkit-full-screen .video-responsive-wrapper,
+            .pseudo-fullscreen {
+                height: 100vw !important; 
+                max-height: 100vh !important;
+            }
+            
+            /* 讓 YouTube iframe 內部底部留出安全距離，避免時間軸貼齊底部點不到 */
+            :fullscreen iframe, :-webkit-full-screen iframe, .pseudo-fullscreen iframe {
+                width: 100% !important;
+                height: 100% !important;
+                box-sizing: border-box;
+                padding-bottom: 25px; 
+            }
+
             :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay, .pseudo-fullscreen .subtitle-overlay {
-                bottom: calc(18% + env(safe-area-inset-bottom)) !important; 
+                bottom: calc(22% + env(safe-area-inset-bottom)) !important; 
             }
         }
     }
