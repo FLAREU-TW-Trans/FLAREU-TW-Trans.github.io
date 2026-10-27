@@ -206,11 +206,11 @@
             width: min(88vw, 88%) !important; max-width: 88vw !important; bottom: calc(15% + env(safe-area-inset-bottom)) !important; 
         }
 
+        /* 針對 Android 橫向全螢幕時的控制列與時間軸空間修正 */
         @media screen and (orientation: landscape) {
             :fullscreen .video-responsive-wrapper, :-webkit-full-screen .video-responsive-wrapper,
             .pseudo-fullscreen {
-                /* 稍微內縮高度，保留底部給 YouTube 時間軸控制列 */
-                height: 100vw !important; /* 確保橫向比例正確 */
+                height: 100vw !important; 
                 max-height: 100vh !important;
             }
             
@@ -219,7 +219,7 @@
                 width: 100% !important;
                 height: 100% !important;
                 box-sizing: border-box;
-                padding-bottom: 25px; /* 往下留白，讓出時間軸的觸控空間 */
+                padding-bottom: 25px; 
             }
 
             :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay, .pseudo-fullscreen .subtitle-overlay {
