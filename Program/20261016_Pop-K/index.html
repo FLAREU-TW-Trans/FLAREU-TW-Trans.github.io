@@ -29,32 +29,37 @@ html, body {
    結尾感言區塊
    ==================== */
 .ending-message-box {
-        background: linear-gradient(135deg, rgba(255, 228, 235, 0.6), rgba(255, 214, 225, 0.4));
-        border: 1.5px solid rgba(255, 150, 180, 0.4);
+        /* 溫暖舒適的粉紅漸層背景 */
+        background: linear-gradient(135deg, #FF8FA3, #FF4D6D);
+        border: 1px solid rgba(255, 255, 255, 0.4);
         border-radius: 18px;
         padding: 22px 25px;
         margin: 25px 20px 10px 20px;
         text-align: center;
-        box-shadow: 0 6px 20px rgba(255, 182, 193, 0.25);
+        /* 柔和的粉紅光暈陰影 */
+        box-shadow: 0 6px 20px rgba(255, 77, 109, 0.3);
     }
 
     .ending-title {
         font-size: 1.1rem;
-        font-weight: 700;
-        color: #e0567b; /* 溫暖明亮的玫瑰粉標題 */
+        font-weight: bold;
+        color: #FFFFFF !important; /* 純白標題 */
         margin: 0 0 12px 0;
         letter-spacing: 0.5px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .ending-content {
         font-size: 1.05rem;
         line-height: 1.9;
-        color: #d16182; /* 柔和舒適的粉紅內文文字 */
+        color: #FFFFFF !important; /* 純白內文 */
         margin: 0;
     }
 
     .ending-content strong {
-        color: #b82e5b; /* 清新且具有立體感的重點字顏色 */
+        color: #FFFFFF !important; /* 純白強調字 */
+        font-weight: 800;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15); /* 稍微加點微陰影讓白色字更凸顯 */
     }
 
 /* 完整歌曲影片按鈕 Hover 效果 */
@@ -130,8 +135,8 @@ html, body {
 
 <script>
 /* 影片ID和SRT文件 */
-const MY_VIDEO_ID = "qQLTTdtvXZY"; 
-const MY_SRT_FILE = "20260717_Another_Class_2026.srt";
+const MY_VIDEO_ID = "FHnc2PBDlAM"; 
+const MY_SRT_FILE = "20261016_Pop-K.srt";
 
 /* ===== 字幕大小設定 ===== */
 function changeSubtitleSize(delta) {
