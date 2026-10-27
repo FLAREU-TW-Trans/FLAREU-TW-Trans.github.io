@@ -163,53 +163,67 @@
     #reaction-title { color: var(--text-main) !important; font-weight: bold !important; margin-bottom: 20px !important; text-shadow: var(--reaction-text-shadow) !important; }
 
     /* ==================== 
-       7. 手機橫向全螢幕適配修正
+       7. 手機橫向全螢幕
        ==================== */
-    @media (pointer: coarse) and (orientation: landscape) {
-        /* 1. 全螢幕容器強制鋪滿整個畫面，採用 Flex 置中確保內部元素不亂跑 */
-        :fullscreen .video-responsive-wrapper, 
-        :-webkit-full-screen .video-responsive-wrapper,
-        .pseudo-fullscreen {
-            width: 100vw !important;
-            height: 100vh !important;
-            max-height: 100vh !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            background: #000 !important;
-            padding-bottom: 0 !important;
-            margin: 0 !important;
-            z-index: 2147483646 !important;
-        }
-
-        /* 2. 讓內部的 YouTube 影片維持 16:9 比例，並強制留出底部空間給 YouTube 控制列（時間軸） */
-        :fullscreen .video-responsive-wrapper iframe, 
-        :-webkit-full-screen .video-responsive-wrapper iframe,
-        .pseudo-fullscreen iframe {
-            position: relative !important;
-            width: 100% !important;
-            height: 100% !important;
-            max-width: calc(100vh * (16 / 9)) !important; /* 限制最大寬度以符合 16:9 */
-            max-height: 82vh !important; /* 留出底部大約 18% 給 YouTube 控制列與時間軸，絕對看得見 */
-            margin: auto !important;
-        }
-
-        /* 3. 調整橫向全螢幕時的字幕位置，固定在影片上方、時間軸下方之間 */
-        :fullscreen .subtitle-overlay, 
-        :-webkit-full-screen .subtitle-overlay,
-        .pseudo-fullscreen .subtitle-overlay {
-            bottom: 20% !important; /* 完美懸浮在時間軸上方，不被遮擋 */
-            width: 80vw !important;
-            z-index: 2147483647 !important;
+    @media (pointer: coarse) {
+        :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay { 
+            bottom: calc(18% + env(safe-area-inset-bottom)) !important;
+            width: 90vw !important;
+            max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px) !important;
         }
         
-        /* 4. 確保全螢幕下的退出按鈕與表情按鈕不會被吃掉 */
-        :fullscreen #emoji-trigger-btn, :-webkit-full-screen #emoji-trigger-btn, .pseudo-fullscreen #emoji-trigger-btn {
-            bottom: 20px !important;
-            right: 20px !important;
+        :fullscreen .video-responsive-wrapper, :-webkit-full-screen .video-responsive-wrapper {
+            width: 100vw !important; 
+            height: 100vh !important; 
+            max-width: none !important; 
+            margin: 0 !important; 
+            padding-bottom: 0 !important;
+        }
+
+        /* 偽全螢幕 (iPhone Safari) */
+        .pseudo-fullscreen {
+            position: fixed !important; top: 0 !important; left: 0 !important;
+            width: 100vw !important; height: 100vh !important; height: 100dvh !important;
+            z-index: 2147483647 !important; background: #000 !important; margin: 0 !important; padding: 0 !important;
+            display: flex !important; align-items: center; justify-content: center;
+            padding-left: env(safe-area-inset-left) !important; padding-right: env(safe-area-inset-right) !important;
+        }
+        
+        /* 確保偽全螢幕下的 iframe 採用彈性置中，不被強行撐破 */
+        .pseudo-fullscreen iframe { 
+            width: 100% !important; 
+            height: 100% !important; 
+            max-height: 100vh !important;
+        }
+        
+        .pseudo-fullscreen .subtitle-overlay { 
+            width: min(88vw, 88%) !important; 
+            max-width: 88vw !important; 
+            bottom: calc(15% + env(safe-area-inset-bottom)) !important; 
+        }
+
+        /* 針對手機橫向全螢幕時的控制列與時間軸空間修正 */
+        @media screen and (orientation: landscape) {
+            :fullscreen .video-responsive-wrapper, :-webkit-full-screen .video-responsive-wrapper,
+            .pseudo-fullscreen {
+                width: 100vw !important;
+                height: 100vh !important;
+                max-height: 100vh !important;
+            }
+            
+            /* 讓 YouTube iframe 在橫向時上下留白（限制 max-height），讓出底部給時間軸 */
+            :fullscreen iframe, :-webkit-full-screen iframe, .pseudo-fullscreen iframe {
+                width: 100% !important;
+                height: 100% !important;
+                max-height: 82vh !important; /* 保留底部空間，讓 YouTube 官方時間軸完整露出來 */
+                margin: auto !important;
+                box-sizing: border-box;
+            }
+
+            /* 讓橫向全螢幕時的字幕向上提升，避免壓到時間軸或超出畫面 */
+            :fullscreen .subtitle-overlay, :-webkit-full-screen .subtitle-overlay, .pseudo-fullscreen .subtitle-overlay {
+                bottom: calc(20% + env(safe-area-inset-bottom)) !important; 
+            }
         }
     }
 </style>
