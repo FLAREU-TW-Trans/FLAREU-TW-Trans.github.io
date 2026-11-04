@@ -344,7 +344,7 @@
         <button class="tab-btn" onclick="openTab('tab-video1', this)">🎬 10/20</button>
         <button class="tab-btn" onclick="openTab('tab-video2', this)">🎬 10/21</button>
         <button class="tab-btn" onclick="openTab('tab-video3', this)">🎬 10/22</button>
-        <button class="tab-btn" onclick="openTab('tab-video4, this)">🎬 10/23</button>
+        <button class="tab-btn" onclick="openTab('tab-video4', this)">🎬 10/23</button>
         <button class="tab-btn" onclick="openTab('tab-video5', this)">🎬 10/24</button>
         <button class="tab-btn" onclick="openTab('tab-video6', this)">🎬 10/25</button>
       </div>
@@ -353,7 +353,7 @@
     <div id="tab-video1" class="tab-content">
 
       <div class="video-controls-bar">
-        <p id="THESHOW-title">10/20 THE SHOW Bloom (播出版本)</p>
+        <p id="dingoJapan-title">10/20 dingo Japan</p>
         <div class="actions-group">
           <button id="like-btn-video1" class="like-btn" onclick="likeCurrentVideo('tab-video1')">❤️推薦</button>
           <button id="favorite-btn-video1" class="favorite-btn" onclick="toggleFavorite('tab-video1')">⭐收藏</button>
@@ -369,7 +369,10 @@
 
       <div class="video-submenu">
 
-        <button class="active" onclick="changeVideo('4bK77yyJnqs', '10/20 THE SHOW Bloom (播出版本)', this, 'tab-video1', 'THESHOW-title', 'group', 'video_20261020_theshow_Bloom_broadcast', '10/20 THE SHOW Bloom 播出版本')">
+        <button class="active" onclick="changeVideo('Dj1_WuYs7ec', '10/20 dingo Japan', this, 'tab-video1', 'dingoJapan-title', 'group', 'video_20261020_dingo_Japan', '10/20 dingo Japan')">
+            dingo Japan
+        </button>
+        <button onclick="changeVideo('4bK77yyJnqs', '10/20 THE SHOW Bloom (播出版本)', this, 'tab-video1', 'THESHOW-title', 'group', 'video_20261020_theshow_Bloom_broadcast', '10/20 THE SHOW Bloom 播出版本')">
             Bloom 1
         </button>
         <button onclick="changeVideo('geG9TTJOd3c', '10/20 THE SHOW Bloom (舞台全景)', this, 'tab-video1', 'THESHOW-title', 'group', 'video_20261020_theshow_Bloom_fullcam', '10/20 THE SHOW Bloom 舞台全景')">
@@ -387,9 +390,7 @@
         <button onclick="changeVideo('BtvWpVF5490', '10/20 THE SHOW Hundred Nights (立于直拍)', this, 'tab-video1', 'THESHOW-title', 'liyu', 'video_20261020_theshow_Hundred_Nights_liyu', '10/20 THE SHOW Hundred Nights 立于直拍')">
             Hundred Nights 3
         </button>
-        <button onclick="changeVideo('Dj1_WuYs7ec', '10/20 dingo Japan', this, 'tab-video1', 'dingoJapan-title', 'group', 'video_20261020_dingo_Japan', '10/20 dingo Japan')">
-            dingo Japan
-        </button>
+      
       </div>
 
       <div id="video-wrapper-1" class="video-responsive-wrapper">
@@ -610,7 +611,7 @@
     
     // 影片資料 - 🌟 ID 必須跟上面的 HTML 一模一樣，影片才生得出來！
     const videoData = {
-        'tab-video1': { id: '4bK77yyJnqs', srt: '20261020_dingo_Japan.srt', player: null, subEl: 'subtitle-video1', container: 'player-container-video1', interval: null },
+        'tab-video1': { id: 'Dj1_WuYs7ec', srt: '20261020_dingo_Japan.srt', player: null, subEl: 'subtitle-video1', container: 'player-container-video1', interval: null },
         'tab-video2': { id: 'W_OBN-5xA1U', srt: '', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null },
         'tab-video3': { id: '_nq6PohBWPM', srt: '', player: null, subEl: 'subtitle-video3', container: 'player-container-video3', interval: null },
         'tab-video4': { id: 'oPUbjy-8fyk', srt: '', player: null, subEl: 'subtitle-video4', container: 'player-container-video4', interval: null },
@@ -833,7 +834,7 @@
     // 建立一個全域物件，用來記錄每個頁籤（tab）目前被選中的影片資訊
     // 網頁一載入時，預設填入各頁籤第一個影片的初始資料（請根據你的實際需求調整預設值）
     window.currentSelectedVideo = {
-      'tab-video1': { category: 'group', videoDbId: 'video_20261020_theshow_broadcast', displayTitle: '10/20 THE SHOW Bloom 播出版本' },
+      'tab-video1': { category: 'group', videoDbId: 'video_20261020_dingo_Japan', displayTitle: '10/20 dingo Japan' },
       'tab-video2': { category: 'group', videoDbId: 'video_20261021_Show_Champion_broadcast', displayTitle: '10/21 Show Champion (播出版本)' },
       'tab-video3': { category: 'group', videoDbId: 'video_20261022_mcd_broadcast', displayTitle: '10/22 M COUNTDOWN EP.950 (播出版本)' },
       'tab-video4': { category: 'group', videoDbId: 'video_20261023_itsLive', displayTitle: '10/23 its Live' },
