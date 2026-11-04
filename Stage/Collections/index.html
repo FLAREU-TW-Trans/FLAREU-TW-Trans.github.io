@@ -731,12 +731,17 @@
 
         let items = [];
         Object.keys(categoryData).forEach(videoDbId => {
-            items.push({
-                videoDbId: videoDbId,
-                title: categoryData[videoDbId].title || '未命名舞台',
-                clickCount: categoryData[videoDbId].clickCount || 0,
-                ytId: categoryData[videoDbId].ytId || ''
-            });
+            const count = categoryData[videoDbId].clickCount || 0;
+            
+            // 如果推薦次數大於 0，才放入排行榜清單中（過濾掉 0 次推薦）
+            if (count > 0) {
+                items.push({
+                    videoDbId: videoDbId,
+                    title: categoryData[videoDbId].title || '未命名舞台',
+                    clickCount: count,
+                    ytId: categoryData[videoDbId].ytId || ''
+                });
+            }
         });
 
         items.sort((a, b) => b.clickCount - a.clickCount);
