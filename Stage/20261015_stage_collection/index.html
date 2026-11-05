@@ -341,8 +341,8 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background-color: var(--btn-bg);
-    color: var(--btn-text);
+    background-color: #6c757d; 
+    color: #ffffff;
     border: none;
     font-size: 22px;
     font-weight: bold;
@@ -355,7 +355,7 @@
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .floating-quiz-btn:hover {
-    background-color: var(--btn-hover);
+    background-color: #495057; 
     transform: scale(1.1) rotate(12deg);
 }
 
@@ -655,7 +655,7 @@
   </div>
 
   <!-- 左下角懸浮問號按鈕 -->
-<button class="floating-quiz-btn" onclick="toggleQuizModal(true)" title="揭曉舞台彩蛋">❓</button>
+<button class="floating-quiz-btn" onclick="toggleQuizModal(true)" title="揭曉舞台彩蛋">🐰✍️❓</button>
 
 <!-- 舞台小問答彈窗 -->
 <div class="quiz-modal-overlay" id="quizModal" onclick="handleQuizOverlayClick(event)">
@@ -670,9 +670,9 @@
       <div class="quiz-item">
         <div class="quiz-title">📅 20261015 M COUNTDOWN</div>
         <div class="quiz-answer-wrap">
-          <div class="quiz-answer-text">20261015 M COUNTDOWN 보고 싶었어♡</div>
-          <button class="sticky-note-btn" onclick="revealAnswer(this)">
-            ✂️ 點擊揭曉答案 (???)
+          <div class="quiz-answer-text">好想你們♡</div>
+          <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
+            點擊揭曉答案 (???)
           </button>
         </div>
       </div>
@@ -681,9 +681,9 @@
       <div class="quiz-item">
         <div class="quiz-title">📅 20261016 In The Studio</div>
         <div class="quiz-answer-wrap">
-          <div class="quiz-answer-text">20261016 In The Studio 좋아해</div>
-          <button class="sticky-note-btn" onclick="revealAnswer(this)">
-            ✂️ 點擊揭曉答案 (???)
+          <div class="quiz-answer-text">喜歡你</div>
+          <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
+            點擊揭曉答案 (???)
           </button>
         </div>
       </div>
@@ -692,9 +692,9 @@
       <div class="quiz-item">
         <div class="quiz-title">📅 20261016 Music Bank</div>
         <div class="quiz-answer-wrap">
-          <div class="quiz-answer-text">20261016 Music Bank 플레어유 인사 드렸옵니다~❤️🌷❤️</div>
-          <button class="sticky-note-btn" onclick="revealAnswer(this)">
-            ✂️ 點擊揭曉答案 (???)
+          <div class="quiz-answer-text">FLARE U向大家問好~❤️🌷❤️</div>
+          <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
+            點擊揭曉答案 (???)
           </button>
         </div>
       </div>
@@ -703,9 +703,9 @@
       <div class="quiz-item">
         <div class="quiz-title">📅 20261017 音樂中心</div>
         <div class="quiz-answer-wrap">
-          <div class="quiz-answer-text">20261017 音樂中心 ♡🐰♡U'RE♡🦊♡</div>
-          <button class="sticky-note-btn" onclick="revealAnswer(this)">
-            ✂️ 點擊揭曉答案 (???)
+          <div class="quiz-answer-text">♡🐰♡U'RE♡🦊♡</div>
+          <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
+            點擊揭曉答案 (???)
           </button>
         </div>
       </div>
@@ -1197,7 +1197,9 @@
       }
     });
 
-  // 便條紙動畫
+  // =====================================
+  // 小彩蛋問答視窗
+  // =====================================
   // 開啟 / 關閉 彈窗
   function toggleQuizModal(show) {
     const modal = document.getElementById('quizModal');
@@ -1206,6 +1208,10 @@
       modal.classList.add('active');
     } else {
       modal.classList.remove('active');
+
+      setTimeout(() => {
+        resetAllStickyNotes();
+      }, 300);
     }
   }
 
@@ -1223,10 +1229,22 @@
     // 播放撕紙動畫
     btn.classList.add('peeling');
     
-    // 動畫結束後移除按鈕元素
+    // 動畫結束後隱藏按鈕
     setTimeout(() => {
-      btn.remove();
+      btn.style.display = 'none';
+      btn.classList.remove('peeling'); // 移除動畫狀態
     }, 480);
+  }
+
+  // 重置所有便條紙
+  function resetAllStickyNotes() {
+    const stickyButtons = document.querySelectorAll('.sticky-note-btn');
+    stickyButtons.forEach(btn => {
+      btn.style.display = 'flex'; // 恢復顯示
+      // 強制重置樣式，確保每次打開完好如初
+      btn.style.transform = '';
+      btn.style.opacity = '1';
+    });
   }
   </script>
 </body>
