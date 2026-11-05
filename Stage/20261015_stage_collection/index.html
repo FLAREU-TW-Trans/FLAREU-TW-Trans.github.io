@@ -338,13 +338,13 @@
     position: fixed;
     left: 20px;
     bottom: 20px;
-    width: 48px;
     height: 48px;
-    border-radius: 50%;
-    background-color: #6c757d; 
+    padding: 0 16px; 
+    border-radius: 24px; 
+    background-color: #6c757d;
     color: #ffffff;
     border: none;
-    font-size: 22px;
+    font-size: 18px; 
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0,0,0,0.25);
@@ -352,11 +352,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    gap: 4px;
+    transition: all 0.3s ease; 
 }
 .floating-quiz-btn:hover {
-    background-color: #495057; 
-    transform: scale(1.1) rotate(12deg);
+    background-color: #495057;
+    transform: scale(1.05); 
 }
 
 /* 遮罩背景 */
@@ -457,19 +458,19 @@
     animation: fadeIn 0.4s ease;
 }
 
-/* 撕掉???的黃色便條貼按鈕 */
+/* 點擊揭曉答案的便條紙 */
 .sticky-note-btn {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: #ffe066;
-    color: #443e00;
-    border: 1px dashed #d6b200;
+    background: #fbf3d5; 
+    color: #5c5332;      
+    border: 1px dashed #e6d396; 
     border-radius: 6px;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 0.9rem;
     cursor: pointer;
-    box-shadow: 2px 3px 6px rgba(0,0,0,0.15);
+    box-shadow: 2px 3px 6px rgba(0,0,0,0.08);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -478,8 +479,8 @@
     z-index: 2;
 }
 .sticky-note-btn:hover {
-    background: #ffd43b;
-    transform: translateY(-2px) rotate(-1deg);
+    background: #f7ebbe; 
+    transform: translateY(-1px);
 }
 
 /* 撕紙動畫關鍵幀 */
