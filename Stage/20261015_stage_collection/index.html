@@ -350,19 +350,24 @@
 
     /* 彈窗本體 */
     .quiz-modal-content {
-      background: var(--bg-content); color: var(--text-main); border-radius: 16px; padding: 24px; width: 90%; max-width: 460px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      border: 1px solid var(--border-line); position: relative; transform: translateY(20px); transition: transform 0.3s ease;
+      background: var(--bg-content); color: var(--text-main); border-radius: 16px; padding: 24px; width: 90%; max-width: 460px; max-height: 85vh; display: flex;
+      flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid var(--border-line); position: relative;
+      transform: translateY(20px); transition: transform 0.3s ease;
     }
     .quiz-modal-overlay.active .quiz-modal-content { transform: translateY(0); }
 
     /* 標頭與關閉按鈕 */
-    .quiz-modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-line); padding-bottom: 12px; margin-bottom: 20px; }
+    .quiz-modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-line); padding-bottom: 12px; margin-bottom: 16px; flex-shrink: 0; }
     .quiz-modal-header h3 { margin: 0; font-size: 1.15rem; color: var(--text-main); }
     .quiz-close-btn { background: none; border: none; font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px 8px; border-radius: 6px; }
     .quiz-close-btn:hover { background-color: var(--reaction-box-bg); }
 
     /* 題目列表 */
-    .quiz-list { display: flex; flex-direction: column; gap: 16px; }
+    .quiz-list { display: flex; flex-direction: column; gap: 16px; overflow-y: auto; padding-right: 4px; flex-grow: 1; padding-bottom: 20px; }
+    .quiz-list::-webkit-scrollbar { width: 6px; }
+    .quiz-list::-webkit-scrollbar-track { background: transparent; }
+    .quiz-list::-webkit-scrollbar-thumb { background: var(--border-line); border-radius: 3px; }
+    .quiz-list::-webkit-scrollbar-thumb:hover { background: var(--text-sub); }
     .quiz-item {
       background-color: var(--bg-content); border: 1px solid var(--border-line); border-radius: 10px; padding: 14px 16px; font-size: 0.95rem;
       line-height: 1.5; box-shadow: 0 2px 6px rgba(0,0,0,0.03); 
