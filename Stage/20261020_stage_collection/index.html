@@ -324,6 +324,70 @@
     .video-controls-bar .fullscreen-btn { background: #5c6bc0 !important; color: #ffffff !important; border: none !important; padding: 8px 16px; border-radius: 20px; 
       cursor: pointer; font-size: 13px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.08); transition: all 0.2s ease; }
     .video-controls-bar .fullscreen-btn:hover { background: #475399 !important; color: #ffffff !important; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+  
+    /* ====================
+     7. 左下角懸浮問號按鈕與解答視窗
+   ==================== */
+    /* 浮動問號按鈕 */
+    .floating-quiz-btn {
+      position: fixed; left: 20px; bottom: 20px; height: 48px; padding: 0 16px; border-radius: 24px; background-color: #6c757d; color: #ffffff; border: none;
+      font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.25); z-index: 9999; display: flex; align-items: center;
+      justify-content: center; gap: 4px; transition: all 0.3s ease; 
+    }
+    .floating-quiz-btn:hover { background-color: #495057; transform: scale(1.05); }
+
+    /* 遮罩背景 */
+    .quiz-modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: 10000;
+      display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;
+    }
+    .quiz-modal-overlay.active { display: flex; opacity: 1; }
+
+    /* 彈窗本體 */
+    .quiz-modal-content {
+      background: var(--bg-content); color: var(--text-main); border-radius: 16px; padding: 24px; width: 90%; max-width: 460px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border: 1px solid var(--border-line); position: relative; transform: translateY(20px); transition: transform 0.3s ease;
+    }
+    .quiz-modal-overlay.active .quiz-modal-content { transform: translateY(0); }
+
+    /* 標頭與關閉按鈕 */
+    .quiz-modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-line); padding-bottom: 12px; margin-bottom: 20px; }
+    .quiz-modal-header h3 { margin: 0; font-size: 1.15rem; color: var(--text-main); }
+    .quiz-close-btn { background: none; border: none; font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+    .quiz-close-btn:hover { background-color: var(--reaction-box-bg); }
+
+    /* 題目列表 */
+    .quiz-list { display: flex; flex-direction: column; gap: 16px; }
+    .quiz-item {
+      background-color: var(--bg-content); border: 1px solid var(--border-line); border-radius: 10px; padding: 14px 16px; font-size: 0.95rem;
+      line-height: 1.5; box-shadow: 0 2px 6px rgba(0,0,0,0.03); 
+    }
+    .quiz-title { font-weight: 600; color: var(--text-main); margin-bottom: 8px; }
+    .quiz-answer-wrap { position: relative; min-height: 38px; display: flex; align-items: center; width: 100%; justify-content: center;}
+
+    /* 揭曉後的完整答案 */
+    .quiz-answer-text { color: var(--tab-active-text); font-weight: bold; word-break: break-word; animation: fadeIn 0.4s ease; width: 100%; text-align: center; }
+
+    /* 點擊揭曉答案的便條紙 */
+    .sticky-note-btn {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f1f3f5; color: #343a40; border: 1px dashed #adb5bd; border-radius: 6px;
+      font-weight: 600; font-size: 0.9rem; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: center;
+      gap: 6px; transition: transform 0.15s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease; z-index: 2;
+    }
+    .sticky-note-btn:hover { background: #e9ecef; transform: translateY(-1px); }
+
+    /* 深色模式下的便條紙 */
+    [data-theme="dark"] .sticky-note-btn { background: #2b2d31; color: #f1f3f5; border: 1px dashed #6c757d; }
+    [data-theme="dark"] .sticky-note-btn:hover { background: #35383f; }
+
+    /* 撕紙動畫關鍵幀 */
+    @keyframes peelOffAnimation {
+        0% { transform: rotate(0deg) translate(0, 0) scale(1); opacity: 1; }
+        30% { transform: rotate(-15deg) translate(-10px, -10px) scale(1.05); opacity: 0.9; box-shadow: 8px 12px 20px rgba(0,0,0,0.25); }
+        100% { transform: rotate(45deg) translate(120px, -100px) scale(0.6); opacity: 0; }
+    }
+
+    .sticky-note-btn.peeling { animation: peelOffAnimation 0.5s forwards cubic-bezier(0.55, 0.085, 0.68, 0.53); pointer-events: none; }
   </style>
 </head>
 <body>
@@ -600,6 +664,98 @@
       </div>
     </div>
   </div>
+
+<!-- 左下角懸浮問號按鈕 -->
+<button class="floating-quiz-btn" onclick="toggleQuizModal(true)" title="揭曉舞台彩蛋">🐰✍️❓</button>
+
+<!-- 舞台小問答彈窗 -->
+<div class="quiz-modal-overlay" id="quizModal" onclick="handleQuizOverlayClick(event)">
+  <div class="quiz-modal-content">
+    <div class="quiz-modal-header">
+      <h3>✨ 揭曉立于手上的字</h3>
+      <button class="quiz-close-btn" onclick="toggleQuizModal(false)">✕</button>
+    </div>
+    
+    <div class="quiz-list">
+      <!-- 項目 1 -->
+      <div class="quiz-item">
+        <div class="quiz-title">20261020 dingo Japan</div>
+        <div class="quiz-answer-wrap">
+          <div class="quiz-answer-text">喜歡你</div>
+          <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
+            點擊揭曉答案 (???)
+          </button>
+        </div>
+      </div>
+
+      <!-- 項目 2 -->
+      <div class="quiz-item">
+        <div class="quiz-title">20261020 THE SHOW</div>
+        <div class="quiz-answer-wrap">
+          <div class="quiz-answer-text">U'RE一直都很謝謝你們喔~♡</div>
+          <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
+            點擊揭曉答案 (???)
+          </button>
+        </div>
+      </div>
+
+      <!-- 項目 3 -->
+      <div class="quiz-item">
+        <div class="quiz-title">20261021 Show Champion</div>
+        <div class="quiz-answer-wrap">
+          <div class="quiz-answer-text">小心感冒喔</div>
+          <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
+            點擊揭曉答案 (???)
+          </button>
+        </div>
+      </div>
+
+      <!-- 項目 4 -->
+      <div class="quiz-item">
+        <div class="quiz-title">20261022 M COUNTDOWN</div>
+        <div class="quiz-answer-wrap">
+          <div class="quiz-answer-text">M COUNTDOWN又見面了~♡</div>
+          <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
+            點擊揭曉答案 (???)
+          </button>
+        </div>
+      </div>
+
+      <!-- 項目 5 -->
+      <div class="quiz-item">
+        <div class="quiz-title">20261023 Music Bank</div>
+        <div class="quiz-answer-wrap">
+          <div class="quiz-answer-text">終於到了狂歡星期五！</div>
+          <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
+            點擊揭曉答案 (???)
+          </button>
+        </div>
+      </div>
+
+      <!-- 項目 6 -->
+      <div class="quiz-item">
+        <div class="quiz-title">20261024 音樂中心</div>
+        <div class="quiz-answer-wrap">
+          <div class="quiz-answer-text">★U'RE MY STAR★</div>
+          <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
+            點擊揭曉答案 (???)
+          </button>
+        </div>
+      </div>
+
+      <!-- 項目 7 -->
+      <div class="quiz-item">
+        <div class="quiz-title">20261025 人氣歌謠</div>
+        <div class="quiz-answer-wrap">
+          <div class="quiz-answer-text">這週辛苦了</div>
+          <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
+            點擊揭曉答案 (???)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
   <script src="https://www.youtube.com/iframe_api"></script>
   
@@ -1090,6 +1246,56 @@
         }
       }
     });
+
+  // =====================================
+  // 小彩蛋問答視窗
+  // =====================================
+  // 開啟 / 關閉 彈窗
+  function toggleQuizModal(show) {
+    const modal = document.getElementById('quizModal');
+    if (!modal) return;
+    if (show) {
+      modal.classList.add('active');
+    } else {
+      modal.classList.remove('active');
+
+      setTimeout(() => {
+        resetAllStickyNotes();
+      }, 300);
+    }
+  }
+
+  // 點擊背景關閉
+  function handleQuizOverlayClick(e) {
+    if (e.target.id === 'quizModal') {
+      toggleQuizModal(false);
+    }
+  }
+
+  // 撕開便條紙揭曉答案動畫
+  function revealAnswer(btn) {
+    if (btn.classList.contains('peeling')) return;
+    
+    // 播放撕紙動畫
+    btn.classList.add('peeling');
+    
+    // 動畫結束後隱藏按鈕
+    setTimeout(() => {
+      btn.style.display = 'none';
+      btn.classList.remove('peeling'); // 移除動畫狀態
+    }, 480);
+  }
+
+  // 重置所有便條紙
+  function resetAllStickyNotes() {
+    const stickyButtons = document.querySelectorAll('.sticky-note-btn');
+    stickyButtons.forEach(btn => {
+      btn.style.display = 'flex'; // 恢復顯示
+      // 強制重置樣式，確保每次打開完好如初
+      btn.style.transform = '';
+      btn.style.opacity = '1';
+    });
+  }
   </script>
 </body>
 </html>
