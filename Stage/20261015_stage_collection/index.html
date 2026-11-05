@@ -463,9 +463,9 @@
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: #fbf3d5; 
-    color: #5c5332;      
-    border: 1px dashed #e6d396; 
+    background: #e9ecef;      
+    color: #495057;          
+    border: 1px dashed #ced4da; 
     border-radius: 6px;
     font-weight: 600;
     font-size: 0.9rem;
@@ -475,12 +475,22 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    transition: transform 0.15s ease, background 0.2s ease;
+    transition: transform 0.15s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
     z-index: 2;
 }
 .sticky-note-btn:hover {
-    background: #f7ebbe; 
+    background: #dee2e6;
     transform: translateY(-1px);
+}
+
+/* 深色模式下的便條紙 */
+[data-theme="dark"] .sticky-note-btn {
+    background: #343a40;      
+    color: #ced4da;          
+    border: 1px dashed #495057; 
+}
+[data-theme="dark"] .sticky-note-btn:hover {
+    background: #3e444a;      
 }
 
 /* 撕紙動畫關鍵幀 */
@@ -669,7 +679,7 @@
     <div class="quiz-list">
       <!-- 項目 1 -->
       <div class="quiz-item">
-        <div class="quiz-title">📅 20261015 M COUNTDOWN</div>
+        <div class="quiz-title">20261015 M COUNTDOWN</div>
         <div class="quiz-answer-wrap">
           <div class="quiz-answer-text">好想你們♡</div>
           <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
@@ -680,7 +690,7 @@
 
       <!-- 項目 2 -->
       <div class="quiz-item">
-        <div class="quiz-title">📅 20261016 In The Studio</div>
+        <div class="quiz-title">20261016 In The Studio</div>
         <div class="quiz-answer-wrap">
           <div class="quiz-answer-text">喜歡你</div>
           <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
@@ -691,7 +701,7 @@
 
       <!-- 項目 3 -->
       <div class="quiz-item">
-        <div class="quiz-title">📅 20261016 Music Bank</div>
+        <div class="quiz-title">20261016 Music Bank</div>
         <div class="quiz-answer-wrap">
           <div class="quiz-answer-text">FLARE U向大家問好~❤️🌷❤️</div>
           <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
@@ -702,7 +712,7 @@
 
       <!-- 項目 4 -->
       <div class="quiz-item">
-        <div class="quiz-title">📅 20261017 音樂中心</div>
+        <div class="quiz-title">20261017 音樂中心</div>
         <div class="quiz-answer-wrap">
           <div class="quiz-answer-text">♡🐰♡U'RE♡🦊♡</div>
           <button class="sticky-note-btn" onclick="revealAnswer(this)" data-original-html="點擊揭曉答案 (???)">
