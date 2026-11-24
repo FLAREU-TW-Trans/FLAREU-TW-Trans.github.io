@@ -3,7 +3,7 @@
 
   <url>
     <loc>https://flareu-tw-trans.github.io/</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -128,6 +128,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://flareu-tw-trans.github.io/Live/20261104_Youtube_Live/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://flareu-tw-trans.github.io/Live/THE_SHOW/</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>monthly</changefreq>
@@ -178,6 +184,12 @@
   <url>
     <loc>https://flareu-tw-trans.github.io/Live/THE_SHOW/20261110/</loc>
     <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://flareu-tw-trans.github.io/Live/THE_SHOW/20261117/</loc>
+    <lastmod>2026-11-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
