@@ -60,7 +60,10 @@ html, body {
 </div>
 
 <h2>吃貨偶像們評鑑的便利商店新品是？新品攤位EP.5</h2>
-<p>只翻譯11:34-14:34 FLARE U出場部分</p>
+<p>只翻譯11:34-14:34 FLARE U出場部分，如無自動跳轉請點擊跳轉按鈕</p>
+<div class="time-jump-group">
+  <button class="time-btn" onclick="jumpToTime(694)">跳轉</button>
+</div>
 
 <div id="video-wrapper">
     <div id="player"></div>
@@ -95,6 +98,20 @@ const MY_VIDEO_START = 694; // 從 11:34 開始
 function changeSubtitleSize(delta) {
         if (typeof coreChangeSubtitleSize === "function") coreChangeSubtitleSize(delta);
 }
+
+/* 跳轉時間 */
+function jumpToTime(seconds) {
+    // 檢查 player 物件是否存在，且是否有 seekTo 這個方法
+    if (typeof player !== 'undefined' && player.seekTo) {
+        player.seekTo(seconds, true);
+        
+        // 跳轉後自動播放影片
+        player.playVideo(); 
+    } else {
+        console.error("YouTube 播放器尚未準備就緒或未正確定義。");
+    }
+}
+</script>
 </script>
     
 <script type="module" src="../../js/firebase-init.js"></script>
