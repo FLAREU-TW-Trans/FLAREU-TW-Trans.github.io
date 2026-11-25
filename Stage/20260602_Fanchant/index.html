@@ -214,12 +214,12 @@
             z-index: 2147483647 !important;
         }
 
-        /* 橫向模式再加強 */
+        /* 橫向模式：所有裝置統一固定在距離底部 10% */
         @media screen and (orientation: landscape) {
             .video-responsive-wrapper:fullscreen .subtitle-overlay,
             .video-responsive-wrapper:-webkit-full-screen .subtitle-overlay,
             .video-responsive-wrapper.pseudo-fullscreen .subtitle-overlay {
-                bottom: calc(18% + env(safe-area-inset-bottom)) !important;
+                bottom: 10% !important;
             }
         }
     }
