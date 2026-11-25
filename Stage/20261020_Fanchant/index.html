@@ -310,143 +310,62 @@
     /* ==================== 
        6. 動態歌詞
        ==================== */
-    #way2u-lyrics, #hyper-lyrics{
-      -webkit-overflow-scrolling: touch;
-      overflow-x: hidden !important; 
-      overscroll-behavior-x: none;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    #way2u-lyrics p, #hyper-lyrics p {
-      white-space: normal;
-      word-wrap: break-word;
-      max-width: 100%;
-    }
+    #way2u-lyrics, #hyper-lyrics{ -webkit-overflow-scrolling: touch; overflow-x: hidden !important; overscroll-behavior-x: none; width: 100%; box-sizing: border-box; }
+    #way2u-lyrics p, #hyper-lyrics p { white-space: normal; word-wrap: break-word; max-width: 100%; }
 
     /* ==================== 
-7. 歌曲專屬背景特效（避開歌詞框）
+      7. 歌曲專屬背景特效（避開歌詞框）
    ==================== */
-#sakura-layer,
-#star-layer {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 90;
-  display: none; /* 預設先隱藏，依目前分頁切換 */
-}
+    #sakura-layer, #star-layer { position: fixed; inset: 0; width: 100vw; height: 100vh; overflow: hidden; pointer-events: none; z-index: 90; display: none; }
 
-/* 依目前歌曲切換顯示 */
-body[data-active-song="tab-video1"] #sakura-layer {
-  display: block;
-}
-body[data-active-song="tab-video2"] #star-layer {
-  display: block;
-}
+    /* 依目前歌曲切換顯示 */
+    body[data-active-song="tab-video1"] #sakura-layer { display: block; }
+    body[data-active-song="tab-video2"] #star-layer { display: block; }
 
-/* 讓歌詞框位於特效上方，避免被櫻花或星星遮擋 */
-#way2u-container,
-#hyper-container {
-  position: relative;
-  z-index: 120;
-}
+    /* 讓歌詞框位於特效上方 */
+    #way2u-container, #hyper-container { position: relative; z-index: 120; }
 
-/* 影片與字幕層級 */
-.video-responsive-wrapper {
-  position: relative;
-  z-index: 105;
-}
-.subtitle-overlay {
-  z-index: 200;
-}
+    /* 影片與字幕層級 */
+    .video-responsive-wrapper { position: relative; z-index: 105; }
+    .subtitle-overlay { z-index: 200; }
 
-/* 全螢幕看影片時隱藏特效 */
-body.is-in-fullscreen #sakura-layer,
-body.is-in-fullscreen #star-layer,
-:fullscreen #sakura-layer,
-:fullscreen #star-layer,
-:-webkit-full-screen #sakura-layer,
-:-webkit-full-screen #star-layer,
-.pseudo-fullscreen ~ #sakura-layer,
-.pseudo-fullscreen ~ #star-layer {
-  display: none !important;
-}
+    /* 全螢幕看影片時隱藏特效 */
+    body.is-in-fullscreen #sakura-layer, body.is-in-fullscreen #star-layer, :fullscreen #sakura-layer, :fullscreen #star-layer, :-webkit-full-screen #sakura-layer,
+    :-webkit-full-screen #star-layer, .pseudo-fullscreen ~ #sakura-layer, .pseudo-fullscreen ~ #star-layer {
+      display: none !important;
+    }
 
-/* --- 第一首：櫻花飄落 --- */
-.sakura-petal {
-  position: absolute;
-  top: -12vh;
-  border-radius: 100% 10% 100% 10%;
-  background: linear-gradient(135deg, #ffd6e2 0%, #f7a8be 65%, #f28ba8 100%);
-  box-shadow: 0 1px 4px rgba(216, 108, 138, 0.18);
-  will-change: transform, opacity;
-  animation-name: sakuraFall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
+    /* --- 第一首：櫻花飄落 --- */
+    .sakura-petal {
+      position: absolute; border-radius: 100% 10% 100% 10%; background: linear-gradient(135deg, #ffd9e5 0%, #f7a6be 65%, #ee84a4 100%);
+      box-shadow: 0 2px 6px rgba(216, 108, 138, 0.22); will-change: transform, opacity; animation-name: sakuraWindDrift; animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+    }
 
-[data-theme="dark"] .sakura-petal {
-  background: linear-gradient(135deg, #f9c5d5 0%, #e58ea9 75%, #cf7290 100%);
-  box-shadow: 0 1px 6px rgba(249, 197, 213, 0.16);
-}
+    [data-theme="dark"] .sakura-petal { background: linear-gradient(135deg, #fad0de 0%, #ea93ae 70%, #d47493 100%); box-shadow: 0 2px 8px rgba(249, 197, 213, 0.22); }
 
-@keyframes sakuraFall {
-  0% {
-    transform: translate3d(0, -10vh, 0) rotate(0deg) rotateX(0deg);
-    opacity: 0;
-  }
-  12% {
-    opacity: var(--petal-opacity, 0.72);
-  }
-  50% {
-    transform: translate3d(var(--drift-mid, 36px), 48vh, 0) rotate(180deg) rotateX(45deg);
-  }
-  88% {
-    opacity: var(--petal-opacity, 0.72);
-  }
-  100% {
-    transform: translate3d(var(--drift-end, -28px), 108vh, 0) rotate(360deg) rotateX(15deg);
-    opacity: 0;
-  }
-}
+    @keyframes sakuraWindDrift {
+      0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
+      12% { opacity: var(--petal-opacity, 0.88); }
+      50% { transform: translate3d(21vw, 52vh, 0) rotate(175deg); opacity: var(--petal-opacity, 0.88); }
+      88% { opacity: var(--petal-opacity, 0.88); }
+      100% { transform: translate3d(42vw, 108vh, 0) rotate(350deg); opacity: 0; }
+    }
 
-/* --- 第二首：星星閃亮（位置固定，只閃爍） --- */
-.twinkle-star {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, #fff3cc 0%, #edd08c 55%, rgba(237, 208, 140, 0) 100%);
-  box-shadow: 0 0 8px rgba(237, 208, 140, 0.45);
-  will-change: transform, opacity;
-  animation-name: starTwinkle;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-}
+    /* --- 第二首：星星閃亮（位置固定，只閃爍） --- */
+    .twinkle-star {
+      position: absolute; line-height: 1; user-select: none; color: #eef3fc; text-shadow: 0 0 8px rgba(220, 228, 242, 0.65), 0 0 16px rgba(220, 228, 242, 0.32);
+      will-change: transform, opacity; animation-name: starGlow; animation-timing-function: ease-in-out; animation-iteration-count: infinite;
+    }
 
-[data-theme="dark"] .twinkle-star {
-  background: radial-gradient(circle, #ffffff 0%, #dce4f2 55%, rgba(220, 228, 242, 0) 100%);
-  box-shadow: 0 0 10px rgba(220, 228, 242, 0.5);
-}
+    @keyframes starGlow {
+      0%, 100% { opacity: var(--star-min, 0.25); transform: scale(0.82); }
+      50% { opacity: var(--star-max, 0.9); transform: scale(1.15); }
+    }
 
-@keyframes starTwinkle {
-  0%, 100% {
-    opacity: var(--star-min, 0.15);
-    transform: scale(0.75);
-  }
-  50% {
-    opacity: var(--star-max, 0.85);
-    transform: scale(1.2);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #sakura-layer,
-  #star-layer {
-    display: none !important;
-  }
-}
+    @media (prefers-reduced-motion: reduce) {
+      #sakura-layer, #star-layer { display: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -1182,7 +1101,7 @@ body.is-in-fullscreen #star-layer,
   const isMobile = window.innerWidth < 600;
 
   // 1. 生成第一首櫻花瓣
-  const petalCount = isMobile ? 14 : 24;
+  const petalCount = isMobile ? 7 : 12;
   const sakuraFrag = document.createDocumentFragment();
 
   for (let i = 0; i < petalCount; i++) {
@@ -1190,42 +1109,45 @@ body.is-in-fullscreen #star-layer,
     petal.className = 'sakura-petal';
 
     const size = isMobile
-      ? (8 + Math.random() * 7).toFixed(1)
-      : (10 + Math.random() * 9).toFixed(1);
+      ? (10 + Math.random() * 6).toFixed(1)
+      : (12 + Math.random() * 8).toFixed(1);
+
+    // 讓起點分布在上方與左側，確保往右下飄時能自然穿越畫面
+    const startLeft = (-12 + Math.random() * 76).toFixed(2);
+    const startTop = (-14 + Math.random() * 42).toFixed(2);
 
     petal.style.width = size + 'px';
     petal.style.height = (size * 0.78).toFixed(1) + 'px';
-    petal.style.left = (Math.random() * 100).toFixed(2) + '%';
-    petal.style.animationDuration = (8 + Math.random() * 8).toFixed(2) + 's';
-    petal.style.animationDelay = (-Math.random() * 14).toFixed(2) + 's';
-    petal.style.setProperty('--drift-mid', ((Math.random() - 0.5) * 90).toFixed(1) + 'px');
-    petal.style.setProperty('--drift-end', ((Math.random() - 0.5) * 140).toFixed(1) + 'px');
-    petal.style.setProperty('--petal-opacity', (0.4 + Math.random() * 0.35).toFixed(2));
+    petal.style.left = startLeft + 'vw';
+    petal.style.top = startTop + 'vh';
+    petal.style.animationDuration = (13 + Math.random() * 9).toFixed(2) + 's';
+    petal.style.animationDelay = (-Math.random() * 20).toFixed(2) + 's';
+    petal.style.setProperty('--petal-opacity', (0.78 + Math.random() * 0.18).toFixed(2));
 
     sakuraFrag.appendChild(petal);
   }
   sakuraLayer.appendChild(sakuraFrag);
 
   // 2. 生成第二首星星（位置固定，僅閃爍）
-  const starCount = isMobile ? 22 : 42;
+  const starCount = isMobile ? 18 : 34;
   const starFrag = document.createDocumentFragment();
 
   for (let i = 0; i < starCount; i++) {
     const star = document.createElement('span');
     star.className = 'twinkle-star';
+    star.textContent = '✦';
 
-    const size = isMobile
-      ? (3 + Math.random() * 4).toFixed(1)
-      : (4 + Math.random() * 6).toFixed(1);
+    const fontSize = isMobile
+      ? (10 + Math.random() * 6).toFixed(1)
+      : (12 + Math.random() * 9).toFixed(1);
 
-    star.style.width = size + 'px';
-    star.style.height = size + 'px';
-    star.style.left = (2 + Math.random() * 96).toFixed(2) + '%';
-    star.style.top = (2 + Math.random() * 96).toFixed(2) + '%';
-    star.style.animationDuration = (2.2 + Math.random() * 3.4).toFixed(2) + 's';
+    star.style.fontSize = fontSize + 'px';
+    star.style.left = (3 + Math.random() * 94).toFixed(2) + '%';
+    star.style.top = (3 + Math.random() * 94).toFixed(2) + '%';
+    star.style.animationDuration = (2.6 + Math.random() * 3.6).toFixed(2) + 's';
     star.style.animationDelay = (-Math.random() * 5).toFixed(2) + 's';
-    star.style.setProperty('--star-min', (0.1 + Math.random() * 0.15).toFixed(2));
-    star.style.setProperty('--star-max', (0.55 + Math.random() * 0.35).toFixed(2));
+    star.style.setProperty('--star-min', (0.22 + Math.random() * 0.14).toFixed(2));
+    star.style.setProperty('--star-max', (0.75 + Math.random() * 0.2).toFixed(2));
 
     starFrag.appendChild(star);
   }
