@@ -3,7 +3,7 @@
 
   <url>
     <loc>https://flareu-tw-trans.github.io/</loc>
-    <lastmod>2026-11-24</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -545,6 +545,12 @@
   <url>
     <loc>https://flareu-tw-trans.github.io/Stage/20261103_stage_collection/</loc>
     <lastmod>2026-11-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://flareu-tw-trans.github.io/Stage/20261020_Fanchant/</loc>
+    <lastmod>2026-06-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
