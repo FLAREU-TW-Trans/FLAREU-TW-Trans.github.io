@@ -21,7 +21,7 @@
     :root { --bg-body: #f8f9f7; --bg-content: #ffffff; --reaction-box-bg: #f1f3f5; --text-main: #2d3436; --text-sub: #7b8a7e; --border-line: #e0e6e0;
       --btn-bg: #84a98c; --btn-hover: #52796f; --btn-text: #ffffff; --intro-bg: #f1f7f1; --intro-border: #dce4dc; --intro-text: #354f52; 
       --section-bg: #e9f5e9; --section-text: #354f52; --outfit-bg: #f8faf8; --outfit-border: #84a98c;
-      --tab-bg: #ffffff; --tab-border: #e0e6e0; --tab-text: #7b8a7e; --tab-active-text: #52796f; --tab-active-border: #84a98c;
+      --tab-bg: #ffffff; --tab-border: #e0e6e0; --tab-text: #000000; --tab-active-text: #000000; --tab-active-border: #2d3436;
       --home-btn-bg: #e5e7EB; --home-btn-hover: #d5d7dc; --theme-btn-bg: #f0f0f0; --theme-btn-text: #666; --theme-btn-active: #ffffff;
       --reaction-text-shadow: none; --emoji-btn-active-border: #84a98c; --emoji-btn-active-text: #2d3436; --emoji-btn-bg-hover: rgba(132, 169, 140, 0.1); 
       --emoji-btn-default-bg: #f1f3f5; --emoji-btn-default-border: #e1e8ed; --emoji-btn-default-text: #8e8e8e; --subtitle-size: 22px; 
@@ -34,7 +34,7 @@
       --bg-body: #1a1c1a; --bg-content: #242624; --reaction-box-bg: #2f3136; --text-main: #e0e2e0; --text-sub: #a0a8a0; --border-line: #3d403d;
       --btn-bg: #52796f; --btn-hover: #84a98c; --btn-text: #ffffff; --intro-bg: #2d342d; --intro-border: #3d403d; --intro-text: #e0e2e0; 
       --section-bg: #353d35; --section-text: #a7c4a7; --outfit-bg: #2d342d; --outfit-border: #52796f;
-      --tab-bg: #242624; --tab-border: #3d403d; --tab-text: #888; --tab-active-text: #a7c4a7; --tab-active-border: #52796f;
+      --tab-bg: #242624; --tab-border: #3d403d; --tab-text: #ffffff; --tab-active-text: #ffffff; --tab-active-border: #ffffff;
       --home-btn-bg: #3a3b3c; --home-btn-hover: #4a4b4c;
       --theme-btn-bg: #333333; --theme-btn-text: #aaaaaa; --theme-btn-active: #1e1e1e;
       /* 深色模式下，保留微弱的立體感 */
@@ -451,7 +451,7 @@
       <div class="video-controls-bar" style="display: flex; flex-direction: column; gap: 16px; padding: 20px 10px 10px 10px;">
         <!-- 🔝 上排：應援連結 -->
         <div style="display: flex; align-items: center; gap: 8px;">
-            <a href="https://artist.mnetplus.world/main/stg/flareu/contents/6ad5bc56e2a4c617cc1b2006" target="_blank" class="official-link-btn" style="background: #f4f5f8; color: #2b303a; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40;">📢 官方應援連結</a>
+            <a href="https://artist.mnetplus.world/main/stg/flareu/contents/6ad5bc56e2a4c617cc1b2006" target="_blank" class="official-link-btn" style="background: linear-gradient(135deg, #475063 0%, #3b4252 100%); color: #f4f5f8; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #5c667d;">📢 官方應援連結</a>
         </div>
     
         <!-- 🔙 下排：字幕調整與全螢幕 -->
@@ -473,23 +473,21 @@
       <!-- Hundred Nights 應援歌詞 -->
       <div class="lyrics-container lyrics-cool" id="hyper-container" style="background: linear-gradient(135deg, #475063 0%, #3b4252 100%); color: #f4f5f8; padding: 25px; margin-top: 20px; border-radius: 12px; border: 1px solid #5c667d; font-family: sans-serif; line-height: 1.8; box-shadow: 0 4px 20px rgba(59,66,82,0.18);">
   
-  <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; gap: 12px;">
-    
-    <h3 style="text-align: center; margin: 0; color: #f4f5f8; font-size: 20px; letter-spacing: 1.5px; font-weight: 700;">🌙 Hundred Nights 應援歌詞完整版</h3>
-    
-    <div style="display: flex; gap: 8px;">
-      <button onclick="adjustFontSize('hyper-lyrics', -2)" style="padding: 6px 14px; border: 1px solid #d0d5dd; background: #f4f5f8; color: #2c313a; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.12); transition: all 0.2s;">A -</button>
-      <button onclick="adjustFontSize('hyper-lyrics', 2)" style="padding: 6px 14px; border: 1px solid #d0d5dd; background: #f4f5f8; color: #2c313a; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.12); transition: all 0.2s;">A +</button>
-    </div>
-  </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; gap: 12px;">
+          <h3 style="text-align: center; margin: 0; color: #f4f5f8; font-size: 20px; letter-spacing: 1.5px; font-weight: 700;">🌙 Hundred Nights 應援歌詞完整版</h3>
+          <div style="display: flex; gap: 8px;">
+            <button onclick="adjustFontSize('hyper-lyrics', -2)" style="padding: 6px 14px; border: 1px solid #d0d5dd; background: #f4f5f8; color: #2c313a; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.12); transition: all 0.2s;">A -</button>
+            <button onclick="adjustFontSize('hyper-lyrics', 2)" style="padding: 6px 14px; border: 1px solid #d0d5dd; background: #f4f5f8; color: #2c313a; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.12); transition: all 0.2s;">A +</button>
+          </div>
+        </div>
 
   <!-- 內層設定 id 為 hyper-lyrics，設定平滑滾動與 max-height -->
   <div id="hyper-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease; max-height: 400px; overflow-y: auto; padding: 10px 0; position: relative;">
     <style>
-      #hyper-lyrics b { color: #ffffff; font-weight: 700; transition: color 0.3s; }
+      #hyper-lyrics b { color: #ffe08a; font-weight: 700; text-shadow: 0 0 10px rgba(255, 224, 138, 0.28); transition: color 0.3s, text-shadow 0.3s; }
       #hyper-lyrics p.current-lyric { background: rgba(244, 245, 248, 0.16); border-radius: 8px; transform: scale(1.05); font-weight: bold; transition: all 0.3s ease; color: #f4f5f8; }
-      #hyper-lyrics p { padding: 6px 10px; margin: 4px 0; transition: all 0.3s ease; opacity: 0.65; color: #f4f5f8; }
-      #hyper-lyrics p.current-lyric b { color: #ffffff; }
+      #hyper-lyrics p { padding: 6px 10px; margin: 4px 0; transition: all 0.3s ease; opacity: 0.65; color: #cbd3e3; }
+      #hyper-lyrics p.current-lyric b { color: #fff0b8; text-shadow: 0 0 12px rgba(255, 240, 184, 0.42); }
     </style>
 
   <p data-start="0.0" data-end="11.4">（準備）</p>
