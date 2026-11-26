@@ -21,14 +21,14 @@
     :root {
       --bg-body: #f8f9f7; --bg-content: #ffffff; --reaction-box-bg: #f1f3f5; --text-main: #2d3436; --text-sub: #7b8a7e; --border-line: #e0e6e0; --tab-bg: #ffffff; --tab-border: #e0e6e0;
       --tab-text: #2b303a; --tab-active-text: #2b303a; --tab-active-border: #475063; --home-btn-bg: #e5e7eb; --theme-btn-bg: #f0f0f0; --theme-btn-text: #666666; --theme-btn-active: #ffffff;
-      --reaction-text-shadow: none; --emoji-btn-active-border: #84a98c; --emoji-btn-active-text: #2d3436; --emoji-btn-bg-hover: rgba(132, 169, 140, 0.1); --emoji-btn-default-bg: #f1f3f5;
+      --reaction-text-shadow: none; --emoji-btn-active-border: #2f353b; --emoji-btn-active-text: #23272c; --emoji-btn-bg-hover: rgba(47, 53, 59, 0.06); --emoji-btn-default-bg: #f1f3f5;
       --emoji-btn-default-border: #e1e8ed; --emoji-btn-default-text: #8e8e8e; --subtitle-size: 22px;
     }
 
     [data-theme="dark"] {
       --bg-body: #1a1c1a; --bg-content: #242624; --reaction-box-bg: #2f3136; --text-main: #e0e2e0; --text-sub: #a0a8a0; --border-line: #3d403d; --tab-bg: #242624; --tab-border: #3d403d;
       --tab-text: #e8ecf5; --tab-active-text: #e8ecf5; --tab-active-border: #c7d0e4; --home-btn-bg: #3a3b3c; --theme-btn-bg: #333333; --theme-btn-text: #aaaaaa; --theme-btn-active: #1e1e1e;
-      --reaction-text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); --emoji-btn-active-border: #8ebfec; --emoji-btn-active-text: #e4e6eb; --emoji-btn-bg-hover: rgba(255, 255, 255, 0.1);
+      --reaction-text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); --emoji-btn-active-border: #e2e6ed; --emoji-btn-active-text: #f2f4f8; --emoji-btn-bg-hover: rgba(226, 230, 237, 0.09);
       --emoji-btn-default-bg: #3a3b3c; --emoji-btn-default-border: #444444; --emoji-btn-default-text: #aaaaaa;
     }
 
@@ -197,7 +197,7 @@
     #barrage-toggle-btn, .barrage-control, #barrage-container, #emoji-trigger-btn, #emoji-drawer { display: none !important; }
 
     .unified-reaction-box { 
-        background-color: var(--reaction-box-bg) !important; border-radius: 12px; margin: 20px; padding: 20px; text-align: center; border: 1px solid var(--intro-border);
+        background-color: var(--reaction-box-bg) !important; border-radius: 12px; margin: 20px; padding: 20px; text-align: center; border: 1px solid var(--border-line);
         box-sizing: border-box; display: flex; flex-direction: column; align-items: center; 
     }
 
@@ -242,7 +242,7 @@
     #way2u-lyrics, #hyper-lyrics, #bloom-lyrics, #hundrednights-lyrics{ -webkit-overflow-scrolling: touch; overflow-x: hidden !important; overscroll-behavior-x: none; width: 100%; box-sizing: border-box; }
     #way2u-lyrics p, #hyper-lyrics p, #bloom-lyrics p, #hundrednights-lyrics p { white-space: normal; word-wrap: break-word; max-width: 100%; }
     @media (max-width: 600px) {
-      #way2u-lyrics, #hyper-lyrics, #bloom-lyrics, #hundrednights-lyrics { max-height: 250px !important; }
+      #way2u-lyrics, #hyper-lyrics, #bloom-lyrics, #hundrednights-lyrics { max-height: 300px !important; }
       .lyrics-container { padding: 18px 14px !important; margin-top: 14px !important; }
     }
 
