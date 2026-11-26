@@ -241,6 +241,10 @@
        ==================== */
     #way2u-lyrics, #hyper-lyrics, #bloom-lyrics, #hundrednights-lyrics{ -webkit-overflow-scrolling: touch; overflow-x: hidden !important; overscroll-behavior-x: none; width: 100%; box-sizing: border-box; }
     #way2u-lyrics p, #hyper-lyrics p, #bloom-lyrics p, #hundrednights-lyrics p { white-space: normal; word-wrap: break-word; max-width: 100%; }
+    @media (max-width: 600px) {
+      #way2u-lyrics, #hyper-lyrics, #bloom-lyrics, #hundrednights-lyrics { max-height: 250px !important; }
+      .lyrics-container { padding: 18px 14px !important; margin-top: 14px !important; }
+    }
 
     /* ==================== 
       8. 歌曲專屬背景特效（避開歌詞框）
