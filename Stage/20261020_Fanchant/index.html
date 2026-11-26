@@ -18,125 +18,72 @@
     /* ==================== 
        1. 色彩變數與基礎設定
        ==================== */
-    :root { --bg-body: #f8f9f7; --bg-content: #ffffff; --reaction-box-bg: #f1f3f5; --text-main: #2d3436; --text-sub: #7b8a7e; --border-line: #e0e6e0;
-      --btn-bg: #84a98c; --btn-hover: #52796f; --btn-text: #ffffff; --intro-bg: #f1f7f1; --intro-border: #dce4dc; --intro-text: #354f52; 
-      --section-bg: #e9f5e9; --section-text: #354f52; --outfit-bg: #f8faf8; --outfit-border: #84a98c;
-      /* tab樣式 */
-      --tab-bg: #ffffff; --tab-border: #e0e6e0; --tab-text: #2b303a; --tab-active-text: #2b303a; --tab-active-border: #475063;
-      --home-btn-bg: #e5e7EB; --home-btn-hover: #d5d7dc; --theme-btn-bg: #f0f0f0; --theme-btn-text: #666; --theme-btn-active: #ffffff;
-      --reaction-text-shadow: none; --emoji-btn-active-border: #84a98c; --emoji-btn-active-text: #2d3436; --emoji-btn-bg-hover: rgba(132, 169, 140, 0.1); 
-      --emoji-btn-default-bg: #f1f3f5; --emoji-btn-default-border: #e1e8ed; --emoji-btn-default-text: #8e8e8e; --subtitle-size: 22px; 
+    :root {
+      --bg-body: #f8f9f7; --bg-content: #ffffff; --reaction-box-bg: #f1f3f5; --text-main: #2d3436; --text-sub: #7b8a7e; --border-line: #e0e6e0; --tab-bg: #ffffff; --tab-border: #e0e6e0;
+      --tab-text: #2b303a; --tab-active-text: #2b303a; --tab-active-border: #475063; --home-btn-bg: #e5e7eb; --theme-btn-bg: #f0f0f0; --theme-btn-text: #666666; --theme-btn-active: #ffffff;
+      --reaction-text-shadow: none; --emoji-btn-active-border: #84a98c; --emoji-btn-active-text: #2d3436; --emoji-btn-bg-hover: rgba(132, 169, 140, 0.1); --emoji-btn-default-bg: #f1f3f5;
+      --emoji-btn-default-border: #e1e8ed; --emoji-btn-default-text: #8e8e8e; --subtitle-size: 22px;
     }
-
-    #lyrics-toggle-btn{ min-width:110px; }
-    #lyrics-toggle-btn:not(.active){ opacity:.45; }
 
     [data-theme="dark"] {
-      --bg-body: #1a1c1a; --bg-content: #242624; --reaction-box-bg: #2f3136; --text-main: #e0e2e0; --text-sub: #a0a8a0; --border-line: #3d403d;
-      --btn-bg: #52796f; --btn-hover: #84a98c; --btn-text: #ffffff; --intro-bg: #2d342d; --intro-border: #3d403d; --intro-text: #e0e2e0; 
-      --section-bg: #353d35; --section-text: #a7c4a7; --outfit-bg: #2d342d; --outfit-border: #52796f;
-      /* tab樣式 */
-      --tab-bg: #242624; --tab-border: #3d403d; --tab-text: #e8ecf5; --tab-active-text: #e8ecf5; --tab-active-border: #c7d0e4;
-      --home-btn-bg: #3a3b3c; --home-btn-hover: #4a4b4c;
-      --theme-btn-bg: #333333; --theme-btn-text: #aaaaaa; --theme-btn-active: #1e1e1e;
-      /* 深色模式下，保留微弱的立體感 */
-      --reaction-text-shadow: 0px 1px 3px rgba(0,0,0,0.8);
-      /* 表情按鈕選中時的框線與數字顏色 (深色模式) */
-      --emoji-btn-active-border: #8ebfec; 
-      --emoji-btn-active-text: #e4e6eb;
-      --emoji-btn-bg-hover: rgba(255, 255, 255, 0.1); /* 深色模式下懸停時的微弱背景 */
-      /* 定義按鈕的「預設未選中」狀態 (深色) */
-      --emoji-btn-default-bg: #3a3b3;
-      --emoji-btn-default-border: #444;
-      --emoji-btn-default-text: #aaa;
+      --bg-body: #1a1c1a; --bg-content: #242624; --reaction-box-bg: #2f3136; --text-main: #e0e2e0; --text-sub: #a0a8a0; --border-line: #3d403d; --tab-bg: #242624; --tab-border: #3d403d;
+      --tab-text: #e8ecf5; --tab-active-text: #e8ecf5; --tab-active-border: #c7d0e4; --home-btn-bg: #3a3b3c; --theme-btn-bg: #333333; --theme-btn-text: #aaaaaa; --theme-btn-active: #1e1e1e;
+      --reaction-text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); --emoji-btn-active-border: #8ebfec; --emoji-btn-active-text: #e4e6eb; --emoji-btn-bg-hover: rgba(255, 255, 255, 0.1);
+      --emoji-btn-default-bg: #3a3b3c; --emoji-btn-default-border: #444444; --emoji-btn-default-text: #aaaaaa;
     }
 
-    html, body { 
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
-      background-color: var(--bg-body) !important; color: var(--text-main) !important; margin: 0 !important; padding: 0 !important; 
-      overflow-x: hidden !important; height: auto !important; -webkit-text-size-adjust: 100%;
-      display: flex; justify-content: center; transition: background-color 0.3s ease, color 0.3s ease; 
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--bg-body) !important; color: var(--text-main) !important;
+      margin: 0 !important; padding: 0 !important; overflow-x: hidden !important; height: auto !important; -webkit-text-size-adjust: 100%; display: flex; justify-content: center;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    .content-wrapper { max-width: 800px; width: 100%; background: var(--bg-content); min-height: 100vh; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding-bottom: 20px; transition: all 0.3s ease; }
-
+    .content-wrapper { max-width: 800px; width: 100%; background: var(--bg-content); min-height: 100vh; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); padding-bottom: 20px; transition: all 0.3s ease; }
+    
     /* ==================== 
        2. 版面與畫報排版
        ==================== */
     .header { background-color: var(--bg-content); padding: 20px 20px 0 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
     .header h1 { font-size: 1.3rem; margin: 0; font-weight: 600; color: var(--text-main); line-height: 1.4; }
-
     .controls-wrapper { display: flex; gap: 12px; align-items: center; margin-top: 10px; margin-bottom: 16px; }
     .home-btn { background-color: var(--home-btn-bg); color: var(--text-main); text-decoration: none; padding: 6px 16px; border-radius: 16px; font-size: 0.9rem; font-weight: bold; }
     .theme-toggle-group { display: inline-flex; background-color: var(--theme-btn-bg); border-radius: 20px; padding: 4px; }
     .theme-btn { background: none; border: none; padding: 6px 16px; border-radius: 16px; font-size: 0.9rem; color: var(--theme-btn-text); cursor: pointer; font-weight: bold; }
-    .theme-btn.active { background-color: var(--theme-btn-active); color: var(--text-main); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .theme-btn.active { background-color: var(--theme-btn-active); color: var(--text-main); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+    #lyrics-toggle-btn { min-width: 110px; }
+    #lyrics-toggle-btn:not(.active) { opacity: 0.45; }
+    
+    /* ====================
+       3. 歌曲下拉式選單與分頁內容
+       ==================== */
+    .song-select-wrapper {
+      width: 100%; display: flex; justify-content: center; padding: 12px 20px 16px 20px; border-bottom: 1px solid var(--tab-border); background-color: var(--tab-bg);
+      box-sizing: border-box;
+    }
+    .song-select {
+      width: 100%; max-width: 340px; padding: 10px 40px 10px 16px; font-size: 0.98rem; font-weight: 600; letter-spacing: 0.4px; color: var(--text-main); background-color: #f5f6f4;
+      border: 1px solid #d6dcd6; border-radius: 10px; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%23525b56' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03); transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .song-select:hover, .song-select:focus { border-color: #9aa79e; background-color: #eef1ee; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); }
 
-    .tabs-container { display: flex; width: 100%; border-bottom: 2px solid var(--tab-border); background-color: var(--tab-bg); }
-    .tab-btn { flex: 1; background: none; border: none; padding: 14px 10px; font-size: 1rem; font-weight: bold; color: var(--tab-text); cursor: pointer; border-bottom: 3px solid transparent; }
-    .tab-btn.active { color: var(--tab-active-text); border-bottom: 3px solid var(--tab-active-border); }
+    [data-theme="dark"] .song-select {
+      color: #e6eae6; background-color: #2c2f2c; border-color: #464b46; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%23c8d0c8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+    [data-theme="dark"] .song-select:hover, [data-theme="dark"] .song-select:focus { border-color: #6b736b; background-color: #333733; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); }
 
     .tab-content { display: none; animation: fadeIn 0.3s ease; }
     .tab-content.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-    .btn-article { display: block; background-color: var(--btn-bg); color: var(--btn-text); text-align: center; padding: 14px 20px; margin: 20px 20px 0 20px; border-radius: 8px; text-decoration: none; font-weight: bold; }
-    .intro-box { padding: 0 20px 24px 20px; margin-top: 16px; }
-    .intro-text { font-size: 1.05rem; line-height: 1.8; color: var(--intro-text); white-space: pre-line; padding: 25px; background-color: var(--intro-bg); border-radius: 12px; border: 1px solid var(--intro-border); text-align: left !important; word-break: break-all; }
-    .section-title { background-color: var(--section-bg); padding: 16px 20px; margin: 0 0 24px 0; font-size: 1.1rem; color: var(--section-text); font-weight: bold; border-bottom: 1px solid var(--intro-border); border-top: 1px solid var(--intro-border); }
-    .post-item { margin-bottom: 12px; padding-bottom: 16px; }
-    .instagram-media { margin: 0 auto !important; max-width: 500px !important; }
-    .translation-box { padding: 16px 20px; max-width: 600px; margin: 0 auto; }
-    .translation-box, .caption-text, .outfit-section { text-align: left !important; }
-    .outfit-section { background-color: var(--outfit-bg); padding: 16px 20px; border-radius: 8px; border-left: 4px solid var(--outfit-border); }
-    .photo-tag { display: inline-block; font-weight: 600; color: var(--section-text); font-size: 1.1rem; margin-bottom: 12px; }
-    .outfit-text { font-size: 0.95rem; line-height: 1.8; margin: 0; }
-    .carousel-list { list-style: none; padding: 0; margin: 0; }
-    .carousel-list li { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px dashed var(--border-line); }
-
-    .outfit-pagination { display: flex; justify-content: center; gap: 8px; margin-bottom: 12px; align-items: center; flex-wrap: nowrap; }
-    .page-btn { width: 40px; height: 40px; font-size: 1.1rem; border-radius: 50%; border: 1px solid var(--border-line); background: var(--bg-content); 
-               color: var(--text-main); cursor: pointer; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
-    .page-btn.active { background: var(--btn-bg); color: white; border-color: var(--btn-bg);}
-
-    .song-select-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 10px 20px 14px 20px;
-  border-bottom: 2px solid var(--tab-border);
-  background-color: var(--tab-bg);
-  box-sizing: border-box;
-}
-
-.song-select {
-  width: 100%;
-  max-width: 360px;
-  padding: 10px 38px 10px 16px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: var(--tab-text);
-  background-color: var(--bg-content);
-  border: 1.5px solid var(--tab-active-border);
-  border-radius: 12px;
-  cursor: pointer;
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232b303a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: border-color 0.2s ease, background-color 0.2s ease;
-}
-
-[data-theme="dark"] .song-select {
-  background-color: var(--bg-content);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23e8ecf5' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-}
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
     /* ==================== 
-       3. 影片區塊與字幕樣式
+       4. 影片區塊與字幕樣式
        ==================== */
     .video-controls-bar {
         background: #111; padding: 10px; display: flex; justify-content: center; align-items: center; gap: 15px; border-bottom: 1px solid #333; flex-wrap: wrap;
@@ -147,18 +94,8 @@
         background: #333; color: white; border: 1px solid rgba(255,255,255,0.1); padding: 6px 16px; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease;
     }
     .video-controls-bar button:hover { background: #444; transform: translateY(-1px); }
-
-    .video-responsive-wrapper {
-        position: relative;
-        width: 100%;
-        padding-bottom: 56.25%; /* 16:9 神奇比例 */
-        background: #000;
-        transition: all 0.3s ease;
-    }
-    .video-responsive-wrapper iframe {
-        position: absolute;
-        top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; display: block;
-    }
+    .video-responsive-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; transition: all 0.3s ease; }
+    .video-responsive-wrapper iframe { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; display: block; }
 
     /* 字幕外層 */
     .subtitle-overlay { position: absolute; left: 50%; transform: translateX(-50%); bottom: 8%;
@@ -175,51 +112,27 @@
     @media (min-width: 1024px) { .subtitle-overlay { font-size: 28px; line-height: 1.7; } }
 
     /* =========================================
-       4. 全螢幕與偽全螢幕專屬樣式
+       5. 全螢幕與偽全螢幕專屬樣式
        ========================================= */
     /* 共用：原生全螢幕 (拿掉空格，直接作用在 .video-responsive-wrapper 本身) */
     .video-responsive-wrapper:fullscreen,
     .video-responsive-wrapper:-webkit-full-screen {
-        width: 100% !important;
-        height: 100% !important;
-        max-width: none !important;
-        margin: 0 !important;
-        padding: 0 !important;          /* 關鍵：徹底清除 56.25% 的 padding-bottom */
-        padding-bottom: 0 !important;
-        box-sizing: border-box !important;
-        background-color: #000000 !important;
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-        z-index: 2147483646 !important;
+        width: 100% !important; height: 100% !important; max-width: none !important; margin: 0 !important; padding: 0 !important; padding-bottom: 0 !important;
+        box-sizing: border-box !important; background-color: #000000 !important; display: flex !important; align-items: center; justify-content: center; z-index: 2147483646 !important;
     }
 
     /* 共用：偽全螢幕 (iPhone Safari / 備用方案) */
     .video-responsive-wrapper.pseudo-fullscreen {
-        position: fixed !important;
-        inset: 0 !important;            /* 比 100vw/100vh 更穩定，自動貼合實際可視範圍 */
-        width: 100% !important;
-        height: 100% !important;
-        max-width: none !important;
-        margin: 0 !important;
+        position: fixed !important; inset: 0 !important; width: 100% !important; height: 100% !important; max-width: none !important; margin: 0 !important;
         padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left) !important;
-        box-sizing: border-box !important;
-        background: #000000 !important;
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-        z-index: 2147483647 !important;
+        box-sizing: border-box !important; background: #000000 !important; display: flex !important; align-items: center; justify-content: center; z-index: 2147483647 !important;
     }
 
-    /* 關鍵：全螢幕與偽全螢幕時，讓 iframe 乖乖待在安全區容器內，不再溢出 */
+    /* 全螢幕與偽全螢幕時，讓 iframe 乖乖待在安全區容器內，不再溢出 */
     .video-responsive-wrapper:fullscreen iframe,
     .video-responsive-wrapper:-webkit-full-screen iframe,
     .video-responsive-wrapper.pseudo-fullscreen iframe {
-        position: relative !important;
-        top: auto !important;
-        left: auto !important;
-        width: 100% !important;
-        height: 100% !important;
+        position: relative !important; top: auto !important; left: auto !important; width: 100% !important; height: 100% !important;
     }
 
     /* 確保退出按鈕在最上層 */
@@ -234,9 +147,7 @@
         .video-responsive-wrapper:fullscreen .subtitle-overlay,
         .video-responsive-wrapper:-webkit-full-screen .subtitle-overlay,
         .video-responsive-wrapper.pseudo-fullscreen .subtitle-overlay {
-            bottom: 8% !important;
-            width: 90vw !important;
-            z-index: 2147483647 !important;
+            bottom: 8% !important; width: 90vw !important; z-index: 2147483647 !important;
             max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px) !important;
         }
     }
@@ -246,8 +157,7 @@
         .video-responsive-wrapper:fullscreen .subtitle-overlay,
         .video-responsive-wrapper:-webkit-full-screen .subtitle-overlay,
         .video-responsive-wrapper.pseudo-fullscreen .subtitle-overlay {
-            bottom: calc(15% + env(safe-area-inset-bottom)) !important;
-            width: min(88vw, 88%) !important;
+            bottom: calc(15% + env(safe-area-inset-bottom)) !important; width: min(88vw, 88%) !important;
             max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px) !important;
             z-index: 2147483647 !important;
         }
@@ -281,26 +191,18 @@
     @media screen and (orientation: landscape) { .exit-fs-btn-global { right: calc(45px + env(safe-area-inset-right)) !important; top: 15px !important; } }
 
     /* ==================== 
-       5. 完美修復表情牆
+       6. 完美修復表情牆
        ==================== */
     /* 隱藏彈幕工具 */
     #barrage-toggle-btn, .barrage-control, #barrage-container, #emoji-trigger-btn, #emoji-drawer { display: none !important; }
 
     .unified-reaction-box { 
-        background-color: var(--reaction-box-bg) !important;
-        border-radius: 12px; 
-        margin: 20px; /* 完美對齊畫報寬度 */
-        padding: 20px; 
-        text-align: center; 
-        border: 1px solid var(--intro-border);
-        box-sizing: border-box; 
-        display: flex; 
-        flex-direction: column;
-        align-items: center; /* 確保按鈕置中 */
+        background-color: var(--reaction-box-bg) !important; border-radius: 12px; margin: 20px; padding: 20px; text-align: center; border: 1px solid var(--intro-border);
+        box-sizing: border-box; display: flex; flex-direction: column; align-items: center; 
     }
 
     .reaction-section { text-align: center !important; width: 100%; }
-    .reaction-wall { display: flex; justify-content: center; /* 確保按鈕排隊置中 */ flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+    .reaction-wall { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
 
     /* 打敗 reaction.css 裡的黑底 */
     .reaction-section, .reaction-wall, .reaction-container {
@@ -310,66 +212,38 @@
 
     /* 強制規範沒有active的預設按鈕狀態 */
     .unified-reaction-box .emoji-btn:not(.active) {
-        background-color: var(--emoji-btn-default-bg) !important; 
-        border: 1px solid var(--emoji-btn-default-border) !important; 
-        transition: all 0.2s ease;
-        transform: scale(1) translateY(0) !important;
-        box-shadow: none !important;
+        background-color: var(--emoji-btn-default-bg) !important; border: 1px solid var(--emoji-btn-default-border) !important; 
+        transition: all 0.2s ease; transform: scale(1) translateY(0) !important; box-shadow: none !important;
     }
 
     /* 根據主題切換陰影，淺色清晰、深色立體 */
     .unified-reaction-box p, 
     .unified-reaction-box span, 
     .reaction-section { 
-        color: var(--text-main) !important; 
-        font-size: 1.05rem !important; 
-        text-shadow: var(--reaction-text-shadow) !important; 
-        box-shadow: none !important;
+        color: var(--text-main) !important; font-size: 1.05rem !important; text-shadow: var(--reaction-text-shadow) !important; box-shadow: none !important;
     }
     /* 重新定義表情按鈕的外觀，避免背景變純黑/純白 */
-    .unified-reaction-box .emoji-btn {
-        background-color: transparent !important; /* 預設透明 */
-        border: 1px solid var(--border-line) !important; /* 預設細框 */
-        transition: all 0.2s ease;
-    }
-
-    .unified-reaction-box .emoji-btn span {
-        color: var(--text-sub) !important; /* 預設數字顏色稍淺 */
-        text-shadow: none !important;
-    }
-
-    .unified-reaction-box .emoji-btn:hover {
-        background-color: var(--emoji-btn-bg-hover) !important; /* 懸停時微亮/微暗 */
-    }
+    .unified-reaction-box .emoji-btn { background-color: transparent !important; border: 1px solid var(--border-line) !important; transition: all 0.2s ease; }
+    .unified-reaction-box .emoji-btn span { color: var(--text-sub) !important; text-shadow: none !important; }
+    .unified-reaction-box .emoji-btn:hover { background-color: var(--emoji-btn-bg-hover) !important; }
 
     /* 按下(選中)時的狀態：不改背景色，只凸顯框線和數字！ */
     .unified-reaction-box .emoji-btn.active {
-        background-color: transparent !important; /* 保持透明！ */
-        border: 2px solid var(--emoji-btn-active-border) !important; /* 凸顯框線 */
-        transform: scale(1.05) translateY(-2px);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important; /* 輕微陰影 */
+        background-color: transparent !important; border: 2px solid var(--emoji-btn-active-border) !important; transform: scale(1.05) translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important; 
     }
+    .unified-reaction-box .emoji-btn.active span { color: var(--emoji-btn-active-text) !important; font-weight: bold !important; }
 
-    .unified-reaction-box .emoji-btn.active span {
-        color: var(--emoji-btn-active-text) !important; /* 數字顏色變深/變亮 */
-        font-weight: bold !important; /* 加粗數字 */
-    }
-
-    #reaction-title { 
-        color: var(--text-main) !important; 
-        font-weight: bold !important;  
-        margin-bottom: 20px !important; 
-        text-shadow: var(--reaction-text-shadow) !important; 
-    }
+    #reaction-title { color: var(--text-main) !important; font-weight: bold !important; margin-bottom: 20px !important; text-shadow: var(--reaction-text-shadow) !important; }
 
     /* ==================== 
-       6. 動態歌詞
+       7. 動態歌詞
        ==================== */
     #way2u-lyrics, #hyper-lyrics, #bloom-lyrics, #hundrednights-lyrics{ -webkit-overflow-scrolling: touch; overflow-x: hidden !important; overscroll-behavior-x: none; width: 100%; box-sizing: border-box; }
     #way2u-lyrics p, #hyper-lyrics p, #bloom-lyrics p, #hundrednights-lyrics p { white-space: normal; word-wrap: break-word; max-width: 100%; }
 
     /* ==================== 
-      7. 歌曲專屬背景特效（避開歌詞框）
+      8. 歌曲專屬背景特效（避開歌詞框）
    ==================== */
     #sakura-layer, #star-layer { position: fixed; inset: 0; width: 100vw; height: 100vh; overflow: hidden; pointer-events: none; z-index: 90; display: none; }
 
