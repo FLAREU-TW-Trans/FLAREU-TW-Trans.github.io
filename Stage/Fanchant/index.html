@@ -1,1 +1,1425 @@
-123
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="https://flareu-tw-trans.github.io/images/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://flareu-tw-trans.github.io/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>動態歌詞應援合輯</title>
+  <link rel="stylesheet" href="../../css/reaction.css">
+
+  <script>
+    const savedTheme = localStorage.getItem('pageTheme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    window.MY_VIDEO_ID = "20260602_Fanchant";
+  </script>
+
+  <style>
+    /* ==================== 
+       1. 色彩變數與基礎設定
+       ==================== */
+    :root {
+      --bg-body: #f8f9f7; --bg-content: #ffffff; --reaction-box-bg: #f1f3f5; --text-main: #2d3436; --text-sub: #7b8a7e; --border-line: #e0e6e0; --tab-bg: #ffffff; --tab-border: #e0e6e0;
+      --tab-text: #2b303a; --tab-active-text: #2b303a; --tab-active-border: #475063; --home-btn-bg: #e5e7eb; --theme-btn-bg: #f0f0f0; --theme-btn-text: #666666; --theme-btn-active: #ffffff;
+      --reaction-text-shadow: none; --emoji-btn-active-border: #2f353b; --emoji-btn-active-text: #23272c; --emoji-btn-bg-hover: rgba(47, 53, 59, 0.06); --emoji-btn-default-bg: #f1f3f5;
+      --emoji-btn-default-border: #e1e8ed; --emoji-btn-default-text: #8e8e8e; --subtitle-size: 22px;
+    }
+
+    [data-theme="dark"] {
+      --bg-body: #1a1c1a; --bg-content: #242624; --reaction-box-bg: #2f3136; --text-main: #e0e2e0; --text-sub: #a0a8a0; --border-line: #3d403d; --tab-bg: #242624; --tab-border: #3d403d;
+      --tab-text: #e8ecf5; --tab-active-text: #e8ecf5; --tab-active-border: #c7d0e4; --home-btn-bg: #3a3b3c; --theme-btn-bg: #333333; --theme-btn-text: #aaaaaa; --theme-btn-active: #1e1e1e;
+      --reaction-text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); --emoji-btn-active-border: #e2e6ed; --emoji-btn-active-text: #f2f4f8; --emoji-btn-bg-hover: rgba(226, 230, 237, 0.09);
+      --emoji-btn-default-bg: #3a3b3c; --emoji-btn-default-border: #444444; --emoji-btn-default-text: #aaaaaa;
+    }
+
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--bg-body) !important; color: var(--text-main) !important;
+      margin: 0 !important; padding: 0 !important; overflow-x: hidden !important; height: auto !important; -webkit-text-size-adjust: 100%; display: flex; justify-content: center;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .content-wrapper { max-width: 800px; width: 100%; background: var(--bg-content); min-height: 100vh; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); padding-bottom: 20px; transition: all 0.3s ease; }
+    
+    /* ==================== 
+       2. 版面與畫報排版
+       ==================== */
+    .header { background-color: var(--bg-content); padding: 20px 20px 0 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+    .header h1 { font-size: 1.3rem; margin: 0; font-weight: 600; color: var(--text-main); line-height: 1.4; }
+    .controls-wrapper { display: flex; gap: 12px; align-items: center; margin-top: 10px; margin-bottom: 16px; }
+    .home-btn { background-color: var(--home-btn-bg); color: var(--text-main); text-decoration: none; padding: 6px 16px; border-radius: 16px; font-size: 0.9rem; font-weight: bold; }
+    .theme-toggle-group { display: inline-flex; background-color: var(--theme-btn-bg); border-radius: 20px; padding: 4px; }
+    .theme-btn { background: none; border: none; padding: 6px 16px; border-radius: 16px; font-size: 0.9rem; color: var(--theme-btn-text); cursor: pointer; font-weight: bold; }
+    .theme-btn.active { background-color: var(--theme-btn-active); color: var(--text-main); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+    #lyrics-toggle-btn { min-width: 110px; }
+    #lyrics-toggle-btn:not(.active) { opacity: 0.45; }
+    
+    /* ====================
+       3. 歌曲下拉式選單與分頁內容
+       ==================== */
+    .song-select-wrapper {
+      width: 100%; display: flex; justify-content: center; padding: 12px 20px 16px 20px; border-bottom: 1px solid var(--tab-border); background-color: var(--tab-bg);
+      box-sizing: border-box;
+    }
+    .song-select {
+      width: 100%; max-width: 340px; padding: 10px 40px 10px 16px; font-size: 0.98rem; font-weight: 600; letter-spacing: 0.4px; color: var(--text-main); background-color: #fcfdfc;
+      border: 1px solid #d6dcd6; border-radius: 10px; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%23525b56' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03); transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .song-select:hover, .song-select:focus { border-color: #9aa79e; background-color: #ffffff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); }
+
+    [data-theme="dark"] .song-select {
+      color: #e8ecf2; background-color: #2a2c30; border-color: #464b46; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%23d4d9e2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+    [data-theme="dark"] .song-select:hover, [data-theme="dark"] .song-select:focus { border-color: #6b736b; background-color: #32353a; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); }
+
+    .tab-content { display: none; animation: fadeIn 0.3s ease; }
+    .tab-content.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==================== 
+       4. 影片區塊與字幕樣式
+       ==================== */
+    .video-controls-bar {
+        background: #111; padding: 10px; display: flex; justify-content: center; align-items: center; gap: 15px; border-bottom: 1px solid #333; flex-wrap: wrap;
+    }
+
+    .video-controls-bar p { color: white; margin: 0; font-weight: 600; }
+    .video-controls-bar button {
+        background: #333; color: white; border: 1px solid rgba(255,255,255,0.1); padding: 6px 16px; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease;
+    }
+    .video-controls-bar button:hover { background: #444; transform: translateY(-1px); }
+    .video-responsive-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; transition: all 0.3s ease; }
+    .video-responsive-wrapper iframe { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; display: block; }
+
+    /* 字幕外層 */
+    .subtitle-overlay { position: absolute; left: 50%; transform: translateX(-50%); bottom: 8%;
+      width: 90%; max-width: 90%; z-index: 100; pointer-events: none; display: flex; justify-content: center; text-align: center; }
+
+    /* 字幕本體 */
+    .subtitle-overlay span { display: block; width: 100%; max-width: 100%; padding: 0.25em 0.7em;
+        background: rgba(0,0,0,0.72); border-radius: 8px; color: rgba(255,255,255,0.96);
+        font-size: var(--subtitle-size); line-height: 1.6; white-space: pre-wrap;
+        overflow-wrap: anywhere; word-break: break-word; text-shadow: 0 2px 4px rgba(0,0,0,.5);
+        backdrop-filter: blur(2px); box-sizing: border-box;
+    }
+    
+    @media (min-width: 1024px) { .subtitle-overlay { font-size: 28px; line-height: 1.7; } }
+
+    /* =========================================
+       5. 全螢幕與偽全螢幕專屬樣式
+       ========================================= */
+    /* 共用：原生全螢幕 (拿掉空格，直接作用在 .video-responsive-wrapper 本身) */
+    .video-responsive-wrapper:fullscreen,
+    .video-responsive-wrapper:-webkit-full-screen {
+        width: 100% !important; height: 100% !important; max-width: none !important; margin: 0 !important; padding: 0 !important; padding-bottom: 0 !important;
+        box-sizing: border-box !important; background-color: #000000 !important; display: flex !important; align-items: center; justify-content: center; z-index: 2147483646 !important;
+    }
+
+    /* 共用：偽全螢幕 (iPhone Safari / 備用方案) */
+    .video-responsive-wrapper.pseudo-fullscreen {
+        position: fixed !important; inset: 0 !important; width: 100% !important; height: 100% !important; max-width: none !important; margin: 0 !important;
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left) !important;
+        box-sizing: border-box !important; background: #000000 !important; display: flex !important; align-items: center; justify-content: center; z-index: 2147483647 !important;
+    }
+
+    /* 全螢幕與偽全螢幕時，讓 iframe 乖乖待在安全區容器內，不再溢出 */
+    .video-responsive-wrapper:fullscreen iframe,
+    .video-responsive-wrapper:-webkit-full-screen iframe,
+    .video-responsive-wrapper.pseudo-fullscreen iframe {
+        position: relative !important; top: auto !important; left: auto !important; width: 100% !important; height: 100% !important;
+    }
+
+    /* 確保退出按鈕在最上層 */
+    .video-responsive-wrapper:fullscreen .exit-fs-btn-global,
+    .video-responsive-wrapper:-webkit-full-screen .exit-fs-btn-global,
+    .video-responsive-wrapper.pseudo-fullscreen .exit-fs-btn-global {
+        z-index: 2147483647 !important;
+    }
+
+    /* [A] 電腦版 (滑鼠操作) 全螢幕字幕位置 */
+    @media (pointer: fine) {
+        .video-responsive-wrapper:fullscreen .subtitle-overlay,
+        .video-responsive-wrapper:-webkit-full-screen .subtitle-overlay,
+        .video-responsive-wrapper.pseudo-fullscreen .subtitle-overlay {
+            bottom: 8% !important; width: 90vw !important; z-index: 2147483647 !important;
+            max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px) !important;
+        }
+    }
+
+    /* [B] 手機版 (觸控操作) 全螢幕字幕位置 */
+    @media (pointer: coarse) {
+        .video-responsive-wrapper:fullscreen .subtitle-overlay,
+        .video-responsive-wrapper:-webkit-full-screen .subtitle-overlay,
+        .video-responsive-wrapper.pseudo-fullscreen .subtitle-overlay {
+            bottom: calc(15% + env(safe-area-inset-bottom)) !important; width: min(88vw, 88%) !important;
+            max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px) !important;
+            z-index: 2147483647 !important;
+        }
+
+        /* 橫向模式：所有裝置統一固定在距離底部 10% */
+        @media screen and (orientation: landscape) {
+            .video-responsive-wrapper:fullscreen .subtitle-overlay,
+            .video-responsive-wrapper:-webkit-full-screen .subtitle-overlay,
+            .video-responsive-wrapper.pseudo-fullscreen .subtitle-overlay {
+                bottom: 10% !important;
+            }
+        }
+    }
+
+    /* 鎖死背景 */
+    body.is-in-fullscreen {
+        overflow: hidden !important; position: fixed; width: 100vw; height: 100vh; height: -webkit-fill-available;
+        background: #000 !important; touch-action: none; overscroll-behavior: none;
+    }
+
+    /* 退出按鈕 */
+    .exit-fs-btn-global {
+        display: none; opacity: 0; position: fixed !important; 
+        top: calc(20px + env(safe-area-inset-top)) !important; right: 20px !important; 
+        width: 50px !important; height: 50px !important;
+        background: rgba(0, 0, 0, 0.6) !important; border: 1px solid rgba(255, 255, 255, 0.3) !important; border-radius: 50%;
+        color: white !important; z-index: 2147483647 !important; cursor: pointer; align-items: center; justify-content: center; padding: 0;
+    }
+    .exit-fs-btn-global svg { width: 28px; height: 28px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+    .exit-fs-btn-global:hover { background: rgba(50, 50, 50, 0.9) !important; transform: scale(1.1); }
+    @media screen and (orientation: landscape) { .exit-fs-btn-global { right: calc(45px + env(safe-area-inset-right)) !important; top: 15px !important; } }
+
+    /* ==================== 
+       6. 完美修復表情牆
+       ==================== */
+    /* 隱藏彈幕工具 */
+    #barrage-toggle-btn, .barrage-control, #barrage-container, #emoji-trigger-btn, #emoji-drawer { display: none !important; }
+
+    .unified-reaction-box { 
+        background-color: var(--reaction-box-bg) !important; border-radius: 12px; margin: 20px; padding: 20px; text-align: center; border: 1px solid var(--border-line);
+        box-sizing: border-box; display: flex; flex-direction: column; align-items: center; 
+    }
+
+    .reaction-section { text-align: center !important; width: 100%; }
+    .reaction-wall { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+
+    /* 打敗 reaction.css 裡的黑底 */
+    .reaction-section, .reaction-wall, .reaction-container {
+        background: transparent !important; background-color: transparent !important;
+        height: auto !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important;
+    }
+
+    /* 強制規範沒有active的預設按鈕狀態 */
+    .unified-reaction-box .emoji-btn:not(.active) {
+        background-color: var(--emoji-btn-default-bg) !important; border: 1px solid var(--emoji-btn-default-border) !important; 
+        transition: all 0.2s ease; transform: scale(1) translateY(0) !important; box-shadow: none !important;
+    }
+
+    /* 根據主題切換陰影，淺色清晰、深色立體 */
+    .unified-reaction-box p, 
+    .unified-reaction-box span, 
+    .reaction-section { 
+        color: var(--text-main) !important; font-size: 1.05rem !important; text-shadow: var(--reaction-text-shadow) !important; box-shadow: none !important;
+    }
+    /* 重新定義表情按鈕的外觀，避免背景變純黑/純白 */
+    .unified-reaction-box .emoji-btn { background-color: transparent !important; border: 1px solid var(--border-line) !important; transition: all 0.2s ease; }
+    .unified-reaction-box .emoji-btn span { color: var(--text-sub) !important; text-shadow: none !important; }
+    .unified-reaction-box .emoji-btn:hover { background-color: var(--emoji-btn-bg-hover) !important; }
+
+    /* 按下(選中)時的狀態：不改背景色，只凸顯框線和數字！ */
+    .unified-reaction-box .emoji-btn.active {
+        background-color: transparent !important; border: 2px solid var(--emoji-btn-active-border) !important; transform: scale(1.05) translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important; 
+    }
+    .unified-reaction-box .emoji-btn.active span { color: var(--emoji-btn-active-text) !important; font-weight: bold !important; }
+
+    #reaction-title { color: var(--text-main) !important; font-weight: bold !important; margin-bottom: 20px !important; text-shadow: var(--reaction-text-shadow) !important; }
+
+    /* ==================== 
+       7. 動態歌詞
+       ==================== */
+    #way2u-lyrics, #hyper-lyrics, #bloom-lyrics, #hundrednights-lyrics{ -webkit-overflow-scrolling: touch; overflow-x: hidden !important; overscroll-behavior-x: none; width: 100%; box-sizing: border-box; }
+    #way2u-lyrics p, #hyper-lyrics p, #bloom-lyrics p, #hundrednights-lyrics p { white-space: normal; word-wrap: break-word; max-width: 100%; }
+    @media (max-width: 600px) {
+      #way2u-lyrics, #hyper-lyrics, #bloom-lyrics, #hundrednights-lyrics { max-height: 300px !important; }
+      .lyrics-container { padding: 18px 14px !important; margin-top: 14px !important; }
+    }
+
+    /* ==================== 
+      8. 歌曲專屬背景特效（避開歌詞框）
+   ==================== */
+    #sakura-layer, #star-layer { position: fixed; inset: 0; width: 100vw; height: 100vh; overflow: hidden; pointer-events: none; z-index: 90; display: none; }
+
+    /* 依目前歌曲切換顯示 */
+    body[data-active-song="tab-video3"] #sakura-layer { display: block; }
+    body[data-active-song="tab-video4"] #star-layer { display: block; }
+
+    /* 讓歌詞框位於特效上方 */
+    #way2u-container, #hyper-container, #bloom-container, #hundrednights-container { position: relative; z-index: 120; }
+
+    /* 影片與字幕層級 */
+    .video-responsive-wrapper { position: relative; z-index: 105; }
+    .subtitle-overlay { z-index: 200; }
+
+    /* 全螢幕看影片時隱藏特效 */
+    body.is-in-fullscreen #sakura-layer, body.is-in-fullscreen #star-layer, :fullscreen #sakura-layer, :fullscreen #star-layer, :-webkit-full-screen #sakura-layer,
+    :-webkit-full-screen #star-layer, .pseudo-fullscreen ~ #sakura-layer, .pseudo-fullscreen ~ #star-layer {
+      display: none !important;
+    }
+
+    /* --- 第一首：櫻花飄落 --- */
+    .sakura-petal {
+      position: absolute; border-radius: 100% 10% 100% 10%; background: linear-gradient(135deg, #ffd9e5 0%, #f7a6be 65%, #ee84a4 100%);
+      box-shadow: 0 2px 6px rgba(216, 108, 138, 0.22); will-change: transform, opacity; animation-name: sakuraWindDrift; animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+    }
+
+    [data-theme="dark"] .sakura-petal { background: linear-gradient(135deg, #fad0de 0%, #ea93ae 70%, #d47493 100%); box-shadow: 0 2px 8px rgba(249, 197, 213, 0.22); }
+
+    @keyframes sakuraWindDrift {
+      0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
+      12% { opacity: var(--petal-opacity, 0.88); }
+      50% { transform: translate3d(21vw, 52vh, 0) rotate(175deg); opacity: var(--petal-opacity, 0.88); }
+      88% { opacity: var(--petal-opacity, 0.88); }
+      100% { transform: translate3d(42vw, 108vh, 0) rotate(350deg); opacity: 0; }
+    }
+
+    /* --- 第二首：星星閃亮（位置固定，只閃爍） --- */
+    .twinkle-star {
+      position: absolute; line-height: 1; user-select: none; color: #eef3fc; text-shadow: 0 0 8px rgba(220, 228, 242, 0.65), 0 0 16px rgba(220, 228, 242, 0.32);
+      will-change: transform, opacity; animation-name: starGlow; animation-timing-function: ease-in-out; animation-iteration-count: infinite;
+    }
+
+    @keyframes starGlow {
+      0%, 100% { opacity: var(--star-min, 0.25); transform: scale(0.82); }
+      50% { opacity: var(--star-max, 0.9); transform: scale(1.15); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #sakura-layer, #star-layer { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="content-wrapper">
+
+    <header class="header">
+      <h1>動態歌詞應援合輯</h1>
+
+      <div class="controls-wrapper">
+        <a href="../../index.html" class="home-btn">🏠 首頁</a> 
+        <div class="theme-toggle-group">
+          <button class="theme-btn" id="btn-light" onclick="switchTheme('light')">☀️ 淺色</button>
+          <button class="theme-btn" id="btn-dark" onclick="switchTheme('dark')">🌙 深色</button>
+        </div>
+      </div>
+      <div class="controls-wrapper" style="margin-top: 4px; margin-bottom: 8px;">
+        <button class="theme-btn active" id="lyrics-toggle-btn" onclick="toggleLyricsMode()">🎵 動態歌詞：開</button>
+        <button class="theme-btn" id="instruction-btn" onclick="showInstruction()">✏️ 說明</button>
+      </div>
+
+      <div class="song-select-wrapper">
+        <select id="song-select" class="song-select" aria-label="選擇歌曲" onchange="handleSongSelectChange(this)">
+          <option value="tab-video1" data-effect="none">WAY 2 U</option>
+          <option value="tab-video2" data-effect="none">Hyper</option>
+          <option value="tab-video3" data-effect="sakura">Bloom</option>
+          <option value="tab-video4" data-effect="stars">Hundred Nights</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- WAY 2 U 分頁 -->
+    <div id="tab-video1" class="tab-content">
+      <div class="video-controls-bar" style="display: flex; flex-direction: column; gap: 16px; padding: 20px 10px 10px 10px;">
+        <!-- 🔝 上排：應援連結 -->
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <a href="https://www.threads.com/@meteoru_tw/post/DaKsrKck6LQ?xmt=AQG0uouihD-oD4BNTJWxm2k7FDz_YxFBrs3DbMcxJmN0mw" target="_blank" class="official-link-btn" style="background: #4ba3e3; color: #ffffff; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40;">⭐ 應援團隊連結</a>
+            <a href="https://artist.mnetplus.world/main/stg/flareu/contents/6a04339beb909b37b790a5a2" target="_blank" class="official-link-btn" style="background: #20b2aa; color: #ffffff; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40;">📢 官方應援連結</a>
+        </div>
+    
+        <!-- 🔙 下排：字幕調整與全螢幕 -->
+        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
+            <button onclick="changeSubtitleSize(-0.1, 'subtitle-video1')">A−</button>
+            <span style="color:white; line-height:1; font-size: 13px;">字幕</span>
+            <button onclick="changeSubtitleSize(0.1, 'subtitle-video1')">A＋</button>
+            <button onclick="triggerFullscreen('video-wrapper-1')">全螢幕</button>
+        </div>
+      </div>
+      <div id="video-wrapper-1" class="video-responsive-wrapper">
+          <div id="player-container-video1"></div> 
+          <div id="subtitle-video1" class="subtitle-overlay"></div>
+          <button id="exit-fs-btn-1" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-1')">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+      </div>
+      
+      <!-- WAY 2 U 應援歌詞 -->
+      <div class="lyrics-container lyrics-cute" id="way2u-container" style="background: linear-gradient(135deg, #edf7f6 0%, #d1e8e5 100%); color: #2c4a44; padding: 25px; margin-top: 20px; border-radius: 16px; border: 1px solid #b2dbd5; font-family: sans-serif; line-height: 1.8; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+        
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; gap: 12px;">
+          
+          <h3 style="text-align: center; margin: 0; color: #235249; font-size: 20px; font-weight: 700; letter-spacing: 0.5px;">🎵 WAY 2 U 應援歌詞完整版</h3>
+          
+          <div style="display: flex; gap: 8px;">
+            <button onclick="adjustFontSize('way2u-lyrics', -2)" style="padding: 6px 14px; border: 1px solid #99c2bc; background: #ffffff; color: #3b665e; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: all 0.2s;">A -</button>
+            <button onclick="adjustFontSize('way2u-lyrics', 2)" style="padding: 6px 14px; border: 1px solid #99c2bc; background: #ffffff; color: #3b665e; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: all 0.2s;">A +</button>
+          </div>
+        </div>
+  
+        <!-- 內層設定 id，並將粗體字 <b> 的顏色統一指定為高級藍綠色 (#008071) -->
+        <div id="way2u-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease; max-height: 400px; overflow-y: auto; padding: 10px 0; position: relative;">
+          <style>
+            #way2u-lyrics b { color: #008071; font-weight: 700; transition: color 0.3s; }
+            #way2u-lyrics p.current-lyric { background: rgba(0, 128, 113, 0.15); border-radius: 8px; transform: scale(1.05); font-weight: bold; transition: all 0.3s ease; color: #000000; }
+            #way2u-lyrics p { padding: 6px 10px; margin: 4px 0; transition: all 0.3s ease; opacity: 0.5; }
+            #way2u-lyrics p.current-lyric b { color: #008071; }
+          </style>
+          <p data-start="0.0" data-end="9.0">（準備）</p>
+  <p data-start="9.0" data-end="12.3"><b>崔里布、康嗚進</b></p>
+  <p data-start="12.3" data-end="15.6"><b>撲勒ㄛU、WAY 2 U</b></p>
+  <p data-start="15.6" data-end="17.9">It’s you <b>(you)</b></p>
+  <p data-start="17.9" data-end="19.4">진동이 울린 순간 (jin-dong-i ul-lin sun-gan)</p>
+  <p data-start="19.4" data-end="21.3">Change up <b>(up up)</b></p>
+  <p data-start="21.3" data-end="22.8">평소와 다른걸 (pyeong-so-wa da-reun-geol)</p>
+  <p data-start="22.8" data-end="24.7">So fast <b>(fast)</b></p>
+  <p data-start="24.7" data-end="26.2">나 기분 별로야 (na gi-bun byeol-ro-ya)</p>
+  <p data-start="26.2" data-end="30.0">네 한마디에 뛰어나갔어 (ne han-ma-di-e ttwieo-na-gat-eo)</p>
+  <p data-start="30.0" data-end="31.8">Red light <b>green light</b></p>
+  <p data-start="31.8" data-end="33.5">They pass <b>me by</b></p>
+  <p data-start="33.5" data-end="35.8">신호 따윈 안 보여 (sin-ho tta-win an bo-yeo)</p>
+  <p data-start="35.8" data-end="36.9"><b>I don’t mind</b></p>
+  <p data-start="36.9" data-end="39.7">오직 네 얼굴만 (o-jik ne eol-gul-man)</p>
+  <p data-start="39.7" data-end="43.4">내 머릿속에 가득 차 (nae meo-rit-sok-e ga-deuk cha) <b>呼！</b></p>
+  <p data-start="43.4" data-end="45.7">지금 너에게로 (ji-geum neo-e-ge-ro)</p>
+  <p data-start="45.7" data-end="47.8">나 간단 말이야 (na gan-dan mal-i-ya)</p>
+  <p data-start="47.8" data-end="48.6">So soon</p>
+  <p data-start="48.6" data-end="50.3"><b>I’m on my WAY 2 U</b></p>
+  <p data-start="50.3" data-end="52.6">터질 듯 심장이 (teo-jil deut sim-jang-i)</p>
+  <p data-start="52.6" data-end="54.7">막 뛴단 말이야 (mak ttwin-dan mal-i-ya)</p>
+  <p data-start="54.7" data-end="55.6">Oh you</p>
+  <p data-start="55.6" data-end="57.0">Make it like magic</p>
+  <p data-start="57.0" data-end="59.6"><b>Oh-eh-oh-eh-oh, oh-eh-oh-eh-oh</b></p>
+  <p data-start="59.6" data-end="60.5">Right now</p>
+  <p data-start="60.5" data-end="63.3"><b>Oh-eh-oh-eh-oh, oh-eh-oh-eh-oh</b></p>
+  <p data-start="63.3" data-end="66.5">친구는 이제 오늘까지만 (chin-gu-neun i-je o-neul-kka-ji-man)</p>
+  <p data-start="66.5" data-end="68.5">그만둘 거야 (geu-man-dul geo-ya)</p>
+  <p data-start="68.5" data-end="69.2">So soon</p>
+  <p data-start="69.2" data-end="71.1"><b>I’m on my WAY 2 U（歡呼）</b></p>
+  <p data-start="71.1" data-end="73.8">무슨 말을 할까 수백 번 (mu-seun mal-eul hal-kka su-baek beon)</p>
+  <p data-start="73.8" data-end="77.2">혼자 상상을 했어 (hon-ja sang-sang-eul haet-eo)</p>
+  <p data-start="77.2" data-end="80.9">크게 숨을 한 번 쉬니 어느새 (keu-ge sum-eul han beon swi-ni eo-neu-sae)</p>
+  <p data-start="80.9" data-end="83.6">도착 1분 전 너의 집 앞 (do-chak il-bun jeon neo-ui jip ap)</p>
+  <p data-start="83.6" data-end="85.0">Will you let me stay</p>
+  <p data-start="85.0" data-end="86.7">Red light <b>green light</b></p>
+  <p data-start="86.7" data-end="88.3">They pass <b>me by</b></p>
+  <p data-start="88.3" data-end="90.8">신호 따윈 안 보여 (sin-ho tta-win an bo-yeo)</p>
+  <p data-start="90.8" data-end="91.8"><b>I don’t mind</b></p>
+  <p data-start="91.8" data-end="94.6">오직 네 얼굴만 (o-jik ne eol-gul-man)</p>
+  <p data-start="94.6" data-end="98.2">내 머릿속에 가득 차 (nae meo-rit-sok-e ga-deuk cha) <b>呼！</b></p>
+  <p data-start="98.2" data-end="100.6">지금 너에게로 (ji-geum neo-e-ge-ro)</p>
+  <p data-start="100.6" data-end="102.4">나 간단 말이야 (na gan-dan mal-i-ya)</p>
+  <p data-start="102.4" data-end="103.5">So soon</p>
+  <p data-start="103.5" data-end="105.2"><b>I’m on my WAY 2 U</b></p>
+  <p data-start="105.2" data-end="107.6">터질 듯 심장이 (teo-jil deut sim-jang-i)</p>
+  <p data-start="107.6" data-end="109.6">막 뛴단 말이야 (mak ttwin-dan mal-i-ya)</p>
+  <p data-start="109.6" data-end="110.6">Oh you</p>
+  <p data-start="110.6" data-end="111.9">Make it like magic</p>
+  <p data-start="111.9" data-end="114.5"><b>Oh-eh-oh-eh-oh, oh-eh-oh-eh-oh</b></p>
+  <p data-start="114.5" data-end="115.4">Right now</p>
+  <p data-start="115.4" data-end="118.0"><b>Oh-eh-oh-eh-oh, oh-eh-oh-eh-oh</b></p>
+  <p data-start="118.0" data-end="121.4">친구는 이제 오늘까지만 (chin-gu-neun i-je o-neul-kka-ji-man)</p>
+  <p data-start="121.4" data-end="123.0">그만둘 거야 (geu-man-dul geo-ya)</p>
+  <p data-start="123.0" data-end="124.1">So soon</p>
+  <p data-start="124.1" data-end="126.2"><b>I’m on my WAY 2 U（歡呼）</b></p>
+  <p data-start="126.2" data-end="127.9">그냥 친구라 (geu-nyang chin-gu-ra)</p>
+  <p data-start="127.9" data-end="129.9">그저 편해서 (geu-jeo pyeon-hae-seo)</p>
+  <p data-start="129.9" data-end="131.3">아님 너도 (a-nim neo-do)</p>
+  <p data-start="131.3" data-end="133.2">나와 같은 맘 (na-wa gat-eun mam)</p>
+  <p data-start="133.2" data-end="135.0">결정했어 (gyeol-jeong-haet-eo)</p>
+  <p data-start="135.0" data-end="136.7">더 이상 고민은 (deo i-sang go-min-eun)</p>
+  <p data-start="136.7" data-end="139.4">Let it out</p>
+  <p data-start="139.4" data-end="141.8">지금 너에게로 (ji-geum neo-e-ge-ro)</p>
+  <p data-start="141.8" data-end="143.7"><b>나 간단 말이야（那看但馬里亞）</b></p>
+  <p data-start="143.7" data-end="144.8">So soon</p>
+  <p data-start="144.8" data-end="146.3">I’m on my WAY 2 U</p>
+  <p data-start="146.3" data-end="148.6">터질 듯 심장이 (teo-jil deut sim-jang-i)</p>
+  <p data-start="148.6" data-end="150.7"><b>막 뛴단 말이야（馬-低但-馬里亞）</b></p>
+  <p data-start="150.7" data-end="151.8">Oh you</p>
+  <p data-start="151.8" data-end="153.1">Make it like magic</p>
+  <p data-start="153.1" data-end="155.7"><b>Oh-eh-oh-eh-oh, oh-eh-oh-eh-oh</b></p>
+  <p data-start="155.7" data-end="156.5">Right now</p>
+  <p data-start="156.5" data-end="159.2"><b>Oh-eh-oh-eh-oh, oh-eh-oh-eh-oh</b></p>
+  <p data-start="159.2" data-end="162.5">친구는 이제 오늘까지만 (chin-gu-neun i-je o-neul-kka-ji-man)</p>
+  <p data-start="162.5" data-end="164.5">그만둘 거야 (geu-man-dul geo-ya)</p>
+  <p data-start="164.5" data-end="165.4">So soon</p>
+  <p data-start="165.4" data-end="186.9">I’m on my <b>WAY 2 U（歡呼）</b></p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Hyper 分頁 -->
+    <div id="tab-video2" class="tab-content">
+      <div class="video-controls-bar" style="display: flex; flex-direction: column; gap: 16px; padding: 20px 10px 10px 10px;">
+        <!-- 🔝 上排：應援連結 -->
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <a href="https://www.threads.com/@meteoru_tw/post/DaNOKatEzMB?xmt=AQG07UvglBRM3GWknsNgsfRJBFk2FJC9D0mYLm7LVwmO4w" target="_blank" class="official-link-btn" style="background: #757d8a; color: #ffffff; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40;">⭐ 應援團隊連結</a>
+            <a href="https://artist.mnetplus.world/main/stg/flareu/contents/6a0435dbeb909b37b790a5a6" target="_blank" class="official-link-btn" style="background: #ff4d4d; color: #ffffff; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40;">📢 官方應援連結</a>
+        </div>
+    
+        <!-- 🔙 下排：字幕調整與全螢幕 -->
+        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
+            <button onclick="changeSubtitleSize(-0.1, 'subtitle-video2')">A−</button>
+            <span style="color:white; line-height:1; font-size: 13px;">字幕</span>
+            <button onclick="changeSubtitleSize(0.1, 'subtitle-video2')">A＋</button>
+            <button onclick="triggerFullscreen('video-wrapper-2')">全螢幕</button>
+        </div>
+      </div>
+      <div id="video-wrapper-2" class="video-responsive-wrapper">
+          <div id="player-container-video2"></div>
+          <div id="subtitle-video2" class="subtitle-overlay"></div>
+          <button id="exit-fs-btn-2" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-2')">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+      </div>
+      
+      <!-- Hyper 應援歌詞 -->
+      <div class="lyrics-container lyrics-cool" id="hyper-container" style="background: linear-gradient(135deg, #1a1515 0%, #121010 100%); color: #e5dbdb; padding: 25px; margin-top: 20px; border-radius: 12px; border: 1px solid #4a282b; font-family: sans-serif; line-height: 1.8; box-shadow: 0 4px 25px rgba(229, 57, 53, 0.08);">
+        
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; gap: 12px;">
+          
+          <h3 style="text-align: center; margin: 0; color: #e53935; font-size: 20px; letter-spacing: 1.5px; text-shadow: 0 0 10px rgba(229,57,53,0.2); font-weight: 700;">⚡ Hyper 應援歌詞完整版</h3>
+          
+          <div style="display: flex; gap: 8px;">
+            <button onclick="adjustFontSize('hyper-lyrics', -2)" style="padding: 6px 14px; border: 1px solid #5c3538; background: #261c1d; color: #e5999d; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.2s;">A -</button>
+            <button onclick="adjustFontSize('hyper-lyrics', 2)" style="padding: 6px 14px; border: 1px solid #5c3538; background: #261c1d; color: #e5999d; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.2s;">A +</button>
+          </div>
+        </div>
+        <!-- 內層設定 id 為 hyper-lyrics，設定平滑滾動與 max-height -->
+        <div id="hyper-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease; max-height: 400px; overflow-y: auto; padding: 10px 0; position: relative;">
+          <style>
+            #hyper-lyrics b { color: #ff4d5a; font-weight: 700; transition: color 0.3s; }
+            #hyper-lyrics p.current-lyric { background: rgba(255, 255, 255, 0.15); border-radius: 8px; transform: scale(1.05); font-weight: bold; transition: all 0.3s ease; }
+            #hyper-lyrics p { padding: 6px 10px; margin: 4px 0; transition: all 0.3s ease; opacity: 0.5; }
+            #hyper-lyrics p.current-lyric b { color: #ff4d5a; }
+          </style>
+
+  <p data-start="0.0" data-end="7.2">（準備）</p>
+  <p data-start="7.2" data-end="9.8"><b>崔里布、康嗚進</b></p>
+  <p data-start="9.8" data-end="12.4"><b>撲勒ㄛU、Hyper</b></p>
+  <p data-start="12.4" data-end="13.4"><b>쉿 (噓)</b></p>
+  <p data-start="13.4" data-end="15.0">다 비켜 (da bi-kyeo)</p>
+  <p data-start="15.0" data-end="16.5"><b>비켜 (比kyo)</b></p>
+  <p data-start="16.5" data-end="18.0">그냥 다 즐겨 (geu-nyang da jeul-gyeo)</p>
+  <p data-start="18.0" data-end="19.0"><b>싹 (薩)</b></p>
+  <p data-start="19.0" data-end="20.3">다 지워 (da ji-wo)</p>
+  <p data-start="20.3" data-end="22.2"><b>지워 (基窩)</b></p>
+  <p data-start="22.2" data-end="23.8"><b>미쳐 버려 (米秋 波柳)</b></p>
+  <p data-start="23.8" data-end="25.7">복잡한 생각 하지 (bok-jap-han saeng-gak ha-ji)</p>
+  <p data-start="25.7" data-end="26.7"><b>말고 (馬兒狗)</b></p>
+  <p data-start="26.7" data-end="28.5">본능에 지금 너를 (bon-neung-e ji-geum neo-reul)</p>
+  <p data-start="28.5" data-end="29.3"><b>던져 (懂啾)</b></p>
+  <p data-start="29.3" data-end="33.9">Up 널 맡겨 (neol mat-gyeo) Fly up</p>
+  <p data-start="33.9" data-end="36.9">뭘 그렇게 겁을 내 (mwol geu-reoh-ge geop-eul nae)</p>
+  <p data-start="36.9" data-end="39.5">너는 충분해 (neo-neun chung-bun-hae)</p>
+  <p data-start="39.5" data-end="41.5">Don’t let the moments</p>
+  <p data-start="41.5" data-end="45.4">All pass you by</p>
+  <p data-start="45.4" data-end="48.2">Tension을 올려 숨을 골라 (eul ol-ryeo sum-eul gol-ra)</p>
+  <p data-start="48.2" data-end="51.0">네 안의 너를 깨워 (ne an-ui neo-reul kkae-wo)</p>
+  <p data-start="51.0" data-end="52.4">Now don’t look down</p>
+  <p data-start="52.4" data-end="53.9">우주로 (u-ju-ro) Run</p>
+  <p data-start="53.9" data-end="56.1">자 바닥을 차고 올라 (ja ba-dak-eul cha-go ol-ra)</p>
+  <p data-start="56.1" data-end="56.7">So we go</p>
+  <p data-start="56.7" data-end="57.9"><b>Hyper</b></p>
+  <p data-start="57.9" data-end="59.4">밟아 더 높이 올라가 (bam-ba deo nop-i ol-ra-ga)</p>
+  <p data-start="59.4" data-end="60.6"><b>Wiper</b></p>
+  <p data-start="60.6" data-end="62.2">나쁜 기억은 버리고 (na-ppun gi-eok-eun beo-ri-go)</p>
+  <p data-start="62.2" data-end="63.4"><b>Viper</b></p>
+  <p data-start="63.4" data-end="65.4">분위기를 찢어 (bun-wi-gi-reul jji-jeo) Sniper</p>
+  <p data-start="65.4" data-end="66.4"><b>We Hyper</b></p>
+  <p data-start="66.4" data-end="68.3"><b>Go higher</b></p>
+  <p data-start="68.3" data-end="71.1">Faster faster</p>
+  <p data-start="71.1" data-end="72.3">Igniting</p>
+  <p data-start="72.3" data-end="74.4">우린 더 (u-rin deo) Higher</p>
+  <p data-start="74.4" data-end="76.3">달려 이 순간을 태워 (dal-ryeo i sun-gan-eul tae-wo)</p>
+  <p data-start="76.3" data-end="77.5"><b>We Hyper</b></p>
+  <p data-start="77.5" data-end="81.6"><b>Go higher</b></p>
+  <p data-start="81.6" data-end="82.4"><b>Go</b></p>
+  <p data-start="82.4" data-end="85.7">불태워 (bul-tae-wo) Fire</p>
+  <p data-start="85.7" data-end="87.0">네 가면을 던지고 (ne ga-myeon-eul deon-ji-go)</p>
+  <p data-start="87.0" data-end="88.1"><b>Cut</b></p>
+  <p data-start="88.1" data-end="91.6">끊어 내 (kkeun-eo nae) Wire</p>
+  <p data-start="91.6" data-end="93.3">더 만들어 봐 너만의 (deo man-deul-eo bwa neo-man-ui)</p>
+  <p data-start="93.3" data-end="94.6"><b>Empire</b></p>
+  <p data-start="94.6" data-end="96.3">방해하는 말은 전부 (bang-hae-ha-neun mal-eun jeon-bu)</p>
+  <p data-start="96.3" data-end="97.5"><b>Expire</b></p>
+  <p data-start="97.5" data-end="100.5">Limit은 없어 (eun eop-seo)</p>
+  <p data-start="100.5" data-end="101.9">다시 (da-si) <b>Run it up</b></p>
+  <p data-start="101.9" data-end="103.1"><b>Burn it up</b></p>
+  <p data-start="103.1" data-end="105.8">뭘 그렇게 겁을 내 (mwol geu-reoh-ge geop-eul nae)</p>
+  <p data-start="105.8" data-end="108.4">너는 충분해 (neo-neun chung-bun-hae)</p>
+  <p data-start="108.4" data-end="110.6">Don’t let the moments</p>
+  <p data-start="110.6" data-end="114.5">All pass you by</p>
+  <p data-start="114.5" data-end="117.2">Tension을 올려 숨을 골라 (eul ol-ryeo sum-eul gol-ra)</p>
+  <p data-start="117.2" data-end="119.9">네 안의 너를 깨워 (ne an-ui neo-reul kkae-wo)</p>
+  <p data-start="119.9" data-end="121.3">Now don’t look down</p>
+  <p data-start="121.3" data-end="122.9">우주로 (u-ju-ro) Run</p>
+  <p data-start="122.9" data-end="124.8">자 바닥을 차고 올라 (ja ba-dak-eul cha-go ol-ra)</p>
+  <p data-start="124.8" data-end="125.6">So we go</p>
+  <p data-start="125.6" data-end="126.8"><b>Hyper</b></p>
+  <p data-start="126.8" data-end="128.5">밟아 더 높이 올라가 (bam-ba deo nop-i ol-ra-ga)</p>
+  <p data-start="128.5" data-end="129.7"><b>Wiper</b></p>
+  <p data-start="129.7" data-end="131.1">나쁜 기억은 버리고 (na-ppun gi-eok-eun beo-ri-go)</p>
+  <p data-start="131.1" data-end="132.4"><b>Viper</b></p>
+  <p data-start="132.4" data-end="134.3">분위기를 찢어 (bun-wi-gi-reul jji-jeo) Sniper</p>
+  <p data-start="134.3" data-end="135.5"><b>We Hyper</b></p>
+  <p data-start="135.5" data-end="137.2"><b>Go higher</b></p>
+  <p data-start="137.2" data-end="140.0">Faster faster</p>
+  <p data-start="140.0" data-end="141.4">Igniting</p>
+  <p data-start="141.4" data-end="143.4">우린 더 (u-rin deo) Higher</p>
+  <p data-start="143.4" data-end="145.4">달려 이 순간을 태워 (dal-ryeo i sun-gan-eul tae-wo)</p>
+  <p data-start="145.4" data-end="146.5"><b>We Hyper</b></p>
+  <p data-start="146.5" data-end="148.2"><b>Go higher</b></p>
+  <p data-start="148.2" data-end="149.5">We Hyper</p>
+  <p data-start="149.5" data-end="150.6">Go higher</p>
+  <p data-start="150.6" data-end="153.4"><b>崔里布、康嗚進</b></p>
+  <p data-start="153.4" data-end="155.0">We Hyper</p>
+  <p data-start="155.0" data-end="156.1">Go higher</p>
+  <p data-start="156.1" data-end="186.9"><b>撲勒ㄛU、Hyper（歡呼）</b></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bloom 分頁 -->
+    <div id="tab-video3" class="tab-content">
+      <div class="video-controls-bar" style="display: flex; flex-direction: column; gap: 16px; padding: 20px 10px 10px 10px;">
+        <!-- 🔝 上排：應援連結 -->
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <a href="https://artist.mnetplus.world/main/stg/flareu/contents/6ace2aa8d98a4f20d090aa90" target="_blank" class="official-link-btn" style="background: #e58a9f; color: #ffffff; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #ffffff40;">📢 官方應援連結</a>
+        </div>
+    
+        <!-- 🔙 下排：字幕調整與全螢幕 -->
+        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
+            <button onclick="changeSubtitleSize(-0.1, 'subtitle-video1')">A−</button>
+            <span style="color:white; line-height:1; font-size: 13px;">字幕</span>
+            <button onclick="changeSubtitleSize(0.1, 'subtitle-video3')">A＋</button>
+            <button onclick="triggerFullscreen('video-wrapper-3')">全螢幕</button>
+        </div>
+      </div>
+      <div id="video-wrapper-3" class="video-responsive-wrapper">
+          <div id="player-container-video3"></div> 
+          <div id="subtitle-video3" class="subtitle-overlay"></div>
+          <button id="exit-fs-btn-3" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-3')">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+      </div>
+      
+      <!-- Bloom 應援歌詞 -->
+      <div class="lyrics-container lyrics-cute" id="bloom-container" style="background: linear-gradient(135deg, #fffafc 0%, #fff5f7 100%); color: #4a353b; padding: 25px; margin-top: 20px; border-radius: 16px; border: 1px solid #f2dce2; font-family: sans-serif; line-height: 1.8; box-shadow: 0 4px 20px rgba(216,108,138,0.08);">
+  
+  <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; gap: 12px;">
+    
+    <h3 style="text-align: center; margin: 0; color: #d86c8a; font-size: 20px; font-weight: 700; letter-spacing: 0.5px;">🌸 Bloom 應援歌詞完整版</h3>
+    
+    <div style="display: flex; gap: 8px;">
+      <button onclick="adjustFontSize('bloom-lyrics', -2)" style="padding: 6px 14px; border: 1px solid #e8b4c2; background: #d86c8a; color: #ffffff; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 6px rgba(216,108,138,0.25); transition: all 0.2s;">A -</button>
+      <button onclick="adjustFontSize('bloom-lyrics', 2)" style="padding: 6px 14px; border: 1px solid #e8b4c2; background: #d86c8a; color: #ffffff; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 6px rgba(216,108,138,0.25); transition: all 0.2s;">A +</button>
+    </div>
+  </div>
+
+  <!-- 內層設定 id，粗體字 b -->
+  <div id="bloom-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease; max-height: 400px; overflow-y: auto; padding: 10px 0; position: relative;">
+    <style>
+      #bloom-lyrics b { color: #d86c8a; font-weight: 700; transition: color 0.3s; }
+      #bloom-lyrics p.current-lyric { background: rgba(216, 108, 138, 0.14); border-radius: 8px; transform: scale(1.05); font-weight: bold; transition: all 0.3s ease; color: #2b1d22; }
+      #bloom-lyrics p { padding: 6px 10px; margin: 4px 0; transition: all 0.3s ease; opacity: 0.55; }
+      #bloom-lyrics p.current-lyric b { color: #c45474; }
+    </style>
+          <p data-start="0.0" data-end="7.0">（準備）</p>
+<p data-start="7.0" data-end="9.2">Colorblind <b>(blind)</b></p>
+<p data-start="9.2" data-end="12.3">And lonely without your light <b>(light)</b></p>
+<p data-start="12.3" data-end="15.9">네가 내게로 오던 날 (Ne-ga nae-ge-ro o-deon nal)</p>
+<p data-start="15.9" data-end="20.0">난 기억해 (Nan gi-eo-kae) <b>(歡呼)</b></p>
+<p data-start="20.0" data-end="22.2">One look in your eyes <b>(eyes)</b></p>
+<p data-start="22.2" data-end="25.8">Can take me to <b>paradise</b></p>
+<p data-start="25.8" data-end="29.4">꽃들이 활짝 피어나 (Kkot-deu-ri hwal-jjak pi-eo-na)</p>
+<p data-start="29.4" data-end="32.5">내 안에 사랑이 (Nae a-ne sa-rang-i)</p>
+<p data-start="32.5" data-end="33.5"><b>Once again</b></p>
+<p data-start="33.5" data-end="36.65">또 내게 너의 계절이 <b>찾아와 (恰加哇)</b><br>(Tto nae-ge neo-ui gye-jeo-ri cha-ja-wa)</p>
+<p data-start="36.65" data-end="42.3">긴 겨울 끝에 너라는 <b>봄이 와 (波米 哇)</b><br>(Gin gyeo-ul kkeu-te neo-ra-neun bo-mi wa)</p>
+<p data-start="42.3" data-end="44.4">너 때문에 웃게 되지 (Neo ttae-mu-ne ut-ge doe-ji)</p>
+<p data-start="44.4" data-end="46.4"><b>Baby you’re one of a kind</b></p>
+<p data-start="46.4" data-end="49.6">또다시 나의 심장이 <b>두근대 (度根爹)</b><br>(Tto-da-si na-ui sim-jang-i du-geun-dae)</p>
+<p data-start="49.6" data-end="55.2">온 세상이 너의 향기로만<br>(On se-sang-i neo-ui hyang-gi-ro-man)</p>
+<p data-start="55.2" data-end="57.3">물들어 (Mul-deu-reo)</p>
+<p data-start="57.3" data-end="59.1"><b>Light of my, light of my life</b></p>
+<p data-start="59.1" data-end="62.3"><b>崔里布、康嗚進、撲-勒-ㄛ-U</b></p>
+<p data-start="62.3" data-end="64.1">Run out of time</p>
+<p data-start="64.1" data-end="67.9">Don’t wanna run out of time</p>
+<p data-start="67.9" data-end="70.9">우리의 기억이 (U-ri-ui gi-eo-gi)</p>
+<p data-start="70.9" data-end="75.2">영원토록 남아 있기를 (Yeong-won-to-rok na-ma it-gi-reul)</p>
+<p data-start="75.2" data-end="78.5">꽃잎처럼 흩날리는 <b>Motion</b><br>(Kkon-nip-cheo-reom heut-nal-li-neun)</p>
+<p data-start="78.5" data-end="81.55">너와 걷던 추억의 <b>Ocean</b><br>(Neo-wa geot-deon chu-eo-gui)</p>
+<p data-start="81.55" data-end="84.6">Forever</p>
+<p data-start="84.6" data-end="87.7">Forever you and I</p>
+<p data-start="87.7" data-end="88.7"><b>Once again</b></p>
+<p data-start="88.7" data-end="91.85">또 내게 너의 계절이 <b>찾아와 (恰加哇)</b><br>(Tto nae-ge neo-ui gye-jeo-ri cha-ja-wa)</p>
+<p data-start="91.85" data-end="97.3">긴 겨울 끝에 너라는 <b>봄이 와 (波米 哇)</b><br>(Gin gyeo-ul kkeu-te neo-ra-neun bo-mi wa)</p>
+<p data-start="97.3" data-end="99.6">너 때문에 웃게 되지 (Neo ttae-mu-ne ut-ge doe-ji)</p>
+<p data-start="99.6" data-end="101.65"><b>Baby you’re one of a kind</b></p>
+<p data-start="101.65" data-end="104.7">또다시 나의 심장이 <b>두근대 (度根爹)</b><br>(Tto-da-si na-ui sim-jang-i du-geun-dae)</p>
+<p data-start="104.7" data-end="110.4">온 세상이 너의 향기로만 (On se-sang-i neo-ui hyang-gi-ro-man)</p>
+<p data-start="110.4" data-end="112.4">물들어 (Mul-deu-reo)</p>
+<p data-start="112.4" data-end="114.5"><b>Light of my, light of my life</b></p>
+<p data-start="114.5" data-end="118.1"><b>(歡呼)</b><br>기다렸어 너 하나만 (Gi-da-ryeo-sseo neo ha-na-man)</p>
+<p data-start="118.1" data-end="122.15">오직 너만 줄 수 있는 이 느낌 (O-jik neo-man jul su in-neun i neu-kkim)</p>
+<p data-start="122.15" data-end="123.8">설렘 (Seol-lem)</p>
+<p data-start="123.8" data-end="126.6">I’ll keep you in my heart</p>
+<p data-start="126.6" data-end="127.6">Once again</p>
+<p data-start="127.6" data-end="130.75">또 내게 너의 계절이 찾아와<br>(Tto nae-ge neo-ui gye-jeo-ri cha-ja-wa)</p>
+<p data-start="130.75" data-end="136.3">긴 겨울 끝에 너라는 봄이 와<br>(Gin gyeo-ul kkeu-te neo-ra-neun bo-mi wa)</p>
+<p data-start="136.3" data-end="138.6"><b>너 때문에 웃게 되지 (諾 母內 屋給 堆機)</b></p>
+<p data-start="138.6" data-end="140.5"><b>Baby you’re one of a kind</b></p>
+<p data-start="140.5" data-end="143.55">또다시 나의 심장이 <b>두근대 (度根爹)</b><br>(Tto-da-si na-ui sim-jang-i du-geun-dae)</p>
+<p data-start="143.55" data-end="149.25">온 세상이 너의 향기로만 (On se-sang-i neo-ui hyang-gi-ro-man)</p>
+<p data-start="149.25" data-end="151.4">물들어 (Mul-deu-reo)</p>
+<p data-start="151.4" data-end="153.15"><b>Light of my, light of my life</b></p>
+<p data-start="153.15" data-end="156.6"><b>U喔欸 給啾倫 撲-勒-ㄛ-U</b></p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Hundred Nights 分頁 -->
+    <div id="tab-video4" class="tab-content">
+      <div class="video-controls-bar" style="display: flex; flex-direction: column; gap: 16px; padding: 20px 10px 10px 10px;">
+        <!-- 🔝 上排：應援連結 -->
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <a href="https://artist.mnetplus.world/main/stg/flareu/contents/6ad5bc56e2a4c617cc1b2006" target="_blank" class="official-link-btn" style="background: linear-gradient(135deg, #475063 0%, #3b4252 100%); color: #f4f5f8; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #5c667d;">📢 官方應援連結</a>
+        </div>
+    
+        <!-- 🔙 下排：字幕調整與全螢幕 -->
+        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
+            <button onclick="changeSubtitleSize(-0.1, 'subtitle-video4')">A−</button>
+            <span style="color:white; line-height:1; font-size: 13px;">字幕</span>
+            <button onclick="changeSubtitleSize(0.1, 'subtitle-video4')">A＋</button>
+            <button onclick="triggerFullscreen('video-wrapper-4')">全螢幕</button>
+        </div>
+      </div>
+      <div id="video-wrapper-4" class="video-responsive-wrapper">
+          <div id="player-container-video4"></div>
+          <div id="subtitle-video4" class="subtitle-overlay"></div>
+          <button id="exit-fs-btn-4" class="exit-fs-btn-global" onclick="exitFullscreenMode('video-wrapper-4')">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+      </div>
+      
+      <!-- Hundred Nights 應援歌詞 -->
+      <div class="lyrics-container lyrics-cool" id="hundrednights-container" style="background: linear-gradient(135deg, #475063 0%, #3b4252 100%); color: #f4f5f8; padding: 25px; margin-top: 20px; border-radius: 12px; border: 1px solid #5c667d; font-family: sans-serif; line-height: 1.8; box-shadow: 0 4px 20px rgba(59,66,82,0.18);">
+  
+  <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; gap: 12px;">
+    <h3 style="text-align: center; margin: 0; color: #f4f5f8; font-size: 20px; letter-spacing: 1.5px; font-weight: 700;">🌙 Hundred Nights 應援歌詞完整版</h3>
+    <div style="display: flex; gap: 8px;">
+      <button onclick="adjustFontSize('hundrednights-lyrics', -2)" style="padding: 6px 14px; border: 1px solid #d0d5dd; background: #f4f5f8; color: #2c313a; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.12); transition: all 0.2s;">A -</button>
+      <button onclick="adjustFontSize('hundrednights-lyrics', 2)" style="padding: 6px 14px; border: 1px solid #d0d5dd; background: #f4f5f8; color: #2c313a; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.12); transition: all 0.2s;">A +</button>
+    </div>
+  </div>
+
+  <!-- 內層設定 id 為 hundrednights-lyrics，設定平滑滾動與 max-height -->
+  <div id="hundrednights-lyrics" style="text-align: center; font-size: 15px; transition: font-size 0.2s ease; max-height: 400px; overflow-y: auto; padding: 10px 0; position: relative;">
+    <style>
+      #hundrednights-lyrics p b { color: #f3d58d !important; font-weight: 700; letter-spacing: 0.3px; text-shadow: 0 1px 3px rgba(20, 24, 34, 0.45); transition: color 0.3s, text-shadow 0.3s; }
+      #hundrednights-lyrics p.current-lyric { background: rgba(244, 245, 248, 0.14); border-radius: 8px; transform: scale(1.05); font-weight: bold; transition: all 0.3s ease; color: #eef2f9; }
+      #hundrednights-lyrics p { padding: 6px 10px; margin: 4px 0; transition: all 0.3s ease; opacity: 0.72; color: #9aa6bc; }
+      #hundrednights-lyrics p.current-lyric b { color: #f3d692 !important; text-shadow: 0 1px 2px rgba(20, 24, 34, 0.45); }
+    </style>
+    
+  <p data-start="0.0" data-end="11.4">（準備）</p>
+  <p data-start="11.4" data-end="15.2"><b>撲-勒-ㄛ-U 杯-ㄍㄧ-棒</b></p>
+  <p data-start="15.2" data-end="17.0">12시를 넘겨도 (Yeol-du-si-reul neom-gyeo-do)</p>
+<p data-start="17.0" data-end="18.7">Time goes so slow</p>
+<p data-start="18.7" data-end="20.6">거리 불빛 하나둘씩 (Geo-ri bul-bit ha-na-dul-ssik)</p>
+<p data-start="20.6" data-end="23.7">다 꺼져 가도 내 마음 Bright<br>(Da kkeo-jyeo ga-do nae ma-eum)</p>
+<p data-start="23.7" data-end="25.2">창문 틈을 열어 (Chang-mun teu-meul yeo-reo)</p>
+<p data-start="25.2" data-end="26.4">새벽 공기 속 (Sae-byeok gong-gi sok)</p>
+<p data-start="26.4" data-end="28.2">네 이름을 불러 (Ne i-reu-meul bul-leo)</p>
+<p data-start="28.2" data-end="29.8">I need you here</p>
+<p data-start="29.8" data-end="31.0">Tell me you’re near</p>
+<p data-start="31.0" data-end="32.1">전부 잠든 밤 (Jeon-bu jam-deun bam)</p>
+<p data-start="32.1" data-end="33.45">나만 홀로 깨어나 (Na-man hol-lo kkae-eo-na)</p>
+<p data-start="33.45" data-end="34.6">오늘 이 밤 (O-neul i bam)</p>
+<p data-start="34.6" data-end="36.7">내일이 오기 전에 (Nae-i-ri o-gi jeo-ne)</p>
+<p data-start="36.7" data-end="38.7">널 백 번쯤 만나 봤어 (Neol baek beon-jjeum man-na bwa-sseo)</p>
+<p data-start="38.7" data-end="41.1">And I can’t <b>wait too long</b></p>
+<p data-start="41.1" data-end="42.5"><b>Hundred nights</b></p>
+<p data-start="42.5" data-end="44.05">오늘 하루 마치 (O-neul ha-ru ma-chi)</p>
+<p data-start="44.05" data-end="45.7"><b>백일밤 같아 (杯ㄍㄧ棒 嘎塔)</b></p>
+<p data-start="45.7" data-end="48.0">너를 만나기 전에 (Neo-reul man-na-gi jeo-ne)</p>
+<p data-start="48.0" data-end="49.8">계속 설레었던 Night<br>(Gye-sok seol-le-eot-deon)</p>
+<p data-start="49.8" data-end="51.2"><b>One more chance</b></p>
+<p data-start="51.2" data-end="52.3">널 향해 (Neol hyang-hae)</p>
+<p data-start="52.3" data-end="54.4">달려가고만 싶어 (Dal-lyeo-ga-go-man si-peo)</p>
+<p data-start="54.4" data-end="55.9">I’m counting it down</p>
+<p data-start="55.9" data-end="58.8">No I can’t wait no more</p>
+<p data-start="58.8" data-end="61.6">One more night <b>(打拉拉拉拉搭打拉)</b></p>
+<p data-start="61.6" data-end="63.0">One more night</p>
+<p data-start="63.0" data-end="66.0">One more night <b>(打拉拉拉拉搭打拉)</b></p>
+<p data-start="66.0" data-end="68.65">One more night</p>
+<p data-start="68.65" data-end="70.5">입은 옷까지도 (I-beun ot-kka-ji-do)</p>
+<p data-start="70.5" data-end="73.0">다시 바꿔 입고서 (Da-si ba-kkwo ip-kko-seo)</p>
+<p data-start="73.0" data-end="74.15">몇 시간 뒤면 (Myeot si-gan dwi-myeon)</p>
+<p data-start="74.15" data-end="75.3">널 볼 텐데 <b>(Wait wait)</b><br>(Neol bol ten-de)</p>
+<p data-start="75.3" data-end="77.0">지루하게 느껴 <b>(Why why)</b><br>(Ji-ru-ha-ge neu-kkyeo)</p>
+<p data-start="77.0" data-end="78.9">Now I got this fire</p>
+<p data-start="78.9" data-end="81.0">Burning up inside</p>
+<p data-start="81.0" data-end="83.2">밤하늘 별이 내렸어도<br>(Bam-ha-neul byeo-ri nae-ryeo-sseo-do)</p>
+<p data-start="83.2" data-end="85.6">내 마음은 선명해져<br>(Nae ma-eu-meun seon-myeong-hae-jyeo)</p>
+<p data-start="85.6" data-end="87.0">오늘 이 밤 (O-neul i bam)</p>
+<p data-start="87.0" data-end="89.1">내일이 오기 전에 (Nae-i-ri o-gi jeo-ne)</p>
+<p data-start="89.1" data-end="91.15">널 백 번쯤 만나 봤어<br>(Neol baek beon-jjeum man-na bwa-sseo)</p>
+<p data-start="91.15" data-end="93.5">And I can’t <b>wait too long</b></p>
+<p data-start="93.5" data-end="94.9"><b>Hundred nights</b></p>
+<p data-start="94.9" data-end="96.45">오늘 하루 마치 (O-neul ha-ru ma-chi)</p>
+<p data-start="96.45" data-end="98.1"><b>백일밤 같아 (杯ㄍㄧ棒 嘎塔)</b></p>
+<p data-start="98.1" data-end="100.3">너를 만나기 전에<br>(Neo-reul man-na-gi jeo-ne)</p>
+<p data-start="100.3" data-end="102.2">계속 설레었던 Night<br>(Gye-sok seol-le-eot-deon)</p>
+<p data-start="102.2" data-end="103.6"><b>One more chance</b></p>
+<p data-start="103.6" data-end="104.7">널 향해 (Neol hyang-hae)</p>
+<p data-start="104.7" data-end="106.6">달려가고만 싶어 (Dal-lyeo-ga-go-man si-peo)</p>
+<p data-start="106.6" data-end="108.3">I’m counting it down</p>
+<p data-start="108.3" data-end="112.5">No I can’t wait no more</p>
+<p data-start="112.5" data-end="116.4"><b>(歡呼)</b><br>세상 누구보다 더 빨리<br>(Se-sang nu-gu-bo-da deo ppal-li)</p>
+<p data-start="116.4" data-end="118.4">널 향해 가는데 (Neol hyang-hae ga-neun-de)</p>
+<p data-start="118.4" data-end="120.45">All I really need is your love</p>
+<p data-start="120.45" data-end="124.5">시계는 반대로만 (Si-gye-neun ban-dae-ro-man)</p>
+<p data-start="124.5" data-end="128.3">더 천천히 가는 것 같아<br>(Deo cheon-cheon-hi ga-neun geot ga-ta)</p>
+<p data-start="128.3" data-end="129.6">Just one more night</p>
+<p data-start="129.6" data-end="131.35">오늘 하루 마치 (O-neul ha-ru ma-chi)</p>
+<p data-start="131.35" data-end="133.0"><b>백일밤 같아 (杯ㄍㄧ棒 嘎塔)</b></p>
+<p data-start="133.0" data-end="135.1">너를 만나기 전에 (Neo-reul man-na-gi jeo-ne)</p>
+<p data-start="135.1" data-end="137.1">계속 설레었던 Night<br>(Gye-sok seol-le-eot-deon)</p>
+<p data-start="137.1" data-end="138.5"><b>One more chance</b></p>
+<p data-start="138.5" data-end="139.6">널 향해 (Neol hyang-hae)</p>
+<p data-start="139.6" data-end="141.6">달려가고만 싶어 (Dal-lyeo-ga-go-man si-peo)</p>
+<p data-start="141.6" data-end="143.2">I’m counting it down</p>
+<p data-start="143.2" data-end="146.0">No I can’t wait no more</p>
+<p data-start="146.0" data-end="148.9">One more night <b>(打拉拉拉拉搭打拉)</b></p>
+<p data-start="148.9" data-end="150.2">One more night</p>
+<p data-start="150.2" data-end="153.3">One more night <b>(打拉拉拉拉搭打拉)</b></p>
+<p data-start="153.3" data-end="154.65">One more night</p>
+<p data-start="154.65" data-end="156.5">One more night</p>
+</div>
+</div>
+</div>
+
+    <div class="unified-reaction-box">
+      <div class="reaction-section">
+          <p id="reaction-title">覺得這次的作品如何？點個表情吧！</p>
+          <div class="reaction-wall"></div>
+      </div>
+    </div>
+  </div>
+
+<div id="sakura-layer" aria-hidden="true"></div>
+<div id="star-layer" aria-hidden="true"></div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script type="module" src="../../js/firebase-init.js"></script>
+  <script src="../../js/reaction-core.js"></script>
+
+  <script>
+    
+    // 影片資料 - 🌟 ID 必須跟上面的 HTML 一模一樣，影片才生得出來！
+    const videoData = {
+        'tab-video1': { id: 'DVNPHdMuk4k', srt: './20260602_WAY_2_U.srt', player: null, subEl: 'subtitle-video1', container: 'player-container-video1' },
+        'tab-video2': { id: '19P4NehU2LU', srt: './20260602_Hyper.srt', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null },
+        'tab-video3': { id: 'geG9TTJOd3c', srt: './20261020_Bloom.srt', player: null, subEl: 'subtitle-video3', container: 'player-container-video3' },
+        'tab-video4': { id: 'bqPrtb_hbSA', srt: './20261020_Hundred_Nights.srt', player: null, subEl: 'subtitle-video4', container: 'player-container-video4', interval: null }
+    };
+
+    function updateButtonUI(theme) {
+      document.getElementById('btn-light').classList.remove('active');
+      document.getElementById('btn-dark').classList.remove('active');
+      document.getElementById('btn-' + theme).classList.add('active');
+    }
+
+    function switchTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('pageTheme', theme);
+      updateButtonUI(theme);
+    }
+
+    function openTab(tabId, btnElement) {
+      Object.keys(videoData).forEach(key => {
+        if (videoData[key].player && typeof videoData[key].player.pauseVideo === 'function') {
+          videoData[key].player.pauseVideo();
+        }
+      });
+
+      ['way2u-lyrics', 'hyper-lyrics', 'bloom-lyrics', 'hundrednights-lyrics'].forEach(id => {
+        if (typeof stopLyricsAnimation === 'function') {
+          stopLyricsAnimation(id);
+        }
+      });
+
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.toggle('active', content.id === tabId);
+      });
+
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      if (btnElement && btnElement.classList) {
+        btnElement.classList.add('active');
+      }
+
+      const selectEl = document.getElementById('song-select');
+      if (selectEl && selectEl.value !== tabId) {
+        selectEl.value = tabId;
+      }
+
+      document.body.setAttribute('data-active-song', tabId);
+
+      if (typeof initVideo === 'function') {
+        initVideo(tabId);
+      }
+    }
+
+    function handleSongSelectChange(selectEl) {
+      if (!selectEl) return;
+      const targetId = selectEl.value;
+      const selectedOpt = selectEl.options[selectEl.selectedIndex];
+
+      if (typeof window.openTab === 'function') {
+        window.openTab(targetId, selectedOpt);
+      } else {
+        document.querySelectorAll('.tab-content').forEach(tab => {
+          tab.classList.toggle('active', tab.id === targetId);
+        });
+        document.body.setAttribute('data-active-song', targetId);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const selectEl = document.getElementById('song-select');
+      if (!selectEl) return;
+
+      const activeTab = document.querySelector('.tab-content.active');
+      const initialId = (activeTab && activeTab.id) ? activeTab.id : selectEl.options[0].value;
+      selectEl.value = initialId;
+      document.body.setAttribute('data-active-song', initialId);
+
+      if (!activeTab) {
+        handleSongSelectChange(selectEl);
+      }
+    });
+
+    // 安全載入 YouTube 播放器
+    window.onYouTubeIframeAPIReady = function() {
+        // API 準備好時，不做任何事，等到讀者點擊頁籤才觸發 initVideo
+    };
+
+    function initVideo(tabId) {
+      const vData = videoData[tabId];
+      if (!vData || vData.player) return;
+
+      if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+        setTimeout(() => initVideo(tabId), 100);
+        return;
+      }
+
+      vData.player = new YT.Player(vData.container, {
+        videoId: vData.id,
+        width: '100%',
+        height: '100%',
+        host: 'https://www.youtube-nocookie.com',
+        playerVars: { 'autoplay': 0, 'rel': 0, 'playsinline': 1 },
+        events: {
+          onReady: function (event) {
+            loadSRT(vData.srt, vData.subEl, event.target);
+
+            if (tabId === 'tab-video1') {
+              syncLyricsWithVideo(event.target, 'way2u-lyrics');
+              bindLyricsInteraction(event.target, 'way2u-lyrics');
+            } else if (tabId === 'tab-video2') {
+              syncLyricsWithVideo(event.target, 'hyper-lyrics');
+              bindLyricsInteraction(event.target, 'hyper-lyrics');
+            } else if (tabId === 'tab-video3') {
+              syncLyricsWithVideo(event.target, 'bloom-lyrics');
+              bindLyricsInteraction(event.target, 'bloom-lyrics');
+            } else if (tabId === 'tab-video4') {
+              syncLyricsWithVideo(event.target, 'hundrednights-lyrics');
+              bindLyricsInteraction(event.target, 'hundrednights-lyrics');
+            }
+          }
+        }
+      });
+    }
+
+    function loadSRT(filename, subtitleId, player) {
+        fetch(filename)
+            .then(response => response.text())
+            .then(text => {
+                const subs = parseSRT(text);
+                setInterval(() => {
+                  if (!player) return;
+                  const subtitleElement = document.getElementById(subtitleId);
+                  const time = player.getCurrentTime();
+                  const currentSub = subs.find(s => time >= s.start && time <= s.end);
+                  if (currentSub) {
+                    subtitleElement.innerHTML = `<span>${currentSub.text}</span>`;
+                  } else if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+                  subtitleElement.innerHTML = '';
+                }
+              }, 200);
+            }).catch(e => console.log("字幕載入失敗", e));
+    }
+
+    function parseSRT(srt) {
+        const regex = /(\d+)\n(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})\n([\s\S]*?)(?=\n{2}|\n*$)/g;
+        let match, subs = [];
+        while ((match = regex.exec(srt)) !== null) {
+            subs.push({
+                start: timeToSeconds(match[2]), end: timeToSeconds(match[3]), text: match[4].replace(/\n/g, '<br>')
+            });
+        }
+        return subs;
+    }
+
+    function timeToSeconds(timeStr) {
+        const parts = timeStr.split(/[:,]/);
+        return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]) + parseInt(parts[3]) / 1000;
+    }
+
+    function changeSubtitleSize(delta, subtitleId) {
+      // 取得目前的變數數值（如果沒有則預設 22）
+      const root = document.documentElement;
+      const currentSize = parseFloat(getComputedStyle(root).getPropertyValue('--subtitle-size')) || 22;
+    
+      // 計算新大小 (delta 0.1 * 20 = 2px)
+      let newSize = currentSize + (delta * 20);
+    
+      // 設定範圍限制 (最小 12px，最大 80px)
+      if (newSize < 12) newSize = 12;
+      if (newSize > 80) newSize = 80;
+
+      // 更新 CSS 變數，這會同時影響到全螢幕與非全螢幕的所有字幕
+      root.style.setProperty('--subtitle-size', newSize + 'px');
+  }
+
+    // =====================================
+    // 🌟 全螢幕與偽全螢幕邏輯 (完全移植)
+    // =====================================
+    function triggerFullscreen(wrapperId) {
+        const wrapper = document.getElementById(wrapperId);
+        const exitBtn = wrapper.querySelector('.exit-fs-btn-global');
+
+        const isFS = document.fullscreenElement || document.webkitFullscreenElement;
+        const isPseudo = wrapper.classList.contains("pseudo-fullscreen");
+
+        if (isFS || isPseudo) {
+            exitFullscreenMode(wrapperId);
+        } else {
+            const isIPhone = /iPhone|iPod/.test(navigator.userAgent);
+            const req = wrapper.requestFullscreen || wrapper.webkitRequestFullscreen;
+
+            if (req && !isIPhone) {
+                req.call(wrapper).then(() => {
+                    setTimeout(() => showExitBtn(exitBtn), 100);
+                }).catch(() => {
+                    enterPseudoFullscreen(wrapper, exitBtn);
+                });
+            } else {
+                enterPseudoFullscreen(wrapper, exitBtn);
+            }
+        }
+    }
+
+    function enterPseudoFullscreen(wrapper, exitBtn) {
+        wrapper.classList.add("pseudo-fullscreen");
+        document.body.classList.add("is-in-fullscreen");
+        window.scrollTo(0, 0); // 嘗試隱藏網址列
+        showExitBtn(exitBtn);
+    }
+
+    function exitFullscreenMode(wrapperId) {
+        const wrapper = document.getElementById(wrapperId);
+        const exitBtn = wrapper.querySelector('.exit-fs-btn-global');
+
+        const isFS = document.fullscreenElement || document.webkitFullscreenElement;
+        if (isFS) {
+            const exit = document.exitFullscreen || document.webkitExitFullscreen;
+            if (exit) exit.call(document);
+        }
+
+        wrapper.classList.remove("pseudo-fullscreen");
+        document.body.classList.remove("is-in-fullscreen");
+
+        if (exitBtn) {
+            exitBtn.style.opacity = "0";
+            exitBtn.style.display = "none";
+        }
+
+        if (/iPhone|iPod|iPad/.test(navigator.userAgent)) {
+             setTimeout(() => window.scrollTo(0, 0), 100);
+        }
+    }
+
+    function showExitBtn(btnElement) {
+        if (!btnElement) return;
+        btnElement.style.setProperty('display', 'flex', 'important');
+        requestAnimationFrame(() => {
+            btnElement.style.opacity = "1";
+        });
+    }
+
+    // 監聽原生 ESC 鍵或返回鍵退出
+    document.addEventListener('fullscreenchange', handleGlobalFsChange);
+    document.addEventListener('webkitfullscreenchange', handleGlobalFsChange);
+
+    function handleGlobalFsChange() {
+        const isFS = document.fullscreenElement || document.webkitFullscreenElement;
+        if (!isFS) {
+            document.body.classList.remove("is-in-fullscreen");
+            document.querySelectorAll('.exit-fs-btn-global').forEach(btn => {
+                btn.style.display = "none";
+                btn.style.opacity = "0";
+            });
+        }
+    }
+
+    // 螢幕轉向時顯示退出按鈕
+    window.addEventListener("orientationchange", () => {
+        document.querySelectorAll('.pseudo-fullscreen .exit-fs-btn-global').forEach(btn => showExitBtn(btn));
+    });
+
+    // 點擊螢幕喚醒退出按鈕
+    document.addEventListener('touchstart', (e) => { 
+        const activeWrapper = document.querySelector('.pseudo-fullscreen') || document.fullscreenElement;
+        if (activeWrapper && activeWrapper.contains(e.target)) {
+            const btn = activeWrapper.querySelector('.exit-fs-btn-global');
+            if(btn) showExitBtn(btn);
+        }
+    }, { passive: true, capture: true });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateButtonUI(localStorage.getItem('pageTheme') || 'light');
+
+      const firstTabBtn = document.querySelector('.tab-btn');
+      openTab('tab-video1', firstTabBtn);
+    });
+
+    //======================================================
+    // 歌詞字體大小調整與說明
+    //======================================================
+    function showInstruction() {
+      alert("💡 應援小撇步：\n\n影片內嵌入的字幕是專門給已經熟練的人作「應援成果測驗」使用的哦！\n\n如果您對應援口號還不太熟練，可以先觀看影片下方的「動態歌詞字幕」來做練習 🎵 \n\n如果頻繁切換影片可能會導致動態歌詞字幕無法顯示，如有出現該狀況再麻煩重新整理！");
+    }
+
+    //歌詞字體大小調整
+    function adjustFontSize(containerId, change) {
+      var container = document.getElementById(containerId);
+      if (!container) return;
+  
+      // 取得目前字體大小，若無設定則預設為 15px
+      var currentSize = parseFloat(window.getComputedStyle(container).fontSize) || 15;
+      var newSize = currentSize + change;
+  
+      // 設定安全範圍：11px ~ 25px
+      if (newSize >= 11 && newSize <= 25) {
+        container.style.fontSize = newSize + 'px';
+        // 儲存到本機紀錄中
+        localStorage.setItem('lyrics_fontsize_' + containerId, newSize);
+      }
+    }
+
+    // 當網頁載入時，自動讀取上次儲存的字體大小紀錄
+    window.addEventListener('DOMContentLoaded', () => {
+      const containers = ['way2u-lyrics', 'hyper-lyrics', 'bloom-lyrics', 'hundrednights-lyrics'];
+
+      containers.forEach(id => {
+        const savedSize = localStorage.getItem('lyrics_fontsize_' + id);
+        const container = document.getElementById(id);
+
+        if (savedSize && container) {
+          container.style.fontSize = savedSize + 'px';
+        }
+      });
+    });
+
+    //======================================================
+    // 動態歌詞與互動設定核心邏輯
+    //======================================================
+
+    let lyricsEnabled = true;
+    const lyricsStates = {};
+
+    function toggleLyricsMode(){
+        lyricsEnabled = !lyricsEnabled;
+        const btn = document.getElementById("lyrics-toggle-btn");
+        btn.classList.toggle("active", lyricsEnabled);
+        btn.textContent = lyricsEnabled ? "🎵 動態歌詞：開" : "🎵 動態歌詞：關";
+
+        // 如果動態歌詞關閉，把所有歌詞恢復成普通清爽的文字顯示
+        if (!lyricsEnabled) {
+            Object.keys(lyricsStates).forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if(container) {
+                    container.querySelectorAll("p").forEach(p => {
+                        p.classList.remove("current-lyric");
+                        p.style.opacity = "1";
+                        p.style.transform = "scale(1)";
+                    });
+                }
+                lyricsStates[containerId].currentIndex = -1;
+            });
+        }
+    }
+
+    function bindLyricsInteraction(player, lyricsContainerId){
+        const container = document.getElementById(lyricsContainerId);
+        if(!container) return;
+        if(container.dataset.binded === "1") return;
+        container.dataset.binded = "1";
+
+        const paragraphs = container.querySelectorAll("p[data-start]");
+
+        if(!lyricsStates[lyricsContainerId]) {
+            lyricsStates[lyricsContainerId] = { currentIndex: -1 };
+        }
+        
+        const state = lyricsStates[lyricsContainerId];
+        state.player = player;
+        state.isUserScrolling = false;
+        state.scrollTimer = null;
+
+        // 當使用者自己滑動歌詞時，暫停自動捲動，避免跟使用者的手指搶控制權
+        function pauseAutoScroll() {
+            if(!lyricsEnabled) return;
+            state.isUserScrolling = true;
+            clearTimeout(state.scrollTimer);
+        }
+
+        // 當使用者停止滑動 1.5 秒後，自動恢復跟隨影片
+        function resumeAutoScroll() {
+            if(!lyricsEnabled) return;
+            clearTimeout(state.scrollTimer);
+            state.scrollTimer = setTimeout(() => {
+                state.isUserScrolling = false;
+            }, 1500);
+        }
+
+        container.addEventListener("wheel", pauseAutoScroll, {passive: true});
+        container.addEventListener("touchstart", pauseAutoScroll, {passive: true});
+        container.addEventListener("touchend", resumeAutoScroll, {passive: true});
+
+        paragraphs.forEach(p => {
+            p.addEventListener("click", () => {
+                const startTime = parseFloat(p.dataset.start);
+                if (!isNaN(startTime)) {
+                    player.seekTo(startTime, true);
+                    state.isUserScrolling = false;
+                    clearTimeout(state.scrollTimer);
+                }
+            });
+        });
+    }
+
+    function syncLyricsWithVideo(player, lyricsContainerId){
+        const container = document.getElementById(lyricsContainerId);
+        if(!container) return;
+
+        // 確保 JS 控制的滾動不受干擾
+        container.style.position = "relative";
+        container.style.scrollBehavior = "auto";
+      
+        const paragraphs = container.querySelectorAll("p[data-start]");
+        
+        if(!lyricsStates[lyricsContainerId]) {
+            lyricsStates[lyricsContainerId] = { currentIndex: -1, lastTime: 0 };
+        }
+        const state = lyricsStates[lyricsContainerId];
+
+        if(state.animationId) {
+            cancelAnimationFrame(state.animationId);
+        }
+
+        function animate(){
+            state.animationId = requestAnimationFrame(animate);
+
+            if(!lyricsEnabled) return;
+            
+            // 取得播放器狀態，只要不是空值，且處於播放(1)、暫停(2)、或緩衝(3)，都允許更新歌詞
+            const pState = player ? player.getPlayerState() : -1;
+            if(!player || (pState !== YT.PlayerState.PLAYING && pState !== YT.PlayerState.PAUSED && pState !== YT.PlayerState.BUFFERING)) {
+                return;
+            }
+
+            const currentTime = player.getCurrentTime();
+
+            // 偵測影片時間是否發生「跳躍」(差距大於 0.5 秒)
+            // 如果 state.lastTime 是 0，代表剛初始化，先將其同步為目前時間
+            if (state.lastTime === 0) state.lastTime = currentTime;
+            const timeDiff = Math.abs(currentTime - state.lastTime);
+            const isVideoSeeking = timeDiff > 0.5; // 判斷使用者是否點擊了進度條
+            state.lastTime = currentTime; // 更新為最新時間
+          
+            let newIndex = -1;
+
+            for(let i = 0; i < paragraphs.length; i++){
+                const start = parseFloat(paragraphs[i].dataset.start);
+                const end = parseFloat(paragraphs[i].dataset.end);
+                if(currentTime >= start && currentTime <= end){
+                    newIndex = i;
+                    break;
+                }
+            }
+
+            if(newIndex === -1 && currentTime > 0) {
+                for (let i = paragraphs.length - 1; i >= 0; i--) {
+                     const start = parseFloat(paragraphs[i].dataset.start);
+                     if (currentTime >= start) {
+                         newIndex = i;
+                         break;
+                     }
+                }
+            }
+
+            if (newIndex !== -1 && (newIndex !== state.currentIndex || (isVideoSeeking && !state.isUserScrolling))) {
+                state.currentIndex = newIndex;
+                const currentP = paragraphs[state.currentIndex];
+
+                // 更新歌詞淡出淡入樣式
+                paragraphs.forEach((p, index) => {
+                    p.classList.remove("current-lyric");
+                    const distance = Math.abs(index - state.currentIndex);
+                    if(distance === 0){
+                        p.style.opacity = "1";
+                        p.style.transform = "scale(1.08)";
+                    } else if(distance === 1){
+                        p.style.opacity = "0.75";
+                        p.style.transform = "scale(1.02)";
+                    } else if(distance === 2){
+                        p.style.opacity = "0.55";
+                        p.style.transform = "scale(1)";
+                    } else {
+                        p.style.opacity = "0.3";
+                        p.style.transform = "scale(0.96)";
+                    }
+                });
+
+                currentP.classList.add("current-lyric");
+
+                // 執行滾動
+                if (!state.isUserScrolling) {
+                    // 使用 offsetTop 取得絕對精準的位置，解決手機版對不準的問題
+                    const targetScroll = currentP.offsetTop - (container.clientHeight / 2) + (currentP.clientHeight / 2);
+                    
+                    if (isVideoSeeking) {
+                        // 如果是點擊影片時間軸：取消平滑，要求「瞬間切換」
+                        container.scrollTop = targetScroll;
+                    } else {
+                        // 如果是正常播放換句：呼叫瀏覽器原生高順暢度的「平滑滾動」
+                        if (container.scrollTo) {
+                            container.scrollTo({ top: targetScroll, behavior: 'smooth' });
+                        } else {
+                            container.scrollTop = targetScroll;
+                        }
+                    }
+                }
+            }
+        }
+        animate();
+    }
+
+    function stopLyricsAnimation(lyricsContainerId){
+        const state = lyricsStates[lyricsContainerId];
+        if(!state) return;
+        if(state.animationId){
+            cancelAnimationFrame(state.animationId);
+            state.animationId = null;
+        }
+    }
+
+    // =====================================
+    // 動畫特效
+    // =====================================
+    (function () {
+  const sakuraLayer = document.getElementById('sakura-layer');
+  const starLayer = document.getElementById('star-layer');
+  if (!sakuraLayer || !starLayer) return;
+
+  const isMobile = window.innerWidth < 600;
+
+  // 1. 生成第一首櫻花瓣
+  const petalCount = isMobile ? 7 : 12;
+  const sakuraFrag = document.createDocumentFragment();
+
+  for (let i = 0; i < petalCount; i++) {
+    const petal = document.createElement('span');
+    petal.className = 'sakura-petal';
+
+    const size = isMobile
+      ? (10 + Math.random() * 6).toFixed(1)
+      : (12 + Math.random() * 8).toFixed(1);
+
+    // 讓起點分布在上方與左側，確保往右下飄時能自然穿越畫面
+    const startLeft = (-12 + Math.random() * 76).toFixed(2);
+    const startTop = (-14 + Math.random() * 42).toFixed(2);
+
+    petal.style.width = size + 'px';
+    petal.style.height = (size * 0.78).toFixed(1) + 'px';
+    petal.style.left = startLeft + 'vw';
+    petal.style.top = startTop + 'vh';
+    petal.style.animationDuration = (13 + Math.random() * 9).toFixed(2) + 's';
+    petal.style.animationDelay = (-Math.random() * 20).toFixed(2) + 's';
+    petal.style.setProperty('--petal-opacity', (0.78 + Math.random() * 0.18).toFixed(2));
+
+    sakuraFrag.appendChild(petal);
+  }
+  sakuraLayer.appendChild(sakuraFrag);
+
+  // 2. 生成第二首星星（位置固定，僅閃爍）
+  const starCount = isMobile ? 9 : 16;
+  const starFrag = document.createDocumentFragment();
+
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement('span');
+    star.className = 'twinkle-star';
+    star.textContent = '✦';
+
+    const fontSize = isMobile
+      ? (10 + Math.random() * 6).toFixed(1)
+      : (12 + Math.random() * 9).toFixed(1);
+
+    star.style.fontSize = fontSize + 'px';
+    star.style.left = (3 + Math.random() * 94).toFixed(2) + '%';
+    star.style.top = (3 + Math.random() * 94).toFixed(2) + '%';
+    star.style.animationDuration = (4.5 + Math.random() * 4.5).toFixed(2) + 's';
+    star.style.animationDelay = (-Math.random() * 5).toFixed(2) + 's';
+    star.style.setProperty('--star-min', (0.22 + Math.random() * 0.14).toFixed(2));
+    star.style.setProperty('--star-max', (0.75 + Math.random() * 0.2).toFixed(2));
+
+    starFrag.appendChild(star);
+  }
+  starLayer.appendChild(starFrag);
+
+  // 3. 同步目前啟用的是哪一首歌分頁（tab-video1 / tab-video2）
+  function syncActiveSong() {
+    const activeTab = document.querySelector('.tab-content.active');
+    if (activeTab && activeTab.id) {
+      document.body.setAttribute('data-active-song', activeTab.id);
+    } else {
+      document.body.setAttribute('data-active-song', 'tab-video1');
+    }
+  }
+
+  syncActiveSong();
+
+  // 監聽分頁切換，無痛銜接現有 openTab()
+  document.querySelectorAll('.tab-content').forEach((tabEl) => {
+    const observer = new MutationObserver(syncActiveSong);
+    observer.observe(tabEl, { attributes: true, attributeFilter: ['class'] });
+  });
+})();
+  </script>
+</body>
+</html>
