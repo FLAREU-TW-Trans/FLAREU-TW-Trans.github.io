@@ -443,13 +443,13 @@
       </div>
 
       <div class="song-select-wrapper">
-      <select id="song-select" class="song-select" aria-label="選擇歌曲" onchange="handleSongSelectChange(this)">
-        <option value="tab-video1" data-effect="none">WAY 2 U</option>
-        <option value="tab-video2" data-effect="none">Hyper</option>
-        <option value="tab-video3" data-effect="sakura">Bloom</option>
-        <option value="tab-video4" data-effect="stars">Hundred Nights</option>
-      </select>
-    </div>
+        <select id="song-select" class="song-select" aria-label="選擇歌曲" onchange="handleSongSelectChange(this)">
+          <option value="tab-video1" data-effect="none">WAY 2 U</option>
+          <option value="tab-video2" data-effect="none">Hyper</option>
+          <option value="tab-video3" data-effect="sakura">Bloom</option>
+          <option value="tab-video4" data-effect="stars">Hundred Nights</option>
+        </select>
+      </div>
     </header>
 
     <!-- WAY 2 U 分頁 -->
@@ -954,7 +954,7 @@
     // 影片資料 - 🌟 ID 必須跟上面的 HTML 一模一樣，影片才生得出來！
     const videoData = {
         'tab-video1': { id: 'DVNPHdMuk4k', srt: './20260602_WAY_2_U.srt', player: null, subEl: 'subtitle-video1', container: 'player-container-video1' },
-        'tab-video2': { id: '19P4NehU2LU', srt: './20260602_Hyper.srt', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null }
+        'tab-video2': { id: '19P4NehU2LU', srt: './20260602_Hyper.srt', player: null, subEl: 'subtitle-video2', container: 'player-container-video2', interval: null },
         'tab-video3': { id: 'geG9TTJOd3c', srt: './20261020_Bloom.srt', player: null, subEl: 'subtitle-video3', container: 'player-container-video3' },
         'tab-video4': { id: 'bqPrtb_hbSA', srt: './20261020_Hundred_Nights.srt', player: null, subEl: 'subtitle-video4', container: 'player-container-video4', interval: null }
     };
@@ -973,52 +973,66 @@
 
     function openTab(tabId, btnElement) {
       Object.keys(videoData).forEach(key => {
-          if (videoData[key].player && typeof videoData[key].player.pauseVideo === 'function') {
-              videoData[key].player.pauseVideo();
-          }
+        if (videoData[key].player && typeof videoData[key].player.pauseVideo === 'function') {
+          videoData[key].player.pauseVideo();
+        }
       });
 
-      stopLyricsAnimation("way2u-lyrics");
-      stopLyricsAnimation("hyper-lyrics");
+      ['way2u-lyrics', 'hyper-lyrics', 'bloom-lyrics', 'hundrednights-lyrics'].forEach(id => {
+        if (typeof stopLyricsAnimation === 'function') {
+          stopLyricsAnimation(id);
+        }
+      });
 
-      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.toggle('active', content.id === tabId);
+      });
+
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      btnElement.classList.add('active');
+      if (btnElement && btnElement.classList) {
+        btnElement.classList.add('active');
+      }
 
-      initVideo(tabId);
+      const selectEl = document.getElementById('song-select');
+      if (selectEl && selectEl.value !== tabId) {
+        selectEl.value = tabId;
+      }
+
+      document.body.setAttribute('data-active-song', tabId);
+
+      if (typeof initVideo === 'function') {
+        initVideo(tabId);
+      }
     }
 
-    // 切換下拉式選單
     function handleSongSelectChange(selectEl) {
-  if (!selectEl) return;
-  const targetId = selectEl.value;
-  const selectedOpt = selectEl.options[selectEl.selectedIndex];
+      if (!selectEl) return;
+      const targetId = selectEl.value;
+      const selectedOpt = selectEl.options[selectEl.selectedIndex];
 
-  document.querySelectorAll('.tab-content').forEach((tab) => {
-    tab.classList.toggle('active', tab.id === targetId);
-  });
+      if (typeof window.openTab === 'function') {
+        window.openTab(targetId, selectedOpt);
+      } else {
+        document.querySelectorAll('.tab-content').forEach(tab => {
+          tab.classList.toggle('active', tab.id === targetId);
+        });
+        document.body.setAttribute('data-active-song', targetId);
+      }
+    }
 
-  document.body.setAttribute('data-active-song', targetId);
+    document.addEventListener('DOMContentLoaded', function () {
+      const selectEl = document.getElementById('song-select');
+      if (!selectEl) return;
 
-  if (typeof window.openTab === 'function') {
-    window.openTab(targetId, selectedOpt);
-  }
-}
+      const activeTab = document.querySelector('.tab-content.active');
+      const initialId = (activeTab && activeTab.id) ? activeTab.id : selectEl.options[0].value;
+      selectEl.value = initialId;
+      document.body.setAttribute('data-active-song', initialId);
 
-document.addEventListener('DOMContentLoaded', function () {
-  const selectEl = document.getElementById('song-select');
-  if (!selectEl) return;
-
-  const activeTab = document.querySelector('.tab-content.active');
-  if (activeTab && activeTab.id) {
-    selectEl.value = activeTab.id;
-    document.body.setAttribute('data-active-song', activeTab.id);
-  } else {
-    selectEl.value = selectEl.options[0].value;
-    handleSongSelectChange(selectEl);
-  }
-});
+      if (!activeTab) {
+        handleSongSelectChange(selectEl);
+      }
+    });
 
     // 安全載入 YouTube 播放器
     window.onYouTubeIframeAPIReady = function() {
@@ -1026,47 +1040,40 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     function initVideo(tabId) {
-        const vData = videoData[tabId];
-        if (vData.player) return;
+      const vData = videoData[tabId];
+      if (!vData || vData.player) return;
 
-        if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
-            setTimeout(() => initVideo(tabId), 100);
-            return;
-        }
+      if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+        setTimeout(() => initVideo(tabId), 100);
+        return;
+      }
 
-        vData.player = new YT.Player(vData.container, {
-            videoId: vData.id,
-            width: '100%',
-            height: '100%',
-            host: 'https://www.youtube-nocookie.com',
-            playerVars: { 'autoplay': 0, 'rel': 0, 'playsinline': 1 }, // 絕對不偷播
-            events:{
-              onReady:function(event){
+      vData.player = new YT.Player(vData.container, {
+        videoId: vData.id,
+        width: '100%',
+        height: '100%',
+        host: 'https://www.youtube-nocookie.com',
+        playerVars: { 'autoplay': 0, 'rel': 0, 'playsinline': 1 },
+        events: {
+          onReady: function (event) {
+            loadSRT(vData.srt, vData.subEl, event.target);
 
-                  loadSRT(vData.srt,vData.subEl,event.target);
-
-                  if(tabId==="tab-video1"){
-                      syncLyricsWithVideo(event.target,"way2u-lyrics");
-                      bindLyricsInteraction(event.target,"way2u-lyrics");
-                  }
-
-                  if(tabId==="tab-video2"){
-                      syncLyricsWithVideo(event.target,"hyper-lyrics");
-                      bindLyricsInteraction(event.target,"hyper-lyrics");
-                  }
-
-                  if(tabId==="tab-video3"){
-                      syncLyricsWithVideo(event.target,"bloom-lyrics");
-                      bindLyricsInteraction(event.target,"bloom-lyrics");
-                  }
-
-                  if(tabId==="tab-video4"){
-                      syncLyricsWithVideo(event.target,"hundrednights-lyrics");
-                      bindLyricsInteraction(event.target,"hundrednights-lyrics");
-                  }
-              }
+            if (tabId === 'tab-video1') {
+              syncLyricsWithVideo(event.target, 'way2u-lyrics');
+              bindLyricsInteraction(event.target, 'way2u-lyrics');
+            } else if (tabId === 'tab-video2') {
+              syncLyricsWithVideo(event.target, 'hyper-lyrics');
+              bindLyricsInteraction(event.target, 'hyper-lyrics');
+            } else if (tabId === 'tab-video3') {
+              syncLyricsWithVideo(event.target, 'bloom-lyrics');
+              bindLyricsInteraction(event.target, 'bloom-lyrics');
+            } else if (tabId === 'tab-video4') {
+              syncLyricsWithVideo(event.target, 'hundrednights-lyrics');
+              bindLyricsInteraction(event.target, 'hundrednights-lyrics');
+            }
           }
-        });
+        }
+      });
     }
 
     function loadSRT(filename, subtitleId, player) {
@@ -1247,13 +1254,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 當網頁載入時，自動讀取上次儲存的字體大小紀錄
-    window.addEventListener("DOMContentLoaded", () => {
-      const containers = ['way2u-lyrics', 'hyper-lyrics'];
-  
+    window.addEventListener('DOMContentLoaded', () => {
+      const containers = ['way2u-lyrics', 'hyper-lyrics', 'bloom-lyrics', 'hundrednights-lyrics'];
+
       containers.forEach(id => {
-        var savedSize = localStorage.getItem('lyrics_fontsize_' + id);
-        var container = document.getElementById(id);
-    
+        const savedSize = localStorage.getItem('lyrics_fontsize_' + id);
+        const container = document.getElementById(id);
+
         if (savedSize && container) {
           container.style.fontSize = savedSize + 'px';
         }
